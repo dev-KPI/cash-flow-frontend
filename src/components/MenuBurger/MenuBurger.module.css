@@ -1,14 +1,15 @@
 .burgernav{
-    margin: 10px 100px;
-
+    margin: 10px 50px;
     width: 250px;
     height: 900px;
     display: flex;
     flex-direction: column;
     background-color: var(--cardbg);
 }
-
-
+.logo{
+    user-select: none;
+    cursor: pointer;
+}
 .burgernav__title{
     display: flex;
     flex-direction: row;
@@ -16,15 +17,17 @@
     margin-left: 25px;
     margin-top: 25px;
     font-weight: 700;
+    user-select: none;
+    cursor: pointer;
     color: var(--main-text);
 }
-.burgernav__title .text{
+.burgernav__title .title{
     margin-left: 14px;
     font-size: 24px;
     display: inline-block;
     color: var(--main-text);
 }
-.burgernav__title .textspan {
+.burgernav__title .title__span {
     font-size: 24px;
     color: var(--main-green);
 }
@@ -36,7 +39,7 @@
     flex-direction: row;
     align-items: center;
 }
-.burgernav__account .text{
+.burgernav__account .title{
     margin-left: 15px;
     font-weight: 700;
     font-size: 16px;
@@ -57,28 +60,42 @@
     display: flex;
     flex-direction: row;
     padding: 16px 24px;
+    text-align: center;
+    align-items: center;
 
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 17px;
-    color: var(--main-text);
+    line-height: 18px;
+    color: var(--text);
 
     position: relative;
 }
-.burgernav__list .burgerIcon {
+.burgerIcon{
+    display: flex;
     width: 16px;
     height: 16px;
-    display: flex;
+    cursor: pointer;
 }
-.burgernav__list .text{
+.burgerIcon i {
+    font-size: 16px;
+}
+.burgernav__list .title{
     margin-left: 14px;
 }
-.burgernav__list .active{
-    width: calc(100%-5%);
+.activ{
     color: var(--main-green);
-    filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.15));
+}.activ::after{
+    content: ' ';
+    width: 5px;
+    display: flex;
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    right: 0px;
+    background-color: var(--main-green);
 }
+
 .burgernav__list .inc{
     width: 30px;
     height: 100%;
@@ -87,19 +104,7 @@
     justify-content: center;
     margin-left: auto;
     border-radius: 20px;
-    background-color: #F3F4F6
-}
-.burgernav__list .inc::after{
-    content: ' ';
-    width: 5px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    position: absolute;
-    top: 5px;
-    right: 0px;
-    background-color: var(--main-green);
+    background-color: var(--background)
 }
 
 .burgernav__groups{
@@ -120,7 +125,6 @@
     padding: 0px 24px;
 }
 .burgernav__groups .item{
-
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -153,7 +157,7 @@
     font-weight: 500;
     font-size: 12px;
     line-height: 12px;
-    color: var(--light-text);
+    color: var(--text);
 }
 .themeButton{
     margin-top: 56px;
@@ -162,7 +166,7 @@
 }
 .burgernav__downside{
     margin-top: 16px;
-    color: var(--light-main-text);
+    color: var(--main-text);
 }
 .burgernav__downside .list {
     display: flex;
@@ -178,7 +182,7 @@
     font-style: normal;
     font-weight: 600;
     font-size: 14px;
-    line-height: 17px;
+    line-height: 18px;
 }
 
 

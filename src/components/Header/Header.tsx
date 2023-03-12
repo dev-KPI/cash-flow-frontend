@@ -8,7 +8,7 @@ import {ThemeButton} from '../ThemeButtons/ThemeButtons';
 
 const HeaderSite = () => {
     return (
-        <div className={classes.header}>
+        <header className={classes.header}>
             <div className={classes.header__container}>
                 <div className={classes.header__inner}>
                    <div className={classes.header__top}>
@@ -57,7 +57,7 @@ const HeaderSite = () => {
                    </nav>
                 </div> 
             </div>
-        </div>
+        </header>
     );
 };
 

@@ -1,9 +1,13 @@
+//pages
 import Dashboard from "../pages/Dashboard/Dashboard";
+import Analytics from "../pages/Analytics/Analytics"
+
+//components
 import MenuBurger from "../components/MenuBurger/MenuBurger";
 import Header from "../components/Header/Header";
 
 export const DASHBOARD_PAGE = '/';
-export const ANALYTICS_PAGE = '/';
+export const ANALYTICS_PAGE = '/analytics';
 export const NOTIFICATIONS_PAGE = '/';
 export const CATEGORIES_PAGE = '/';
 export const GROUPS_PAGE = '/';
@@ -25,6 +29,10 @@ export const routesNotAuth = [
         path: DASHBOARD_PAGE,
         component: Dashboard
     },
+    {
+        path: ANALYTICS_PAGE,
+        component: Analytics
+    }
 ];
 export const routesMobileNavigation = [
     {

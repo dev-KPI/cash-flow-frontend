@@ -144,24 +144,16 @@ button {
 }
 
 :root{
-    --light-background: #F8F8FF;
-    --light-cardbg: #FFFFFF;
-    --light-main-text: #333333;
-    --light-text: #7A7A9D;
-    --dark-background: #151515;
-    --dark-cardbg: #0F0F0F;
-    --dark-main-text: #EAEAEA;
-    --dark-text: #9BABC5;
     --main-green: #80D667;
     --main-blue: #4C6FFF;
     --main-red: #FF2D55;
     --main-purple: #D96FF8;
     --main-orange: #FF6E01;
-
 }
+
 [data-theme="light"]{
-    --background: #F8F8FF;
-    --cardbg: #FFFFFF;
+    --background: #FFFFFF;
+    --cardbg: #F8F8FF;
     --main-text: #333333;
     --text: #7A7A9D;
 }
