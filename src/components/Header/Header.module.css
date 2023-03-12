@@ -5,7 +5,6 @@
     position: relative;
 }
 .header__container{
-
 }
 .header__top{
     display: flex;
@@ -21,7 +20,7 @@
     column-gap: 42px;
 }
 .header__logo h1{
-    color: var(--light-main-text);
+    color: var(--main-text);
     font-weight: 700;
     font-size: 36px;
     line-height: 54px;
@@ -38,7 +37,7 @@
     display: flex;
     align-items: center;
 
-    background: #EBF4FF;
+    background-color: var(--cardbg);
     border-radius: 20px;
 }
 
@@ -52,20 +51,20 @@
     column-gap: 20px;
 }
 .header__profile .profile__name{
-    color: var(--light-main-text);
+    color: var(--main-text);
     font-weight: 700;
     font-size: 16px;
     line-height: 19px;
 } 
 .header__profile .profile__email {
-    color: var(--light-text);
+    color: var(--text);
     font-size: 14px;
     line-height: 17px;
     letter-spacing: -0.4633px
 }
 
 .header__profile i {
-    color: var(--light-text);
+    color: var(--text);
     font-size: 8px;
     cursor: pointer;
 }
@@ -74,7 +73,7 @@
     display: flex;
     align-items:center;
 
-    color: var(--light-text);
+    color: var(--text);
 }
 .header__notifications i{
     position: relative;
@@ -117,7 +116,7 @@
 .navbar a{
     font-size: 14px;
     line-height: 17px;
-    color: var(--light-main-text);
+    color: var(--main-text);
 }
 
 .navbar .active{
