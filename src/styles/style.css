@@ -1,0 +1,176 @@
+ /* reset */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: "";
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+input::-webkit-search-cancel-button {
+    display: none;
+}
+
+a{
+    text-decoration: none;
+    color: #000;
+}
+
+:root{
+    --main-green: #80D667;
+    --main-blue: #4C6FFF;
+    --main-red: #FF2D55;
+    --main-purple: #D96FF8;
+    --main-orange: #FF6E01;
+}
+
+[data-theme="light"]{
+    --background: #FFFFFF;
+    --cardbg: #F8F8FF;
+    --main-text: #333333;
+    --text: #7A7A9D;
+}
+[data-theme="dark"]{
+    --background: #151515;
+    --cardbg: #0F0F0F;
+    --main-text: #EAEAEA;
+    --text: #9BABC5;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+body{
+    background: var(--background);
+    font-family: 'Inter';
+    font-weight: 400;
+}
+
+div[class*="__container"] {
+    max-width: 1514px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 5px;
+}
