@@ -4,13 +4,11 @@ import MenuBurger from '../../components/MenuBurger/MenuBurger';
 
 const Dashboard = () => {
     return (
-        <>  
+        <div>
             <Header />
-            <main>
-                <h1>hi</h1>
-                <MenuBurger/>
-            </main>
-        </>
+            Fuhij2fiujs
+            <MenuBurger/>
+        </div>
        
     );
 };
