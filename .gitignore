@@ -8,6 +8,8 @@ node_modules
 
 # testing
 /coverage
+.vscode
+/vscode
 
 # production
 /build

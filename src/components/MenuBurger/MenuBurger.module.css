@@ -5,7 +5,7 @@
     height: 900px;
     display: flex;
     flex-direction: column;
-    background-color: var(--light-cardbg);
+    background-color: var(--cardbg);
 }
 
 
@@ -16,13 +16,13 @@
     margin-left: 25px;
     margin-top: 25px;
     font-weight: 700;
-    color: var(--light-main-text);
+    color: var(--main-text);
 }
 .burgernav__title .text{
     margin-left: 14px;
     font-size: 24px;
     display: inline-block;
-    color: var(--light-main-text);
+    color: var(--main-text);
 }
 .burgernav__title .textspan {
     font-size: 24px;
@@ -40,7 +40,7 @@
     margin-left: 15px;
     font-weight: 700;
     font-size: 16px;
-    color: var(--light-main-text);
+    color: var(--main-text);
 }
 
 .burgernav__line{
@@ -62,7 +62,7 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 17px;
-    color: var(--light-main-text);
+    color: var(--main-text);
 
     position: relative;
 }
