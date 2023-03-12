@@ -155,11 +155,23 @@ a{
     --main-orange: #FF6E01;
 
 }
+[data-theme="light"]{
+    --background: #F8F8FF;
+    --cardbg: #FFFFFF;
+    --main-text: #333333;
+    --text: #7A7A9D;
+}
+[data-theme="dark"]{
+    --background: #151515;
+    --cardbg: #0F0F0F;
+    --main-text: #EAEAEA;
+    --text: #9BABC5;
+}
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 body{
-    background: var(--light-background);
+    background: var(--background);
     font-family: 'Inter';
     font-weight: 400;
 }
