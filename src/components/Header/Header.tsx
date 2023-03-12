@@ -27,7 +27,7 @@ const HeaderSite = () => {
                             <div className={classes.profile__inner}>
                                 <div className={classes.profile__main}>
                                     <h4 className={classes.profile__name}>John Doe</h4>
-                                    <p className={classes.profile__email}>johndoe@gmail.com</p>
+                                    <p className={classes.profile__email}>johndoee@gmail.com</p>
                                 </div>
                                 <i className="bi bi-chevron-down"></i>
                             </div>
