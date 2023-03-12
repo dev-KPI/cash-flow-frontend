@@ -1,0 +1,70 @@
+/* .themeButton__wrapper{
+    display: flex;
+    align-items: center;
+} */
+.themeButton{
+    background: #EFF0F8;
+    border-radius: 20px;
+    padding: 3px;
+}
+.themeButton__inner{
+    display: flex;
+    align-items: center;
+}
+.themeButton__item{
+    color: var(--light-text);
+    border-radius: 20px;
+    padding: 5px 8px;
+    max-height: 26px;
+    display: flex;
+    flex-direction: row;
+
+    cursor: pointer;
+}
+.themeButton__title{
+    margin-left: 5px;
+}
+
+.active{
+    background: var(--light-cardbg);
+    color: var(--light-main-text);
+}
+
+
+.themeButtonExtra__wrapper{
+    width: 136px;
+    height: 32px;
+}
+.themeButtonExtra {
+    background: #EFF0F8;
+    border-radius: 20px;
+    padding: 3px;
+}
+
+.themeButtonExtra__inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+.themeButtonExtra__item {
+    color: var(--light-main-text);
+    border-radius: 20px;
+    padding: 5px 8px;
+    max-height: 26px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.themeButtonExtra__title {
+    margin-left: 5px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 12px;
+    color: var(--light-main-text);
+}
+.activeExtra {
+    color: #000000;
+    background-color: var(--light-cardbg)
+}

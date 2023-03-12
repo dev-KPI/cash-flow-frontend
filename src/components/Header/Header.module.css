@@ -1,0 +1,137 @@
+.header{
+    width: 100%;
+    height: 160px;
+    border-bottom: 1px solid #EEEEEE;
+    position: relative;
+}
+.header__container{
+
+}
+.header__top{
+    display: flex;
+    margin-top: 30px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.header__logo{
+    display: flex;
+    align-items: center;
+    column-gap: 42px;
+}
+.header__logo h1{
+    color: var(--light-main-text);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 54px;
+}
+.header__logo span{
+    color: var(--main-green);
+}
+
+.header__profile{
+    padding: 6px 20px 6px 25px;
+    column-gap: 10px;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    background: #EBF4FF;
+    border-radius: 20px;
+}
+
+.header__profile img{
+    width: 46px;
+    height: 46px;
+}
+.header__profile .profile__inner {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+}
+.header__profile .profile__name{
+    color: var(--light-main-text);
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+} 
+.header__profile .profile__email {
+    color: var(--light-text);
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: -0.4633px
+}
+
+.header__profile i {
+    color: var(--light-text);
+    font-size: 8px;
+    cursor: pointer;
+}
+
+.header__notifications{
+    display: flex;
+    align-items:center;
+
+    color: var(--light-text);
+}
+.header__notifications i{
+    position: relative;
+    cursor: pointer;
+}
+.header__notifications i::after{
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    content: "";
+    border-radius: 6px;
+    width: 6px;
+    height: 6px;
+    background: var(--main-green);
+    box-shadow: 0px 0px 10px var(--main-green);
+}
+
+.header__menu {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 20px;
+}
+
+
+.breadcrumbs{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.navbar{
+    display: flex;
+    margin-left: 350px;
+    margin-bottom: 16px;
+    gap: 20px;
+}
+.navber li{
+
+}
+.navbar a{
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--light-main-text);
+}
+
+.navbar .active{
+    position: relative;
+    font-weight: 500;
+}
+.navbar .active::after{
+    position: absolute;
+    content: "";
+    bottom: -16px;
+    left: 0;
+    right: 0;
+    background-color: var(--main-green);
+    height: 2px;
+    border-radius: 2px;
+
+}
