@@ -1,7 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { DASHBOARD_PAGE, routesNotAuth, components } from './routes'
-import { isThemeInStorage } from '../localStorage/theme/theme';
+import { isThemeInStorage } from '../localStorage/theme';
+
 
 const Router: FC = () => {
 
