@@ -62,8 +62,28 @@ export const components = [
     {
         path: "/components/Menu",
         component: MenuBurger
-    },
-    {
+    },{
+        path: "/components/Menu/analytics",
+        component: MenuBurger
+    },{
+        path: "/components/Menu/analytics1",
+        component: MenuBurger
+    },{
+        path: "/components/Menu/analytics2",
+        component: MenuBurger
+    },{
+        path: "/components/Menu/analytics3",
+        component: MenuBurger
+    },{
+        path: "/components/Menu/analytics4",
+        component: MenuBurger
+    },{
+        path: "/components/Menu/analytics5",
+        component: MenuBurger
+    },{
+        path: "/components/Menu/analytics6",
+        component: MenuBurger
+    },{
         path: "/components/Header",
         component: Header
     }

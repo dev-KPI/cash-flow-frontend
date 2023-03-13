@@ -1,5 +1,5 @@
 .burgernav{
-    margin: 10px 50px;
+    position: absolute;
     width: 250px;
     height: 900px;
     display: flex;
@@ -55,6 +55,11 @@
 .burgernav__list{
     margin-top: 24px;
     width: 100%;
+
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
 }
 .burgernav__list .item{
     display: flex;
@@ -62,15 +67,39 @@
     padding: 16px 24px;
     text-align: center;
     align-items: center;
-
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 18px;
     color: var(--text);
-
-    position: relative;
 }
+
+.activeLink{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    padding: 16px 24px;
+    color: var(--main-green);
+    transition: .3s ease-in-out;
+}.activeLink::after{
+    display: flex;
+    position: absolute;
+    content: ' ';
+    height: 40px;
+    width: 5px;
+    top: 5;
+    right: 0px;
+    background-color: var(--main-green);
+    animation: activeLinkAfterAnimation .3s ease-in-out;
+}
+@keyframes activeLinkAfterAnimation {
+    from {
+        height: 2px;
+        opacity: 0;
+    }
+    to {
+        height: 40px;
+        opacity: 1;
+    }
+}
+
 .burgerIcon{
     display: flex;
     width: 16px;
@@ -83,18 +112,8 @@
 .burgernav__list .title{
     margin-left: 14px;
 }
-.activ{
-    color: var(--main-green);
-}.activ::after{
-    content: ' ';
-    width: 5px;
-    display: flex;
-    position: absolute;
-    top: 10px;
-    bottom: 10px;
-    right: 0px;
-    background-color: var(--main-green);
-}
+
+
 
 .burgernav__list .inc{
     width: 30px;
