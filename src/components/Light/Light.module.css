@@ -13,17 +13,19 @@
 [data-light-color="orange"]{
     --color: var(--main-orange)
 }
-[neon-only="false"]{
-    --shadowtheme: box-shadow: 0px 0px 10px var(--color);
-}
-[neon-only="true"]{
-    --shadowtheme: box-shadow: none;
-}
 
-.light {
+.light[data-theme="dark"] {
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background-color: var(--color);
-    box-shadow: var(--shadowtheme);
+    box-shadow: 0px 0px 10px var(--color);
+}
+
+.light[data-theme="light"] {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color);
+    box-shadow: none;
 }

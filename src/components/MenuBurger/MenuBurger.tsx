@@ -19,8 +19,7 @@ const MenuBurger: FC = () => {
             </Link>
         </div>
         <Light 
-        type="red" 
-        neonOnlyDark={true}/>
+        type="red"/>
         <div className={classes.burgernav__account}>
             <img alt="Avatar" src={Avatar} width="46px" height="46px" />
             <h2 className={classes.title}>John Doe</h2>
@@ -104,6 +103,7 @@ const MenuBurger: FC = () => {
         </div>
         <div className={classes.themeButton}>
             <ThemeButton ThemeButtonType="extra" />
+            <Light type="red"/>
         </div>
         <div className={classes.burgernav__downside}>
             <ul className={classes.list}>

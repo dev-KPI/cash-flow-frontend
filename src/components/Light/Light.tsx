@@ -1,16 +1,21 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import classes from './Light.module.css';
+import { isThemeInStorage } from '../../localStorage/theme';
 
 export interface ILight {
     type: 'red'|'blue'|'green'|'purple'|'orange'
-    neonOnlyDark: boolean
 }
 
-const Light: React.FC<ILight> = ({type, neonOnlyDark}: ILight) => {
+const Light: React.FC<ILight> = ({type}: ILight) => {
+    
+    const [ThemeInStorage, setThemeInStorage] = useState<string>('');
+    useEffect(()=>{
+        setThemeInStorage(isThemeInStorage())
+    },[])
     return(<>
         <div 
+        data-theme={ThemeInStorage}
         data-light-color={type} 
-        neon-only={neonOnlyDark} 
         className={classes.light}></div>
     </>)
 }
