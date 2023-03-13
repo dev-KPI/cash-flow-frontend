@@ -1,12 +1,19 @@
 import React, { FC, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { DASHBOARD_PAGE, routesNotAuth, components } from './routes'
-import { isThemeInStorage } from '../localStorage/theme/theme';
+
+//store
+import { useAppDispatch, useAppSelector } from '../hooks/useAppStore';
+import { setTheme, setThemeDefault } from "../store/ThemeSlice/ThemeSlice";
+
 
 const Router: FC = () => {
 
+    const dispatch = useAppDispatch();
+    const ThemeState = useAppSelector(state => state.persistedThemeSlice);
+
     useEffect(()=>{
-        isThemeInStorage()
+        if(ThemeState.requireReload) {dispatch(setThemeDefault())}
     }, [])
 
     return (

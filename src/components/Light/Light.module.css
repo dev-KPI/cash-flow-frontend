@@ -1,0 +1,29 @@
+[data-light-color="red"]{
+    --color: var(--main-red)
+}
+[data-light-color="blue"]{
+    --color: var(--main-blue)
+}
+[data-light-color="green"]{
+    --color: var(--main-green)
+}
+[data-light-color="purple"]{
+    --color: var(--main-purple)
+}
+[data-light-color="orange"]{
+    --color: var(--main-orange)
+}
+[neon-only="false"]{
+    --shadowtheme: box-shadow: 0px 0px 10px var(--color);
+}
+[neon-only="true"]{
+    --shadowtheme: box-shadow: none;
+}
+
+.light {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color);
+    box-shadow: var(--shadowtheme);
+}
