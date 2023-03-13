@@ -1,10 +1,6 @@
 import React, { useEffect, useState, FC } from "react";
-import classes from './ThemeButtons.module.css';
-
-//store
-import { useAppDispatch, useAppSelector } from "../../hooks/useAppStore";
-import { setTheme, setThemeDefault } from "../../store/ThemeSlice/ThemeSlice";
-
+import classes from './ThemeButtons.module.css'
+import { isThemeInStorage, setThemeInStorage } from "../../localStorage/theme";
 
 export interface IThemeButtonProps{
     ThemeButtonType?: string
@@ -14,21 +10,19 @@ export const ThemeButton: FC<IThemeButtonProps> = ({ThemeButtonType, ...props}) 
 
     const [ThemeActive, setThemeActive] = useState<string>('');
 
-    const dispatch = useAppDispatch();
-    const ThemeState = useAppSelector(state => state.persistedThemeSlice);
-
     useEffect(() => {
-        if(ThemeState.requireReload) {dispatch(setThemeDefault())}
+        setThemeActive(isThemeInStorage());
     }, [])
 
-    const lightToggle = ThemeState.theme === 'light' ? classes.active : '';
-    const darkToggle = ThemeState.theme === 'light' ? '' : classes.active;
+    const lightToggle = ThemeActive === 'light' ? classes.active : '';
+    const darkToggle = ThemeActive === 'light' ? '' : classes.active;
 
     const LightTitle = () => {return ThemeButtonType ? <div className={classes.extra}><i className="bi bi-moon" style={{fontSize: '12px'}}></i><h3 className={classes.title__extra}>Dark</h3></div> : <i className="bi bi-moon"></i>}
     const DarkTitle = () => {return ThemeButtonType ? <div className={classes.extra}><i className="bi bi-brightness-high"style={{fontSize: '12px'}}></i><h3 className={classes.title__extra}>Light</h3></div> : <i className="bi bi-brightness-high"></i>}
 
-    const updateTheme = (e: React.ChangeEvent): void => {
-        dispatch(setTheme)
+    const updateTheme = (e: React.ChangeEvent, theme: string): void => {
+        setThemeInStorage(theme);
+        setThemeActive(isThemeInStorage(theme));
     }
 
     return (<>
@@ -36,13 +30,13 @@ export const ThemeButton: FC<IThemeButtonProps> = ({ThemeButtonType, ...props}) 
             type="checkbox"
             id="themeDark"
             className={classes.themeButton__input}
-            onChange={(e: React.ChangeEvent)=>updateTheme(e)}
+            onChange={(e: React.ChangeEvent)=>updateTheme(e, 'light')}
         ></input>
         <input
             type="checkbox"
             id="themeLight"
             className={classes.themeButton__input}
-            onChange={(e: React.ChangeEvent)=>updateTheme(e)}
+            onChange={(e: React.ChangeEvent)=>updateTheme(e, 'dark')}
         ></input>
         <div className={classes.themeButton__label}>
             <div className={classes.themeButton}>
