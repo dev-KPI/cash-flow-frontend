@@ -152,16 +152,18 @@ button {
 }
 
 [data-theme="light"]{
-    --background: #FFFFFF;
-    --cardbg: #F8F8FF;
+    --background: #F8F8FF;
+    --cardbg: #FFFFFF;
     --main-text: #333333;
     --text: #7A7A9D;
+    --shadow-color: rgba(0, 0, 0, 0.1);
 }
 [data-theme="dark"]{
     --background: #151515;
     --cardbg: #0F0F0F;
     --main-text: #EAEAEA;
     --text: #9BABC5;
+    --shadow-color: rgba(81, 81, 81, 0.1);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -189,5 +191,5 @@ div[class*="__container"] {
 .cardComponent{
     background: var(--cardbg);
     border-radius: 20px;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 2px 8px var(--shadow-color);
 }
