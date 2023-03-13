@@ -1,11 +1,32 @@
 import { configureStore } from '@reduxjs/toolkit'
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
+//slices
 import UserSlice from './UserSlice/UserSlice';
+import DatePickerSlice from './MonthPickerSlice/MonthPickerSlice';
 
+export const persistConfig = {
+    key: 'root',
+    storage,
+}
+
+//persisted Slice
+const persistedUserSlice = persistReducer(persistConfig, UserSlice)
+const persistedDatePickerSlice = persistReducer(persistConfig, DatePickerSlice)
+
+const devToolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 export const store = configureStore({
     reducer: {
-        UserSlice
+        persistedUserSlice,
+        persistedDatePickerSlice,
     },
+    devTools: devToolsCompose,
+    middleware: [thunk]
 })
 
+export const persistedStore = persistStore(store);
 export type RootState = ReturnType<typeof store.getState>
+
 export type AppDispatch = typeof store.dispatch
+export default store;

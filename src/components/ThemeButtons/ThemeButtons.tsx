@@ -1,6 +1,6 @@
 import React, { useEffect, useState, FC } from "react";
 import classes from './ThemeButtons.module.css'
-import { isThemeInStorage, setThemeInStorage } from "../../localStorage/theme/theme";
+import { isThemeInStorage, setThemeInStorage } from "../../localStorage/theme";
 
 export interface IThemeButtonProps{
     ThemeButtonType?: string

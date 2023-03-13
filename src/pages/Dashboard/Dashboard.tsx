@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../../components/Header/Header';
 
 import MonthPicker from '../../components/MonthPicker/MonthPicker';
-import MenuBurger from '../../components/MenuBurger/MenuBurger';
 import classes from './Dashboard.module.css'
 import OperationCard from '../../components/OperationCard/OperationCard';
 
@@ -19,7 +18,6 @@ const Dashboard = () => {
                     <OperationCard operation={'Income'} />
                     <OperationCard operation={'Expenses'} />
                 </div>
-                <MenuBurger/>
             </div>
         </div>     
     );

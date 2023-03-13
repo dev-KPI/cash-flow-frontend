@@ -1,4 +1,9 @@
-
+[data-theme="light"]{
+    --btn-color: #F3F4F6;
+}
+[data-theme="dark"]{
+    --btn-color: #333333;
+}
 .monthPicker {
     display: inline-block;
     composes: cardComponent from "../../styles/style.css";
@@ -13,7 +18,7 @@
 
 .btn{
     display: flex;
-    background-color: #F3F4F6;
+    background-color: var(--btn-color);
     border-radius: 4px;
     padding: 6px 6px;
     align-items: center;
@@ -25,12 +30,13 @@
     height: 12px;
     -webkit-text-stroke: 1.5px;
     color: #858585;
-   
 }
 .btn:hover i {
     color: var(--main-green)
 }
-
+.btn:active {
+    background-color: var(--background);
+}
 
 .title{
     font-weight: 700;
@@ -39,4 +45,5 @@
     color: var(--main-text);
     text-align: center;
     min-width: 128px;
+    user-select: none;
 }
