@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classes from './MonthPicker.module.css';
 import arrow from '../../assets/arrow.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks/useAppStore';
-import { prevMonth, nextMonth, setCurrentDateTime } from '../../store/MonthPickerSlice/MonthPickerSlice';
+import { prevMonth, nextMonth, setCurrentDateTime } from '../../store/MonthPickerSlice/MonthPickerSlice'
 import { IMonthPickerState } from '../../store/MonthPickerSlice/MonthPickerInterfaces';
 
 const MonthPicker = () => {

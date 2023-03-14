@@ -1,15 +1,29 @@
-import React, { FC, useState } from "react";
+import { FC } from "react";
+
+//UI
+import classes from "./MenuBurger.module.css";
 import Avatar from "../../assets/user-icon.svg";
 import Logo from "../../assets/logo.svg";
-import classes from "./MenuBurger.module.css"
-
+import Light from "../Light/Light";
 import { ThemeButton } from "../ThemeButtons/ThemeButtons";
 import { Link, NavLink } from "react-router-dom";
 
-import Light from "../Light/Light";
+//store
+import { useAppSelector } from "../../hooks/useAppStore";
 
 const MenuBurger: FC = () => {
     
+    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+
+    const styles = {
+        lightShadow: actualTheme === 'light' ? 'none' : `0px 0px 8px var(--main-green)`
+    }
+    const setActiveLinkClasses = (isActive: boolean) => {
+        let res = isActive ? classes.activeLink : classes.item;
+        res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
+        return res
+    }
+
     return <>
     <div className={classes.burgernav}>
         <div className={classes.burgernav__title}>
@@ -18,8 +32,6 @@ const MenuBurger: FC = () => {
                 <h1 className={classes.title}>Cash <span className={classes.title__span}>Flow</span></h1>
             </Link>
         </div>
-        <Light 
-        type="red"/>
         <div className={classes.burgernav__account}>
             <img alt="Avatar" src={Avatar} width="46px" height="46px" />
             <h2 className={classes.title}>John Doe</h2>
@@ -30,15 +42,16 @@ const MenuBurger: FC = () => {
 
                 <li >
                     <NavLink 
+                    id={'1'}
                     to="/components/Menu/analytics"
-                    className={({ isActive }) => isActive ? classes.activeLink + ' ' + classes.activeLink__after : classes.item}>
+                    className={({ isActive }) => setActiveLinkClasses(isActive)}>
                         <div className={classes.burgerIcon}><i className="bi bi-house"></i></div>
                         <h3 className={classes.title}>Dashboard</h3>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink 
-                    className={({ isActive }) => isActive ? classes.activeLink : classes.item}
+                    className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics1" >
                         <div className={classes.burgerIcon}><i className={"bi bi-bar-chart"}></i></div>
                         <h3 className={classes.title}>Analytics</h3>
@@ -46,7 +59,7 @@ const MenuBurger: FC = () => {
                 </li>
                 <li>
                     <NavLink 
-                    className={({ isActive }) => isActive ? classes.activeLink : classes.item}
+                    className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics2">
                         <div className={classes.burgerIcon}><i className="bi bi-bell"></i></div>
                         <h3 className={classes.title}>Notifications</h3>
@@ -55,7 +68,7 @@ const MenuBurger: FC = () => {
                 </li>
                 <li>
                     <NavLink 
-                    className={({ isActive }) => isActive ? classes.activeLink : classes.item}
+                    className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics3">
                         <div className={classes.burgerIcon}><i className="bi bi-graph-down"></i></div>
                         <h3 className={classes.title}>Expenses</h3>
@@ -64,14 +77,14 @@ const MenuBurger: FC = () => {
                 <li>
                     <NavLink 
                     to="/components/Menu/analytics4"
-                    className={({ isActive }) => isActive ? classes.activeLink : classes.item}>
+                    className={({ isActive }) => setActiveLinkClasses(isActive)}>
                         <div className={classes.burgerIcon}><i className="bi bi-grid"></i></div>
                         <h3 className={classes.title}>Categories</h3>
                     </NavLink>
                 </li>
                 <li>
                     <NavLink 
-                    className={({ isActive }) => isActive ? classes.activeLink : classes.item}
+                    className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics5">
                         <div className={classes.burgerIcon}><i className="bi bi-people"></i></div>
                         <h3 className={classes.title}>Groups</h3>
@@ -79,7 +92,7 @@ const MenuBurger: FC = () => {
                 </li>
                 <li>
                     <NavLink 
-                    className={({ isActive }) => isActive ? classes.activeLink : classes.item}
+                    className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics6">
                         <div className={classes.burgerIcon}><i className="bi bi-clock"></i></div>
                         <h3 className={classes.title}>History</h3>
@@ -92,18 +105,17 @@ const MenuBurger: FC = () => {
             <h3 className={classes.title}>Groups</h3>
             <ul className={classes.list}>
                 <li className={classes.item}>
-                    <div className={classes.light}></div>
+                    <Light type="green"/>
                     <h4 className={classes.item__title}>Job</h4>
                 </li>
                 <li className={classes.item}>
-                    <div className={classes.orange}></div>
+                    <Light type="red"/>
                     <h4 className={classes.item__title}>Family</h4>
                 </li>
             </ul>
         </div>
         <div className={classes.themeButton}>
             <ThemeButton ThemeButtonType="extra" />
-            <Light type="red"/>
         </div>
         <div className={classes.burgernav__downside}>
             <ul className={classes.list}>

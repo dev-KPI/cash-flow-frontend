@@ -14,18 +14,9 @@
     --color: var(--main-orange)
 }
 
-.light[data-theme="dark"] {
+.light{
     width: 8px;
     height: 8px;
     border-radius: 50%;
     background-color: var(--color);
-    box-shadow: 0px 0px 10px var(--color);
-}
-
-.light[data-theme="light"] {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--color);
-    box-shadow: none;
 }
