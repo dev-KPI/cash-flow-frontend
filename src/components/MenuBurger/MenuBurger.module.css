@@ -69,7 +69,6 @@
     align-items: center;
     color: var(--text);
 }
-
 .activeLink{
     display: flex;
     flex-direction: row;
@@ -89,6 +88,10 @@
     background-color: var(--main-green);
     animation: activeLinkAfterAnimation .3s ease-in-out;
 }
+.shadowLink{
+    text-shadow: 0px 0px 8px var(--main-green);
+}
+
 @keyframes activeLinkAfterAnimation {
     from {
         height: 2px;
@@ -157,18 +160,6 @@
 }
 .burgernav__groups .list li:not(:first-child){
     margin-top: 24px;
-}
-.burgernav__groups .light {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--main-blue);
-}
-.burgernav__groups .orange {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--main-orange);
 }
 .burgernav__groups .item__title{
     margin-left: 10px;

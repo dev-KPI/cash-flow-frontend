@@ -1,6 +1,9 @@
-import React, { useEffect, useState, FC } from "react";
+import React, { useEffect, FC } from "react";
 import classes from './ThemeButtons.module.css'
-import { isThemeInStorage, setThemeInStorage } from "../../localStorage/theme";
+
+//store
+import { useAppDispatch, useAppSelector } from "../../hooks/useAppStore";
+import { setTheme } from "../../store/ThemeSlice/ThemeSlice";
 
 export interface IThemeButtonProps{
     ThemeButtonType?: string
@@ -8,11 +11,12 @@ export interface IThemeButtonProps{
 
 export const ThemeButton: FC<IThemeButtonProps> = ({ThemeButtonType, ...props}) => {   
 
-    const [ThemeActive, setThemeActive] = useState<string>('');
+    const dispatch = useAppDispatch();
+    const ThemeActive = useAppSelector(state => state.persistedThemeSlice.theme)
 
     useEffect(() => {
-        setThemeActive(isThemeInStorage());
-    }, [])
+        dispatch(setTheme());
+    }, [dispatch])
 
     const lightToggle = ThemeActive === 'light' ? classes.active : '';
     const darkToggle = ThemeActive === 'light' ? '' : classes.active;
@@ -21,8 +25,7 @@ export const ThemeButton: FC<IThemeButtonProps> = ({ThemeButtonType, ...props}) 
     const DarkTitle = () => {return ThemeButtonType ? <div className={classes.extra}><i className="bi bi-brightness-high"style={{fontSize: '12px'}}></i><h3 className={classes.title__extra}>Light</h3></div> : <i className="bi bi-brightness-high"></i>}
 
     const updateTheme = (e: React.ChangeEvent, theme: string): void => {
-        setThemeInStorage(theme);
-        setThemeActive(isThemeInStorage(theme));
+        dispatch(setTheme());
     }
 
     return (<>
