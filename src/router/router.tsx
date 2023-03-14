@@ -1,14 +1,18 @@
 import React, { FC, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { DASHBOARD_PAGE, routesNotAuth, components } from './routes'
-import { isThemeInStorage } from '../localStorage/theme';
 
+//store
+import { setTheme } from '../store/ThemeSlice/ThemeSlice';
+import { useAppDispatch } from '../hooks/useAppStore';
 
 const Router: FC = () => {
 
+    const dispatch = useAppDispatch();
+    
     useEffect(()=>{
-        isThemeInStorage()
-    }, [])
+        dispatch(setTheme())
+    }, [dispatch])
 
     return (
         <Routes>

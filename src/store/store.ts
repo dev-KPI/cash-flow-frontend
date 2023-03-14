@@ -5,21 +5,26 @@ import thunk from 'redux-thunk';
 //slices
 import UserSlice from './UserSlice/UserSlice';
 import DatePickerSlice from './MonthPickerSlice/MonthPickerSlice';
+import ThemeSlice from './ThemeSlice/ThemeSlice';
 
 export const persistConfig = {
     key: 'root',
     storage,
 }
 
-//persisted Slice
+//persisted Slices
+    //Theme
+const persistedThemeSlice = persistReducer(persistConfig, ThemeSlice);
+    //UI
 const persistedUserSlice = persistReducer(persistConfig, UserSlice)
-const persistedDatePickerSlice = persistReducer(persistConfig, DatePickerSlice)
+const persistedDatePickerSlice = persistReducer(persistConfig, DatePickerSlice);
 
 const devToolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 export const store = configureStore({
     reducer: {
         persistedUserSlice,
         persistedDatePickerSlice,
+        persistedThemeSlice
     },
     devTools: devToolsCompose,
     middleware: [thunk]
