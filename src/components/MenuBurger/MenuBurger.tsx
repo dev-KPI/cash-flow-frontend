@@ -15,9 +15,6 @@ const MenuBurger: FC = () => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
-    const styles = {
-        lightShadow: actualTheme === 'light' ? 'none' : `0px 0px 8px var(--main-green)`
-    }
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.activeLink : classes.item;
         res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
