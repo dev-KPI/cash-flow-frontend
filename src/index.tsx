@@ -2,9 +2,12 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import React from 'react';
 import './styles/style.css';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom'; //router
+
+//router
+import { BrowserRouter } from 'react-router-dom'; 
 import Router from './router/router';
-import { persistedStore, store } from './store/store'; //store
+//store
+import { persistedStore, store } from '@store/store'; 
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 

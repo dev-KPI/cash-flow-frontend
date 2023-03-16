@@ -1,11 +1,29 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2018",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "./",
+    "paths": {
+      //UI
+      "@components/*": ["src/components/*"],
+      "@components": ["src/components"],
+      "@pages/*": ["src/pages/*"],
+      "@pages": ["src/pages/"],
+      "@assets/*": ["src/assets/*"],
+      "@assets": ["src/assets"],
+      //logic
+      "@hooks/*": ["src/hooks/*"],
+      "@hooks": ["src/hooks"],
+      //store
+      "@store/*": ["src/store/*"],
+      "@store": ["src/store"],
+      "@UI_store/*": ["src/store/UI_store/*"],
+      "@UI_store": ["src/store/UI_store"],
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,7 +38,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src", "craco.config.js"  ]
 }

@@ -1,23 +1,20 @@
 import { FC } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 //UI
 import classes from "./MenuBurger.module.css";
-import Avatar from "../../assets/user-icon.svg";
-import Logo from "../../assets/logo.svg";
-import Light from "../Light/Light";
-import { ThemeButton } from "../ThemeButtons/ThemeButtons";
-import { Link, NavLink } from "react-router-dom";
+import Avatar from "@assets/user-icon.svg";
+import Logo from "@assets/logo.svg";
+import Light from "@components/Light/Light";
+import { ThemeButton } from "@components/ThemeButtons/ThemeButtons";
 
 //store
-import { useAppSelector } from "../../hooks/useAppStore";
+import { useAppSelector } from "@hooks/useAppStore";
 
 const MenuBurger: FC = () => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
-    const styles = {
-        lightShadow: actualTheme === 'light' ? 'none' : `0px 0px 8px var(--main-green)`
-    }
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.activeLink : classes.item;
         res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';

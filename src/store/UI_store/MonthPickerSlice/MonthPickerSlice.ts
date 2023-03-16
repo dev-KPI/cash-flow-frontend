@@ -1,5 +1,6 @@
-import { Action, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+
+//types
 import { IMonthPickerState } from './MonthPickerInterfaces'
 
 
@@ -38,6 +39,6 @@ export const MonthPickerSlice = createSlice({
     },
 })
 
-export const { prevMonth, nextMonth, setCurrentDateTime } = MonthPickerSlice.actions
+export const { reducer: MonthPickerReducer, actions: MonthPickerActions } = MonthPickerSlice;
 
 export default MonthPickerSlice.reducer

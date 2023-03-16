@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classes from './Header.module.css'
-import Logo from "../../assets/logo.svg";
-import ProfileIcon from "../../assets/user-icon.svg"
-import {ThemeButton} from '../ThemeButtons/ThemeButtons';
+import Logo from "@assets/logo.svg";
+import ProfileIcon from "@assets/user-icon.svg"
+import {ThemeButton} from '@components/ThemeButtons/ThemeButtons';
 
 
 const HeaderSite = () => {

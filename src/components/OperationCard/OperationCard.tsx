@@ -1,4 +1,6 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, FC } from 'react';
+
+//UI
 import classes from "./OperationCard.module.css"
 
 interface OperactionCardProps {

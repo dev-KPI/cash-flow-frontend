@@ -1,9 +1,10 @@
 import React from 'react';
-import Header from '../../components/Header/Header';
 
-import MonthPicker from '../../components/MonthPicker/MonthPicker';
+//UI
 import classes from './Dashboard.module.css'
-import OperationCard from '../../components/OperationCard/OperationCard';
+import MonthPicker from '@components/MonthPicker/MonthPicker';
+import Header from '@components/Header/Header';
+import OperationCard from '@components/OperationCard/OperationCard';
 
 const Dashboard = () => {
     return (

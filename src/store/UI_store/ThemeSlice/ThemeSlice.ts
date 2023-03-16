@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+
+//types
 import { IThemeState } from './ThemeInterfaces';
 
 const initialState: IThemeState = {
@@ -10,13 +12,13 @@ export const ThemeSlice = createSlice({
     initialState,
     reducers: {
         setTheme: (initialState): void => {
-            initialState.theme = (initialState.theme === 'light') ? 'dark' :  'light'
+            initialState.theme = (initialState.theme === 'light') ? 'dark' : 'light'
             const body = document.querySelector('body') as HTMLElement;
             body.setAttribute('data-theme', initialState.theme);
         },
     },
 })
 
-export const { setTheme } = ThemeSlice.actions
+export const { reducer: ThemeReducer, actions: ThemeActions } = ThemeSlice;
 
 export default ThemeSlice.reducer

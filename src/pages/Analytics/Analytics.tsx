@@ -1,6 +1,8 @@
 import React from 'react';
-import Header from '../../components/Header/Header';
-import MenuBurger from '../../components/MenuBurger/MenuBurger';
+
+//UI
+import Header from '@components/Header/Header';
+import MenuBurger from '@components/MenuBurger/MenuBurger';
 
 const Dashboard = () => {
     return (

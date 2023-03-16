@@ -1,9 +1,10 @@
 import React, { useEffect, FC } from "react";
-import classes from './ThemeButtons.module.css'
 
+//UI
+import classes from './ThemeButtons.module.css'
 //store
-import { useAppDispatch, useAppSelector } from "../../hooks/useAppStore";
-import { setTheme } from "../../store/ThemeSlice/ThemeSlice";
+import { useActionCreators, useAppSelector } from "@hooks/useAppStore";
+import { ThemeActions } from "@UI_store/ThemeSlice/ThemeSlice";
 
 export interface IThemeButtonProps{
     ThemeButtonType?: string
@@ -11,21 +12,21 @@ export interface IThemeButtonProps{
 
 export const ThemeButton: FC<IThemeButtonProps> = ({ThemeButtonType, ...props}) => {   
 
-    const dispatch = useAppDispatch();
-    const ThemeActive = useAppSelector(state => state.persistedThemeSlice.theme)
+    const Theme = useAppSelector(state => state.persistedThemeSlice.theme)
+    const ThemeDispatch = useActionCreators(ThemeActions);
 
     useEffect(() => {
-        dispatch(setTheme());
-    }, [dispatch])
+        ThemeDispatch.setTheme();
+    }, [])
 
-    const lightToggle = ThemeActive === 'light' ? classes.active : '';
-    const darkToggle = ThemeActive === 'light' ? '' : classes.active;
+    const lightToggle = Theme === 'light' ? classes.active : '';
+    const darkToggle = Theme === 'light' ? '' : classes.active;
 
     const LightTitle = () => {return ThemeButtonType ? <div className={classes.extra}><i className="bi bi-moon" style={{fontSize: '12px'}}></i><h3 className={classes.title__extra}>Dark</h3></div> : <i className="bi bi-moon"></i>}
     const DarkTitle = () => {return ThemeButtonType ? <div className={classes.extra}><i className="bi bi-brightness-high"style={{fontSize: '12px'}}></i><h3 className={classes.title__extra}>Light</h3></div> : <i className="bi bi-brightness-high"></i>}
 
     const updateTheme = (e: React.ChangeEvent, theme: string): void => {
-        dispatch(setTheme());
+        ThemeDispatch.setTheme();
     }
 
     return (<>

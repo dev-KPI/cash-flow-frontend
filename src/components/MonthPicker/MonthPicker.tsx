@@ -1,22 +1,24 @@
 import React, { useEffect } from 'react';
+
+//UI
 import classes from './MonthPicker.module.css';
-import arrow from '../../assets/arrow.svg';
-import { useAppDispatch, useAppSelector } from '../../hooks/useAppStore';
-import { prevMonth, nextMonth, setCurrentDateTime } from '../../store/MonthPickerSlice/MonthPickerSlice'
-import { IMonthPickerState } from '../../store/MonthPickerSlice/MonthPickerInterfaces';
+//store
+import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
+import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
+import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
 
 const MonthPicker = () => {
 
     const MonthPicker = useAppSelector<IMonthPickerState>(state => state.persistedDatePickerSlice)
-    const dispatch = useAppDispatch();
+    const MonthPickerDispatch = useActionCreators(MonthPickerActions);
 
     const setMonth = (e: React.MouseEvent<HTMLButtonElement>, type: string): void => {
-        type === 'prev' ? dispatch(prevMonth()) : dispatch(nextMonth());
+        type === 'prev' ? MonthPickerDispatch.prevMonth() : MonthPickerDispatch.nextMonth();
     }
 
     useEffect(()=>{
-        dispatch(setCurrentDateTime())
-    },[dispatch]);
+        MonthPickerDispatch.setCurrentDateTime()
+    },[]);
 
     return (
         <div className={classes.monthPicker}>
