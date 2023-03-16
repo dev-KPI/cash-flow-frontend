@@ -1,7 +1,7 @@
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux'
 import { ActionCreatorsMapObject, bindActionCreators } from '@reduxjs/toolkit'
 
-import type { RootState, AppDispatch } from '../store/store'
+import type { RootState, AppDispatch } from '@store/store'
 import { useMemo } from 'react'
 
 export const useAppDispatch: () => AppDispatch = useDispatch

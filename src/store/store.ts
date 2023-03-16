@@ -1,11 +1,12 @@
+import { persistReducer, persistStore } from 'redux-persist';
 import { configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
+
 //slices
 import UserSlice from './UserSlice/UserSlice';
-import DatePickerSlice from './UI_store/MonthPickerSlice/MonthPickerSlice';
-import ThemeSlice from './UI_store/ThemeSlice/ThemeSlice';
+import DatePickerSlice from '@UI_store/MonthPickerSlice/MonthPickerSlice';
+import ThemeSlice from '@UI_store/ThemeSlice/ThemeSlice';
 
 export const persistConfig = {
     key: 'root',

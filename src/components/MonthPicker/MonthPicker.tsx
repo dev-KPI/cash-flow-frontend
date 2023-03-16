@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 //UI
 import classes from './MonthPicker.module.css';
 //store
-import { useActionCreators, useAppSelector } from '../../hooks/useAppStore';
-import { MonthPickerActions } from '../../store/UI_store/MonthPickerSlice/MonthPickerSlice'
-import { IMonthPickerState } from '../../store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
+import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
+import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
 
 const MonthPicker = () => {
 

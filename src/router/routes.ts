@@ -1,10 +1,9 @@
 //pages
-import Dashboard from "../pages/Dashboard/Dashboard";
-import Analytics from "../pages/Analytics/Analytics"
-
-//components
-import MenuBurger from "../components/MenuBurger/MenuBurger";
-import Header from "../components/Header/Header";
+import Dashboard from "@pages/Dashboard/Dashboard";
+import Analytics from "@pages/Analytics/Analytics"
+//UI
+import MenuBurger from "@components/MenuBurger/MenuBurger";
+import Header from "@components/Header/Header";
 
 export const DASHBOARD_PAGE = '/';
 export const ANALYTICS_PAGE = '/analytics';

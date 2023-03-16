@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+
+//types
 import { IThemeState } from './ThemeInterfaces';
 
 const initialState: IThemeState = {

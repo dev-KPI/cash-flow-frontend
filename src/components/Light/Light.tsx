@@ -2,7 +2,7 @@ import {FC} from 'react';
 import classes from './Light.module.css';
 
 //store
-import { useAppSelector } from '../../hooks/useAppStore';
+import { useAppSelector } from '@hooks/useAppStore';
 
 export interface ILight {
     type: 'red'|'blue'|'green'|'purple'|'orange'

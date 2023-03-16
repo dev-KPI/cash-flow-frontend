@@ -1,9 +1,10 @@
 import React, { useEffect, FC } from "react";
-import classes from './ThemeButtons.module.css'
 
+//UI
+import classes from './ThemeButtons.module.css'
 //store
-import { useActionCreators, useAppSelector } from "../../hooks/useAppStore";
-import { ThemeActions } from "../../store/UI_store/ThemeSlice/ThemeSlice";
+import { useActionCreators, useAppSelector } from "@hooks/useAppStore";
+import { ThemeActions } from "@UI_store/ThemeSlice/ThemeSlice";
 
 export interface IThemeButtonProps{
     ThemeButtonType?: string
