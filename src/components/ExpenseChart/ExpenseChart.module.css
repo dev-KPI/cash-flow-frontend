@@ -1,0 +1,7 @@
+.chart__wrapper{
+    max-width: 1015px;
+    max-height: 338px;
+
+    display: flex;
+    flex-direction: row;
+}

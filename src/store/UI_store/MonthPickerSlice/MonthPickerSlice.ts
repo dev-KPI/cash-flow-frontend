@@ -2,10 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 //types
 import { IMonthPickerState } from './MonthPickerInterfaces'
+import DateService from '@services/DateService/DateService'
 
 
 const initialState: IMonthPickerState = {
-    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    months: DateService.getArrayFromMonth(),
     currentMonth: '',
     currentYear: 0,
 }

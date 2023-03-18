@@ -3,16 +3,16 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import { DASHBOARD_PAGE, routesNotAuth, components } from './routes'
 
 //store
-import { ThemeActions } from '@UI_store/ThemeSlice/ThemeSlice';
-import { useAppDispatch } from '@hooks/useAppStore';
+import { useActionCreators } from "@hooks/useAppStore";
+import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 
 const Router: FC = () => {
 
-    const dispatch = useAppDispatch();
+    const ThemeDispatch = useActionCreators(ThemeActions);
 
     useEffect(()=>{
-        dispatch(ThemeActions.setTheme())
-    }, [dispatch])
+        ThemeDispatch.initializeTheme()
+    }, [])
 
     return (
         <Routes>

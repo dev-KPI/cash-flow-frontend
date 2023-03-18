@@ -10,6 +10,7 @@ module.exports = {
             "@hooks": path.resolve(__dirname,'./src/hooks'),
             "@store": path.resolve(__dirname,'./src/store'),
             "@UI_store": path.resolve(__dirname,'./src/store/UI_store'),
+            "@services": path.resolve(__dirname,'./src/services'),
         },
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
