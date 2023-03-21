@@ -86,7 +86,8 @@ const ExpenseChart: FC = () => {
             date: number, 
             year: number
         }
-        setMonthTooltip(context[0]?.label.slice(0, 3));
+        console.log(context[0])
+        setMonthTooltip(context[0]?.raw.datetime.month.slice(0,3));
         setDateTooltip(context[0]?.raw.datetime.date);
         setYearTooltip(context[0]?.raw.datetime.year);
         setPriceTooltip(context[0]?.parsed.y);
