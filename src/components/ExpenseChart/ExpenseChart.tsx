@@ -161,11 +161,11 @@ const ExpenseChart: FC = () => {
                 grid: {
                     display: false,
                     borderColor: '',
-                    tickColor: '',
+                    tickColor: textColor,
                 },
                 ticks: {
-                    stepSize: getXParams().step,
                     color: textColor,
+                    stepSize: getXParams().step,
                     font: {
                         family: 'Inter',
                         size: 12,
@@ -183,7 +183,7 @@ const ExpenseChart: FC = () => {
                     dash: [5, 4],
                 },
                 grid: {
-                    color: '#E5E6EB',
+                    color: textColor,
                     tickColor: '',
                     borderColor: '',
                 },
