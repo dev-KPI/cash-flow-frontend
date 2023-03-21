@@ -15,11 +15,15 @@
       "@pages": ["src/pages/"],
       "@assets/*": ["src/assets/*"],
       "@assets": ["src/assets"],
+      "@styles": ["src/styles"],
+      "@styles/*": ["src/styles/*"],
+      "@animations/*": ["./src/components/animations/*"],
+      "@animations": ["./src/components/animations"],
       //logic
       "@hooks/*": ["src/hooks/*"],
       "@hooks": ["src/hooks"],
-      "@services/*": ["src/services/*"],
       "@services": ["src/services"],
+      "@services/*": ["src/services/*"],
       //store
       "@store/*": ["src/store/*"],
       "@store": ["src/store"],
