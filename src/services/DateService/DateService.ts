@@ -34,7 +34,7 @@ class DateServiceClass {
     }
     getArrayFromDatesPerSomeMonth = (month: number, year?: number): IDatesPerTime[] => {
         let res: IDatesPerTime[] = [];
-        year = year ? year : 2023;
+        year = year ? year : this.getCurrentYear()
         for (let i = 0; i < this.getDaysInSomeMonth(month); i++){
             res.push(someMonth(this, month, i, year))
         }

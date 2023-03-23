@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 
 //UI
 import classes from "./OperationCard.module.css"
@@ -8,14 +8,14 @@ interface OperactionCardProps {
 }
 
 const OperationCard:FC<OperactionCardProps> = ({operation}) => {
-    const [amount, setAmount] = useState<number>(0);
-    const [source, setSource] = useState<string>('');
+    const [amount, setAmount] = useState<number>();
+    const [source, setSource] = useState<string>();
 
     const updateIncome = (e:React.MouseEvent):void => {
         e.preventDefault();
-        if (operation !== "Income")
-            return;
-        let newAmount = amount + (Number(prompt("Set income:")) | 0);
+        if (operation !== "Income") return;
+        const amountAll = 321;
+        let newAmount = amountAll + (Number(prompt("Set income:")) | 0);
         setAmount(newAmount);
         setSource(prompt("Set source:") || '');
     }
