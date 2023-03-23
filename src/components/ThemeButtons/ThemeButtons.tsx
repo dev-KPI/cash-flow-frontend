@@ -16,7 +16,7 @@ export const ThemeButton: FC<IThemeButtonProps> = ({ThemeButtonType, ...props}) 
     const ThemeDispatch = useActionCreators(ThemeActions);
 
     useEffect(() => {
-        ThemeDispatch.setTheme();
+        ThemeDispatch.initializeTheme();
     }, [])
 
     const lightToggle = Theme === 'light' ? classes.active : '';

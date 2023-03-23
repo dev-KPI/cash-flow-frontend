@@ -4,7 +4,7 @@ import React from 'react';
 import Header from '@components/Header/Header';
 import MenuBurger from '@components/MenuBurger/MenuBurger';
 
-const Dashboard = () => {
+const Analytics = () => {
     return (
         <div>
             <Header />
@@ -15,4 +15,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Analytics

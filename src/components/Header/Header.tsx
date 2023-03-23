@@ -35,22 +35,22 @@ const HeaderSite = () => {
                    </div>
                    <nav className={classes.breadcrumbs}>
                         <ul className={classes.navbar}>
-                            <li className={classes.active}>
+                            <li key={'12hf'} className={classes.active}>
                                 <Link  to="/">Dashboard</Link>
                             </li>
-                            <li>
+                            <li key={'12fgd1'}>
                                 <Link to="/">Analytics</Link>
                             </li>
-                            <li>
+                            <li key={'12sf3'}>
                                 <Link to="/">Categories</Link>
                             </li>
-                            <li>
+                            <li key={'143dfg2'}>
                                 <Link to="/">Groups</Link>
                             </li>
-                            <li>
+                            <li key={'154asd2'}>
                                 <Link to="/">History</Link>
                             </li>
-                            <li>
+                            <li key={'142gfd2'}>
                                 <Link to="/">Settings</Link>
                             </li>
                         </ul>

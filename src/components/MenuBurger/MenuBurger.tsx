@@ -36,8 +36,7 @@ const MenuBurger: FC = () => {
         <div className={classes.burgernav__line}></div>
         <nav id="sidebar">
             <ul className={classes.burgernav__list}>
-
-                <li >
+                <li key={'1htjyn'}>
                     <NavLink 
                     id={'1'}
                     to="/components/Menu/analytics"
@@ -46,7 +45,7 @@ const MenuBurger: FC = () => {
                         <h3 className={classes.title}>Dashboard</h3>
                     </NavLink>
                 </li>
-                <li>
+                <li key={'2tre'}>
                     <NavLink 
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics1" >
@@ -54,7 +53,7 @@ const MenuBurger: FC = () => {
                         <h3 className={classes.title}>Analytics</h3>
                     </NavLink>
                 </li>
-                <li>
+                <li key={'3gd'}>
                     <NavLink 
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics2">
@@ -63,7 +62,7 @@ const MenuBurger: FC = () => {
                         <div className={classes.inc}><p>6</p></div>
                     </NavLink>
                 </li>
-                <li>
+                <li key={'4wer'}>
                     <NavLink 
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics3">
@@ -71,7 +70,7 @@ const MenuBurger: FC = () => {
                         <h3 className={classes.title}>Expenses</h3>
                     </NavLink>
                 </li>
-                <li>
+                <li key={'5gd'}>
                     <NavLink 
                     to="/components/Menu/analytics4"
                     className={({ isActive }) => setActiveLinkClasses(isActive)}>
@@ -79,7 +78,7 @@ const MenuBurger: FC = () => {
                         <h3 className={classes.title}>Categories</h3>
                     </NavLink>
                 </li>
-                <li>
+                <li key={'6yt'}>
                     <NavLink 
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics5">
@@ -87,7 +86,7 @@ const MenuBurger: FC = () => {
                         <h3 className={classes.title}>Groups</h3>
                     </NavLink>
                 </li>
-                <li>
+                <li key={'7ewr'}>
                     <NavLink 
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/components/Menu/analytics6">
@@ -101,11 +100,11 @@ const MenuBurger: FC = () => {
         <div className={classes.burgernav__groups}>
             <h3 className={classes.title}>Groups</h3>
             <ul className={classes.list}>
-                <li className={classes.item}>
+                <li key={'12grt13'} className={classes.item}>
                     <Light type="green"/>
                     <h4 className={classes.item__title}>Job</h4>
                 </li>
-                <li className={classes.item}>
+                <li key={'11jh23'} className={classes.item}>
                     <Light type="red"/>
                     <h4 className={classes.item__title}>Family</h4>
                 </li>
@@ -116,11 +115,11 @@ const MenuBurger: FC = () => {
         </div>
         <div className={classes.burgernav__downside}>
             <ul className={classes.list}>
-                <li className={classes.item}>
+                <li key={'1'} className={classes.item}>
                     <i className="bi bi-gear"></i>
                     <h3 className={classes.title}>Settings</h3>
                 </li>
-                <li className={classes.item}>
+                <li key={'erf2'} className={classes.item}>
                     <i className="bi bi-box-arrow-left"></i>
                     <h3 className={classes.title}>Logout</h3>
                 </li>

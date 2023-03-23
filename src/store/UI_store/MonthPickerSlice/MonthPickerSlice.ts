@@ -2,10 +2,14 @@ import { createSlice } from '@reduxjs/toolkit'
 
 //types
 import { IMonthPickerState } from './MonthPickerInterfaces'
+import DateService from '@services/DateService/DateService'
+
+//store
+import { ExpenseChartActions } from '@store/UI_store/ExpenseChartSlice/ExpenseChartSlice';
 
 
 const initialState: IMonthPickerState = {
-    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    months: DateService.getMonths(),
     currentMonth: '',
     currentYear: 0,
 }
@@ -14,27 +18,31 @@ export const MonthPickerSlice = createSlice({
     name: 'MonthPickerSlice',
     initialState,
     reducers: {
-        prevMonth: (state: IMonthPickerState): void => {
-            const {currentMonth, months} = state
+        prevMonth: (initialState: IMonthPickerState): void => {
+            const {currentMonth, months} = initialState
             if(!months[months.indexOf(currentMonth) - 1]){ 
-                state.currentYear -= 1;
-                state.currentMonth = 'December';
+                initialState.currentYear -= 1;
+                initialState.currentMonth = 'December';
                 return;
             }
-            state.currentMonth = months[months.indexOf(currentMonth) - 1]
+            initialState.currentMonth = months[months.indexOf(currentMonth) - 1]
         },
-        nextMonth: (state: IMonthPickerState): void => {
-            const {currentMonth, months} = state
+        nextMonth: (initialState: IMonthPickerState): void => {
+            const {currentMonth, months} = initialState
             if(!months[months.indexOf(currentMonth) + 1]){ 
-                state.currentYear += 1;
-                state.currentMonth = 'January';
+                initialState.currentYear += 1;
+                initialState.currentMonth = 'January';
                 return;
             } 
-            state.currentMonth = months[months.indexOf(currentMonth) + 1]
+            initialState.currentMonth = months[months.indexOf(currentMonth) + 1]
         },
-        setCurrentDateTime: (state: IMonthPickerState): void => {
-            state.currentMonth = state.months[new Date().getMonth()];
-            state.currentYear = new Date().getFullYear();
+        updateChartInfo: (initialState: IMonthPickerState): void => {
+            const {currentMonth, currentYear} = initialState
+            ExpenseChartActions.getDataByMonth(currentMonth)
+        },
+        setCurrentDateTime: (initialState: IMonthPickerState): void => {
+            initialState.currentMonth = DateService.getCurrentMonth();
+            initialState.currentYear = new Date().getFullYear();
         }
     },
 })
