@@ -1,13 +1,13 @@
-import { persistReducer, persistStore } from 'redux-persist';
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from 'redux-persist';
 import { configureStore } from '@reduxjs/toolkit'
 import storage from 'redux-persist/lib/storage';
-import thunk from 'redux-thunk';
 
 //slices
 import UserSlice from './UserSlice/UserSlice';
-import DatePickerSlice from '@UI_store/MonthPickerSlice/MonthPickerSlice';
+import MonthPickerSlice from '@UI_store/MonthPickerSlice/MonthPickerSlice';
 import ThemeSlice from '@UI_store/ThemeSlice/ThemeSlice';
-import ExpenseChartSlice from '@UI_store/ExpenseChartSlice/ExpenseChartSlice';
+import { api } from './api';
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export const persistConfig = {
     key: 'root',
@@ -18,20 +18,21 @@ export const persistConfig = {
 const persistedThemeSlice = persistReducer(persistConfig, ThemeSlice);
 //UI
 const persistedUserSlice = persistReducer(persistConfig, UserSlice);
-const persistedMonthPickerSlice = persistReducer(persistConfig, DatePickerSlice);
-const persistedExpenseChartSlice = persistReducer(persistConfig, ExpenseChartSlice);
 
 const devToolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 export const store = configureStore({
     reducer: {
         persistedUserSlice,
-        persistedMonthPickerSlice,
         persistedThemeSlice,
-        persistedExpenseChartSlice,
-        ExpenseChartSlice,
+        MonthPickerSlice,
+        [api.reducerPath]: api.reducer,
     },
     devTools: devToolsCompose,
-    middleware: [thunk]
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: {
+            ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+    }).concat(api.middleware)
 })
 
 export const persistedStore = persistStore(store);

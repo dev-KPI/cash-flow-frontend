@@ -10,6 +10,8 @@ import Router from './router/router';
 import { persistedStore, store } from '@store/store'; 
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
+import { api } from '@store/api';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,12 +19,14 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistedStore}>
-        <BrowserRouter>
-            <Router />
-        </BrowserRouter> 
-      </PersistGate>
-    </Provider>
+    <ApiProvider api={api}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistedStore}>
+          <BrowserRouter>
+              <Router />
+          </BrowserRouter> 
+        </PersistGate>
+      </Provider>
+    </ApiProvider>
   </React.StrictMode>
 );
