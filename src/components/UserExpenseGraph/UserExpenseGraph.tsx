@@ -4,65 +4,53 @@ import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode
 import DateService from '@services/DateService/DateService';
 
 //UI
-import classes from './ExpenseChart.module.css'
+import classes from './UserExpenseGraph.module.css'
 import MonthPicker from '@components/MonthPicker/MonthPicker';
-import FilterButton from '@components/ExpenseChart/FilterButton/FilterButton';
 import { Bar, Chart } from "react-chartjs-2";
 import { ChartEvent } from 'chart.js/dist/core/core.plugins';
 import { Chart as ChartJS, CategoryScale, LinearScale,
     BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction, 
     ChartType, TooltipModel, Element } from "chart.js";
 import { Context } from 'vm';
+
 //store
 import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
 
 import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPickerSlice';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 
-import { ExpenseChartActions } from '@store/UI_store/ExpenseChartSlice/ExpenseChartSlice';
-import { IExpenseChartState } from '@store/UI_store/ExpenseChartSlice/ExpenseChartInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import { BaseChartComponent, ChartJSOrUndefined } from 'react-chartjs-2/dist/types';
+import { useGetExpensesPerLastMonthQuery } from '@store/UI_store/UserExpenseGraphSlice/UserExpenseGraphApi';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const ExpenseChart: FC = () => {
+const UserExpenseGraph: FC = () => {
 
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.persistedMonthPickerSlice);
-    const ExpenseChartStore = useAppSelector<IExpenseChartState>(state => state.ExpenseChartSlice);
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
+    
+    const {data = [], error, isError, isLoading} = useGetExpensesPerLastMonthQuery(null);
 
-    const ExpenseChartDispatch = useActionCreators(ExpenseChartActions)
-
-    const updateChart = (): void => {
-        if (ExpenseChartStore.displayRangeCurrent === 'monthly') {
-            ExpenseChartDispatch.getDataByMonth(MonthPickerStore.currentMonth);
-        } else if (ExpenseChartStore.displayRangeCurrent ==='weekly') {
-            ExpenseChartDispatch.getDataByLastWeek();
-        } 
-        else if (ExpenseChartStore.displayRangeCurrent === 'yearly'){
-            ExpenseChartDispatch.getDataByYearPerMonth(MonthPickerStore.currentYear);
-        }
-    }
-
-    useEffect(() => {
-        updateChart()
-    }, [MonthPickerStore.currentMonth])
-
-    const getYParams = (): { high: number, step: number } => {
-        let highValue = Math.max(...ExpenseChartStore.data.map(el => { return el.value }));
+    const getYParams = useCallback((): { high: number, step: number } => {
+        let highValue = Math.max(...data.map(el => el.amount));
         const rank = highValue.toString().length - 1
         let highValueForY = (Math.floor(highValue / 10**rank) + 1) * 10**rank
         return { high: highValueForY, step: highValueForY /= 5 }
-    }
-    const getXParams = (): { high: number, step: number } => {
-        return { high: ExpenseChartStore.daysInMonth, step: 5 }
-    }
-    const getChartData = (): { key: string; value: number; }[] => {
-        return [...ExpenseChartStore.data]
-    }
+    }, [data])
+
+    const getXParams = useCallback((): { high: number, step: number } => {
+        return { high: 2, step: 5 }
+    }, [data])
+    
+    const getChartData = useCallback((): { key: string; value: number; }[] => {
+        return [...data.map(el => {return {
+            key: new Date(el.time).getDate() + '',
+            value: el.amount,
+            data: el
+        }})]
+    }, [data])
 
     const datasets: ChartData<'bar', { key: string, value: number }[]> = {
         datasets: [{
@@ -81,17 +69,11 @@ const ExpenseChart: FC = () => {
     const [yearTooltip, setYearTooltip] = useState<number>();
 
     const titleTooltip = (context: Context): string => {
-        interface ITitleTooltipRes {
-            month: string, 
-            date: number, 
-            year: number
-        }
-        setMonthTooltip(context[0]?.raw.datetime.month.slice(0,3));
-        setDateTooltip(context[0]?.raw.datetime.date);
-        setYearTooltip(context[0]?.raw.datetime.year);
+        setMonthTooltip(DateService.getMonthNameByIdx(new Date(context[0]?.raw.data.time).getMonth()).slice(0,3));
+        setDateTooltip(new Date(context[0]?.raw.data.time).getDate());
+        setYearTooltip(new Date(context[0]?.raw.data.time).getFullYear());
         setPriceTooltip(context[0]?.parsed.y);
-        const typeRangeChart = ExpenseChartStore.displayRangeCurrent === 'yearly' ? true : false
-        return `${monthTooltip}${typeRangeChart ? '' : ' ' + dateTooltip}, ${yearTooltip}`
+        return `${monthTooltip} ${dateTooltip}, ${yearTooltip}`
     }
     const PriceTooltip = (context: Context): string => {
         return  priceTooltip + '$'
@@ -196,6 +178,9 @@ const ExpenseChart: FC = () => {
                     },
                     stepSize: getYParams().step,   
                     callback: (value: string|number, index: number, ticks: Tick[]): string => {
+                        if(window.innerWidth > 320 && window.innerWidth < 440){ 
+                            return +(value)/1000 + '$k';
+                        } 
                         return value + '$';
                     }                 
                 },
@@ -203,13 +188,12 @@ const ExpenseChart: FC = () => {
         }
     }
 
-    const RangeTitle: ReactNode = (ExpenseChartStore.displayRangeCurrent === 'monthly' || ExpenseChartStore.displayRangeCurrent === 'weekly') ? 
+    const RangeTitle: ReactNode = 
             <h2 className={classes.range}>From {
-                ExpenseChartStore.data[0]?.key + ' ' + ExpenseChartStore.data[0]?.datetime.month.slice(0, 3)
+                new Date(data[0]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
             } - {
-                ExpenseChartStore.data[ExpenseChartStore.data.length - 1]?.key + ' ' 
-                + ExpenseChartStore.data[ExpenseChartStore.data.length - 1]?.datetime.month.slice(0, 3)
-            }</h2> : <h2 className={classes.range}>By {MonthPickerStore.currentYear} year</h2>;
+                new Date(data[data?.length - 1]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
+            }</h2>;
 
     return <>
         <div className={classes.expenseChart__wrapper}>
@@ -218,7 +202,6 @@ const ExpenseChart: FC = () => {
                     <h2 className={classes.title}>Statistic</h2>
                     {RangeTitle}
                 </div>
-                <FilterButton className={classes.filterButton}/>
             </div>
             <Chart<'bar', { key: string, value: number }[]>
             type="bar"
@@ -229,4 +212,4 @@ const ExpenseChart: FC = () => {
     </>;
 }
 
-export default ExpenseChart;
+export default React.memo(UserExpenseGraph);

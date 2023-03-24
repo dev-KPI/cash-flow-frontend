@@ -79,8 +79,8 @@
 }
 @media only screen and (max-width: 400px) {
     .chartinner__wrapper {
-        max-height: 198px;
-        max-width: 376px;
+        max-height: 160px;
+        max-width: calc(100% - 24px);
     }
     .expenseChart__wrapper{
         padding: 12px;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 //UI
 import classes from './MonthPicker.module.css';
@@ -6,27 +6,18 @@ import classes from './MonthPicker.module.css';
 import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
 import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
 import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
-import { ExpenseChartActions } from '@store/UI_store/ExpenseChartSlice/ExpenseChartSlice';
-import { IExpenseChartState } from '@store/UI_store/ExpenseChartSlice/ExpenseChartInterfaces';
-import DateService from '@services/DateService/DateService';
 
 const MonthPicker = () => {
 
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.persistedMonthPickerSlice)
-    const ExpenseChartStore = useAppSelector<IExpenseChartState>(state => state.persistedExpenseChartSlice)
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice)
     const MonthPickerDispatch = useActionCreators(MonthPickerActions);
-    const ExpenseChartDispatch = useActionCreators(ExpenseChartActions);
 
-    const setMonth = (e: React.MouseEvent<HTMLButtonElement>, type: string) => {
-        if (type === 'prev'){MonthPickerDispatch.prevMonth()}
+    const setMonth = useCallback((e: React.MouseEvent<HTMLButtonElement>, type: string) => {
+        if (type === 'prev') {
+            MonthPickerDispatch.prevMonth();
+        }
         else if (type === 'next') MonthPickerDispatch.nextMonth();
-
-        MonthPickerDispatch.updateChartInfo()
-    }
-
-    useEffect(()=>{
-        MonthPickerDispatch.setCurrentDateTime()
-    },[]);
+    }, [])
 
     return (
         <div className={classes.monthPicker}>

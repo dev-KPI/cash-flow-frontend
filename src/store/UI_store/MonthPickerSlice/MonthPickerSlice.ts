@@ -4,14 +4,11 @@ import { createSlice } from '@reduxjs/toolkit'
 import { IMonthPickerState } from './MonthPickerInterfaces'
 import DateService from '@services/DateService/DateService'
 
-//store
-import { ExpenseChartActions } from '@store/UI_store/ExpenseChartSlice/ExpenseChartSlice';
-
 
 const initialState: IMonthPickerState = {
     months: DateService.getMonths(),
-    currentMonth: '',
-    currentYear: 0,
+    currentMonth: DateService.getCurrentMonth(),
+    currentYear: new Date().getFullYear(),
 }
 
 export const MonthPickerSlice = createSlice({
@@ -35,10 +32,6 @@ export const MonthPickerSlice = createSlice({
                 return;
             } 
             initialState.currentMonth = months[months.indexOf(currentMonth) + 1]
-        },
-        updateChartInfo: (initialState: IMonthPickerState): void => {
-            const {currentMonth, currentYear} = initialState
-            ExpenseChartActions.getDataByMonth(currentMonth)
         },
         setCurrentDateTime: (initialState: IMonthPickerState): void => {
             initialState.currentMonth = DateService.getCurrentMonth();
