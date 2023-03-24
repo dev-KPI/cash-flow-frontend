@@ -5,7 +5,7 @@ import classes from './Dashboard.module.css'
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 import Header from '@components/Header/Header';
 import OperationCard from '@components/OperationCard/OperationCard';
-import ExpenseChart from '@components/ExpenseChart/ExpenseChart';
+import UserExpenseGraph from '@components/UserExpenseGraph/UserExpenseGraph';
 
 const Dashboard = () => {
     return (
@@ -21,7 +21,7 @@ const Dashboard = () => {
                         <OperationCard operation={'Income'} />
                         <OperationCard operation={'Expenses'} />
                     </div>
-                    <ExpenseChart/>
+                    <UserExpenseGraph/>
                 </div>
             </main>
             <footer style={{paddingBottom: '60px'}}>
