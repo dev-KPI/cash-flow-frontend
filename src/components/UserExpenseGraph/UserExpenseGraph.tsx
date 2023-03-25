@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode } from 'react';
+import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode, MouseEvent } from 'react';
 
 //logic
 import DateService from '@services/DateService/DateService';
-
 //UI
 import classes from './UserExpenseGraph.module.css'
 import MonthPicker from '@components/MonthPicker/MonthPicker';
@@ -20,7 +19,10 @@ import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPicker
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import { useGetExpensesPerLastMonthQuery } from '@store/UI_store/UserExpenseGraphSlice/UserExpenseGraphApi';
+import { useAddExpenseMutation, useGetExpensesPerLastMonthQuery, useUpdateExpenseMutation } from '@store/ExpenseApiSlice/ExpenseApiSlice';
+
+import { IExpenseItem, IExpenseItemADD } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
+import { Omiter } from '@services/UsefulMethods/UsefulMethods';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -31,7 +33,61 @@ const UserExpenseGraph: FC = () => {
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     
-    const {data = [], error, isError, isLoading} = useGetExpensesPerLastMonthQuery(null);
+    const {data = [], isError, isLoading, error: Expense_GET_error } = useGetExpensesPerLastMonthQuery(null);
+    const [addExpense, {isLoading: isAdding, error: Expense_ADD_error }] = useAddExpenseMutation();
+    const [updateExpense, { isLoading: isUpdating, error: Expense_PUT_error  }] = useUpdateExpenseMutation();
+
+    const updateExpenseController = async() => {
+        try{
+            const lastExpense = data[data.length - 1];
+            const dayInc = lastExpense.id + 1 + '';
+            const day = dayInc.length < 2 ? '0' + dayInc : dayInc;
+
+            let expense = {
+                id: 25,
+                description: "Muchas gracias afición, esto es para vosotros SIUUUUUU",
+                amount: Math.floor(Math.random() * (10000 - 100) + 100),
+                time: `2023-03-${day}T13:51:50`,
+                user_id: 1,
+                group_id: Math.floor(Math.random() * (9 - 1) + 1),
+                category_id: Math.floor(Math.random() * (9 - 1) + 1)
+            }
+
+            updateExpense(expense)
+            .unwrap()
+            .catch((error) => {
+                if(error === 404){
+                    addExpenseController(expense)
+                }
+            })
+            
+        } catch (e){
+            throw (e)
+        }
+    }
+    const addExpenseController = async (item: IExpenseItemADD) => {
+        try{
+            const lastExpense = data[data.length - 1];
+            const dayInc = lastExpense.id + 1 + '';
+            const day = dayInc.length < 2 ? '0' + dayInc : dayInc;
+
+            let expense = {
+                description: "Muchas gracias afición, esto es para vosotros SIUUUUUU",
+                amount: Math.floor(Math.random() * (10000 - 100) + 100),
+                time: `2023-03-${day}T13:51:50`,
+                user_id: 1,
+                group_id: Math.floor(Math.random() * (9 - 1) + 1),
+                category_id: Math.floor(Math.random() * (9 - 1) + 1)
+            }
+            addExpense(expense)
+        } catch (e){
+            throw (e)
+        }
+    }
+
+    const test = async(event: MouseEvent<HTMLButtonElement>) => {
+        await updateExpenseController();
+    }
 
     const getYParams = useCallback((): { high: number, step: number } => {
         let highValue = Math.max(...data.map(el => el.amount));
@@ -196,6 +252,7 @@ const UserExpenseGraph: FC = () => {
             }</h2>;
 
     return <>
+            <button onClick={test}>TestButton</button>
         <div className={classes.expenseChart__wrapper}>
             <div className={classes.chart__uppernav}>
                 <div className={classes.chart__titleRange}>
