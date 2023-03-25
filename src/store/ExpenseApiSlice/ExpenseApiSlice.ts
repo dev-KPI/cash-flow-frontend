@@ -1,25 +1,12 @@
 import { api } from '@store/api';
 import DateService from '@services/DateService/DateService';
-import { createEntityAdapter } from '@reduxjs/toolkit';
 
 //types
 import { IExpenseItem, IExpenseItemUPDATE } from './ExpenseApiInterfaces';
 
-
 export const ExpenseApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        getExpense: builder.query<Readonly<IExpenseItem>, number>({
-            query: (id: number) => ({
-                url: `/expenses?time_like=${DateService.getCurrentYear()}-${(DateService.getCurrentMonthIdx() + '').length < 2 ? ('0' + DateService.getCurrentMonthIdx()) : DateService.getCurrentMonthIdx()}`,
-            }),
-            transformErrorResponse: (
-                response: { status: string | number },
-                meta,
-                arg
-            ) => response.status,
-            providesTags: (result, error, id) => [{type: 'ExpenseApi', id}]
-        }),
-        getExpensesPerLastMonth: builder.query<Readonly<IExpenseItem[]>, null>({
+        getExpensesPerLastMonth: builder.query<IExpenseItem[], null>({
             query: () => ({
                 url: `/expenses?time_like=${DateService.getCurrentYear()}-${(DateService.getCurrentMonthIdx() + '').length < 2 ? ('0' + DateService.getCurrentMonthIdx()) : DateService.getCurrentMonthIdx()}`,
             }),
@@ -28,7 +15,24 @@ export const ExpenseApiSlice = api.injectEndpoints({
                 meta,
                 arg
             ) => response.status,
-            providesTags: (data, arg) => data ? data?.map(item => ({type: 'ExpenseApi', id: item.id})) : ['ExpenseApi'],
+            providesTags: (result, error, arg) => result ? [...result.map(item => ({type: 'ExpenseApi' as const, id: item.id})),
+                {type: 'ExpenseApi', id: 'ADD_EXPENSE'},
+                {type: 'ExpenseApi', id: 'DELETE_EXPENSE'}]
+                : 
+                [{type: 'ExpenseApi', id: 'ADD_EXPENSE'},
+                {type: 'ExpenseApi', id: 'DELETE_EXPENSE'}],
+            
+        }),
+        getExpense: builder.query<IExpenseItem, number>({
+            query: (id: number) => ({
+                url: `/expenses?id=${id}`,
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+                meta,
+                arg
+            ) => response.status,
+            providesTags: (result, error, id) => [{type: 'ExpenseApi', id: result?.id}]
         }),
         addExpense: builder.mutation({
             query: (body: Omit<IExpenseItem, 'id'>) => ({
@@ -41,7 +45,7 @@ export const ExpenseApiSlice = api.injectEndpoints({
                 meta,
                 arg
             ) => response.status,
-            invalidatesTags: ['ExpenseApi'],
+            invalidatesTags: [{type: 'ExpenseApi', id: 'ADD_EXPENSE'}],
         }),
         updateExpense: builder.mutation({
             query: (body: IExpenseItemUPDATE) => ({
@@ -54,7 +58,19 @@ export const ExpenseApiSlice = api.injectEndpoints({
                 meta,
                 arg
             ) => response.status,
-            invalidatesTags: ['ExpenseApi'],
+            invalidatesTags: (result, error, arg) => [{type: 'ExpenseApi', id: result.id}],
+        }),
+        deleteExpense: builder.mutation({
+            query: (id: number) => ({
+                url: `/expenses/${id}`,
+                method: 'DELETE',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+                meta,
+                arg
+            ) => response.status,
+            invalidatesTags: (body, arg) => [{type: 'ExpenseApi', id: 'DELETE_EXPENSE'}],
         })
     }),
     overrideExisting: false,
