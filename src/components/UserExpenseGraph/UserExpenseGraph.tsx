@@ -19,94 +19,41 @@ import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPicker
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import { useAddExpenseMutation, useGetExpensesPerLastMonthQuery, useUpdateExpenseMutation } from '@store/ExpenseApiSlice/ExpenseApiSlice';
 
-import { IExpenseItem, IExpenseItemADD } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
+import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
 import { Omiter } from '@services/UsefulMethods/UsefulMethods';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const UserExpenseGraph: FC = () => {
+interface IUserExpenseGraphProps {
+    expenses: IExpenseItem[],
+}
+
+const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
 
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
-    
-    const {data = [], isError, isLoading, error: Expense_GET_error } = useGetExpensesPerLastMonthQuery(null);
-    const [addExpense, {isLoading: isAdding, error: Expense_ADD_error }] = useAddExpenseMutation();
-    const [updateExpense, { isLoading: isUpdating, error: Expense_PUT_error  }] = useUpdateExpenseMutation();
-
-    const updateExpenseController = async() => {
-        try{
-            const lastExpense = data[data.length - 1];
-            const dayInc = lastExpense.id + 1 + '';
-            const day = dayInc.length < 2 ? '0' + dayInc : dayInc;
-
-            let expense = {
-                id: 25,
-                description: "Muchas gracias afición, esto es para vosotros SIUUUUUU",
-                amount: Math.floor(Math.random() * (10000 - 100) + 100),
-                time: `2023-03-${day}T13:51:50`,
-                user_id: 1,
-                group_id: Math.floor(Math.random() * (9 - 1) + 1),
-                category_id: Math.floor(Math.random() * (9 - 1) + 1)
-            }
-
-            updateExpense(expense)
-            .unwrap()
-            .catch((error) => {
-                if(error === 404){
-                    addExpenseController(expense)
-                }
-            })
-            
-        } catch (e){
-            throw (e)
-        }
-    }
-    const addExpenseController = async (item: IExpenseItemADD) => {
-        try{
-            const lastExpense = data[data.length - 1];
-            const dayInc = lastExpense.id + 1 + '';
-            const day = dayInc.length < 2 ? '0' + dayInc : dayInc;
-
-            let expense = {
-                description: "Muchas gracias afición, esto es para vosotros SIUUUUUU",
-                amount: Math.floor(Math.random() * (10000 - 100) + 100),
-                time: `2023-03-${day}T13:51:50`,
-                user_id: 1,
-                group_id: Math.floor(Math.random() * (9 - 1) + 1),
-                category_id: Math.floor(Math.random() * (9 - 1) + 1)
-            }
-            addExpense(expense)
-        } catch (e){
-            throw (e)
-        }
-    }
-
-    const test = async(event: MouseEvent<HTMLButtonElement>) => {
-        await updateExpenseController();
-    }
 
     const getYParams = useCallback((): { high: number, step: number } => {
-        let highValue = Math.max(...data.map(el => el.amount));
+        let highValue = Math.max(...expenses.map(el => el.amount));
         const rank = highValue.toString().length - 1
         let highValueForY = (Math.floor(highValue / 10**rank) + 1) * 10**rank
         return { high: highValueForY, step: highValueForY /= 5 }
-    }, [data])
+    }, [expenses])
 
     const getXParams = useCallback((): { high: number, step: number } => {
         return { high: 2, step: 5 }
-    }, [data])
+    }, [expenses])
     
     const getChartData = useCallback((): { key: string; value: number; }[] => {
-        return [...data.map(el => {return {
+        return [...expenses.map(el => {return {
             key: new Date(el.time).getDate() + '',
             value: el.amount,
             data: el
         }})]
-    }, [data])
+    }, [expenses])
 
     const datasets: ChartData<'bar', { key: string, value: number }[]> = {
         datasets: [{
@@ -246,14 +193,13 @@ const UserExpenseGraph: FC = () => {
 
     const RangeTitle: ReactNode = 
             <h2 className={classes.range}>From {
-                new Date(data[0]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
+                new Date(expenses[0]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
             } - {
-                new Date(data[data?.length - 1]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
+                new Date(expenses[expenses?.length - 1]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
             }</h2>;
 
     return <>
-            <button onClick={test}>TestButton</button>
-        <div className={classes.expenseChart__wrapper}>
+            <div className={classes.expenseChart__wrapper}>
             <div className={classes.chart__uppernav}>
                 <div className={classes.chart__titleRange}>
                     <h2 className={classes.title}>Statistic</h2>
@@ -269,4 +215,4 @@ const UserExpenseGraph: FC = () => {
     </>;
 }
 
-export default React.memo(UserExpenseGraph);
+export default React.memo(UserExpenseGraph)
