@@ -5,10 +5,13 @@ import classes from './Dashboard.module.css'
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 import Header from '@components/Header/Header';
 import OperationCard from '@components/OperationCard/OperationCard';
-import UserExpenseGraph from '@components/UserExpenseGraph/UserExpenseGraph';
+
 import UserExpenseCard from '@components/UserExpenseCard/UserExpenseCard';
+import UserExpenseGraphCard from '@components/UserExpenseGraph/UserExpenseGraphCard';
+
 
 const Dashboard = () => {
+
     return (
         <div>
             <Header />
@@ -23,8 +26,7 @@ const Dashboard = () => {
                         <OperationCard operation={'Expenses'} />
                         <UserExpenseCard />
                     </div>
-                    <UserExpenseGraph/>
-                    
+                    <UserExpenseGraphCard/>
                 </div>
             </main>
             <footer style={{paddingBottom: '60px'}}>

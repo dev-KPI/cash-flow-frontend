@@ -1,8 +1,7 @@
-import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode } from 'react';
+import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode, MouseEvent } from 'react';
 
 //logic
 import DateService from '@services/DateService/DateService';
-
 //UI
 import classes from './UserExpenseGraph.module.css'
 import MonthPicker from '@components/MonthPicker/MonthPicker';
@@ -20,37 +19,41 @@ import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPicker
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import { useGetExpensesPerLastMonthQuery } from '@store/UI_store/UserExpenseGraphSlice/UserExpenseGraphApi';
+
+import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
+import { Omiter } from '@services/UsefulMethods/UsefulMethods';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const UserExpenseGraph: FC = () => {
+interface IUserExpenseGraphProps {
+    expenses: IExpenseItem[],
+}
+
+const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
 
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
-    
-    const {data = [], error, isError, isLoading} = useGetExpensesPerLastMonthQuery(null);
 
     const getYParams = useCallback((): { high: number, step: number } => {
-        let highValue = Math.max(...data.map(el => el.amount));
+        let highValue = Math.max(...expenses.map(el => el.amount));
         const rank = highValue.toString().length - 1
         let highValueForY = (Math.floor(highValue / 10**rank) + 1) * 10**rank
         return { high: highValueForY, step: highValueForY /= 5 }
-    }, [data])
+    }, [expenses])
 
     const getXParams = useCallback((): { high: number, step: number } => {
         return { high: 2, step: 5 }
-    }, [data])
+    }, [expenses])
     
     const getChartData = useCallback((): { key: string; value: number; }[] => {
-        return [...data.map(el => {return {
+        return [...expenses.map(el => {return {
             key: new Date(el.time).getDate() + '',
             value: el.amount,
             data: el
         }})]
-    }, [data])
+    }, [expenses])
 
     const datasets: ChartData<'bar', { key: string, value: number }[]> = {
         datasets: [{
@@ -190,13 +193,13 @@ const UserExpenseGraph: FC = () => {
 
     const RangeTitle: ReactNode = 
             <h2 className={classes.range}>From {
-                new Date(data[0]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
+                new Date(expenses[0]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
             } - {
-                new Date(data[data?.length - 1]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
+                new Date(expenses[expenses?.length - 1]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
             }</h2>;
 
     return <>
-        <div className={classes.expenseChart__wrapper}>
+            <div className={classes.expenseChart__wrapper}>
             <div className={classes.chart__uppernav}>
                 <div className={classes.chart__titleRange}>
                     <h2 className={classes.title}>Statistic</h2>
@@ -212,4 +215,4 @@ const UserExpenseGraph: FC = () => {
     </>;
 }
 
-export default React.memo(UserExpenseGraph);
+export default React.memo(UserExpenseGraph)

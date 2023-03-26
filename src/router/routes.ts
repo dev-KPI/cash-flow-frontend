@@ -4,7 +4,6 @@ import Analytics from "@pages/Analytics/Analytics"
 //UI
 import MenuBurger from "@components/MenuBurger/MenuBurger";
 import Header from "@components/Header/Header";
-import ExpenseChart from "@components/UserExpenseGraph/UserExpenseGraph";
 
 export const DASHBOARD_PAGE = '/';
 export const ANALYTICS_PAGE = '/analytics';
@@ -86,8 +85,5 @@ export const components = [
     },{
         path: "/components/Header",
         component: Header
-    },{
-        path: "/components/ExpenseChart",
-        component: ExpenseChart
     }
 ];
