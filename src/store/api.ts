@@ -4,6 +4,6 @@ import { UserExpenseGraphApi } from './UI_store/UserExpenseGraphSlice/UserExpens
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BASE_API_URL}` }),
-    tagTypes: ['api'],
+    tagTypes: ['api', 'CategoryExpenses'],
     endpoints: () => ({}),
 })

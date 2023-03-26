@@ -6,6 +6,7 @@ import MonthPicker from '@components/MonthPicker/MonthPicker';
 import Header from '@components/Header/Header';
 import OperationCard from '@components/OperationCard/OperationCard';
 import UserExpenseGraph from '@components/UserExpenseGraph/UserExpenseGraph';
+import UserExpenseCard from '@components/UserExpenseCard/UserExpenseCard';
 
 const Dashboard = () => {
     return (
@@ -20,8 +21,10 @@ const Dashboard = () => {
                     <div style={{marginTop:30, display: 'flex', gap:30}}>
                         <OperationCard operation={'Income'} />
                         <OperationCard operation={'Expenses'} />
+                        <UserExpenseCard />
                     </div>
                     <UserExpenseGraph/>
+                    
                 </div>
             </main>
             <footer style={{paddingBottom: '60px'}}>
