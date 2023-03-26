@@ -5,7 +5,10 @@ import classes from './Dashboard.module.css'
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 import Header from '@components/Header/Header';
 import OperationCard from '@components/OperationCard/OperationCard';
+
+import UserExpenseCard from '@components/UserExpenseCard/UserExpenseCard';
 import UserExpenseGraphCard from '@components/UserExpenseGraph/UserExpenseGraphCard';
+
 
 const Dashboard = () => {
 
@@ -21,6 +24,7 @@ const Dashboard = () => {
                     <div style={{marginTop:30, display: 'flex', gap:30}}>
                         <OperationCard operation={'Income'} />
                         <OperationCard operation={'Expenses'} />
+                        <UserExpenseCard />
                     </div>
                     <UserExpenseGraphCard/>
                 </div>

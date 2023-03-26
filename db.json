@@ -262,24 +262,437 @@
       "id": 28
     },
     {
-      "id": 29,
-      "description": "string",
-      "amount": 2057,
-      "time": "2023-03-29T13:51:50",
-      "user_id": 1,
-      "group_id": 6,
-      "category_id": 3
+      "description": "Este prem sonto test ele alulu",
+      "amount": 1232,
+      "time": "2022-01-25T13:51:50",
+      "user_id": 2,
+      "group_id": 3,
+      "category_id": 4,
+      "id": 29
     },
     {
-      "description": "string",
-      "amount": 7050,
-      "time": "2023-03-30T13:51:50",
+      "description": "Este prem sonto test ele alulu",
+      "amount": 10032,
+      "time": "2022-01-26T13:51:50",
+      "user_id": 2,
+      "group_id": 3,
+      "category_id": 6,
+      "id": 30
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 1032,
+      "time": "2022-01-27T13:51:50",
+      "user_id": 2,
+      "group_id": 6,
+      "category_id": 2,
+      "id": 31
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 102,
+      "time": "2022-01-28T13:51:50",
+      "user_id": 2,
+      "group_id": 6,
+      "category_id": 4,
+      "id": 32
+    },
+    {
+      "description": "2023023020302302030",
+      "amount": 102,
+      "time": "2023-03-01T13:51:50",
+      "user_id": 1,
+      "group_id": 7,
+      "category_id": 7,
+      "id": 33
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 902,
+      "time": "2023-03-02T13:51:50",
+      "user_id": 1,
+      "group_id": 3,
+      "category_id": 7,
+      "id": 34
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 1302,
+      "time": "2023-03-03T13:51:50",
+      "user_id": 1,
+      "group_id": 7,
+      "category_id": 8,
+      "id": 35
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 4002,
+      "time": "2023-03-04T13:51:50",
+      "user_id": 1,
+      "group_id": 8,
+      "category_id": 6,
+      "id": 36
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 202,
+      "time": "2023-03-05T13:51:50",
+      "user_id": 1,
+      "group_id": 3,
+      "category_id": 6,
+      "id": 37
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 2562,
+      "time": "2023-03-06T13:51:50",
+      "user_id": 1,
+      "group_id": 6,
+      "category_id": 8,
+      "id": 38
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 14222,
+      "time": "2023-03-07T13:51:50",
+      "user_id": 1,
+      "group_id": 3,
+      "category_id": 7,
+      "id": 39
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 1822,
+      "time": "2023-03-08T13:51:50",
+      "user_id": 1,
+      "group_id": 1,
+      "category_id": 7,
+      "id": 40
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 9122,
+      "time": "2023-03-09T13:51:50",
+      "user_id": 1,
+      "group_id": 2,
+      "category_id": 8,
+      "id": 41
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 322,
+      "time": "2023-03-10T13:51:50",
+      "user_id": 1,
+      "group_id": 8,
+      "category_id": 9,
+      "id": 42
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 722,
+      "time": "2023-03-11T13:51:50",
+      "user_id": 1,
+      "group_id": 4,
+      "category_id": 9,
+      "id": 43
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 822,
+      "time": "2023-03-12T13:51:50",
+      "user_id": 1,
+      "group_id": 9,
+      "category_id": 3,
+      "id": 44
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 122,
+      "time": "2023-03-13T13:51:50",
       "user_id": 1,
       "group_id": 3,
       "category_id": 2,
-      "id": 30
+      "id": 45
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 822,
+      "time": "2023-03-14T13:51:50",
+      "user_id": 1,
+      "group_id": 3,
+      "category_id": 2,
+      "id": 46
+    },
+    {
+      "description": "Este prem sonto test ele alulu",
+      "amount": 9122,
+      "time": "2023-03-15T13:51:50",
+      "user_id": 1,
+      "group_id": 9,
+      "category_id": 3,
+      "id": 47
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 92,
+      "time": "2023-03-16T13:51:50",
+      "user_id": 1,
+      "group_id": 9,
+      "category_id": 7,
+      "id": 48
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 992,
+      "time": "2023-03-17T13:51:50",
+      "user_id": 1,
+      "group_id": 9,
+      "category_id": 8,
+      "id": 49
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 992,
+      "time": "2023-03-18T13:51:50",
+      "user_id": 1,
+      "group_id": 8,
+      "category_id": 7,
+      "id": 50
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 1092,
+      "time": "2023-03-19T13:51:50",
+      "user_id": 1,
+      "group_id": 2,
+      "category_id": 7,
+      "id": 53
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 7092,
+      "time": "2023-03-20T13:51:50",
+      "user_id": 1,
+      "group_id": 9,
+      "category_id": 7,
+      "id": 54
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 7092,
+      "time": "2023-03-21T13:51:50",
+      "user_id": 1,
+      "group_id": 2,
+      "category_id": 5,
+      "id": 55
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 8092,
+      "time": "2023-03-22T13:51:50",
+      "user_id": 1,
+      "group_id": 4,
+      "category_id": 4,
+      "id": 56
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 5092,
+      "time": "2023-03-23T13:51:50",
+      "user_id": 1,
+      "group_id": 9,
+      "category_id": 7,
+      "id": 57
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 4092,
+      "time": "2023-03-24T13:51:50",
+      "user_id": 1,
+      "group_id": 4,
+      "category_id": 8,
+      "id": 58
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 2092,
+      "time": "2023-03-25T13:51:50",
+      "user_id": 1,
+      "group_id": 8,
+      "category_id": 4,
+      "id": 59
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 2002,
+      "time": "2023-03-26T13:51:50",
+      "user_id": 1,
+      "group_id": 4,
+      "category_id": 8,
+      "id": 60
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 102,
+      "time": "2023-03-27T13:51:50",
+      "user_id": 1,
+      "group_id": 2,
+      "category_id": 7,
+      "id": 61
+    },
+    {
+      "description": "Arstetest  alulu  test ele sonto ",
+      "amount": 12,
+      "time": "2023-03-28T13:51:50",
+      "user_id": 1,
+      "group_id": 1,
+      "category_id": 4,
+      "id": 62
     }
   ],
+  "categoryExpenses": [
+    {
+      "id": 0,
+      "title": "Entertainment",
+      "amount": 7659.1,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 1,
+      "title": "Entertai",
+      "amount": 762.1,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 2,
+      "title": "Food",
+      "amount": 2540,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 3,
+      "title": "Products",
+      "amount": 990.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 4,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 5,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 6,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 7,
+      "title": "Entertainment",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 8,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 9,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 10,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 11,
+      "title": "Hello world",
+      "amount": 999,
+      "color": "#0f4f5f"
+    },
+    {
+      "id": 12,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 13,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 14,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 15,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 16,
+      "title": "Other",
+      "amount": 654.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 17,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 18,
+      "title": "Other",
+      "amount": 1000.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 19,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 20,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#4C6FFF"
+    },
+    {
+      "title": "New HELLO WORLD",
+      "amount": 1000,
+      "color": "#ff7878",
+      "id": 22
+    },
+    {
+      "title": "New HELLO WORLD",
+      "amount": 1000,
+      "color": "#ff7878",
+      "id": 23
+    }
+  ],
+  "categoryExpensesTotal": {
+    "total": 20504
+  },
   "comments": [
     {
       "id": 1,

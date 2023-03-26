@@ -1,0 +1,21 @@
+.item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.item:hover{
+    cursor: pointer;
+}
+
+.itemDot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    /* background-color: var(--main-blue); */
+    border-radius: 50%;
+}
+
+.itemTitle {
+    composes: secondaryTitle from '../UserExpenseCard/UserExpenseCard.module.css';
+}
+
