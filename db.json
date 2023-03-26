@@ -296,7 +296,8 @@
       "group_id": 7,
       "category_id": 7,
       "id": 33
-    },{
+    },
+    {
       "description": "Este prem sonto test ele alulu",
       "amount": 902,
       "time": "2023-03-02T13:51:50",
@@ -558,6 +559,149 @@
       "id": 64
     }
   ],
+  "categoryExpenses": [
+    {
+      "id": 0,
+      "title": "Entertainment",
+      "amount": 7659.1,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 1,
+      "title": "Entertai",
+      "amount": 762.1,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 2,
+      "title": "Food",
+      "amount": 2540,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 3,
+      "title": "Products",
+      "amount": 990.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 4,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 5,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 6,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 7,
+      "title": "Entertainment",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 8,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 9,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 10,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 11,
+      "title": "Hello world",
+      "amount": 999,
+      "color": "#0f4f5f"
+    },
+    {
+      "id": 12,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 13,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 14,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 15,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#4C6FFF"
+    },
+    {
+      "id": 16,
+      "title": "Other",
+      "amount": 654.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 17,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#D96FF8"
+    },
+    {
+      "id": 18,
+      "title": "Other",
+      "amount": 1000.6,
+      "color": "#FF2D55"
+    },
+    {
+      "id": 19,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#FF6E01"
+    },
+    {
+      "id": 20,
+      "title": "Other",
+      "amount": 500.6,
+      "color": "#4C6FFF"
+    },
+    {
+      "title": "New HELLO WORLD",
+      "amount": 1000,
+      "color": "#ff7878",
+      "id": 22
+    },
+    {
+      "title": "New HELLO WORLD",
+      "amount": 1000,
+      "color": "#ff7878",
+      "id": 23
+    }
+  ],
+  "categoryExpensesTotal": {
+    "total": 20504
+  },
   "comments": [
     {
       "id": 1,
