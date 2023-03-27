@@ -1,14 +1,18 @@
 import React, { useEffect, useCallback, useState, ReactNode } from 'react';
 import { useGetCategoryExpensesQuery, useGetCategoryExpenseByIdQuery, useGetCategoryExpensesTotalQuery, useAddCategoryExpenseMutation, useUpdateCategoryExpenseMutation, useDeleteCategoryExpenseMutation } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice';
 import classes from './UserExpenseCard.module.css'
-import UserExpenseChart from '@components/UserExpenseChart/UserExpenseChart';
-import UserExpenseCardDot from '@components/UserExpenseCardDot/UserExpenseCardDot';
+import UserExpenseChart from '../UserExpenseChart/UserExpenseChart';
+import UserExpenseCardDot from '../UserExpenseCardDot/UserExpenseCardDot';
 
 
 const UserExpenseCard = () => {
-    const [id, setId] = useState<number>(0);
+    const [id, setId] = useState<number>();
     const { data: expenses = [], error: Expenses_GET_error, isError: isExpensesError, isLoading: isExpensesLoading } = useGetCategoryExpensesQuery(null);
     const { data: total, error: Total_GET_error, isError: isTotalError, isLoading: isTotalLoading } = useGetCategoryExpensesTotalQuery(null);
+
+    useEffect(()=>{
+        id ? setId(id) : setId(0) 
+    },[])
 
     if (isExpensesLoading || isTotalLoading) {
         return <div>Loading</div>
@@ -23,7 +27,7 @@ const UserExpenseCard = () => {
 
 
     return (
-        <div className={classes.expenseChart}>
+        <section className={classes.expenseChart}>
             <div className={classes.inner}>
                 <h3 className={classes.title}>Expenses</h3>
                 <div className={classes.wrapper}>
@@ -46,7 +50,7 @@ const UserExpenseCard = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

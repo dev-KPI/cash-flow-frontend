@@ -22,15 +22,17 @@ import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
 import { Omiter } from '@services/UsefulMethods/UsefulMethods';
+import UserExpenseGraphPreloader from './UserExpenseGraphPreloader';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface IUserExpenseGraphProps {
     expenses: IExpenseItem[],
+    isExpensesLoading: boolean
 }
 
-const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
+const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoading}) => {
 
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
@@ -47,7 +49,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
         return { high: 2, step: 5 }
     }, [expenses])
     
-    const getChartData = useCallback((): { key: string; value: number; }[] => {
+    const getChartData = useCallback((): { key: string; value: number }[] => {
         return [...expenses.map(el => {return {
             key: new Date(el.time).getDate() + '',
             value: el.amount,
@@ -64,7 +66,6 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
             },
         }],
     };
-
     
     const [priceTooltip, setPriceTooltip] = useState<number>();
     const [monthTooltip, setMonthTooltip] = useState<string>();
@@ -182,7 +183,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
                     stepSize: getYParams().step,   
                     callback: (value: string|number, index: number, ticks: Tick[]): string => {
                         if(window.innerWidth > 320 && window.innerWidth < 440){ 
-                            return +(value)/1000 + '$k';
+                            return +(value)/1000 + 'k$';
                         } 
                         return value + '$';
                     }                 
@@ -198,19 +199,26 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
                 new Date(expenses[expenses?.length - 1]?.time).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0,3)
             }</h2>;
 
+
     return <>
-            <div className={classes.expenseChart__wrapper}>
-            <div className={classes.chart__uppernav}>
-                <div className={classes.chart__titleRange}>
-                    <h2 className={classes.title}>Statistic</h2>
-                    {RangeTitle}
-                </div>
-            </div>
-            <Chart<'bar', { key: string, value: number }[]>
-            type="bar"
-            className={classes.chartinner__wrapper}
-            options={options} 
-            data={datasets}/>
+        <div className={classes.expenseChart__wrapper}>
+            {isExpensesLoading ? 
+                <UserExpenseGraphPreloader/>
+                : 
+                <>
+                    <div className={classes.chart__uppernav}>
+                        <div className={classes.chart__titleRange}>
+                            <h2 className={classes.title}>Statistic</h2>
+                            {RangeTitle}
+                        </div>
+                    </div>
+                    <Chart<'bar', { key: string, value: number }[]>
+                    type="bar"
+                    className={classes.chartinner__wrapper}
+                    options={options} 
+                    data={datasets}/>
+                </>
+            }            
         </div>
     </>;
 }

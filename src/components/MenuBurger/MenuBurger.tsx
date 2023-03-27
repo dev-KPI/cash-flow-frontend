@@ -39,7 +39,7 @@ const MenuBurger: FC = () => {
                 <li key={'1htjyn'}>
                     <NavLink 
                     id={'1'}
-                    to="/components/Menu/analytics"
+                    to="/dashboard"
                     className={({ isActive }) => setActiveLinkClasses(isActive)}>
                         <div className={classes.burgerIcon}><i className="bi bi-house"></i></div>
                         <h3 className={classes.title}>Dashboard</h3>

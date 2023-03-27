@@ -1,6 +1,6 @@
 .expenseChart {
     display: inline-block;
-    composes: cardComponent from "../../styles/style.css";
+    composes: cardComponent from "@styles/style.css";
     width: 510px;
 }
 

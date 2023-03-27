@@ -4,14 +4,19 @@ import React, {FC, MouseEvent, ReactNode, useCallback} from "react";
 import UserExpenseGraph from "./UserExpenseGraph";
 //store
 import { useGetExpensesPerLastMonthQuery } from "@store/ExpenseApiSlice/ExpenseApiSlice";
+import UserExpenseGraphPreloader from "./UserExpenseGraphPreloader";
+
+//UI
+import classes from './UserExpenseGraph.module.css';
 
 const UserExpenseGraphCard = () => {
-    const {data: expenses = [], isError: isLoadingError, isLoading: isLoadingExpense, error: Expense_GET_error } = useGetExpensesPerLastMonthQuery(null);
+    const {data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
 
 return <>
-        <div className="">
+        <div className={classes.graph}>
             <UserExpenseGraph
             expenses={expenses}
+            isExpensesLoading={isExpensesLoading}
             />
         </div>
     </>

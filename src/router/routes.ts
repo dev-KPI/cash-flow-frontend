@@ -5,7 +5,7 @@ import Analytics from "@pages/Analytics/Analytics"
 import MenuBurger from "@components/MenuBurger/MenuBurger";
 import Header from "@components/Header/Header";
 
-export const DASHBOARD_PAGE = '/';
+export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
 export const NOTIFICATIONS_PAGE = '/';
 export const CATEGORIES_PAGE = '/';

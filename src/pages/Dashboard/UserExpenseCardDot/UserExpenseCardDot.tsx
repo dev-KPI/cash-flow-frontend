@@ -1,23 +1,20 @@
 import React, {FC, SetStateAction, useEffect} from 'react';
+
+//UI
 import classes from './UserExpenseCardDot.module.css'
+//store
 import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/useAppStore';
 import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpensetInterfaces';
+
 interface ExpensesCardDotProps{
     expense: IUserExpenseChartDataItem
-    setId: (setId: SetStateAction<number>) => void;
+    setId: (setId: SetStateAction<number | undefined>) => void;
 }
-function cssvar(name: string) {
-    if (name.includes('--'))
-        return getComputedStyle(document.documentElement).getPropertyValue(name);
-    else if (!name.includes("#"))
-        return "#" + name
-    else
-        return name
-}
+
 const ExpensesCardDot: FC<ExpensesCardDotProps> = ({expense, setId}) => {
 
      const onClick = () => {
-        setId(expense.id)
+        setId(expense ? expense.id : 0)
     }
 
     return (

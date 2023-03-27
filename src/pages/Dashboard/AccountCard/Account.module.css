@@ -1,0 +1,71 @@
+.AccountCard{
+    composes: cardComponent from "@styles/style.css";
+    max-width: 356px;
+    max-height: 450px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 356px;
+    padding: 24px 32px 24px;
+}
+
+.AccountCard .title{
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: var(--main-text);
+}
+
+.info__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.info__wrapper .avatar{
+    max-width: 180px;
+    margin-left: calc((100% - 180px)/2);
+    margin-top: 10px;
+}
+.info__wrapper .text{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.text .name{
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    color: var(--main-text);
+}
+.text .email{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--text);
+}
+
+.AccountCard .balance__wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.balance__wrapper .balance {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    margin-top: 20px;
+    color: var(--main-text);
+}
+.balance__wrapper .value{
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    color: var(--main-green);
+}
+.balance__wrapper .range{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    color: var(--text);
+}

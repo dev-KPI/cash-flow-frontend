@@ -23,7 +23,7 @@ ChartJS.register(
 
 interface UserExpenseChartProps {
     expenses: IUserExpenseChartDataItem[];
-    setId: (setId: SetStateAction<number>) => void;
+    setId: (setId: SetStateAction<number | undefined>) => void;
 }
 
 const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, setId}) => {
@@ -66,9 +66,7 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, setId}) => {
         const { current: chart } = chartRef;
         if (!chart) return;
         const element = getElementAtEvent(chart, e);
-        const index = element[0].index
-        console.log(element[0]);
-        // setId(index)
+        const index = element[0]?.index
         setId(index);
     }
 

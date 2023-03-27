@@ -1,9 +1,9 @@
 .incomeCard {
-    composes: cardComponent from "../../styles/style.css";
+    composes: cardComponent from "@styles/style.css";
     display: inline-block;
-    width: 255px;
+    width: 279px;
+    height: 116px;
 }
-
 .inner{
     padding: 16px 16px 18px 24px;
 }

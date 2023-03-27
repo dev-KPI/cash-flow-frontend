@@ -10,7 +10,6 @@ import Router from './router/router';
 import { persistedStore, store } from '@store/store'; 
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { api } from '@store/api';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
