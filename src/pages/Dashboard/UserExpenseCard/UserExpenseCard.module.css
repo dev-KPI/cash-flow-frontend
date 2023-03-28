@@ -1,7 +1,9 @@
 .expenseChart {
-    display: inline-block;
     composes: cardComponent from "@styles/style.css";
-    width: 510px;
+    display: flex;
+    max-width: 510px;
+    min-width: 320px;
+    flex-basis: 510px;
 }
 
 .title {
@@ -18,20 +20,22 @@
 }
 
 .inner {
+    width: 100%;
     padding: 24px 32px 25px;
 }
 
 .wrapper {
+    width: 100%;
     display: flex;
-    gap: 45px;
+    flex-direction: row;
+    justify-content: space-between;
     margin-top: 24px;
 }
 
-
 .chart {
     position: relative;
-    width: 200px;
-    height: 200px;
+    max-width: 200px;
+    max-height: 200px;
 }
 
 .chartAmount {
@@ -71,7 +75,10 @@
 }
 
 .info {
+    width: 130px;
     display: flex;
+    margin-right: 32px;
+    margin-left: 16px;
     flex-direction: column;
     gap: 14px;
 }
@@ -85,4 +92,13 @@
 .viewMore:hover {
     text-decoration: underline 1px;
     cursor: pointer;
+}
+
+@media only screen and (max-width: 400px) {
+    .wrapper{
+        flex-direction: column;
+    }    
+    .inner{
+        padding: 0px;
+    }
 }

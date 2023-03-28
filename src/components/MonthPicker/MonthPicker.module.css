@@ -48,3 +48,12 @@
     min-width: 128px;
     user-select: none;
 }
+
+
+
+@media only screen and (max-width: 400px) {
+    .wrapper{
+        padding: 0px;
+        width: 100%;
+    }
+}

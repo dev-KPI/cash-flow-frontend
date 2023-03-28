@@ -27,7 +27,7 @@ const UserExpenseCard = () => {
 
 
     return (
-        <section className={classes.expenseChart}>
+        <div className={classes.expenseChart}>
             <div className={classes.inner}>
                 <h3 className={classes.title}>Expenses</h3>
                 <div className={classes.wrapper}>
@@ -50,7 +50,7 @@ const UserExpenseCard = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     );
 };
 

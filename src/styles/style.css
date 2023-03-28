@@ -184,22 +184,14 @@ div[class*="__container"] {
     margin-right: auto;
     padding: 0 5px;
 }
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: 1480px) {
     div[class*="__container"] {
-        max-width: 1080px;
+        max-width: 1128px;
         margin-left: auto;
         margin-right: auto;
         padding: 0 5px;
     }
-}
-@media only screen and (max-width: 1080px) {
-    div[class*="__container"] {
-        max-width: 768px;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 0 5px;
-    }
-}
+} 
 @media only screen and (max-width: 400px) {
     div[class*="__container"] {
         max-width: 100%;
@@ -207,9 +199,8 @@ div[class*="__container"] {
         margin-right: auto;
         padding: 0 5px;
     }
+    
 } 
-
-
 .pageTitle {
     font-weight: 700;
     font-size: 36px;
@@ -226,5 +217,7 @@ div[class*="__container"] {
 @media only screen and (max-width: 400px) {
     .cardComponent{
         padding: 12px;
+        border-radius: 10px;
+        max-width: 400px;
     }
 }

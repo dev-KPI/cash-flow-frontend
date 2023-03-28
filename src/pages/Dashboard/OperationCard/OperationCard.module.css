@@ -1,11 +1,16 @@
 .incomeCard {
     composes: cardComponent from "@styles/style.css";
-    display: inline-block;
-    width: 279px;
-    height: 116px;
+    display: flex;
+    min-height: 120px;
+    max-width: 279px;
+    min-width: 230px;
+    flex-basis: 279px;
 }
 .inner{
-    padding: 16px 16px 18px 24px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px;
 }
 
 .title{
@@ -27,11 +32,16 @@
 
 .top{
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 
 .icon{
-    padding: 14px;
+    display: flex;
+    height: 46px;
+    width: 46px;
+    justify-content: center;
+    align-items: center;
     background: var(--main-green);
     border-radius: 50%;
 }
@@ -56,9 +66,12 @@
 }
 .bottom {
     display: flex;
+    flex-direction: row;
+    max-width: 130px;
     align-items: center;
     gap: 10px;
-    margin-top: 12px;
+    margin-top: auto;
+    margin-right: auto;
 }
 
 .time{
@@ -66,4 +79,13 @@
     font-size: 10px;
     line-height: 16px;
     color: var(--text);
+}
+
+@media only screen and (max-width: 400px) {
+    .incomeCard{
+        max-width: 400px;
+    }
+    .inner{
+        padding: 0px;
+    }
 }

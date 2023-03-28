@@ -16,8 +16,6 @@ const AccountCard: FC = () => {
                     <h3 className={classes.name}>Jonh Doe</h3>
                     <p className={classes.email}>johndoe@gmail.com</p>
                 </div>
-            </div>
-            <div className={classes.balance__wrapper}>
                 <h3 className={classes.balance}>Current Balance</h3>
                 <p className={classes.value}>$1303.03</p>
                 <p className={classes.range}>From Jan 1, 2023 to Jan 31, 2023</p>
