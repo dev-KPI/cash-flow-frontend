@@ -12,9 +12,13 @@ import AccountCard from '@pages/Dashboard/AccountCard/AccountCard';
 
 const Dashboard = () => {
 
+    const getHeadSite = () => {
+        return <Header />
+    }
+
     return (
         <div>
-            <Header />
+            {/* {getHeadSite()} */}
             <main>
                 <div className='dashboard__container'>
                     <section className={classes.header}>

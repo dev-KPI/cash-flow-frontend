@@ -4,7 +4,7 @@
     max-height: 480px;
     
     display: flex;
-    flex-basis: 1080px;
+    flex-basis: 1128px;
     flex-direction: column;
     padding: 32px 32px 45px 32px;
 }
@@ -63,9 +63,18 @@
 .chartinner__wrapper i {
     color: var(--text);
 }
-@media only screen and (max-width: 1440px) {
+@media only screen and (max-width: 1500px) {
+    .expenseChart__wrapper{
+        max-width: 1128px;
+        flex-basis: 1128px;
+    }
     .chartinner__wrapper {
+        max-width: 960px;
         max-height: 250px;
+    }
+    .graph{
+        max-width: 1128px;
+        flex-basis: 1128px;
     }
 }
 @media only screen and (max-width: 768px) {

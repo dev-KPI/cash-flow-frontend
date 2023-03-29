@@ -179,19 +179,19 @@ body{
 }
 
 div[class*="__container"] {
-    max-width: 1515px;
+    max-width: 1514px;
     margin-left: auto;
     margin-right: auto;
     padding: 0 5px;
 }
-@media only screen and (max-width: 1480px) {
+/* @media only screen and (max-width: 1480px) {
     div[class*="__container"] {
         max-width: 1128px;
         margin-left: auto;
         margin-right: auto;
         padding: 0 5px;
     }
-} 
+}  */
 @media only screen and (max-width: 400px) {
     div[class*="__container"] {
         max-width: 100%;

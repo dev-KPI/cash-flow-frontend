@@ -5,15 +5,19 @@
     --btn-color: #333333;
 }
 .monthPicker {
-    display: inline-block;
-    composes: cardComponent from "../../styles/style.css";
+    display: flex;
+    min-width: 320px;
+    max-width: 340px;
+    flex-basis: 340px;
+    composes: cardComponent from "@styles/style.css";
 }
 .wrapper{
     padding: 18px 30px;
     display: flex;
+    gap: auto;
     align-items: center;
-    gap: 45px;
-    justify-content: space-between;
+    gap: 41px;
+    justify-content: space-around;
 }
 
 .btn{
@@ -24,7 +28,6 @@
     align-items: center;
     cursor: pointer;
 }
-
 .btn i{
     font-size: 12px;
     height: 12px;
@@ -55,5 +58,6 @@
     .wrapper{
         padding: 0px;
         width: 100%;
+        gap: none;
     }
 }

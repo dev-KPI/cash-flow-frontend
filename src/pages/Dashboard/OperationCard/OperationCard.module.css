@@ -1,7 +1,7 @@
 .incomeCard {
     composes: cardComponent from "@styles/style.css";
     display: flex;
-    min-height: 120px;
+    max-height: 120px;
     max-width: 279px;
     min-width: 230px;
     flex-basis: 279px;
@@ -33,17 +33,21 @@
 .top{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
 }
 
 .icon{
     display: flex;
     height: 46px;
     width: 46px;
+    margin-left: auto;
     justify-content: center;
     align-items: center;
     background: var(--main-green);
     border-radius: 50%;
+}
+.info{
+    display: flex;
+    flex-direction: column;
 }
 
 .icon i {
@@ -70,7 +74,7 @@
     max-width: 130px;
     align-items: center;
     gap: 10px;
-    margin-top: auto;
+    margin-top: 18px;
     margin-right: auto;
 }
 

@@ -32,11 +32,12 @@
     margin-top: 30px;
     display: grid;
     gap: 30px;
-    grid-template-columns: 588px minmax(356px, 588px);
+    grid-template-columns: repeat(auto-fit, minmax(356px, 588px))
 }
 .mainside .left{
     grid-column: 1/2;
     display: flex;
+    min-width: 440px;
     flex-direction: column;
     gap: 30px;
 }
@@ -44,12 +45,13 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    gap: 30px;
 }
 .left .first{
+    height: 120px;
     grid-row: 1;
 }
 .left .second{
+    height: 120px;
     grid-row: 1;
 }
 .left .third{
@@ -80,7 +82,7 @@
 
 
 @media only screen and (max-width: 1480px) {
-    .mainside{
+    /* .mainside{
         grid-template-columns: auto;
     }
     .sixth {
@@ -94,7 +96,7 @@
     .eighth{
         grid-column: 2;
         order: 7;
-    }
+    } */
 }
 
 @media only screen and (max-width: 400px) {
@@ -104,13 +106,11 @@
     .mainside{
         margin-top: 12px;
         display: flex;
-        overflow: hidden;
         flex-direction: column;
     }
     .categories{
+        width: 320px;
         display: flex;
-        max-width: 400px;
-        flex-basis: 400px;
     }
     .Operation__buttons{
         display: flex;
