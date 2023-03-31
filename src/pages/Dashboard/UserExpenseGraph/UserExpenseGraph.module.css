@@ -92,6 +92,9 @@
     }
 }
 @media only screen and (max-width: 360px) {
+    .expenseChart__wrapper{
+        max-height: 340px;
+    }
     .chartinner__wrapper {
         max-height: calc(160px);
         max-width: calc(100% - 24px);

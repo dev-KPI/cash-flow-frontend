@@ -2,7 +2,7 @@
     composes: cardComponent from "@styles/style.css";
     display: flex;
     max-width: 510px;
-    min-width: 320px;
+    min-width: 270px;
     flex-basis: 510px;
 }
 
@@ -85,7 +85,7 @@
 
 
 .viewMore {
-    margin-top:7px;
+    margin-top: 7px;
     color: var(--main-text);
 }
 

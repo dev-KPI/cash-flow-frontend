@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 //UI
 import classes from './Dashboard.module.css'
@@ -8,11 +8,20 @@ import OperationCard from '@pages/Dashboard/OperationCard/OperationCard';
 import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';
 import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard';
 
+
 const Dashboard = () => {
+
+    const getHeader = (): ReactNode => {
+        return (window.innerWidth > 400 && window.innerWidth > 320) ? (
+        <div>Mobile</div>
+        ) : ( 
+            <Header />
+        )
+    }
 
     return (
         <div>
-            <Header />
+            {getHeader()}
             <main>
                 <div className='dashboard__container'>
                     <div className={classes.header}>
@@ -24,7 +33,9 @@ const Dashboard = () => {
                         <OperationCard operation={'Expenses'} />
                         <UserExpenseCard />
                     </div>
-                    <UserExpenseGraphCard/>
+                    <div className={classes.outerSide}>
+                        <UserExpenseGraphCard/>
+                    </div>
                 </div>
             </main>
             <footer style={{paddingBottom: '60px'}}>
