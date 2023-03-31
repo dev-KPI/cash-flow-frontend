@@ -2,18 +2,17 @@
     display: flex;
     gap: 10px;
     width: fit-content;
+    align-items: center;
 }
 .item:hover{
     cursor: pointer;
 }
 
-.itemDot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    /* background-color: var(--main-blue); */
-    border-radius: 50%;
+.item:hover .itemTitle {
+    color: var(--main-text)
 }
+
+
 
 .itemTitle {
     composes: secondaryTitle from '../UserExpenseCard/UserExpenseCard.module.css';

@@ -15,8 +15,7 @@ const ExpensesCardDot: FC<ExpensesCardDotProps> = ({expense, setId}) => {
 
     return (
         <li className={classes.item} onClick={onClick}>
-            {/* <span className={classes.itemDot} style={{ backgroundColor: expense.color}}></span> */}
-            <Light type={'red'}></Light>
+            <Light type={'solid'} color={expense.color}></Light>
             <p className={classes.itemTitle}>{expense.title}</p>
         </li>
     );
