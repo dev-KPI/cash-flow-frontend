@@ -4,6 +4,7 @@ import classes from './UserExpenseCard.module.css'
 import UserExpenseChart from '@components/UserExpenseChart/UserExpenseChart';
 import UserExpenseCardDot from '@components/UserExpenseCardDot/UserExpenseCardDot';
 import { numberWithCommas } from '@services/UsefulMethods/UsefulMethods';
+import UserExpenseCardLoader from './UserExpenseCardLoader';
 
 
 const UserExpenseCard = () => {
@@ -12,9 +13,7 @@ const UserExpenseCard = () => {
     const { data: expenses = [], error: Expenses_GET_error, isError: isExpensesError, isLoading: isExpensesLoading } = useGetCategoryExpensesQuery(null);
     const { data: total, error: Total_GET_error, isError: isTotalError, isLoading: isTotalLoading } = useGetCategoryExpensesTotalQuery(null);
 
-    if (isExpensesLoading || isTotalLoading) {
-        return <div>Loading</div>
-    }
+
     if (isExpensesError || isTotalError) {
         return <div>Error</div>
     }
@@ -30,7 +29,7 @@ const UserExpenseCard = () => {
         expensePercentage = +(expenseAmount * 100 / total.total).toFixed(2) || 0;
     }
 
-    
+
     const handleOpenExtended = () => {
         setIsExtended(true)
     }
@@ -54,33 +53,36 @@ const UserExpenseCard = () => {
    
     return (
         <div className={classes.expenseChart} onMouseEnter={clearInterval} onMouseLeave={setInterval} onClick={handleCloseExtended}>
-            <div className={classes.inner}>
-                <h3 className={classes.title}>Expenses</h3>
-                <div className={classes.wrapper}>
-                    <div className={classes.chart}>
-                        <UserExpenseChart expenses={expenses}  total={total} setId={setId}/>
-                    </div>
-                    <div className={classes.info}>
-                        <div className={classes.expenseInfo}>
-                            <h5 className={classes.expenseTitle}>{expenseTitle}</h5>
-                            <p className={classes.expensePercent}>{expensePercentage}%</p>
-                            <span className={classes.expenseAmount}>{numberWithCommas(expenseAmount)}$</span>
+            {!isExpensesLoading || isTotalLoading ? <UserExpenseCardLoader /> :
+                <div className={classes.inner}>
+                    <h3 className={classes.title}>Expenses</h3>
+                    <div className={classes.wrapper}>
+                        <div className={classes.chart}>
+                            <UserExpenseChart expenses={expenses} total={total} setId={setId} />
                         </div>
-                        {isExtended ? 
-                            <ul className={classes.popupList} onClick={(e)=>(e.stopPropagation())}>
-                                {getExpenses()}
-                            </ul>
-                        : 
-                            <ul className={classes.chartList}>
-                                {getExpenses().slice(0, 4)}
-                                <li className={classes.item}>
-                                    <button className={classes.viewMore} onClick={handleOpenExtended}>View more</button>
-                                </li>
-                            </ul>
-                    }
+                        <div className={classes.info}>
+                            <div className={classes.expenseInfo}>
+                                <h5 className={classes.expenseTitle}>{expenseTitle}</h5>
+                                <p className={classes.expensePercent}>{expensePercentage}%</p>
+                                <span className={classes.expenseAmount}>{numberWithCommas(expenseAmount)}$</span>
+                            </div>
+                            {isExtended ?
+                                <ul className={classes.popupList} onClick={(e) => (e.stopPropagation())}>
+                                    {getExpenses()}
+                                </ul>
+                                :
+                                <ul className={classes.chartList}>
+                                    {getExpenses().slice(0, 4)}
+                                    <li className={classes.item}>
+                                        <button className={classes.viewMore} onClick={handleOpenExtended}>View more</button>
+                                    </li>
+                                </ul>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+            
         </div>
     );
 };
