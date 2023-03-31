@@ -6,7 +6,7 @@
 }
 .monthPicker {
     display: flex;
-    min-width: 320px;
+    min-width: 270px;
     max-width: 340px;
     flex-basis: 340px;
     composes: cardComponent from "@styles/style.css";
@@ -55,6 +55,10 @@
 
 
 @media only screen and (max-width: 400px) {
+    .monthPicker{
+        max-width: 400px;
+        flex-basis: 400px;
+    }
     .wrapper{
         padding: 0px;
         width: 100%;

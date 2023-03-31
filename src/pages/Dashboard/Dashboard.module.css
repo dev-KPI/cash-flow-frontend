@@ -1,121 +1,35 @@
-.categories{
-    composes: cardComponent from "@styles/style.css";
-    display: flex;
-    max-width: 588px;
-    min-width: 440px;
-    height: 300px;
-    flex-basis: 588px;
-}
-.groups{
-    composes: cardComponent from "@styles/style.css";
-    max-width: 510px;
-    min-width: 440px;
-    height: 120px;
-    display: flex;
-    flex-basis: 510px;
-}
-.history{
-    composes: cardComponent from "@styles/style.css";
-    width: 356px;
-    flex-basis: 356px;
-    height: 480px;
-    display: flex;
-}
-
 .header{
     margin: 14px 0px 0px 0px;
     display: flex;
     align-items: center;
     gap: 56px;
 }
-.mainside{
+
+
+.DashboardPage{
     margin-top: 30px;
-    display: grid;
-    gap: 30px;
-    grid-template-columns: repeat(auto-fit, minmax(356px, 588px))
-}
-.mainside .left{
-    grid-column: 1/2;
     display: flex;
-    min-width: 440px;
-    flex-direction: column;
-    gap: 30px;
-}
-.Operation__buttons{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-.left .first{
-    height: 120px;
-    grid-row: 1;
-}
-.left .second{
-    height: 120px;
-    grid-row: 1;
-}
-.left .third{
-    grid-column: 1/3;
-    grid-row: 2;
-}
-.mainside .right{
-    grid-column: 2/3;
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
     gap: 30px;
 }
 
-.sixth {
-    grid-column: 3;
-    display: flex;
-    flex-direction: column;
-}
-.seventh{
-    grid-column: 1/3;
-}
-.eighth{
-    grid-column: 3;
-}
-
-
-
-
-@media only screen and (max-width: 1480px) {
-    /* .mainside{
-        grid-template-columns: auto;
-    }
-    .sixth {
-        grid-column: 1;
-        order: 6;
-    }
-    .seventh{
-        grid-column: 1/3;
-        order: 8;
-    }
-    .eighth{
-        grid-column: 2;
-        order: 7;
-    } */
-}
 
 @media only screen and (max-width: 400px) {
     .title{
         display: none;
     }
-    .mainside{
+    .header{
+        display: flex;
+        margin: 12px 0px 0px 0px;
+        gap: 12px;
+        max-width: 400px;
+        flex-basis: 400px;
+    }
+    .DashboardPage{
+        gap: 12px;
         margin-top: 12px;
         display: flex;
         flex-direction: column;
-    }
-    .categories{
-        width: 320px;
-        display: flex;
-    }
-    .Operation__buttons{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 12px;
+        max-width: 400px;
+        flex-basis: 400px;
     }
 }

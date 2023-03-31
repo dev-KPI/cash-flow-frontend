@@ -88,8 +88,15 @@
 @media only screen and (max-width: 400px) {
     .incomeCard{
         max-width: 400px;
+        min-width: 270px;
+        max-height: 76px;
+        flex-basis: 400px;
     }
     .inner{
         padding: 0px;
     }
+    .bottom {
+        margin-top: 6px;
+    }
+
 }
