@@ -44,7 +44,7 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
             spacing: 18,
             borderWidth: 1,
             cutout: 73,
-            borderRadius: 30
+            borderRadius: 30      
         }],
         
     }
@@ -53,7 +53,7 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
         responsive: true,
         layout: {
             padding: {
-                bottom: 0
+                bottom: 15
             }
         },
         plugins:{
@@ -83,7 +83,7 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
         id: 'doughnutShadow',
         beforeDraw: (chart: ChartJS, args: AnyObject, pluginOptions: AnyObject) => {
             const { ctx } = chart;
-            ctx.shadowColor = "rgba(50, 50, 50, 0.4)";
+            ctx.shadowColor = "rgba(131,131,131, 0.4)";
             ctx.shadowBlur = 10;
         },
     };
