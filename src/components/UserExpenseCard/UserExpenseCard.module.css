@@ -14,7 +14,7 @@
 
 .secondaryTitle {
     font-size: 16px;
-    line-height: 19px;
+    line-height: 20px;
     color: var(--text);
 }
 
@@ -25,14 +25,15 @@
 .wrapper {
     display: flex;
     gap: 45px;
-    margin-top: 24px;
+    margin-top: 9px;
 }
 
 
 .chart {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 215px;
+    height: 215px;
+    margin-left: -11px;
 }
 
 .expenseInfo {
@@ -59,7 +60,7 @@
 .info {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 9px;
 }
 
 
@@ -79,9 +80,16 @@
     display: flex;
 }
 
+.chartList{
+    min-width: 146px;
+}
+
 .popupList{
+    min-width: 146px;
     overflow-y: scroll;
-    height: 100px;
+    max-height: 96px;
+    margin: -4px -8px;
+    padding: 4px 8px;
 }
 
 .popupList::-webkit-scrollbar {

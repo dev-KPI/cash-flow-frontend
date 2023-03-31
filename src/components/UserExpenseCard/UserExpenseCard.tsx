@@ -31,8 +31,8 @@ const UserExpenseCard = () => {
     }
 
     
-    const handleBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        setIsExtended(!isExtended)
+    const handleOpenExtended = () => {
+        setIsExtended(true)
     }
     const handleCloseExtended = () => {
         if (isExtended) {
@@ -53,7 +53,7 @@ const UserExpenseCard = () => {
     }
    
     return (
-        <div className={classes.expenseChart} onMouseEnter={clearInterval} onMouseLeave={setInterval}>
+        <div className={classes.expenseChart} onMouseEnter={clearInterval} onMouseLeave={setInterval} onClick={handleCloseExtended}>
             <div className={classes.inner}>
                 <h3 className={classes.title}>Expenses</h3>
                 <div className={classes.wrapper}>
@@ -67,14 +67,14 @@ const UserExpenseCard = () => {
                             <span className={classes.expenseAmount}>{numberWithCommas(expenseAmount)}$</span>
                         </div>
                         {isExtended ? 
-                            <ul className={classes.popupList}>
+                            <ul className={classes.popupList} onClick={(e)=>(e.stopPropagation())}>
                                 {getExpenses()}
                             </ul>
                         : 
                             <ul className={classes.chartList}>
                                 {getExpenses().slice(0, 4)}
                                 <li className={classes.item}>
-                                    <button className={classes.viewMore} onClick={handleBtnClick}>View more</button>
+                                    <button className={classes.viewMore} onClick={handleOpenExtended}>View more</button>
                                 </li>
                             </ul>
                     }
