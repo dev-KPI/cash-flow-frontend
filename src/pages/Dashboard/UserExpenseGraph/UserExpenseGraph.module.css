@@ -1,5 +1,5 @@
 .expenseChart__wrapper{
-    composes: cardComponent from "../../styles/style.css";
+    composes: cardComponent from "../../../styles/style.css";
     display: inline-block;
     max-width: 1015px;
     max-height: 486px;
