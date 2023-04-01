@@ -184,6 +184,14 @@ div[class*="__container"] {
     margin-right: auto;
     padding: 0 5px;
 }
+@media only screen and (max-width: 1440px) {
+    div[class*="__container"] {
+        max-width: 1080px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 0 5px;
+    }   
+}
 @media only screen and (max-width: 400px) {
     div[class*="__container"] {
         max-width: 400px;
@@ -191,7 +199,6 @@ div[class*="__container"] {
         margin-right: auto;
         padding: 0 5px;
     }
-    
 } 
 .pageTitle {
     font-weight: 700;

@@ -6,14 +6,15 @@ import userIcon from '@assets/user-icon.svg';
 
 const AccountCard: FC = () => {
     
-    
     return<>
         <div className={classes.AccountCard}>
-            <h3 className={classes.title}>My account</h3>
-            <div className={classes.info__wrapper}>
+            <div className={classes.cardHeader}>
+                <h3 className={classes.title}>My account</h3>
                 <img className={classes.avatar} alt={'user icon'}src={userIcon}/>
+            </div>
+            <div className={classes.info__wrapper}>
                 <div className={classes.text}>
-                    <h3 className={classes.name}>Jonh Doe</h3>
+                    <h4 className={classes.name}>Jonh Doe</h4>
                     <p className={classes.email}>johndoe@gmail.com</p>
                 </div>
                 <h3 className={classes.balance}>Current Balance</h3>

@@ -7,17 +7,16 @@
 .monthPicker {
     display: flex;
     min-width: 270px;
-    max-width: 340px;
-    flex-basis: 340px;
     composes: cardComponent from "@styles/style.css";
 }
 .wrapper{
     padding: 18px 30px;
     display: flex;
-    gap: auto;
+    min-width: 270px;
+    max-width: 340px;
+    flex-basis: 340px;
     align-items: center;
-    gap: 41px;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .btn{
@@ -51,8 +50,6 @@
     min-width: 128px;
     user-select: none;
 }
-
-
 
 @media only screen and (max-width: 400px) {
     .monthPicker{

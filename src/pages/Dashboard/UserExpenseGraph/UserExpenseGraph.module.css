@@ -1,36 +1,32 @@
 .expenseChart__wrapper{
     composes: cardComponent from "@styles/style.css";
-    max-width: 1128px;
-    max-height: 480px;
-    
-    display: flex;
-    flex-basis: 1128px;
-    flex-direction: column;
-    padding: 32px 32px 45px 32px;
-}
-.graph{
-    max-height: 480px;
-    max-width: 1128px;
-    display: flex;
+    max-width: 1080px;
     flex-basis: 1080px;
+    max-height: 480px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 24px 32px;
 }
 .expenseChartTitle{
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
 }
+
 .chart__uppernav{
-    max-width: 1015px;
+    max-width: 500px;
+    max-height: 65px;
+    flex-basis: 200px;
     display: flex;
     flex-direction: row;
 }
 .chart__titleRange{
     display: flex;
-    gap: 14px;
+    flex-basis: 200px;
     flex-direction: column;
 }
 .chart__titleRange .title{
-    margin-top: 6px;
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
@@ -45,9 +41,10 @@
     align-items: center;
     letter-spacing: 0.0016em;
 }
+
 .chartinner__wrapper {
     max-width: 1015px;
-    max-height: 300px;
+    max-height: 320px;
     flex-basis: 1015px;
     display: flex;
     margin-top: 45px;
@@ -63,40 +60,12 @@
 .chartinner__wrapper i {
     color: var(--text);
 }
-@media only screen and (max-width: 1500px) {
-    .expenseChart__wrapper{
-        max-width: 1128px;
-        flex-basis: 1128px;
-    }
-    .chartinner__wrapper {
-        max-width: 960px;
-        max-height: 250px;
-    }
-    .graph{
-        max-width: 1128px;
-        flex-basis: 1128px;
-    }
-}
-@media only screen and (max-width: 768px) {
-    .chartinner__wrapper {
-        max-height: 220px;
-    }
-}
 @media only screen and (max-width: 400px) {
-    .chartinner__wrapper {
-        max-height: calc(160px);
-        max-width: calc(100% - 24px);
-    }
     .expenseChart__wrapper{
         padding: 12px;
     }
-}
-@media only screen and (max-width: 360px) {
-    .expenseChart__wrapper{
-        max-height: 340px;
-    }
     .chartinner__wrapper {
-        max-height: calc(160px);
+        max-height: 160px;
         max-width: calc(100% - 24px);
     }
 }

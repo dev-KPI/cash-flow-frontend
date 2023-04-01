@@ -1,29 +1,33 @@
 .AccountCard{
     composes: cardComponent from "@styles/style.css";
-    max-width: 356px;
+    max-width: 374px;
+    min-width: 256px;
     max-height: 450px;
     display: flex;
     flex-direction: column;
-    flex-basis: 356px;
+    flex-basis: 340px;
     padding: 24px 32px 24px;
 }
-
+.cardHeader{
+    display: flex;
+    flex-direction: column;
+}
 .AccountCard .title{
     font-weight: 700;
     font-size: 24px;
     line-height: 30px;
     color: var(--main-text);
 }
+.AccountCard .avatar{
+    max-width: 180px;
+    margin-left: calc((100% - 180px)/2);
+    margin-top: 10px;
+}
 
 .info__wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-.info__wrapper .avatar{
-    max-width: 180px;
-    margin-left: calc((100% - 180px)/2);
-    margin-top: 10px;
 }
 .info__wrapper .text{
     margin-top: 10px;
@@ -68,4 +72,54 @@
     font-size: 14px;
     line-height: 19px;
     color: var(--text);
+}
+
+@media only screen and (max-width: 1440px) {
+    .AccountCard{
+        flex-direction: row;
+        max-height: 240px;
+        max-width: 100%;
+        display: flex;
+        flex-basis: 100%;
+        
+    }
+    .AccountCard .cardHeader{
+        width: 140px;
+        max-height: 185px;
+    }
+    .AccountCard .avatar{
+        width: 140px;
+        margin: 14px 0px 0px;
+    }
+    .info__wrapper{
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: 10px;
+        justify-content: left;
+    }
+    .info__wrapper .balance{
+        margin-top: 8px;
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .AccountCard .text{
+        display: block;
+        text-align: start;
+        justify-content: left;
+        margin: 0;
+    }
+    .AccountCard .value{
+        font-size: 24px;
+        line-height: 29px;
+    }
+    .info__wrapper .name{
+        font-size: 24px;
+        line-height: 40px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .AccountCard{
+        display: none;
+    }
 }

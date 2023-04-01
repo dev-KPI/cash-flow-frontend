@@ -8,7 +8,9 @@ export const ExpenseApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getExpensesPerLastMonth: builder.query<IExpenseItem[], null>({
             query: () => ({
-                url: `/expenses?time_like=${DateService.getCurrentYear()}-${(DateService.getCurrentMonthIdx() + '').length < 2 ? ('0' + DateService.getCurrentMonthIdx()) : DateService.getCurrentMonthIdx()}`,
+                url: `/expenses?time_like=2023-03`,
+                // full workin example
+                // url: `/expenses?time_like=${DateService.getCurrentYear()}-${(DateService.getCurrentMonthIdx() + '').length < 2 ? ('0' + DateService.getCurrentMonthIdx()) : DateService.getCurrentMonthIdx()}`,
             }),
             transformErrorResponse: (
                 response: { status: string | number },
