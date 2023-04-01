@@ -1,6 +1,5 @@
-import React, {FC, SetStateAction, useEffect} from 'react';
+import React, {FC, SetStateAction} from 'react';
 import classes from './UserExpenseCardDot.module.css'
-import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/useAppStore';
 import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpensetInterfaces';
 import Light from '@components/Light/Light';
 interface ExpensesCardDotProps{

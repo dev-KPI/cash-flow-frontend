@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, FC, useState, SetStateAction } from 'react';
+import React, { useRef, FC, SetStateAction } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartEvent } from 'chart.js'
-import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
+import { useAppSelector } from '@hooks/useAppStore';
 import type { ChartData, ChartOptions } from 'chart.js';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
 
-import { Context } from 'vm';
-import { useAppDispatch } from '@hooks/useAppStore';
 import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpensetInterfaces';
 import { AnyObject, EmptyObject } from 'chart.js/dist/types/basic';
 import { numberWithCommas } from '@services/UsefulMethods/UsefulMethods';

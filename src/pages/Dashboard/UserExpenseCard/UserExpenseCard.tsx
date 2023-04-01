@@ -1,10 +1,11 @@
-import React, { useEffect, useCallback, useState, ReactNode } from 'react';
-import { useGetCategoryExpensesQuery, useGetCategoryExpenseByIdQuery, useGetCategoryExpensesTotalQuery, useAddCategoryExpenseMutation, useUpdateCategoryExpenseMutation, useDeleteCategoryExpenseMutation } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice';
+import React, {  useState} from 'react';
+import { useGetCategoryExpensesQuery, useGetCategoryExpensesTotalQuery } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice';
 import classes from './UserExpenseCard.module.css'
-import UserExpenseChart from '@components/UserExpenseChart/UserExpenseChart';
-import UserExpenseCardDot from '@components/UserExpenseCardDot/UserExpenseCardDot';
+
 import { numberWithCommas } from '@services/UsefulMethods/UsefulMethods';
-import UserExpenseCardLoader from './UserExpenseCardLoader';
+import UserExpenseCardLoader from '@pages/Dashboard/UserExpenseCard/UserExpenseCardLoader';
+import UserExpenseChart from '@pages/Dashboard/UserExpenseChart/UserExpenseChart';
+import UserExpenseCardDot from '@pages/Dashboard/UserExpenseCardDot/UserExpenseCardDot';
 
 
 const UserExpenseCard = () => {
@@ -53,7 +54,7 @@ const UserExpenseCard = () => {
    
     return (
         <div className={classes.expenseChart} onMouseEnter={clearInterval} onMouseLeave={setInterval} onClick={handleCloseExtended}>
-            {!isExpensesLoading || isTotalLoading ? <UserExpenseCardLoader /> :
+            {isExpensesLoading || isTotalLoading ? <UserExpenseCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Expenses</h3>
                     <div className={classes.wrapper}>

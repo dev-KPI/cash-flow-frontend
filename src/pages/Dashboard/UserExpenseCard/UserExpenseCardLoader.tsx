@@ -1,12 +1,15 @@
-import React from 'react';
+import { useAppSelector } from '@hooks/useAppStore';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import ContentLoader from 'react-content-loader';
+
 const UserExpenseCardLoader = () => {
+    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     return (
         <ContentLoader
             speed={2}
             viewBox="0 0 510 300"
-            backgroundColor="#f3f3f3"
-            foregroundColor="#ecebeb"
+            backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
+            foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
         >
             <rect x="16" y="24" rx="3" ry="3" width="105" height="22" />
             <rect x="263" y="75" rx="0" ry="0" width="107" height="13" />

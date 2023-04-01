@@ -6,8 +6,8 @@ import MonthPicker from '@components/MonthPicker/MonthPicker';
 import Header from '@components/Header/Header';
 import OperationCard from '@components/OperationCard/OperationCard';
 
-import UserExpenseCard from '@components/UserExpenseCard/UserExpenseCard';
-import UserExpenseGraphCard from '@components/UserExpenseGraph/UserExpenseGraphCard';
+import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard';
+import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';
 
 
 const Dashboard = () => {
