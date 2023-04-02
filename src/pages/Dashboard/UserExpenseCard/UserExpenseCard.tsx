@@ -1,19 +1,21 @@
-import React, {  useState} from 'react';
+import React, {  SetStateAction, useEffect, useState} from 'react';
 import { useGetCategoryExpensesQuery, useGetCategoryExpensesTotalQuery } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice';
 import classes from './UserExpenseCard.module.css'
 
-import { numberWithCommas } from '@services/UsefulMethods/UsefulMethods';
+import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import UserExpenseCardLoader from '@pages/Dashboard/UserExpenseCard/UserExpenseCardLoader';
 import UserExpenseChart from '@pages/Dashboard/UserExpenseChart/UserExpenseChart';
 import UserExpenseCardDot from '@pages/Dashboard/UserExpenseCardDot/UserExpenseCardDot';
 
-
 const UserExpenseCard = () => {
-    const [id, setId] = useState<number>(0);
-    const [isExtended, setIsExtended] = useState<boolean>(false);
+    const [id, setId] = useState<number>();
+    const [isExtended, setIsExtended] = useState<boolean>();
     const { data: expenses = [], error: Expenses_GET_error, isError: isExpensesError, isLoading: isExpensesLoading } = useGetCategoryExpensesQuery(null);
     const { data: total, error: Total_GET_error, isError: isTotalError, isLoading: isTotalLoading } = useGetCategoryExpensesTotalQuery(null);
 
+    useEffect(()=>{ 
+        id ? setId(id) : setId(0)
+    }, [])
 
     if (isExpensesError || isTotalError) {
         return <div>Error</div>

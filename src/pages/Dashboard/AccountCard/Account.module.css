@@ -1,0 +1,124 @@
+.AccountCard{
+    composes: cardComponent from "@styles/style.css";
+    max-width: 374px;
+    min-width: 256px;
+    max-height: 450px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 340px;
+    padding: 24px 32px 24px;
+}
+.cardHeader{
+    display: flex;
+    flex-direction: column;
+}
+.AccountCard .title{
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: var(--main-text);
+}
+.AccountCard .avatar{
+    max-width: 180px;
+    margin-left: calc((100% - 180px)/2);
+    margin-top: 10px;
+}
+
+.info__wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.info__wrapper .text{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.text .name{
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 40px;
+    color: var(--main-text);
+}
+.text .email{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--text);
+}
+
+.AccountCard .info__wrapper{
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column;
+}
+.info__wrapper .balance {
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--main-text);
+}
+.info__wrapper .value{
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    color: var(--main-green);
+}
+.info__wrapper .range{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+    color: var(--text);
+}
+
+@media only screen and (max-width: 1440px) {
+    .AccountCard{
+        flex-direction: row;
+        max-height: 240px;
+        max-width: 100%;
+        min-width: 386px;
+        display: flex;
+        flex-basis: 100%;
+    }
+    .AccountCard .cardHeader{
+        width: 140px;
+    }
+    .AccountCard .avatar{
+        width: 140px;
+        margin: 14px 0px 0px;
+    }
+    .info__wrapper{
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: 10px;
+        justify-content: left;
+    }
+    .info__wrapper .balance{
+        margin-top: 8px;
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .AccountCard .text{
+        display: block;
+        text-align: start;
+        justify-content: left;
+        margin: 0;
+    }
+    .AccountCard .value{
+        font-size: 24px;
+        line-height: 29px;
+    }
+    .info__wrapper .name{
+        font-size: 24px;
+        line-height: 40px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .AccountCard{
+        display: none;
+    }
+}

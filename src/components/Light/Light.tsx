@@ -3,7 +3,7 @@ import classes from './Light.module.css';
 
 //store
 import { useAppSelector } from '@hooks/useAppStore';
-import { parseColors } from '@services/UsefulMethods/UsefulMethods';
+import { parseColors } from '@services/UsefulMethods/UIMethods';
 
 export interface ILight {
     type: 'solid' | 'hollow'

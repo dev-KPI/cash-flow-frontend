@@ -1,40 +1,32 @@
 .expenseChart__wrapper{
-    composes: cardComponent from "../../../styles/style.css";
+    composes: cardComponent from "@styles/style.css";
     display: inline-block;
     max-width: 1015px;
     max-height: 486px;
 
-    margin-top: 30px;
     display: flex;
-    flex-basis: 1015px;
     flex-direction: column;
-    padding: 32px 32px 45px 32px;
+    padding: 24px 32px;
 }
-
 .expenseChartTitle{
-    
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
 }
 
 .chart__uppernav{
-    width: 100%;
+    max-width: 500px;
+    max-height: 65px;
+    flex-basis: 200px;
     display: flex;
     flex-direction: row;
 }
 .chart__titleRange{
     display: flex;
     flex-basis: 200px;
-    gap: 14px;
     flex-direction: column;
 }
 .chart__titleRange .title{
-    margin-top: 6px;
-
-    font-style: normal;
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
@@ -42,7 +34,6 @@
 }
 .chart__titleRange .range{
     color: var(--text);
-    font-style: normal;
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
@@ -53,14 +44,12 @@
 
 .chartinner__wrapper {
     max-width: 1015px;
-    max-height: 300px;
+    max-height: 320px;
     flex-basis: 1015px;
     display: flex;
     margin-top: 45px;
 }
 .chartinner__wrapper h3 {
-    font-family: 'Inter';
-    font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;
@@ -71,18 +60,12 @@
 .chartinner__wrapper i {
     color: var(--text);
 }
-
-@media only screen and (max-width: 768px) {
-    .chartinner__wrapper {
-        max-height: 180px;
-    }
-}
 @media only screen and (max-width: 400px) {
+    .expenseChart__wrapper{
+        padding: 12px;
+    }
     .chartinner__wrapper {
         max-height: 160px;
         max-width: calc(100% - 24px);
-    }
-    .expenseChart__wrapper{
-        padding: 12px;
     }
 }

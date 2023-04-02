@@ -1,15 +1,21 @@
-import React, {FC, SetStateAction} from 'react';
+import React, {FC, Dispatch, SetStateAction, useEffect} from 'react';
+
+//UI
 import classes from './UserExpenseCardDot.module.css'
-import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpensetInterfaces';
 import Light from '@components/Light/Light';
+//store
+import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/useAppStore';
+import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpensetInterfaces';
+
 interface ExpensesCardDotProps{
     expense: IUserExpenseChartDataItem
-    setId: (setId: SetStateAction<number>) => void;
+    setId: Dispatch<SetStateAction<number | undefined>>
 }
+
 const ExpensesCardDot: FC<ExpensesCardDotProps> = ({expense, setId}) => {
 
      const onClick = () => {
-        setId(expense.id)
+        setId(expense ? expense.id : 0)
     }
 
     return (
