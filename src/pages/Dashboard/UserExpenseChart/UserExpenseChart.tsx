@@ -1,4 +1,4 @@
-import React, { useRef, FC, SetStateAction } from 'react';
+import React, { useRef, FC, Dispatch, SetStateAction } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartEvent } from 'chart.js'
 import { useAppSelector } from '@hooks/useAppStore';
 import type { ChartData, ChartOptions } from 'chart.js';
