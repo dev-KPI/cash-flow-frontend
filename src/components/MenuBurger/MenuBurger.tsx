@@ -101,11 +101,11 @@ const MenuBurger: FC = () => {
             <h3 className={classes.title}>Groups</h3>
             <ul className={classes.list}>
                 <li key={'12grt13'} className={classes.item}>
-                    <Light type="green"/>
+                        <Light type={'solid'} color="#4C6FFF"/>
                     <h4 className={classes.item__title}>Job</h4>
                 </li>
                 <li key={'11jh23'} className={classes.item}>
-                    <Light type="red"/>
+                        <Light type={'solid'} color="#FF6E01"/>
                     <h4 className={classes.item__title}>Family</h4>
                 </li>
             </ul>

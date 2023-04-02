@@ -9,7 +9,7 @@ export const ExpenseApiSlice = api.injectEndpoints({
         getExpensesPerLastMonth: builder.query<IExpenseItem[], null>({
             query: () => ({
                 url: `/expenses?time_like=2023-03`,
-                // full workin example
+                // full working method
                 // url: `/expenses?time_like=${DateService.getCurrentYear()}-${(DateService.getCurrentMonthIdx() + '').length < 2 ? ('0' + DateService.getCurrentMonthIdx()) : DateService.getCurrentMonthIdx()}`,
             }),
             transformErrorResponse: (

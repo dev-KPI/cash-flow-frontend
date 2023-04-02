@@ -1,8 +1,8 @@
 .expenseChart__wrapper{
     composes: cardComponent from "@styles/style.css";
-    max-width: 1080px;
-    flex-basis: 1080px;
-    max-height: 480px;
+    display: inline-block;
+    max-width: 1015px;
+    max-height: 486px;
 
     display: flex;
     flex-direction: column;

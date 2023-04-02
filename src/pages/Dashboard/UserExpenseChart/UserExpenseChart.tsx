@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, FC, useState, SetStateAction } from 'react';
+import React, { useRef, FC, SetStateAction } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartEvent } from 'chart.js'
-import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
+import { useAppSelector } from '@hooks/useAppStore';
 import type { ChartData, ChartOptions } from 'chart.js';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
 
-import { Context } from 'vm';
-import { useAppDispatch } from '@hooks/useAppStore';
 import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpensetInterfaces';
-import { useGetCategoryExpenseByIdQuery } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice';
+import { AnyObject, EmptyObject } from 'chart.js/dist/types/basic';
+import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 
 
 interface DoughnutProps {
@@ -23,10 +22,14 @@ ChartJS.register(
 
 interface UserExpenseChartProps {
     expenses: IUserExpenseChartDataItem[];
-    setId: (setId: SetStateAction<number | undefined>) => void;
+    total: { total: number } | undefined
+    setId: Dispatch<SetStateAction<number | undefined>>
 }
 
-const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, setId}) => {
+const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) => {
+
+    const {mainTextColor} = useAppSelector(state => state.persistedThemeSlice);
+    
     const dataAmount = expenses.map((item) => item.amount);
     const backgroundColor = expenses.map((item) => item.color)
 
@@ -34,19 +37,34 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, setId}) => {
         datasets: [{
             data: dataAmount ,
             backgroundColor: backgroundColor,
+            borderColor: backgroundColor,
             hoverOffset: 4,
             spacing: 18,
             borderWidth: 1,
             cutout: 73,
-            borderRadius: 30
+            borderRadius: 30      
         }],
+        
     }
 
     const options = {
+        responsive: true,
+        layout: {
+            padding: {
+                bottom: 15
+            }
+        },
         plugins:{
             tooltip: {
                 enabled: false,
             },
+            doughnutLabel: {
+                color: mainTextColor,
+                total: total?.total
+            },
+            doughnutShadow: {
+
+            }
         },
         onHover: (e: ChartEvent) => {
             const { current: chart } = chartRef;
@@ -56,9 +74,30 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, setId}) => {
                 (e.native.target as HTMLElement).style.cursor = 'pointer';
             if (!chart.getActiveElements().length) 
                 (e.native.target as HTMLElement).style.cursor = 'auto';
-        },
-       
+        }
+    }
 
+    const doughnutShadowPlugin = {
+        id: 'doughnutShadow',
+        beforeDraw: (chart: ChartJS, args: AnyObject, pluginOptions: AnyObject) => {
+            const { ctx } = chart;
+            ctx.shadowColor = "rgba(131,131,131, 0.4)";
+            ctx.shadowBlur = 10;
+        },
+    };
+    const doughnutLabelPlugin = {
+        id: 'doughnutLabel',
+        beforeDatasetsDraw: (chart: ChartJS, args: AnyObject, pluginOptions: AnyObject) => {
+            const { ctx, data } = chart;
+            ctx.save();
+            const xCoor = chart.getDatasetMeta(0).data[0].x;
+            const yCoor = chart.getDatasetMeta(0).data[0].y;
+            ctx.font = '600 24px Inter';
+            ctx.fillStyle = pluginOptions.color
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${ numberWithCommas(pluginOptions.total)}$`, xCoor, yCoor);
+        },
     }
 
     const chartRef = useRef<ChartJS>(null)
@@ -67,17 +106,19 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, setId}) => {
         if (!chart) return;
         const element = getElementAtEvent(chart, e);
         const index = element[0]?.index
-        setId(index);
+        if(index !== undefined) {
+            setId(expenses[index].id);
+        }
     }
 
-   
 
     return (
         <Chart
             type='doughnut'
             ref={chartRef}
             data = {data}
-            options={options}
+            options = {options}
+            plugins={[doughnutLabelPlugin, doughnutShadowPlugin]}
             onClick={onClick}
         ></Chart>     
     )

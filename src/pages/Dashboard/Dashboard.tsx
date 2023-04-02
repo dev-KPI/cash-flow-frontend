@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //UI
 import classes from './Dashboard.module.css'
@@ -8,17 +8,16 @@ import OperationCard from '@components/OperationCard/OperationCard';
 import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';
 import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard';
 import AccountCard from './AccountCard/AccountCard';
+import { useWindowSize } from '@hooks/useLayout';
 
 
 const Dashboard = () => {
 
-    const getHeader = (): ReactNode => {
-        return (window.innerWidth > 400 && window.innerWidth < 320) ? (
-            <Header />
-            ) : ( 
-            <div>Mobile</div>
-        )
-    }
+    const {width, height} = useWindowSize();
+
+    const getHeader = useCallback((): ReactNode => {
+        return (width > 320 && width < 400) ? (<div>Mobile</div>) : (<Header/>)
+    }, [width])
 
     return (
         <div>

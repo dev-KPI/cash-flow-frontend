@@ -1,4 +1,4 @@
-[data-light-color="red"]{
+/* [data-light-color="red"]{
     --color: var(--main-red)
 }
 [data-light-color="blue"]{
@@ -12,11 +12,22 @@
 }
 [data-light-color="orange"]{
     --color: var(--main-orange)
-}
+} */
 
-.light{
+.lightSolid{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+} 
+
+
+.lightHollow {
+    display: inline-block;
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: var(--color);
+    border-style: solid;
+    border-width: 4px;
+    background-color: transparent;
 }
