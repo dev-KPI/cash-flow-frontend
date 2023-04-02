@@ -21,7 +21,7 @@ import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerI
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
-import { Omiter } from '@services/UsefulMethods/UsefulMethods';
+import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import UserExpenseGraphPreloader from './UserExpenseGraphPreloader';
 
 

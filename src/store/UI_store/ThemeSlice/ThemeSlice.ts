@@ -7,8 +7,8 @@ const initialState: IThemeState = {
     theme: 'light',
     cardBackgroundColor:'0F0F0F',
     backgroundColor: '#151515',
-    mainTextColor:'#EAEAEA',
-    textColor:'#9BABC5',
+    mainTextColor:'#333333',
+    textColor:'#7A7A9D',
 }
 
 export const ThemeSlice = createSlice({

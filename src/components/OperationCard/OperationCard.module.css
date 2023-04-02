@@ -3,7 +3,7 @@
     display: flex;
     max-height: 120px;
     max-width: 255px;
-    min-width: 210px;
+    min-width: 170px;
     flex-basis: 255px;
 }
 .inner{
