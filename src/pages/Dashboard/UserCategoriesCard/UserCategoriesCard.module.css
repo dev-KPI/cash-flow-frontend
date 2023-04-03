@@ -1,0 +1,118 @@
+.categories {
+    composes: cardComponent from "@styles/style.css";
+    display: flex;
+    max-width: 540px;
+    min-width: 450px;
+    flex-basis: 540px;
+    max-height: 300px;
+}
+
+.inner{
+    width: 100%;
+    padding: 24px 24px 14px 24px;
+}
+
+.title {
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 27px;
+    color: var(--main-text)
+}
+
+.categoryName{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: var(--text)
+}
+
+
+.top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.nav {
+    display: flex;
+    gap: 25px;
+}
+
+.nav i {
+    color: var(--text);
+}
+
+
+.list{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+
+    /* margin-bottom: 22px; */
+}
+
+.item{
+    min-width: 65px;
+    max-width: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 5px;
+}
+
+.expenseName{
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text);
+}
+.icon {
+    display: flex;
+    height: 46px;
+    width: 46px;
+    justify-content: center;
+    align-items: center;
+    background: var(--main-green);
+    border-radius: 50%;
+}
+
+.icon i {
+    display: flex;
+    color: #fff;
+    font-size: 18px;
+}
+
+.expenseAmount{
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    color: #FF2D55;
+}
+
+.viewMore{
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40px;
+    height: 40px;
+    border: 3px dashed var(--text);
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--text);
+}
+
+.viewMore i{
+    -webkit-text-stroke: 1.5px;
+}
+
+.info {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: var(--text);
+}

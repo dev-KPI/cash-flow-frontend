@@ -9,6 +9,7 @@ import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';
 import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard';
 import AccountCard from './AccountCard/AccountCard';
 import { useWindowSize } from '@hooks/useLayout';
+import UserCategoriesCard from './UserCategoriesCard/UserCategoriesCard';
 
 
 const Dashboard = () => {
@@ -34,7 +35,7 @@ const Dashboard = () => {
                                 <OperationCard operation={'Income'} />
                                 <OperationCard operation={'Expenses'} />
                             </div>
-                            <div className={classes.categories}></div>
+                            <UserCategoriesCard/>
                         </div>
                         <div className={classes.second__item}>
                             <UserExpenseCard />
@@ -44,7 +45,7 @@ const Dashboard = () => {
                             <AccountCard/>                        
                         </div>
                         <div className={classes.fourth__item}>
-                            {/* <UserExpenseGraphCard/> */}
+                            <UserExpenseGraphCard/>
                         </div>
                         <div className={classes.fifth__item}>
                             <div className={classes.history}></div>
