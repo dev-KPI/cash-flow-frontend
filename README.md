@@ -5,13 +5,13 @@
 ### Pull requests format for forks
 ### Object: Header
 **Add**
-    1. Title | Feature | Else
+    1. `**Title | Feature | Else**`
 
 **Remove**
-    1. Title | Feature | Else
+    1. `**Title | Feature | Else**`
 
 **Refactor**
-    1. Title | Feature | Else
+    1. `**Title | Feature | Else**`
 
 **Fix**
-    1. Title | Feature | Else
+    1. `**Title | Feature | Else**`
