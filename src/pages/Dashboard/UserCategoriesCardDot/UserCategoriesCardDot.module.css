@@ -1,0 +1,39 @@
+.item {
+    /* min-width: 65px; */
+    max-width: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0 auto;
+    gap: 5px;
+}
+
+.expenseName {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text);
+}
+
+.icon {
+    display: flex;
+    height: 46px;
+    width: 46px;
+    justify-content: center;
+    align-items: center;
+    background: var(--main-green);
+    border-radius: 50%;
+}
+
+.icon i {
+    display: flex;
+    color: #fff;
+    font-size: 18px;
+}
+
+.expenseAmount {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    color: #FF2D55;
+}
