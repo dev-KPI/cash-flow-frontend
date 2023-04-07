@@ -1,0 +1,56 @@
+.header{
+    width: 100%;
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    z-index: 500;
+    background-color: var(--cardbg);
+}
+.header__wrapper{
+    max-width: 330px;
+    max-height: 60px;
+    flex-basis: 330px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header__wrapper h1{
+    color: var(--main-text);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 54px;
+}
+.header__wrapper span{
+    color: var(--main-green);
+}
+.header__wrapper .burger{
+    font-size: 24px;
+    fill: var(--main-text);
+}
+
+.menuBurger {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: scroll;
+    z-index: 998;
+    top: 0;
+    opacity: 0;
+    left: -100%;
+    transition: all 0.3s ease-in-out;
+    background-color: rgba(102, 102, 102, 0.07);
+    backdrop-filter: blur(0.05rem);
+}
+.menuBurgerTransition{
+    left: 0;
+    opacity: 1;
+}
+.backdrop{
+    position: absolute;
+    z-index: 990;
+    width: 100%;
+    height: 1040px;
+    left: 0;
+    top: 0;
+}

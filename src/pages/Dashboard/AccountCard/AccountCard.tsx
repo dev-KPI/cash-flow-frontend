@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 
 //UI
-import classes from './Account.module.css';
+import classes from './AccountCard.module.css';
 import userIcon from '@assets/user-icon.svg';
 
 const AccountCard: FC = () => {

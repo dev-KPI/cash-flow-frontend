@@ -2,19 +2,19 @@
 import Dashboard from "@pages/Dashboard/Dashboard";
 import Analytics from "@pages/Analytics/Analytics"
 //UI
-import MenuBurger from "@components/MenuBurger/MenuBurger";
+import MenuBurger from "@components/Header/MobileHeader/MenuBurger/MenuBurger";
 import Header from "@components/Header/Header";
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
-export const NOTIFICATIONS_PAGE = '/';
-export const CATEGORIES_PAGE = '/';
-export const GROUPS_PAGE = '/';
-export const HISTORY_PAGE = '/';
-export const SETTINGS_PAGE = '/';
-export const LOG_IN_PAGE = '/';
-export const SIGN_UP_PAGE = '/';
-export const LOG_OUT = '/';
+export const NOTIFICATIONS_PAGE = '/notifications';
+export const CATEGORIES_PAGE = '/categories';
+export const GROUPS_PAGE = '/groups';
+export const HISTORY_PAGE = '/history';
+export const SETTINGS_PAGE = '/settings';
+export const LOG_IN_PAGE = '/login';
+export const SIGN_UP_PAGE = '/signup';
+export const LOG_OUT = '/logout';
 
 
 export const routesAuth = [
@@ -59,30 +59,6 @@ export const routesMobileNavigation = [
 
 export const components = [
     {
-        path: "/components/Menu",
-        component: MenuBurger
-    },{
-        path: "/components/Menu/analytics",
-        component: MenuBurger
-    },{
-        path: "/components/Menu/analytics1",
-        component: MenuBurger
-    },{
-        path: "/components/Menu/analytics2",
-        component: MenuBurger
-    },{
-        path: "/components/Menu/analytics3",
-        component: MenuBurger
-    },{
-        path: "/components/Menu/analytics4",
-        component: MenuBurger
-    },{
-        path: "/components/Menu/analytics5",
-        component: MenuBurger
-    },{
-        path: "/components/Menu/analytics6",
-        component: MenuBurger
-    },{
         path: "/components/Header",
         component: Header
     }

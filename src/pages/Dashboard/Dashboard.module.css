@@ -9,11 +9,12 @@
     display: grid;
     gap: 30px;
     grid-template-columns: repeat(auto-fill, minmax(374px, 540px));
-    grid-template-rows: minmax(460px, 1fr);
+    grid-template-rows: minmax(450px, 1fr);
 }
 .first__item{
     max-width: 540px;
     flex-basis: 540px;
+    height: 450px;
     grid-column: 1/2;
     grid-row: 1/2;
     display: flex;
@@ -23,6 +24,7 @@
 .second__item{
     max-width: 510px;
     flex-basis: 510px;
+    height: 450px;
     grid-column: 2/3;
     grid-row: 1/2;
     display: flex;
@@ -144,21 +146,58 @@
     }
 }
 @media only screen and (max-width: 400px) {
+    .header{
+    }
     .title{
         display: none;
     }
     .grid{
+        margin-top: 12px;
         column-gap: 0px;
         gap: 12px;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        grid-template-rows: minmax(120px, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(320px, 400px));
+        grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    .categories{
+        max-width: 100%;
+        min-width: 120px;
+    }
+    .groups{
+        max-width: 100%;
+        min-width: 120px;
+    }
+    .history{
+        max-width: 100%;
+        min-width: 120px;
     }
     .OperationCards{
         flex-direction: column;
         gap: 12px;
+        max-width: 100%;
+        min-width: 120px;
+        max-height: 212px;
     }
     .first__item{
+        gap: 12px;
         grid-column: 1/2;
         grid-row: 1/2;
+    }
+    .second__item{
+        gap: 12px;
+        grid-column: 1/2;
+        grid-row: 2/3;
+    }
+    .third__item{
+        display: none;
+    }
+    /* .fourth__item{
+        gap: 12px;
+        grid-column: 1/2;
+        grid-row: 7;
+    } */
+    .fifth__item{
+        gap: 12px;
+        grid-column: 1/2;
+        grid-row: 3/4;
     }
 }
