@@ -9,11 +9,12 @@
     display: grid;
     gap: 30px;
     grid-template-columns: repeat(auto-fill, minmax(374px, 540px));
-    grid-template-rows: minmax(460px, 1fr);
+    grid-template-rows: minmax(450px, 1fr);
 }
 .first__item{
     max-width: 540px;
     flex-basis: 540px;
+    height: 450px;
     grid-column: 1/2;
     grid-row: 1/2;
     display: flex;
@@ -23,6 +24,7 @@
 .second__item{
     max-width: 510px;
     flex-basis: 510px;
+    height: 450px;
     grid-column: 2/3;
     grid-row: 1/2;
     display: flex;

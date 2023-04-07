@@ -2,12 +2,13 @@ import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //UI
 import classes from './Dashboard.module.css'
+import Header from '@components/Header/Header';                                            //global components
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 import OperationCard from '@components/OperationCard/OperationCard';
-import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';
-import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard';
-import AccountCard from './AccountCard/AccountCard';
-import Header from '@components/Header/Header';
+import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';            //local components
+import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard'; 
+import AccountCard from '@pages/Dashboard/AccountCard/AccountCard';
+import HistoryCard from '@pages/Dashboard/HistoryCard/HistoryCard';
 
 
 const Dashboard = () => {  
@@ -40,7 +41,7 @@ const Dashboard = () => {
                             {/* <UserExpenseGraphCard/> */}
                         </div>
                         <div className={classes.fifth__item}>
-                            <div className={classes.history}></div>
+                            <HistoryCard/>
                         </div>
                     </div>
                 </div>
