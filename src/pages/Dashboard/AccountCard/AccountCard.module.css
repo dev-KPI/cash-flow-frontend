@@ -2,7 +2,7 @@
     composes: cardComponent from "@styles/style.css";
     max-width: 374px;
     min-width: 256px;
-    max-height: 450px;
+    height: 450px;
     display: flex;
     flex-direction: column;
     flex-basis: 340px;
@@ -51,7 +51,7 @@
 
 .AccountCard .info__wrapper{
     display: flex;
-    margin-top: 20px;
+    margin-top: 8px;
     flex-direction: column;
 }
 .info__wrapper .balance {
