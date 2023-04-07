@@ -1,6 +1,5 @@
 import React, { FC, MouseEvent, MouseEventHandler, ReactNode, DetailedHTMLProps, HTMLAttributes } from "react";
 import {useMemo, useState, useEffect} from 'react';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { useWindowSize } from "usehooks-ts";
 
 //UI
