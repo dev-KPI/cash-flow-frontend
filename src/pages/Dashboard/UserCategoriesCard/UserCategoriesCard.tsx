@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import UserCategoriesCardDot from '../UserCategoriesCardDot/UserCategoriesCardDot';
 import classes from './UserCategoriesCard.module.css'
-
-
+import { useElementSize } from 'usehooks-ts'
 const json = {
     "groups": [
         {
@@ -128,108 +127,42 @@ export interface ICategoryItem {
 const UserCategoriesCard = () => {
     const [categories, setCategories] = useState<ICategoryItem[]>([]);
     const [totalCategories, setTotalCategories] = useState<number>(11);
+    const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     const {groups} = json;
 
     useEffect( () => {
         setCategories(groups[0].categories);
     }, [])
-    
-    // var detectWrap = function (className: string) {
-
-    //     // let wrappedItems = [];
-    //     let prevItem: DOMRect = {} as DOMRect;
-    //     let currItem: DOMRect = {} as DOMRect;
-    //     let items = document.getElementsByClassName(className);
-
-    //     for (var i = 0; i < items.length; i++) {
-    //         currItem = items[i].getBoundingClientRect();
-    //         if (prevItem && prevItem.top < currItem.top) {
-    //             items[i].classList.add("wrapped");
-    //         } else {
-    //             items[i].classList.remove("wrapped");
-    //         }
-    //         prevItem = currItem;
-    //     };
-
-    //     // return wrappedItems;
-
-    // }
-
+   
     function detectWrap(className: string) {
         let container: HTMLElement = document.getElementsByClassName(className)[0] as HTMLElement
-        
+
         const gap = parseFloat(getComputedStyle(container).gap);
         for (const child of container.children) {
             const childElement = child as HTMLElement;
-            const prevSibling = childElement.previousSibling as HTMLElement;
+            const prevSibling = childElement.previousElementSibling as HTMLElement;
+
             childElement.classList.remove(classes.wrapped);
-            
-            const bigOffsetHeight = container.offsetTop + gap + childElement.offsetHeight
-            const lowOffsetHeight = container.offsetTop
-            
-            if (childElement.offsetTop > bigOffsetHeight) {
-                // console.log("1", childElement);
-                // console.log(prevSibling);
-                
+            const offsetHeight = container.offsetTop + gap + childElement.offsetHeight
+           
+            if (childElement.offsetTop > offsetHeight) {
                 prevSibling.classList.add(classes.wrapped);
                 if (!childElement.classList.contains("viewMore")) {
+                    console.log(1);
                     childElement.classList.add(classes.wrapped);
                 }
-                
-                
-                
             }
-            // else if (childElement.offsetTop > lowOffsetHeight) {
-            //     // console.log("2", childElement); 
-            //     childElement.classList.remove(classes.wrapped);
-
-            //     // var rect = childElement.getBoundingClientRect();
-            //     // console.log(rect.top);
-            //     // console.log(offsetHeight);
-            // }
         }
     }
-    // const setCategories1 = () => {
-    //     let container: HTMLElement = document.getElementsByClassName(classes.list)[0] as HTMLElement;
-    //     const list: HTMLCollectionOf<Element> = container.children;
-    //     const newList = Array.from(list).filter( (item:Element)  =>  !item.classList.contains("wrapped"));
-    //     newList.pop()
-    //     // const viewMore: HTMLElement = document.querySelector(".viewMore") as HTMLElement;
-    //     // newList.push(viewMore);
-    //     // console.log(newList);
-    //     // console.log(newList.length);
-    //     setTotalCategories(newList.length)
-    
 
-    // }
 
-    // const detectWrap = () => {
-    //     const elements= document.querySelectorAll(classes.list);
-    //     let previousElement: HTMLElement = {} as HTMLElement;
-    //     let rowTop = elements[0].getBoundingClientRect().top;
-    //     Array.from(elements).forEach(el => el.classList.remove('last-el-of-row'))
-    //     elements.forEach(el => {
-    //         const elementTop = el.getBoundingClientRect().top;
-    //         const elHTML = el as HTMLElement;
-    //         if (rowTop < elementTop) {
-    //             previousElement.classList.add('last-el-of-row');
-    //             rowTop = elementTop;
-    //         }
-
-    //         previousElement = elHTML;
-    //     })
-    // }
-    window.addEventListener('resize', (event) =>{
-        detectWrap(classes.list);
-        // setCategories1()
-        // console.log(totalCategories);
-        // var wrappedItems = detectWrap(classes.item);
-        // for (var k = 0; k < wrappedItems.length; k++) {
-        //     wrappedItems[k].classList.add("wrapped");
-        //     console.log(wrappedItems);
-        // }
-    });
-
+    // window.addEventListener('resize', (event) =>{
+        // detectWrap(classes.list);
+    // });
+    useEffect(()=> {
+        detectWrap(classes.list) 
+        console.log(1);
+    }, [height, width])
     const getCategories = (categories: any[]) => {
         return categories.map((item, i) => <UserCategoriesCardDot key={i} category={item.category} amount={item.amount} />)
     }
@@ -252,7 +185,7 @@ const UserCategoriesCard = () => {
                         <i className="bi bi-chevron-right"></i>
                     </div>
                 </div>
-                <ul className={classes.list}>
+                <ul className={classes.list} ref={squareRef}>
                     {getCategories(properCategories)}
                     <li className={`${classes.item} viewMore`}>
                         <div className={classes.viewMore}>
