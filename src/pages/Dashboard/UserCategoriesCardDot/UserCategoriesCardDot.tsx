@@ -1,23 +1,12 @@
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import React, { FC, Dispatch, SetStateAction, useEffect } from 'react';
+import { ICategoryItem } from '../UserCategoriesCard/UserCategoriesCard';
 
 //UI
 import classes from './UserCategoriesCardDot.module.css';
 
 
-interface Category {
-    id: number,
-    title: string,
-    color: string,
-    icon: string
-}
-
-interface UserCategoriesCardDotProps {
-    category: Category,
-    amount: number
-}
-
-const UserCategoriesCardDot: FC<UserCategoriesCardDotProps> = ({ category, amount}) => {
+const UserCategoriesCardDot: FC<ICategoryItem> = ({ category, amount}) => {
 
     return (
         <li className={classes.item}>

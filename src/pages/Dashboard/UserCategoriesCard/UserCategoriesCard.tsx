@@ -126,8 +126,9 @@ export interface ICategoryItem {
 
 const UserCategoriesCard = () => {
     const [categories, setCategories] = useState<ICategoryItem[]>([]);
-    const [totalCategories, setTotalCategories] = useState<number>(11);
+    const [totalItems, setTotalItems] = useState<number>(11);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
+
     const {groups} = json;
 
     useEffect( () => {
@@ -148,32 +149,27 @@ const UserCategoriesCard = () => {
             if (childElement.offsetTop > offsetHeight) {
                 prevSibling.classList.add(classes.wrapped);
                 if (!childElement.classList.contains("viewMore")) {
-                    console.log(1);
                     childElement.classList.add(classes.wrapped);
                 }
             }
         }
     }
 
-
-    // window.addEventListener('resize', (event) =>{
-        // detectWrap(classes.list);
-    // });
     useEffect(()=> {
-        detectWrap(classes.list) 
-        console.log(1);
+        detectWrap(classes.list);
     }, [height, width])
-    const getCategories = (categories: any[]) => {
+
+    const getCategories = (categories: ICategoryItem[]) => {
         return categories.map((item, i) => <UserCategoriesCardDot key={i} category={item.category} amount={item.amount} />)
     }
-    const useCategories = (categories: any[] , counter: number) => {
+    const useCategories = (categories: ICategoryItem[] , total: number) => {
         const properCategories = useMemo(() => {
-            return categories.slice(0, counter)
-        }, [categories, counter])
+            return categories.slice(0, total)
+        }, [categories, total])
         return properCategories;
     }
 
-    const properCategories = useCategories(categories, totalCategories)
+    const properCategories = useCategories(categories, totalItems)
 
     return (
         <div className={classes.categories}>
@@ -193,11 +189,8 @@ const UserCategoriesCard = () => {
                         </div>
                         <h6 className={classes.expenseName}>View More</h6>
                     </li>
-                </ul>
-                {/* <p className={classes.info}>You can choose the desired category and log your expenses.</p> */}
-                
+                </ul>    
             </div>
-            
         </div>
     );
 };

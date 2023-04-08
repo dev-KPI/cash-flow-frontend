@@ -49,8 +49,6 @@
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
-
-    /* margin-bottom: 22px; */
 }
 
 .item {
@@ -89,9 +87,6 @@
     -webkit-text-stroke: 1.5px;
 }
 
-.info {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 21px;
-    color: var(--text);
+.wrapped {
+   display: none;
 }
