@@ -3,7 +3,7 @@ import UserCategoriesCardDot from '../UserCategoriesCardDot/UserCategoriesCardDo
 import classes from './UserCategoriesCard.module.css'
 import { useElementSize } from 'usehooks-ts'
 const json = {
-    "groups": [
+    "categoriesByGroup": [
         {
             "title": "my",
             "categories": [
@@ -108,6 +108,65 @@ const json = {
                 },
                 
             ]
+        },
+        {
+            "title": "Family",
+            "categories": [
+                {
+                    "category": {
+                        "id": 1,
+                        "title": "Entertainment",
+                        "color": "#0f4f5f",
+                        "icon": "link.com"
+                    },
+                    "amount": 999
+                },
+                {
+                    "category": {
+                        "id": 2,
+                        "title": "Food",
+                        "color": "#FF6E01",
+                        "icon": "link.com"
+                    },
+                    "amount": 59
+                },
+                {
+                    "category": {
+                        "id": 3,
+                        "title": "Products",
+                        "color": "#FF2D55",
+                        "icon": "link.com"
+                    },
+                    "amount": 1709
+                },
+                {
+                    "category": {
+                        "id": 4,
+                        "title": "Cars",
+                        "color": "#4C6FFF",
+                        "icon": "link.com"
+                    },
+                    "amount": 10190
+                },
+                {
+                    "category": {
+                        "id": 5,
+                        "title": "Entertainment",
+                        "color": "#0f4f5f",
+                        "icon": "link.com"
+                    },
+                    "amount": 999
+                },
+                {
+                    "category": {
+                        "id": 6,
+                        "title": "Food",
+                        "color": "#FF6E01",
+                        "icon": "link.com"
+                    },
+                    "amount": 59
+                }     
+            ]
         }
     ],
 }
@@ -127,14 +186,16 @@ export interface ICategoryItem {
 const UserCategoriesCard = () => {
     const [categories, setCategories] = useState<ICategoryItem[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
+    const [groupIndex, setGroupIndex] = useState<number>(0);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
-    const {groups} = json;
-
+    const { categoriesByGroup } = json;
+    let groups = categoriesByGroup.map(a => a.title);
     useEffect( () => {
-        setCategories(groups[0].categories);
-    }, [])
-   
+        const newCategories = categoriesByGroup.find(item => item.title === groups[groupIndex])?.categories
+        if (newCategories)
+            setCategories(newCategories);
+    }, [groupIndex])
     function detectWrap(className: string) {
         let container: HTMLElement = document.getElementsByClassName(className)[0] as HTMLElement
 
@@ -169,16 +230,36 @@ const UserCategoriesCard = () => {
         return properCategories;
     }
 
+    const handleNextGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (!groups[groupIndex + 1]) return;
+        setGroupIndex(groupIndex + 1)
+    }
+
+    const handlePrevGroup =(e: React.MouseEvent<HTMLButtonElement>) => {
+        if (!groups[groupIndex - 1]) return;
+        setGroupIndex(groupIndex - 1)
+    }
+
     const properCategories = useCategories(categories, totalItems)
 
     return (
         <div className={classes.categories}>
             <div className={classes.inner}>
                 <div className={classes.top}>
-                    <h3 className={classes.title}>Categories <span className={classes.categoryName}>(my)</span></h3>
+                    <h3 className={classes.title}>Categories <span className={classes.categoryName}>({groups[groupIndex]})</span></h3>
                     <div className={classes.nav}>
-                        <i className="bi bi-chevron-left"></i>
-                        <i className="bi bi-chevron-right"></i>
+                        <button
+                            type="submit"
+                            onClick={handlePrevGroup}
+                            className={classes.btn + ' ' + classes.previous}>
+                            <i id='chevron' className="bi bi-chevron-left"></i>
+                        </button>
+                        <button
+                            type="submit"
+                            onClick={handleNextGroup}
+                            className={classes.btn + ' ' + classes.next}>
+                            <i id='chevron' className="bi bi-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
                 <ul className={classes.list} ref={squareRef}>
