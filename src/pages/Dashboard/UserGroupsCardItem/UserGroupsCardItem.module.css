@@ -1,0 +1,36 @@
+.item {
+    composes: item from "@pages/Dashboard/UserGroupsCard/UserGroupsCard.module.css";
+    background: linear-gradient(var(--shadow-color) 0 0) no-repeat;
+    background-size: 0%;
+    border-radius: 7px;
+}
+
+.expenseName {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text);
+}
+
+.icon {
+    display: flex;
+    height: 46px;
+    width: 46px;
+    justify-content: center;
+    align-items: center;
+    background: var(--main-green);
+    border-radius: 50%;
+}
+
+.icon i {
+    display: flex;
+    color: #fff;
+    font-size: 18px;
+}
+
+.expenseAmount {
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+    color: #FF2D55;
+}
