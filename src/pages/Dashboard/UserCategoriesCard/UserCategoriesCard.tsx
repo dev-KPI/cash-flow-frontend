@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import UserCategoriesCardDot from '../UserCategoriesCardDot/UserCategoriesCardDot';
+import UserCategoriesCardDot from '../UserCategoriesCardItem/UserCategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
 import { useElementSize } from 'usehooks-ts'
 const json = {

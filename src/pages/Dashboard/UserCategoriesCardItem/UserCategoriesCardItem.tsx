@@ -3,7 +3,7 @@ import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { ICategoryItem } from '../UserCategoriesCard/UserCategoriesCard';
 
 //UI
-import classes from './UserCategoriesCardDot.module.css';
+import classes from './UserCategoriesCardItem.module.css';
 
 
 const UserCategoriesCardDot: FC<ICategoryItem> = ({ category, amount}) => {
