@@ -1,6 +1,6 @@
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { ICategoryItem } from '../UserCategoriesCard/UserCategoriesCard';
+import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
 
 //UI
 import classes from './UserCategoriesCardItem.module.css';

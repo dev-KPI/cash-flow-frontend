@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import UserCategoriesCardDot from '../UserCategoriesCardItem/UserCategoriesCardItem';
+import UserCategoriesCardItem from '@pages/Dashboard/UserCategoriesCardItem/UserCategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
 import { useElementSize } from 'usehooks-ts'
+import { handleWrap } from '@services/UsefulMethods/UIMethods';
 const json = {
     "categoriesByGroup": [
         {
@@ -204,32 +205,12 @@ const UserCategoriesCard = () => {
             setCategories(newCategories);
     }, [groupIndex])
 
-    function detectWrap(className: string) {
-        let container: HTMLElement = document.getElementsByClassName(className)[0] as HTMLElement
-       
-        const gap = parseFloat(getComputedStyle(container).gap);
-        for (const child of container.children) {
-            const childElement = child as HTMLElement;
-            const prevSibling = childElement.previousElementSibling as HTMLElement;
-
-            childElement.classList.remove(classes.wrapped);
-
-            const offsetHeight = container.offsetTop + gap +  2 * childElement.offsetHeight
-            if (childElement.offsetTop > offsetHeight) {
-                prevSibling.classList.add(classes.wrapped);
-                if (!childElement.classList.contains(classes.specialItem)) {
-                    childElement.classList.add(classes.wrapped);
-                }
-            }
-        }
-    }
-
     useEffect(()=> {
-        detectWrap(classes.list);
+        handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
     }, [height, width, categories])
 
     const getCategories = (categories: ICategoryItem[]) => {
-        return categories.map((item, i) => <UserCategoriesCardDot key={i} category={item.category} amount={item.amount} />)
+        return categories.map((item, i) => <UserCategoriesCardItem key={i} category={item.category} amount={item.amount} />)
     }
     const useCategories = (categories: ICategoryItem[] , total: number) => {
         const properCategories = useMemo(() => {
