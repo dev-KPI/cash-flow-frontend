@@ -27,7 +27,6 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive}) => {
     }
 
     return <>
-    <div>
         <aside className={classes.burgernav}>
             <div className={classes.burgernav__title}>
                 <div className={classes.burgernav__titleLink}>
@@ -135,7 +134,6 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive}) => {
                 </ul>
             </div>
         </aside>
-    </div>
     </>
 }
 export default MenuBurger;
