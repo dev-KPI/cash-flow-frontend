@@ -13,8 +13,7 @@ import HistoryCard from '@pages/Dashboard/HistoryCard/HistoryCard';
 
 const Dashboard = () => {  
 
-    return (
-        <div>
+    return (<>
             <Header/>
             <main id='DashboardPage'>
                 <div className='dashboard__container'>
@@ -48,8 +47,7 @@ const Dashboard = () => {
             </main>
             <footer>
             </footer>
-        </div>     
-    );
+        </>);
 };
 
 export default Dashboard;
