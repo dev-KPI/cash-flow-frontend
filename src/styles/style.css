@@ -218,7 +218,7 @@ div[class*="__container"] {
         max-width: 400px;
         margin-left: auto;
         margin-right: auto;
-        padding: 0 5px;
+        padding: 50px 5px 0px;
     }
 } 
 .pageTitle {

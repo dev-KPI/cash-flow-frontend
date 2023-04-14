@@ -95,12 +95,29 @@
 @media only screen and (max-width: 400px) {
     .expenseChart{
         max-width: 400px;
-        
+        max-height: 360px;
     }
     .wrapper{
+        justify-content: space-between;
         flex-direction: column;
     }    
     .inner{
         padding: 0px;
+        max-height: 540px;
+        justify-content: center;
+    }   
+    .chart{
+        margin-left: auto;
+        margin-right: auto;
     }
+    .info {
+        width: 100%;
+        min-width: 280px;
+        max-height: 110px;
+        margin-left: 0;
+        margin-right: 0;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
 }

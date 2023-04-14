@@ -58,7 +58,10 @@
     }
     .wrapper{
         padding: 0px;
-        width: 100%;
+        max-width: 400px;
+        flex-basis: 400px;
+        display: flex;
+        justify-content: space-between;    
         gap: none;
     }
 }

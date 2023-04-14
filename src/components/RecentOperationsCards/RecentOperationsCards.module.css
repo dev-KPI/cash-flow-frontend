@@ -1,0 +1,51 @@
+.RecentOperationDashboardCard{
+    max-width: 324px;
+    flex-basis: 324px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.RecentOperationDashboardCard .info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.RecentOperationDashboardCard .center{
+    display: flex;
+    flex-direction: column;
+    margin-left: 14px;
+}
+.RecentOperationDashboardCard h5{
+    color: var(--main-text);
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+}
+.RecentOperationDashboardCard .time {
+    color: var(--text);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+}
+.RecentOperationDashboardCard .amount{
+    color: var(--main-red);
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+@media only screen and (max-width: 1440px) {
+    .RecentOperationDashboardCard{
+        max-width: 240px;
+        flex-basis: 240px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .RecentOperationDashboardCard{
+        max-width: 100%;
+        flex-basis: 100%;
+    }
+}

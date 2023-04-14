@@ -2,29 +2,24 @@ import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //UI
 import classes from './Dashboard.module.css'
+import Header from '@components/Header/Header';                                            //global components
 import MonthPicker from '@components/MonthPicker/MonthPicker';
-import Header from '@components/Header/Header';
 import OperationCard from '@components/OperationCard/OperationCard';
-import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';
-import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard';
-import AccountCard from './AccountCard/AccountCard';
-import { useWindowSize } from '@hooks/useLayout';
+
+import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';            //local components
+import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard'; 
+import AccountCard from '@pages/Dashboard/AccountCard/AccountCard';
+import HistoryCard from '@pages/Dashboard/HistoryCard/HistoryCard';
 import UserCategoriesCard from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
 import UserGroupsCard from '@pages/Dashboard/UserGroupsCard/UserGroupsCard';
 
 
-const Dashboard = () => {
-
-    const {width, height} = useWindowSize();
-
-    const getHeader = useCallback((): ReactNode => {
-        return (width > 320 && width < 400) ? (<div>Mobile</div>) : (<Header/>)
-    }, [width])
+const Dashboard = () => {  
 
     return (
         <div>
-            {getHeader()}
-            <main>
+            <Header/>
+            <main id='DashboardPage'>
                 <div className='dashboard__container'>
                     <div className={classes.header}>
                         <h1 className={`${classes.title} pageTitle`}>Dashboard</h1>
@@ -49,12 +44,12 @@ const Dashboard = () => {
                             <UserExpenseGraphCard/>
                         </div>
                         <div className={classes.fifth__item}>
-                            <div className={classes.history}></div>
+                            <HistoryCard/>
                         </div>
                     </div>
                 </div>
             </main>
-            <footer style={{paddingBottom: '60px'}}>
+            <footer>
             </footer>
         </div>     
     );

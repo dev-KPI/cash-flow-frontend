@@ -1,0 +1,81 @@
+.HistoryCard{
+    max-width: 374px;
+    height: 480px;
+    padding: 0px 16px;
+    display: flex;
+    flex-direction: column;
+}
+.HistoryCard h3{
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+}
+.HistoryCard ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.ViewMore{
+    margin-top: 10px;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.ViewMore p{
+    font-size: 16px;
+    color: var(--text);
+}
+.ViewMore:hover{
+    text-decoration: underline;
+}
+.ArrowRight{
+    fill: var(--text);
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 1440px) {
+    .HistoryCard{
+        max-width: 510px;
+        flex-basis: 510px;
+        height: 240px;
+        flex-direction: column;
+    }
+    .HistoryCard ul{
+        margin-top: 12px;
+        max-width: 510px;
+        justify-content: space-between;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    ul > li {
+        max-width: 200px;
+        flex-basis: 200px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .HistoryCard{
+        padding: 0px 12px;
+        max-width: 100%;
+        flex-basis: 510px;
+        height: 240px;
+        flex-direction: column;
+    }
+    .HistoryCard ul{
+        margin-top: 12px;
+        max-width: 100%;
+        flex-basis: 100%;
+        justify-content: space-between;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    ul > li {
+        max-width: 100%;
+        flex-basis: 100%;
+    }
+}
