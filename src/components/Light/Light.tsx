@@ -25,9 +25,9 @@ const Light: FC<ILight> = ({ type, color, className }: ILight) => {
     else if (type === 'hollow') {
         return (
         <div
-                style={{ borderColor: color, boxShadow: shadow }}
-                className={`${classes.lightHollow} ${className}`}>
-            </div>
+            style={{ borderColor: color, boxShadow: shadow }}
+            className={`${classes.lightHollow} ${className}`}>
+        </div>
         )
     }
     return <></>
