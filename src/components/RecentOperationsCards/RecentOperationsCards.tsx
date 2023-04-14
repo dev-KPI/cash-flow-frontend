@@ -12,9 +12,10 @@ export interface IRecentOperationDashboardCard{
     ColorBtn: string,
     title: string, 
     time: string, 
-    amount: number
+    amount: number,
+    type:  'expense' | 'replenishment'
 }
-export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ColorBtn, title, time, amount}) => {
+export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ColorBtn, title, time, amount, type}) => {
     
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
@@ -30,7 +31,9 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
                     <p className={classes.time}>{timeAgo.format(new Date(time))}</p>
                 </div>
             </div>
-            <p className={classes.amount}>{`- $${amount}`}</p>
+            <p style={{color: type === 'expense' ? "#FF2D55":"#80D667"}} 
+            className={classes.amount}>
+                {`${type === 'expense' ? "-":"+"} $${amount}`}</p>
         </div>
     </>)
 }
