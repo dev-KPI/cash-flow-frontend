@@ -1,8 +1,8 @@
 .expenseChart__wrapper{
     composes: cardComponent from "@styles/style.css";
     display: inline-block;
-    max-width: 1015px;
-    max-height: 486px;
+    max-width: 1080px;
+    max-height: 480px;
 
     display: flex;
     flex-direction: column;
@@ -59,6 +59,13 @@
 }
 .chartinner__wrapper i {
     color: var(--text);
+}
+
+@media only screen and (max-width: 1440px) {
+    .expenseChart__wrapper {
+        grid-column-start: span 2;
+        order: 1;
+    }
 }
 @media only screen and (max-width: 400px) {
     .expenseChart__wrapper{

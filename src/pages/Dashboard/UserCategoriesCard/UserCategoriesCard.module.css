@@ -3,8 +3,11 @@
     display: flex;
     max-width: 540px;
     min-width: 450px;
-    flex-basis: 540px;
+    /* flex-basis: 540px; */
     max-height: 300px;
+
+    grid-row-start: span 2;
+    grid-column-start: span 2;
 }
 
 .inner{

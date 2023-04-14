@@ -1,6 +1,6 @@
 .HistoryCard{
     max-width: 374px;
-    height: 480px;
+    /* height: 480px; */
     padding: 0px 16px;
     display: flex;
     flex-direction: column;
@@ -38,14 +38,14 @@
 
 @media only screen and (max-width: 1440px) {
     .HistoryCard{
-        max-width: 510px;
-        flex-basis: 510px;
-        height: 240px;
+        max-width: unset;
+        /* flex-basis: 510px; */
+        /* height: 240px; */
         flex-direction: column;
     }
     .HistoryCard ul{
         margin-top: 12px;
-        max-width: 510px;
+        /* max-width: 510px; */
         justify-content: space-between;
         display: flex;
         flex-wrap: wrap;

@@ -2,12 +2,13 @@
     composes: cardComponent from "@styles/style.css";
     max-width: 374px;
     min-width: 256px;
-    height: 100%;
+    padding: 24px 32px 24px;
+    /* max-height: 450px; */
+
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    flex-basis: 340px;
-    padding: 24px 32px 24px;
+
+    
 }
 .cardHeader{
     display: flex;
@@ -75,14 +76,17 @@
 @media only screen and (max-width: 1440px) {
     .AccountCard{
         flex-direction: row;
-        padding-right: 64px;
+        /* padding-right: 64px; */
         max-height: 240px;
-        max-width: 100%;
+        /* max-width: 100%; */
         min-width: 386px;
+        max-width: 540px;
         display: flex;
-        justify-content: space-between;
+        /* justify-content: space-between; */
         align-items: center;
-        flex-basis: 100%;
+        /* flex-basis: 100%; */
+        grid-column-start: span 1;
+       
     }
     .AccountCard .cardHeader{
         width: 150px;

@@ -3,8 +3,10 @@
     composes: cardComponent from "@styles/style.css";
     max-width: 510px;
     max-height: 300px;
-    flex-basis: 510px;
+    /* flex-basis: 510px; */
     position: relative;
+
+    grid-row-start: span 2;
 }
 
 .title {
@@ -91,7 +93,11 @@
     margin: -4px -8px;
     padding: 4px 8px;
 }
-
+@media only screen and (max-width: 1440px) {
+    .expenseChart {
+        max-width: unset
+    }
+}
 @media only screen and (max-width: 400px) {
     .expenseChart{
         max-width: 400px;
