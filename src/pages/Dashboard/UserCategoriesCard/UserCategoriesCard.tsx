@@ -3,6 +3,7 @@ import UserCategoriesCardItem from '@pages/Dashboard/UserCategoriesCardItem/User
 import classes from './UserCategoriesCard.module.css'
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
+import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCardLoader';
 const json = {
     "categoriesByGroup": [
         {
@@ -193,6 +194,7 @@ export interface ICategoryItem {
 const UserCategoriesCard = () => {
     const [categories, setCategories] = useState<ICategoryItem[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
+    const [loading, setLoading] = useState<boolean>(true);
     const [groupIndex, setGroupIndex] = useState<number>(0);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
@@ -230,62 +232,67 @@ const UserCategoriesCard = () => {
     }
 
     const properCategories = useCategories(categories, totalItems)
-
+    
+    const setLoadingTime = setTimeout(() => {
+        setLoading(false)
+    }, 1500);
     return (
         <div className={classes.categories}>
-            <div className={classes.inner}>
-                <div className={classes.top}>
-                    <h3 className={classes.title}>Categories <span className={classes.categoryName}>({groups[groupIndex]})</span></h3>
-                    <div className={classes.nav}>
-                        <button
-                            type="submit"
-                            onClick={handlePrevGroup}
-                            disabled={!groups[groupIndex - 1]}
-                            className={classes.btn + ' ' + classes.previous}
-                            >
-                            <i id='chevron' className="bi bi-chevron-left"></i>
-                        </button>
-                        <button
-                            type="submit"
-                            onClick={handleNextGroup}
-                            disabled={!groups[groupIndex + 1]}
-                            className={classes.btn + ' ' + classes.next}
-                            >
-                            <i id='chevron' className="bi bi-chevron-right"></i>
-                        </button>
+            {loading ? <UserCategoriesCardLoader /> :
+                <div className={classes.inner}>
+                    <div className={classes.top}>
+                        <h3 className={classes.title}>Categories <span className={classes.categoryName}>({groups[groupIndex]})</span></h3>
+                        <div className={classes.nav}>
+                            <button
+                                type="submit"
+                                onClick={handlePrevGroup}
+                                disabled={!groups[groupIndex - 1]}
+                                className={classes.btn + ' ' + classes.previous}
+                                >
+                                <i id='chevron' className="bi bi-chevron-left"></i>
+                            </button>
+                            <button
+                                type="submit"
+                                onClick={handleNextGroup}
+                                disabled={!groups[groupIndex + 1]}
+                                className={classes.btn + ' ' + classes.next}
+                                >
+                                <i id='chevron' className="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <ul className={classes.list} ref={squareRef}>
-                    {getCategories(properCategories)}
-                    {
-                        categories.length === 0 ?
-                            <div className={classes.emptyList}>
-                                <p>Category list is empty!</p>
-                                <li className={`${classes.item} ${classes.specialItem}`}>
-                                    <div className={classes.dashed}>
-                                        <i className="bi bi-plus-lg"></i>
-                                    </div>
-                                    <h6 className={classes.itemTitle}>Add More</h6>
-                                </li>
-                            </div> 
+                    <ul className={classes.list} ref={squareRef}>
+                        {getCategories(properCategories)}
+                        {
+                            categories.length === 0 ?
+                                <div className={classes.emptyList}>
+                                    <p>Category list is empty!</p>
+                                    <li className={`${classes.item} ${classes.specialItem}`}>
+                                        <div className={classes.dashed}>
+                                            <i className="bi bi-plus-lg"></i>
+                                        </div>
+                                        <h6 className={classes.itemTitle}>Add More</h6>
+                                    </li>
+                                </div> 
+                                :
+                        categories.length >= 11 ?
+                            <li className={`${classes.item} ${classes.specialItem}`}>
+                                <div className={classes.dashed}>
+                                    <i className="bi bi-chevron-right"></i>
+                                </div>
+                                <h6 className={classes.itemTitle}>View More</h6>
+                            </li>
                             :
-                       categories.length >= 11 ?
-                        <li className={`${classes.item} ${classes.specialItem}`}>
-                            <div className={classes.dashed}>
-                                <i className="bi bi-chevron-right"></i>
-                            </div>
-                            <h6 className={classes.itemTitle}>View More</h6>
-                        </li>
-                        :
-                        <li className={`${classes.item} ${classes.specialItem}`}>
-                            <div className={classes.dashed}>
-                                <i className="bi bi-plus-lg"></i>
-                            </div>
-                            <h6 className={classes.itemTitle}>Add More</h6>
-                        </li>
-                    }
-                </ul>    
-            </div>
+                            <li className={`${classes.item} ${classes.specialItem}`}>
+                                <div className={classes.dashed}>
+                                    <i className="bi bi-plus-lg"></i>
+                                </div>
+                                <h6 className={classes.itemTitle}>Add More</h6>
+                            </li>
+                        }
+                    </ul>    
+                </div>
+            }
         </div>
     );
 };

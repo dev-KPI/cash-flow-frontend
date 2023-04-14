@@ -1,6 +1,6 @@
+import { useAppSelector } from "@hooks/useAppStore";
 import React, {FC} from "react"
 import ContentLoader, { IContentLoaderProps } from "react-content-loader"
-import classes from './UserExpenseGraph.module.css';
 
 const getBars = () => {
   let res = [];
@@ -26,23 +26,26 @@ const getXScale = () => {
 }
 
 
-const UserExpenseGraphPreloader: FC<IContentLoaderProps> = () => (
-  <ContentLoader
-    speed={2}
-    viewBox="0 0 1015 410"
-    backgroundColor="#f3f3f3"
-    foregroundColor="#ecebeb"
-  >
-    <rect rx="5" ry="5" x="0"  y="6"  width="100" height="28" /> 
-    <rect rx="5" ry="5" x="0"  y="50"  width="120" height="28" /> 
-    {
-      getYScale()
-    }{
-      getBars()
-    }{
-      getXScale()
-    }
-  </ContentLoader>
-)
+const UserExpenseGraphPreloader: FC<IContentLoaderProps> = () => {
+    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    return (
+        <ContentLoader
+        speed={2}
+        viewBox="0 0 1015 410"
+        backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
+        foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
+        >
+        <rect rx="5" ry="5" x="0"  y="6"  width="100" height="28" /> 
+        <rect rx="5" ry="5" x="0"  y="50"  width="120" height="28" /> 
+        {
+            getYScale()
+        }{
+            getBars()
+        }{
+            getXScale()
+        }
+        </ContentLoader>
+    )
+}
 
 export default UserExpenseGraphPreloader
