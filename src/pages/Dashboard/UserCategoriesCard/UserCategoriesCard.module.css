@@ -9,7 +9,7 @@
 
 .inner{
     width: 100%;
-    padding: 24px 24px 14px 24px;
+    padding: 24px;
 }
 
 .title {
@@ -99,9 +99,11 @@
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
-    color: var(--text);
+    color: var(--text); 
 }
-
+.specialItem .itemTitle{
+    margin-top: 4px;
+}
 .specialItem:hover > * {
     color: var(--main-text);
     border-color: var(--main-text);
