@@ -10,6 +10,7 @@ import UserExpenseCardDot from '@pages/Dashboard/UserExpenseCardDot/UserExpenseC
 const UserExpenseCard = () => {
     const [id, setId] = useState<number>();
     const [isExtended, setIsExtended] = useState<boolean>();
+    const [loading, setLoading] = useState<boolean>(true);
     const { data: expenses = [], error: Expenses_GET_error, isError: isExpensesError, isLoading: isExpensesLoading } = useGetCategoryExpensesQuery(null);
     const { data: total, error: Total_GET_error, isError: isTotalError, isLoading: isTotalLoading } = useGetCategoryExpensesTotalQuery(null);
 
@@ -53,10 +54,14 @@ const UserExpenseCard = () => {
     let setInterval = () => {
         timeout = setTimeout(handleCloseExtended, 15000);
     }
+
+    const setTimer = setTimeout(() => {
+        setLoading(false)
+    }, 1500);
    
     return (
         <div className={classes.expenseChart} onMouseEnter={clearInterval} onMouseLeave={setInterval} onClick={handleCloseExtended}>
-            {isExpensesLoading || isTotalLoading ? <UserExpenseCardLoader /> :
+            {loading ? <UserExpenseCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Expenses</h3>
                     <div className={classes.wrapper}>

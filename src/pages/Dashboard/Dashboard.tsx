@@ -5,10 +5,13 @@ import classes from './Dashboard.module.css'
 import Header from '@components/Header/Header';                                            //global components
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 import OperationCard from '@components/OperationCard/OperationCard';
+
 import UserExpenseCard from '@pages/Dashboard/UserExpenseCard/UserExpenseCard';            //local components
 import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard'; 
 import AccountCard from '@pages/Dashboard/AccountCard/AccountCard';
 import HistoryCard from '@pages/Dashboard/HistoryCard/HistoryCard';
+import UserCategoriesCard from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
+import UserGroupsCard from '@pages/Dashboard/UserGroupsCard/UserGroupsCard';
 
 
 const Dashboard = () => {  
@@ -28,17 +31,17 @@ const Dashboard = () => {
                                 <OperationCard operation={'Income'} />
                                 <OperationCard operation={'Expenses'} />
                             </div>
-                            <div className={classes.categories}></div>
+                            <UserCategoriesCard/>
                         </div>
                         <div className={classes.second__item}>
                             <UserExpenseCard />
-                            <div className={classes.groups}></div>
+                            <UserGroupsCard />
                         </div>
                         <div className={classes.third__item}>
                             <AccountCard/>                        
                         </div>
                         <div className={classes.fourth__item}>
-                            {/* <UserExpenseGraphCard/> */}
+                            <UserExpenseGraphCard/>
                         </div>
                         <div className={classes.fifth__item}>
                             <HistoryCard/>
