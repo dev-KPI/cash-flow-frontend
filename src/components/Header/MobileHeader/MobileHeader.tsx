@@ -1,5 +1,6 @@
-import React, { FC, MouseEvent, MouseEventHandler, ReactNode, DetailedHTMLProps, HTMLAttributes } from "react";
-import {useMemo, useState, useEffect} from 'react';
+import React, { FC, MouseEvent, MouseEventHandler, ReactNode, DetailedHTMLProps, 
+    EventHandler, HTMLAttributes, useCallback } from "react";
+import {useMemo, useRef, useState, useEffect} from 'react';
 import { useWindowSize } from "usehooks-ts";
 
 //UI
@@ -7,29 +8,33 @@ import classes from './MobileHeader.module.css'
 import {ReactComponent as Burger} from '@assets/Header/burger.svg'
 import Logo from '@assets/user-icon.svg'
 import MenuBurger from "./MenuBurger/MenuBurger";
+import { useScrollCoordinates } from "@hooks/useScrollCoordinates";
+import useClickOutsideRef from "@hooks/useClickOutsideRef";
 
 const MobileHeader: FC = () => {
 
-    const {width, height} = useWindowSize();
+    const BurgerNavRef = useRef<HTMLDivElement>(null);
+
+    const {pageYPos} = useScrollCoordinates();
     const [isOpen, setIsOpen] = useState<boolean>();
-    
-    useEffect(()=>{
-        setIsOpen(false)
-    },[])
+    useClickOutsideRef(BurgerNavRef, () => setIsOpen(false))
 
     const getBurgerNav = useMemo(() => {
-        const DashboardPage = document.getElementById('DashboardPage');
-        if(isOpen){
-            if(DashboardPage){
-                DashboardPage.style.position = 'fixed'
-            }
+        const body = document.body;    
+        const modal = document.getElementById('burger-nav');
+        const bcDrop = document.getElementById('active-bg');
+
+        if (modal && bcDrop) {
+            modal.style.top = pageYPos + 'px';
+            bcDrop.style.top = pageYPos + 'px';
+        }
+        if (isOpen){
+            if(body) body.style.overflow = 'hidden';
             return classes.menuBurgerTransition
         }
-        if(DashboardPage){
-            DashboardPage.style.position = 'relative'
-        }
+        if (body) body.style.overflow = 'auto';
         return ''
-    }, [isOpen])
+    }, [isOpen, pageYPos])
 
     return(<>
         <header className={classes.header}>
@@ -40,15 +45,16 @@ const MobileHeader: FC = () => {
                 <h1>Cash<span>Flow</span></h1>
                 <img src={Logo} alt="logo" />
             </div>
-            
         </header>
-        <div className={classes.menuBurger + ' ' + getBurgerNav}>
+        <div 
+        ref={BurgerNavRef}
+        id='burger-nav'
+        className={classes.menuBurger + ' ' + getBurgerNav}>
             <MenuBurger setMenuActive={setIsOpen}/>
-            <div 
-                onClick={() => setIsOpen(false)}
-                className={classes.backdrop}>
-            </div>
         </div>
+        <div 
+        id='active-bg' 
+        className={isOpen ? classes.bgDrop + ' ' + classes.bgDropTransition : classes.bcDrop}></div>
     </>)
 }
 
