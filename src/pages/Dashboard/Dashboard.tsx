@@ -25,16 +25,21 @@ const Dashboard = () => {
                         <MonthPicker />
                     </div>
                     <div className={classes.grid}>
-                        <div className={classes.grid__inner}>
-                            <OperationCard operation={'Income'} />
-                            <OperationCard operation={'Expenses'} />
-                            <UserExpenseCard />
+                        <div className={classes.grid__topleft}>
+                            <div className={classes.grid__operation}>
+                                <OperationCard operation={'Income'} />
+                                <OperationCard operation={'Expenses'} />
+                            </div>
                             <UserCategoriesCard/>
+                        </div>
+                        <div className={classes.grid__topright}>
+                            <UserExpenseCard />
                             <UserGroupsCard />
                         </div>
-                        <AccountCard/>                        
+                        <AccountCard/>
+                        <HistoryCard />                        
                         <UserExpenseGraphCard/>
-                        <HistoryCard/>
+                        
                     </div>
                 </div>
             </main>
