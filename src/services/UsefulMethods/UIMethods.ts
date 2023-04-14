@@ -28,8 +28,10 @@ export function handleWrap(
     specialItemClass:string,
     rows: number) {
     let container: HTMLElement = document.getElementsByClassName(containerClass)[0] as HTMLElement
+    if(!container) return
+    
+    const gap = parseFloat(getComputedStyle(container).gap)
 
-    const gap = parseFloat(getComputedStyle(container).gap);
     for (const child of container.children) {
         const childElement = child as HTMLElement;
         const prevSibling = childElement.previousElementSibling as HTMLElement;
@@ -39,7 +41,6 @@ export function handleWrap(
         const offsetHeight = container.offsetTop + gap + rows * childElement.offsetHeight
        
         if (childElement.offsetTop >= offsetHeight) {
-            console.log(specialItemClass);
             prevSibling.classList.add(`${wrappedClass}`);
             if (!childElement.classList.contains(`${specialItemClass}`)) {
                 childElement.classList.add(`${wrappedClass}`);
