@@ -1,18 +1,16 @@
 .categories {
     composes: cardComponent from "@styles/style.css";
-    display: flex;
-    max-width: 540px;
-    min-width: 450px;
+    /* display: flex; */
+    /* max-width: 540px; */
+    /* min-width: 450px; */
     /* flex-basis: 540px; */
-    max-height: 300px;
-
-    grid-row-start: span 2;
+    height: 300px;
+    /* width: 540px; */
     grid-column-start: span 2;
 }
 
 .inner{
-    width: 100%;
-    padding: 24px;
+    padding: 24px 24px 31px 24px;
 }
 
 .title {

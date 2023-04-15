@@ -1,99 +1,93 @@
 .AccountCard{
     composes: cardComponent from "@styles/style.css";
-    max-width: 374px;
-    min-width: 256px;
-    padding: 24px 32px 24px;
-    /* max-height: 450px; */
-
-    display: flex;
-    flex-direction: column;
-
-    
-}
-.cardHeader{
+    margin-left: 30px;
     display: flex;
     flex-direction: column;
 }
-.AccountCard .title{
+
+.inner {
+    padding: 24px 32px;
+}
+
+.title{
     font-weight: 700;
     font-size: 24px;
     line-height: 30px;
     color: var(--main-text);
 }
-.AccountCard .avatar{
+.avatar{
     max-width: 180px;
-    margin-left: calc((100% - 180px)/2);
-    margin-top: 10px;
+    display: block;
+    margin: 0 auto;
 }
-.info__wrapper .text{
-    margin-top: 37px;
+
+.user{
+    margin-top: 14px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+}
+
+.personal__data{
+    margin-top: 10px;
+}
+
+.user__info{
     text-align: center;
 }
-.text .name{
+.name{
     font-weight: 700;
     font-size: 32px;
-    line-height: 40px;
+    line-height: 36px;
     color: var(--main-text);
 }
-.text .email{
-    font-weight: 400;
+.email{
+    font-weight: 500;
     font-size: 16px;
-    line-height: 20px;
+    line-height: 18px;
     color: var(--text);
 }
 
-.AccountCard .info__wrapper{
-    display: flex;
-    margin-top: auto;
-    flex-direction: column;
+.balance {
+    margin-top: 35px;
+    text-align: left;
 }
-.info__wrapper .balance {
-    margin-top: 12px;
-}
-.info__wrapper .balance h3{
+.balance h3{
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
     color: var(--main-text);
 }
-.info__wrapper .value{
-    margin-top: 5px;
+.balance .value{
     font-weight: 600;
     font-size: 32px;
     line-height: 39px;
     color: var(--main-green);
 }
-.info__wrapper .range{
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 19px;
-    color: var(--text);
-}
 
 @media only screen and (max-width: 1440px) {
-    .AccountCard{
-        flex-direction: row;
-        /* padding-right: 64px; */
-        max-height: 240px;
-        /* max-width: 100%; */
-        min-width: 386px;
-        max-width: 540px;
+    .AccountCard {
+        margin-left: 0;
+    }
+    .avatar {
+        margin: 0;
+    }
+    .user {
+        flex-direction: row
+    }
+    .personal__data {
+        margin-left:30px;
         display: flex;
-        /* justify-content: space-between; */
-        align-items: center;
-        /* flex-basis: 100%; */
-        grid-column-start: span 1;
-       
+        flex-direction: column;
+        justify-content: space-around;
     }
-    .AccountCard .cardHeader{
-        width: 150px;
+
+    .balance, .user__info, .personal__data {
+        margin-top: 0;
+        text-align: unset;
     }
+
     .AccountCard .avatar{
         width: 150px;
-        margin: 14px 0px 0px;
     }
     .info__wrapper{
         padding: 32px 0px;
@@ -119,6 +113,10 @@
         font-size: 24px;
         line-height: 40px;
     }
+}
+
+@media only screen and (max-width: 1440px) {
+    
 }
 
 @media only screen and (max-width: 400px) {

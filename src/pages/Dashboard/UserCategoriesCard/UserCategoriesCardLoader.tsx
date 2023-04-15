@@ -7,6 +7,9 @@ const UserCategoriesCardLoader = () => {
         <ContentLoader
             speed={2}
             viewBox="0 0 540 300"
+            width={'100%'}
+            height={'300px'}
+            preserveAspectRatio="none"
             backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
             foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
         >

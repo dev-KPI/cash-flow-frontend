@@ -37,9 +37,8 @@ const Dashboard = () => {
                             <UserGroupsCard />
                         </div>
                         <AccountCard/>
-                        <HistoryCard />                        
-                        <UserExpenseGraphCard/>
-                        
+                        <UserExpenseGraphCard />
+                        <HistoryCard /> 
                     </div>
                 </div>
             </main>

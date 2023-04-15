@@ -1,15 +1,16 @@
 .groups {
     composes: cardComponent from "@styles/style.css";
-    display: flex;
-    max-width: 510px;
-    min-width: 450px;
+    /* display: flex; */
+    /* max-width: 510px; */
+    /* min-width: 450px; */
     /* flex-basis: 510px; */
     max-height: 120px;
+    /* width: 510px; */
 }
 
 .inner{
     width: 100%;
-    padding: 14px 24px
+    padding: 14px 24px 7px 24px;
 }
 
 .title {

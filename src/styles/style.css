@@ -201,14 +201,14 @@ body{
 }
 
 div[class*="__container"] {
-    max-width: 1514px;
+    max-width: 1524px;
     margin-left: auto;
     margin-right: auto;
-    /* padding: 0 5px; */
+    padding: 0 5px;
 }
 @media only screen and (max-width: 1440px) {
     div[class*="__container"] {
-        max-width: 1080px;
+        max-width: 1090px;
 
     }   
 }

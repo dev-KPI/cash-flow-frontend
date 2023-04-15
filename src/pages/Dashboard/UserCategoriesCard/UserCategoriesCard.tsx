@@ -235,7 +235,7 @@ const UserCategoriesCard = () => {
     
     const setLoadingTime = setTimeout(() => {
         setLoading(false)
-    }, 1500);
+    }, 15500);
     return (
         <div className={classes.categories}>
             {loading ? <UserCategoriesCardLoader /> :

@@ -24,19 +24,21 @@ const AccountCard: FC = () => {
     
     return<>
         <div className={classes.AccountCard}>
-            <div className={classes.cardHeader}>
+            <div className={classes.inner}>
                 <h3 className={classes.title}>My account</h3>
-                <img className={classes.avatar} alt={'user icon'} src={picture}/>
-            </div>
-            <div className={classes.info__wrapper}>
-                <div className={classes.text}>
-                    <h4 className={classes.name}>{`${first_name} ${last_name}`}</h4>
-                    <p className={classes.email}>{login}</p>
-                </div>
-                <div className={classes.balance}>
-                    <h3>Current Balance</h3>
-                    <p className={classes.value}>${numberWithCommas(current_balance)}</p>
-                </div>
+                <div className={classes.user}>
+                    <img className={classes.avatar} alt={'user icon'} src={picture ? picture : userIcon} />
+                    <div className={classes.personal__data}>
+                        <div className={classes.user__info}>
+                            <h4 className={classes.name}>{`${first_name} ${last_name}`}</h4>
+                            <p className={classes.email}>{login}</p>
+                        </div>
+                        <div className={classes.balance}>
+                            <h3>Current Balance</h3>
+                            <p className={classes.value}>${numberWithCommas(current_balance)}</p>
+                        </div>
+                    </div>
+                </div>           
             </div>
         </div>
     </>

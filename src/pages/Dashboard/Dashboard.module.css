@@ -233,8 +233,9 @@
 
 .grid {
     max-width: 1514px;
-    margin: 30px auto 0px auto;
+    margin: 30px auto;
     display: grid;
+    justify-items: stretch;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     column-gap: 30px;
@@ -260,9 +261,12 @@
 
 @media (max-width: 1440px) {
     .grid {
-        max-width: 1080px;
+        max-width: 1090px;
         gap: 20px;
         grid-template-columns: repeat(2, 1fr)
     }
+        .grid__topleft,  .grid__operation, .grid__topright {
+            gap: 20px;
+        }
 }
 
