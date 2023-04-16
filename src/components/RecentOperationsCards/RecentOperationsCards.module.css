@@ -1,6 +1,7 @@
 .RecentOperationDashboardCard{
+    /* max-width: 324px;
+    flex-basis: 324px; */
     max-width: 324px;
-    flex-basis: 324px;
     height: 40px;
     display: flex;
     flex-direction: row;
@@ -38,8 +39,16 @@
 
 @media only screen and (max-width: 1440px) {
     .RecentOperationDashboardCard{
+        /* max-width: 240px;
+        flex-basis: 240px; */
         max-width: 240px;
-        flex-basis: 240px;
+    }
+}
+
+@media only screen and (max-width: 1028px) {
+    .RecentOperationDashboardCard {
+        max-width: unset;;
+        /* width: 100% */
     }
 }
 

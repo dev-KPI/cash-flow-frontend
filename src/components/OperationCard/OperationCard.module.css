@@ -1,4 +1,4 @@
-.incomeCard {
+.operationCard {
     composes: cardComponent from "@styles/style.css";
     display: flex;
     width: 255px;
@@ -86,12 +86,13 @@
     color: var(--text);
 }
 @media only screen and (max-width: 1440px) {
-    .incomeCard {
+    .operationCard {
         width: 100%;
     }
 }
+
 @media only screen and (max-width: 400px) {
-    .incomeCard{
+    .operationCard{
         max-width: 400px;
         min-width: 250px;
         max-height: 76px;

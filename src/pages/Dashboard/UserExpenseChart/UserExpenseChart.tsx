@@ -29,7 +29,7 @@ interface UserExpenseChartProps {
 const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) => {
 
     const {mainTextColor} = useAppSelector(state => state.persistedThemeSlice);
-    
+    // const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     const dataAmount = expenses.map((item) => item.amount);
     const backgroundColor = expenses.map((item) => item.color)
 
@@ -41,7 +41,7 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
             hoverOffset: 4,
             spacing: 18,
             borderWidth: 1,
-            cutout: 73,
+            cutout: '85%',
             borderRadius: 30      
         }],
         
@@ -92,7 +92,9 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
             ctx.save();
             const xCoor = chart.getDatasetMeta(0).data[0].x;
             const yCoor = chart.getDatasetMeta(0).data[0].y;
-            ctx.font = '600 24px Inter';
+            // ctx.font = '600 24px Inter';
+            ctx.font = "600 " + 0.12 * chart.chartArea.width + "px Inter";
+            // console.log(chart.chartArea);
             ctx.fillStyle = pluginOptions.color
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -120,6 +122,7 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
             options = {options}
             plugins={[doughnutLabelPlugin, doughnutShadowPlugin]}
             onClick={onClick}
+            width='content-box'
         ></Chart>     
     )
 }

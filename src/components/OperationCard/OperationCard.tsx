@@ -27,7 +27,7 @@ const OperationCard:FC<OperactionCardProps> = ({operation}) => {
         cursor: operation === "Income" ? "pointer" : "auto"
     }
     return (
-        <div className={classes.incomeCard}
+        <div className={classes.operationCard}
             onClick = {updateIncome}
             style ={{cursor: styles.cursor}}>
             <div className={classes.inner}>

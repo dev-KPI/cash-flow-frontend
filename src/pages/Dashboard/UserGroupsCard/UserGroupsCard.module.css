@@ -14,10 +14,7 @@
 }
 
 .title {
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 27px;
-    color: var(--main-text)
+    composes: cardTitle from "@styles/style.css";
 }
 
 .categoryName{
@@ -89,10 +86,7 @@
 }
 
 .itemTitle {
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--text);
+    composes: listItemTitle from "@styles/style.css";
 }
 
 .specialItem:hover > * {
@@ -139,6 +133,7 @@
 
 @media only screen and (max-width: 1440px) {
     .groups {
-        max-width: unset
+        max-height: unset
     }
 }
+

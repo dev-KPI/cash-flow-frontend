@@ -67,7 +67,7 @@ const HistoryCard: FC = () => {
 
     return(<>
         <div className={classes.HistoryCard}>
-            <h3>Recent Activity</h3>
+            <h3 className={classes.title}>Recent Activity</h3>
             <ul>
                 {getRecentActivities()}
                 <li key='239k'>

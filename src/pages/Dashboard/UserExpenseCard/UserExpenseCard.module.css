@@ -12,10 +12,7 @@
 }
 
 .title {
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 27px;
-    color: var(--main-text)
+    composes: cardTitle from "@styles/style.css";
 }
 
 .secondaryTitle {
@@ -102,10 +99,26 @@
     }
     .wrapper {
         /* justify-content: space-between; */
-        gap: 30px;
+        column-gap: 30px;
     }
     .info {
         margin-left: 0;
+    }
+}
+@media only screen and (max-width: 1028px) {
+    .expenseChart {
+        min-width: unset;
+    }
+
+    .wrapper {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .chart{
+        height: 180px; 
+    }
+    .chart canvas {
+        height: 180px;
     }
 
 }

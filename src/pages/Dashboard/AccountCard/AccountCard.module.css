@@ -10,10 +10,8 @@
 }
 
 .title{
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 30px;
-    color: var(--main-text);
+    composes: cardTitle from "@styles/style.css";
+    margin-left: 30px;
 }
 .avatar{
     max-width: 180px;
@@ -51,7 +49,7 @@
     margin-top: 35px;
     text-align: left;
 }
-.balance h3{
+.balance h5{
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
@@ -75,7 +73,7 @@
         flex-direction: row
     }
     .personal__data {
-        margin-left:30px;
+        margin-left:40px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
@@ -93,19 +91,13 @@
         padding: 32px 0px;
         justify-content: space-between;
     }
-    .info__wrapper .balance{
-    }
-    .info__wrapper .balance h3{
+
+    .info__wrapper .balance h5{
         font-size: 18px;
         line-height: 22px;
     }
-    .AccountCard .text{
-        display: block;
-        text-align: start;
-        justify-content: left;
-        margin: 0;
-    }
-    .AccountCard .value{
+
+    .info__wrapper.value{
         font-size: 24px;
         line-height: 29px;
     }
@@ -115,8 +107,10 @@
     }
 }
 
-@media only screen and (max-width: 1440px) {
-    
+@media only screen and (max-width: 1028px) {
+    .user{
+        flex-wrap: wrap;
+    }
 }
 
 @media only screen and (max-width: 400px) {

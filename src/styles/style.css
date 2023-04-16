@@ -206,6 +206,32 @@ div[class*="__container"] {
     margin-right: auto;
     padding: 0 5px;
 }
+.pageTitle {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: var(--main-text);
+}
+
+.cardTitle {
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 27px;
+    color: var(--main-text);
+}
+
+.listItemTitle{
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--text);
+}
+
+.cardComponent{
+    background: var(--cardbg);
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px var(--shadow-color);
+}
 @media only screen and (max-width: 1440px) {
     div[class*="__container"] {
         max-width: 1090px;
@@ -218,19 +244,6 @@ div[class*="__container"] {
         padding: 50px 5px 0px;
     }
 } 
-.pageTitle {
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 44px;
-    color: var(--main-text);
-}
-
-.cardComponent{
-    background: var(--cardbg);
-    border-radius: 20px;
-    box-shadow: 0px 2px 8px var(--shadow-color);
-}
-
 @media only screen and (max-width: 400px) {
     .cardComponent{
         padding: 12px;

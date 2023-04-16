@@ -6,10 +6,7 @@
 }
 
 .expenseName {
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--text);
+    composes: listItemTitle from "@styles/style.css";
 }
 
 .icon {

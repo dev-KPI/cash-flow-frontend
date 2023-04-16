@@ -34,7 +34,7 @@ const AccountCard: FC = () => {
                             <p className={classes.email}>{login}</p>
                         </div>
                         <div className={classes.balance}>
-                            <h3>Current Balance</h3>
+                            <h5>Current Balance</h5>
                             <p className={classes.value}>${numberWithCommas(current_balance)}</p>
                         </div>
                     </div>
