@@ -113,12 +113,11 @@
     .wrapper {
         justify-content: center;
         flex-wrap: wrap;
+        align-items: center;
     }
     .chart{
-        height: 180px; 
-    }
-    .chart canvas {
         height: 180px;
+        width: 180px
     }
 
 }

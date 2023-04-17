@@ -28,7 +28,9 @@ export function handleWrap(
     specialItemClass:string,
     rows: number) {
     let container: HTMLElement = document.getElementsByClassName(containerClass)[0] as HTMLElement
-    if(!container) return
+    if (!container || !wrappedClass || !specialItemClass) return
+    if (window.matchMedia("screen and (max-width: 1028px)").matches && container.classList.contains('UserCategoriesCard_list__J8H-q')) 
+        rows = 2;
     
     const gap = parseFloat(getComputedStyle(container).gap)
 
@@ -41,10 +43,11 @@ export function handleWrap(
         const offsetHeight = container.offsetTop + gap + rows * childElement.offsetHeight
        
         if (childElement.offsetTop >= offsetHeight) {
-            prevSibling.classList.add(`${wrappedClass}`);
-            if (!childElement.classList.contains(`${specialItemClass}`)) {
-                childElement.classList.add(`${wrappedClass}`);
-            }
+            if (prevSibling)
+                prevSibling.classList.add(`${wrappedClass}`);
+                if (!childElement.classList.contains(`${specialItemClass}`)) {
+                    childElement.classList.add(`${wrappedClass}`);
+                }
         }
     }
 }

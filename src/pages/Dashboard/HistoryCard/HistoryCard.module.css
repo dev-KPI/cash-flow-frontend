@@ -39,27 +39,31 @@
     .HistoryCard{
         margin-left: 0;
         max-width: unset;
-        /* flex-basis: 510px; */
-        /* height: 240px; */
         flex-direction: column;
     }
     .HistoryCard ul{
         margin-top: 12px;
-        /* max-width: 510px; */
-        justify-content: space-between;
-        display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
         flex-direction: row;
     }
+
     .HistoryCard ul > li {
         width: 200px;
-        /* flex-basis: 200px; */
     }
 }
 
 @media only screen and (max-width: 1028px) {
-    .HistoryCard ul > li {
-        /* max-width: unset; */
-        width: 100%;
+    .HistoryCard {
+        padding: 0;
     }
+    .HistoryCard ul {
+        row-gap: 0px;
+        column-gap: 21px;
+    }
+    .HistoryCard ul>li {
+        width: unset;
+        flex: 1 0 194px;
+    }
+
 }

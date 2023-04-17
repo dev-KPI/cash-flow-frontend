@@ -11,7 +11,6 @@
 
 .title{
     composes: cardTitle from "@styles/style.css";
-    margin-left: 30px;
 }
 .avatar{
     max-width: 180px;
@@ -54,6 +53,7 @@
     font-size: 24px;
     line-height: 29px;
     color: var(--main-text);
+    white-space: nowrap;
 }
 .balance .value{
     font-weight: 600;
@@ -110,7 +110,36 @@
 @media only screen and (max-width: 1028px) {
     .user{
         flex-wrap: wrap;
+        column-gap: 21px;
     }
+
+    .balance h5 {
+        font-size: 22px;
+        line-height: 27px;
+    }
+
+    .personal__data {
+        margin-left: 0;
+        flex: 1 0 50%;
+        row-gap: 20px;
+       
+    }
+
+    .user{
+        justify-content: center;
+        text-align: center;
+    }
+    .balance {
+        text-align: left;
+        /* margin-top: 35px; */
+    }
+
+
+    .info__wrapper {
+        /* padding: 32px 0px;
+        justify-content: space-between; */
+    }
+    
 }
 
 @media only screen and (max-width: 400px) {
