@@ -1,0 +1,21 @@
+.useModal{
+    composes: backdrop from "@styles/style.css";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.useModal__wrapper{
+    composes: cardComponent from "@styles/style.css";
+    flex: 1;
+    flex-shrink: 0;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 32px 0px;
+}
+
+@media only screen and (max-width: 400px) {
+    .useModal__wrapper{
+        margin-top: 50px;
+        padding: 12px 0px;
+    }
+}
