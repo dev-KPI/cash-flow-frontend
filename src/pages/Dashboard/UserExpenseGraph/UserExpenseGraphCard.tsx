@@ -1,4 +1,4 @@
-import React, {FC, MouseEvent, ReactNode, useCallback} from "react";
+import React, {FC, MouseEvent, ReactNode, useCallback, useState} from "react";
 
 //UI
 import classes from './UserExpenseGraph.module.css';
@@ -8,9 +8,10 @@ import UserExpenseGraphPreloader from "./UserExpenseGraphPreloader";
 //store
 import { useGetExpensesPerLastMonthQuery } from "@store/ExpenseApiSlice/ExpenseApiSlice";
 import { IMonthPickerState } from "@store/UI_store/MonthPickerSlice/MonthPickerInterfaces";
-import { useAppSelector } from "@hooks/useAppStore";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 
 const UserExpenseGraphCard = () => {
+
     const {data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
 
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);

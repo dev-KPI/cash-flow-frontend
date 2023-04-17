@@ -192,10 +192,10 @@ export interface ICategoryItem {
 }
 
 const UserCategoriesCard = () => {
-    const [categories, setCategories] = useState<ICategoryItem[]>([]);
-    const [totalItems, setTotalItems] = useState<number>(11);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [groupIndex, setGroupIndex] = useState<number>(0);
+    const [categories = [], setCategories] = useState<ICategoryItem[]>();
+    const [totalItems = 11, setTotalItems] = useState<number>();
+    const [loading = true, setLoading] = useState<boolean>();
+    const [groupIndex = 0, setGroupIndex] = useState<number>();
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
     const { categoriesByGroup } = json;
@@ -264,18 +264,18 @@ const UserCategoriesCard = () => {
                     <ul className={classes.list} ref={squareRef}>
                         {getCategories(properCategories)}
                         {
-                            categories.length === 0 ?
-                                <div className={classes.emptyList}>
-                                    <p>Category list is empty!</p>
-                                    <li className={`${classes.item} ${classes.specialItem}`}>
-                                        <div className={classes.dashed}>
-                                            <i className="bi bi-plus-lg"></i>
-                                        </div>
-                                        <h6 className={classes.itemTitle}>Add More</h6>
-                                    </li>
-                                </div> 
-                                :
-                        categories.length >= 11 ?
+                        categories?.length === 0 ?
+                            <div className={classes.emptyList}>
+                                <p>Category list is empty!</p>
+                                <li className={`${classes.item} ${classes.specialItem}`}>
+                                    <div className={classes.dashed}>
+                                        <i className="bi bi-plus-lg"></i>
+                                    </div>
+                                    <h6 className={classes.itemTitle}>Add More</h6>
+                                </li>
+                            </div> 
+                            :
+                        !!(categories?.length! >= 11) ?
                             <li className={`${classes.item} ${classes.specialItem}`}>
                                 <div className={classes.dashed}>
                                     <i className="bi bi-chevron-right"></i>

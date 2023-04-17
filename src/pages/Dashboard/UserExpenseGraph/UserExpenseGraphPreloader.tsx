@@ -1,4 +1,4 @@
-import { useAppSelector } from "@hooks/useAppStore";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import React, {FC} from "react"
 import ContentLoader, { IContentLoaderProps } from "react-content-loader"
 

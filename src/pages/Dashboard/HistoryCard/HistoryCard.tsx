@@ -7,7 +7,7 @@ import { RecentOperationDashboardCard } from "@components/RecentOperationsCards/
 
 //logic
 import { Link } from "react-router-dom";
-import { useContentSize } from "@hooks/useLayout";
+import { useContentSize } from "@hooks/layoutHooks/useLayout";
 import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
 import { tmpObj } from "./testObj";
 
@@ -51,8 +51,7 @@ const HistoryCard: FC = () => {
 
     const getRecentActivities = () => {
         let res: ReactNode[] = getMixedHistory().map((el, i) => {
-            return <>
-                <li key={i + 'adsa'}>
+            return <li key={i + 'adsa'}>
                     <RecentOperationDashboardCard
                     type={el.type === 'expense' ? 'expense' : 'replenishment'}
                     ColorBtn={el.category_group?.category?.color || '#80D667'}
@@ -60,7 +59,6 @@ const HistoryCard: FC = () => {
                     amount={el.amount}
                     time={el.time}/> 
                 </li>
-            </>
         })
         return res
     }
@@ -70,7 +68,7 @@ const HistoryCard: FC = () => {
             <h3>Recent Activity</h3>
             <ul>
                 {getRecentActivities()}
-                <li key='239k'>
+                <li key='239j76k'>
                     <Link to={'/'}>
                         <div className={classes.ViewMore}>
                             <p>View More</p>

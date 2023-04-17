@@ -8,8 +8,8 @@ import classes from './MobileHeader.module.css'
 import {ReactComponent as Burger} from '@assets/Header/burger.svg'
 import Logo from '@assets/user-icon.svg'
 import MenuBurger from "./MenuBurger/MenuBurger";
-import { useScrollCoordinates } from "@hooks/useScrollCoordinates";
-import useClickOutsideRef from "@hooks/useClickOutsideRef";
+import { useScrollCoordinates } from "@hooks/layoutHooks/useScrollCoordinates";
+import useClickOutsideRef from "@hooks/layoutHooks/useClickOutsideRef";
 
 const MobileHeader: FC = () => {
 

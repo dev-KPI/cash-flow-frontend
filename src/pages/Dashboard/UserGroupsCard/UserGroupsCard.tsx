@@ -4,6 +4,7 @@ import { useElementSize } from 'usehooks-ts'
 import UserGroupsCardItem from '@pages/Dashboard/UserGroupsCardItem/UserGroupsCardItem';
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import UserGroupsCardLoader from '@pages/Dashboard/UserGroupsCard/UserGroupsCardLoader';
+
 const json = {
     "groups": [
         {
@@ -48,9 +49,9 @@ export interface Group {
 
 
 const UserGroupsCard = () => {
-    const [groups, setGroups] = useState<Group[]>([]);
-    const [totalItems, setTotalItems] = useState<number>(11);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [groups = [], setGroups] = useState<Group[]>();
+    const [totalItems = 11, setTotalItems] = useState<number>();
+    const [loading = true, setLoading] = useState<boolean>();
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
     useEffect( () => {
@@ -64,14 +65,14 @@ const UserGroupsCard = () => {
     const getGroups = (groups: Group[]) => {
         return groups.map((item, i) => <UserGroupsCardItem key={i} group={item} />)
     }
-    const useGroups = (groups: Group[] , total: number) => {
+    const useGroups = (groups: Group[], total: number) => {
         const properGroups = useMemo(() => {
-            return groups.slice(0, total)
+            return groups?.slice(0, total)
         }, [groups, total])
         return properGroups;
     }
 
-    const properGroups = useGroups(groups, totalItems)
+    const properGroups = useGroups(groups!, totalItems!)
 
     
     const setLoadingTime = setTimeout(() => {
@@ -85,31 +86,31 @@ const UserGroupsCard = () => {
                     <ul className={classes.list} ref={squareRef}>
                         {getGroups(properGroups)}
                         {
-                            groups.length === 0 ?
-                                <div className={classes.emptyList}>
-                                    <p>Category list is empty!</p>
-                                    <li className={`${classes.item} ${classes.specialItem}`}>
-                                        <div className={classes.dashed}>
-                                            <i className="bi bi-plus-lg"></i>
-                                        </div>
-                                        <h6 className={classes.itemTitle}>Add More</h6>
-                                    </li>
+                        groups.length === 0 ?
+                            <div className={classes.emptyList}>
+                                <p>Category list is empty!</p>
+                                <li className={`${classes.item} ${classes.specialItem}`}>
+                                    <div className={classes.dashed}>
+                                        <i className="bi bi-plus-lg"></i>
+                                    </div>
+                                    <h6 className={classes.itemTitle}>Add More</h6>
+                                </li>
+                            </div>
+                        :
+                        groups.length >= 5 ?
+                            <li className={`${classes.item} ${classes.specialItem}`}>
+                                <h6 className={classes.itemTitle}>View More</h6>
+                                <div className={classes.dashed}>
+                                    <i className="bi bi-chevron-right"></i>
                                 </div>
-                                :
-                                groups.length >= 5 ?
-                                    <li className={`${classes.item} ${classes.specialItem}`}>
-                                        <h6 className={classes.itemTitle}>View More</h6>
-                                        <div className={classes.dashed}>
-                                            <i className="bi bi-chevron-right"></i>
-                                        </div>
-                                    </li>
-                                    :
-                                    <li className={`${classes.item} ${classes.specialItem}`}>
-                                        <h6 className={classes.itemTitle}>Add More</h6>
-                                        <div className={classes.dashed}>
-                                            <i className="bi bi-plus-lg"></i>
-                                        </div>
-                                    </li>
+                            </li>
+                            :
+                            <li className={`${classes.item} ${classes.specialItem}`}>
+                                <h6 className={classes.itemTitle}>Add More</h6>
+                                <div className={classes.dashed}>
+                                    <i className="bi bi-plus-lg"></i>
+                                </div>
+                            </li>
                         }
                     </ul>
                 </div>

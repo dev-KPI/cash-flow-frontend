@@ -7,8 +7,8 @@ import classes from './UserCategoriesCardItem.module.css';
 
 
 const UserCategoriesCardDot: FC<ICategoryItem> = ({ category, amount}) => {
-    const [total, setTotal] = useState<number>();
-    const [source, setSource] = useState<string>();
+    const [total = 0, setTotal] = useState<number>();
+    const [source = '', setSource] = useState<string>();
     
     const updateAmount = (e: React.MouseEvent): void => {
         e.preventDefault();

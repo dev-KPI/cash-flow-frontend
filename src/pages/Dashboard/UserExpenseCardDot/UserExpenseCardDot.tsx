@@ -4,7 +4,7 @@ import React, {FC, Dispatch, SetStateAction, useEffect} from 'react';
 import classes from './UserExpenseCardDot.module.css'
 import Light from '@components/Light/Light';
 //store
-import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/useAppStore';
+import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpensetInterfaces';
 
 interface ExpensesCardDotProps{

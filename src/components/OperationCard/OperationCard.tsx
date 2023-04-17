@@ -2,22 +2,24 @@ import React, { useState, FC, useEffect } from 'react';
 
 //UI
 import classes from "./OperationCard.module.css"
+import OperationModal from '@components/ModalWindows/OperationModal/OperationModal';
 
 interface OperactionCardProps {
     operation: string;
 }
 
 const OperationCard:FC<OperactionCardProps> = ({operation}) => {
+    
     const [amount, setAmount] = useState<number>();
     const [source, setSource] = useState<string>();
 
-    const updateIncome = (e:React.MouseEvent):void => {
+    const [isOperationModalOpen = false, setIsOperationModalOpen] = useState<boolean>();
+
+    const updateIncome = (e: React.MouseEvent):void => {
         e.preventDefault();
         if (operation !== "Income") return;
+        
         const amountAll = 321;
-        let newAmount = amountAll + (Number(prompt("Set income:")) | 0);
-        setAmount(newAmount);
-        setSource(prompt("Set source:") || '');
     }
 
     const styles = {
@@ -26,9 +28,16 @@ const OperationCard:FC<OperactionCardProps> = ({operation}) => {
         percentBackground: operation === "Income"  ? "rgba(128, 214, 103, 0.20)" : "rgba(255, 45, 85, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
-    return (
+    return (<>
+        {operation === 'Income' ?
+            <OperationModal
+            type="salary"
+            setIsOperationModalOpen={setIsOperationModalOpen}
+            isOperationModalOpen={isOperationModalOpen}
+            /> : null
+        }
         <div className={classes.incomeCard}
-            onClick = {updateIncome}
+            onClick = {() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style ={{cursor: styles.cursor}}>
             <div className={classes.inner}>
                 <div className={classes.top}>
@@ -55,7 +64,7 @@ const OperationCard:FC<OperactionCardProps> = ({operation}) => {
                 </div>
             </div>
         </div>
-    );
+    </>);
 };
 
 export default OperationCard;

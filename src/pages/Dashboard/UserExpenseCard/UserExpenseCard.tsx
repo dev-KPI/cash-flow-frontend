@@ -10,7 +10,7 @@ import UserExpenseCardDot from '@pages/Dashboard/UserExpenseCardDot/UserExpenseC
 const UserExpenseCard = () => {
     const [id, setId] = useState<number>();
     const [isExtended, setIsExtended] = useState<boolean>();
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading = true, setLoading] = useState<boolean>();
     const { data: expenses = [], error: Expenses_GET_error, isError: isExpensesError, isLoading: isExpensesLoading } = useGetCategoryExpensesQuery(null);
     const { data: total, error: Total_GET_error, isError: isTotalError, isLoading: isTotalLoading } = useGetCategoryExpensesTotalQuery(null);
 
@@ -26,7 +26,7 @@ const UserExpenseCard = () => {
         return expenses.map(item => <UserExpenseCardDot key={item.id} expense={item} setId={setId} />)
     }
     const expenseTitle = expenses.find(el => el.id === id)?.title;
-    const expenseAmount = expenses.find(el => el.id === id)?.amount
+    const expenseAmount = expenses.find(el => el.id === id)?.amount || 0;
 
     let expensePercentage;
     if (total && expenseAmount){

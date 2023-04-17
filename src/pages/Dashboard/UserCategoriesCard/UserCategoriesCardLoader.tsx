@@ -1,4 +1,4 @@
-import { useAppSelector } from '@hooks/useAppStore';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import ContentLoader from 'react-content-loader';
 
 const UserCategoriesCardLoader = () => {

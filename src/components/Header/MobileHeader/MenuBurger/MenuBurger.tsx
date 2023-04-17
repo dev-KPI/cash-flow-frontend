@@ -6,11 +6,11 @@ import classes from "./MenuBurger.module.css";
 import Avatar from "@assets/user-icon.svg";
 import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
-import {ReactComponent as CloseBtn} from '@assets/Header/close-bth.svg'
+import {ReactComponent as CloseBtn} from '@assets/close-bth.svg'
 import { ThemeButton } from "@components/ThemeButtons/ThemeButtons";
 
 //store
-import { useAppSelector } from "@hooks/useAppStore";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 
 interface IPropsMenuBurger {
     setMenuActive: Dispatch<SetStateAction<boolean | undefined>>

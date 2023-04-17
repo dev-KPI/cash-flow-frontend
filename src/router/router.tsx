@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import { DASHBOARD_PAGE, routesNotAuth, components } from './routes'
 
 //store
-import { useActionCreators } from "@hooks/useAppStore";
+import { useActionCreators } from "@hooks/storeHooks/useAppStore";
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 
 const Router: FC = () => {

@@ -13,7 +13,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale,
 import { Context } from 'vm';
 
 //store
-import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
+import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 
 import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPickerSlice';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
@@ -37,6 +37,11 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
+    
+    const [isLoadingGraph = true, setIsLoadingGraph] = useState<boolean>(); 
+    const setLoadingTime = setTimeout(() => {
+        setIsLoadingGraph(false)
+    }, 1500);
 
     const getYParams = useCallback((): { high: number, step: number } => {
         let highValue = Math.max(...expenses.map(el => el.amount));
@@ -193,7 +198,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
     }
 
     return <>
-        {isExpensesLoading ? 
+        {isLoadingGraph ? 
             <UserExpenseGraphPreloader/>
             : 
             <>
