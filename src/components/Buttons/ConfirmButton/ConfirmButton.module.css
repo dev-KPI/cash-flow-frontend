@@ -1,0 +1,50 @@
+[data-theme="light"]{
+    --backgroundClicked: 
+}
+[data-theme="dark"]{
+    --backgroundClicked: 
+}
+
+.ConfirmButton{
+    composes: cardComponent from "@styles/style.css";
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    border-radius: 6px;
+    background-color: var(--confrimBtn);
+    cursor: pointer;
+}
+.ConfirmButton i {
+    margin-left: 52px;
+    color: var(--btnText);
+    font-size: 16px;
+}
+.ConfirmButton p {
+    margin-right: 52px;
+    color: var(--btnText);
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+}
+button.ConfirmButton:active{
+    opacity: 0.5;
+}
+
+.loadingButton{
+    border-radius: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    user-select: none;
+    background-color: rgba(40, 205, 65, 0.25);;
+}
+.loadingButton p{
+    color: var(--text);
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+}
