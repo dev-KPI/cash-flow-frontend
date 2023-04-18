@@ -2,7 +2,6 @@
     cursor: pointer;
 }
 .closeModalBtn i{
-    font-size: 42px;
     color: var(--main-text);
     transition: color .1s ease-in-out;
 }
