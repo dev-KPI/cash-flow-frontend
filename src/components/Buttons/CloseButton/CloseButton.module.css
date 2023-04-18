@@ -1,0 +1,14 @@
+.closeModalBtn{
+    cursor: pointer;
+}
+.closeModalBtn i{
+    color: var(--main-text);
+    transition: color .1s ease-in-out;
+}
+
+.closeModalBtn i:hover {
+    color: var(--main-red);
+}
+.closeModalBtn i:active {
+    color: var(--text);
+}

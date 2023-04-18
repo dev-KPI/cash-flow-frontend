@@ -1,0 +1,23 @@
+.useModal{
+    composes: backdrop from "@styles/style.css";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.useModal__wrapper{
+    background: var(--cardbg);
+    border-radius: 20px;
+    box-shadow: 0px 2px 8px var(--shadow-color);
+    flex: 1;
+    flex-shrink: 0;
+    padding: 32px 0px;
+}
+
+@media only screen and (max-width: 768px) {
+    .useModal__wrapper{
+        border-radius: 0px;
+        padding: 12px 0px;
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -129,9 +129,17 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
-
+input{
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
 input::-webkit-search-cancel-button {
     display: none;
+}
+
+textarea:focus, input:focus{
+    outline: none;
 }
 
 a{
@@ -156,21 +164,37 @@ button {
     --cardbg: #FFFFFF;
     --main-text: #333333;
     --text: #7A7A9D;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
     --filterBtn: #F8F8FF;
     --active-filter-color: '';
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    --backdrop: #54545490;
+    --btnText: #EAEAEA;
+    --confrimBtn: rgba(128, 214, 103, 1);
+    --borderInput: rgba(122, 122, 157, 0.5);
 }
 [data-theme="dark"]{
     --background: #151515;
     --cardbg: #0F0F0F;
     --main-text: #EAEAEA;
     --text: #9BABC5;
+    --shadow-color: rgba(29, 8, 8, 0.1);
+
+
     --active-filter-color: #80D667;
     --filterBtn: #333333;
-    --shadow-color: rgba(81, 81, 81, 0.1);
+    --backdrop: #00000090;
+    --confrimBtn: rgba(128, 214, 103, 0.8);
+    --btnText: #EAEAEA;
+    --borderInput: rgba(155, 171, 197, 0.5);
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+#portal{
+    width: 100%;
+    height: 100%;
+}
 
 ::-webkit-scrollbar {
     width: 16px;
@@ -188,7 +212,6 @@ button {
     background-clip: content-box;
     background-color: #888;
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
@@ -197,6 +220,10 @@ body{
     background: var(--background);
     font-family: 'Inter';
     font-weight: 400;
+}
+footer{
+    height: 30px;
+    position: fixed;
 }
 
 div[class*="__container"] {
@@ -220,12 +247,21 @@ div[class*="__container"] {
         margin-right: auto;
         padding: 50px 5px 0px;
     }
+    footer{
+        height: 12px;
+    }
 } 
 .pageTitle {
     font-weight: 700;
     font-size: 36px;
     line-height: 44px;
     color: var(--main-text);
+}
+
+.backdrop{
+    width: 100%;
+    height: 100%;
+    background-color: var(--backdrop);
 }
 
 .cardComponent{

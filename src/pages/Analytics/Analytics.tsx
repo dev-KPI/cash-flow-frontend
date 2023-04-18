@@ -7,7 +7,6 @@ import MenuBurger from '@components/Header/MobileHeader/MenuBurger/MenuBurger';
 const Analytics = () => {
     return (
         <div>
-            <Header />
         </div>
     );
 };

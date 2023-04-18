@@ -3,7 +3,7 @@ import React, { useEffect, useCallback } from 'react';
 //UI
 import classes from './MonthPicker.module.css';
 //store
-import { useActionCreators, useAppSelector } from '@hooks/useAppStore';
+import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
 import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
 

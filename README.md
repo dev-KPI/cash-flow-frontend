@@ -17,7 +17,7 @@
     
 `1.[Title | Feature | Else]`: description
 
-**Refactor**
+**Update**
     
 `1.[Title | Feature | Else]`: description or just description
 

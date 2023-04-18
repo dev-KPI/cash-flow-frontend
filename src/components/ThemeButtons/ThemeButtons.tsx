@@ -3,7 +3,7 @@ import React, { useEffect, FC } from "react";
 //UI
 import classes from './ThemeButtons.module.css'
 //store
-import { useActionCreators, useAppSelector } from "@hooks/useAppStore";
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ThemeActions } from "@UI_store/ThemeSlice/ThemeSlice";
 
 export interface IThemeButtonProps{

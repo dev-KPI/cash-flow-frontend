@@ -1,7 +1,7 @@
 .header{
     width: 100%;
     height: 160px;
-    border-bottom: 1px solid #EEEEEE;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     position: relative;
     z-index: 1000;
 }
@@ -113,19 +113,21 @@
     margin-bottom: 16px;
     gap: 20px;
 }
-.navber li{
-
-}
 .navbar a{
     font-size: 14px;
     line-height: 17px;
     color: var(--main-text);
+    transition: all .1s ease-in-out;
 }
-
+.navbar a:hover{
+    color: var(--main-green);
+}
 .navbar .active{
     position: relative;
     font-weight: 500;
+    transition: .2s ease-in-out;
 }
+
 .navbar .active::after{
     position: absolute;
     content: "";
@@ -135,8 +137,23 @@
     background-color: var(--main-green);
     height: 2px;
     border-radius: 2px;
-
+    animation: activeLinkAfterAnimation .3s ease-in-out;
 }
+@keyframes activeLinkAfterAnimation {
+    from {
+        width: 2px;
+        opacity: 0;
+    }
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+.shadowLink{
+    color: var(--main-green);
+    text-shadow: 0px 0px 8px var(--main-text);
+}
+
 
 @media only screen and (max-width: 400px) {
     .header{
@@ -178,4 +195,3 @@
         opacity: 1;
       }
   }
-  
