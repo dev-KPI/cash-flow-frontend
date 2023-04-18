@@ -3,7 +3,7 @@ import React, {FC, MouseEvent, ReactNode, useCallback, useState} from "react";
 //UI
 import classes from './UserExpenseGraph.module.css';
 import UserExpenseGraph from "./UserExpenseGraph";
-import UserExpenseGraphPreloader from "./UserExpenseGraphPreloader";
+import UserExpenseGraphPreloader from "./UserExpenseGraphLoader";
 
 //store
 import { useGetExpensesPerLastMonthQuery } from "@store/ExpenseApiSlice/ExpenseApiSlice";

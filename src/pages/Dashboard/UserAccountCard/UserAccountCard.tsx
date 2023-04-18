@@ -1,11 +1,17 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
 //UI
-import classes from './AccountCard.module.css';
-import userIcon from '@assets/user-icon.svg';
+import classes from './UserAccountCard.module.css';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import UserAccountCardLoader from './UserAccountLoader';
 
 const AccountCard: FC = () => {
+
+    const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
+
+    setTimeout(() => {
+        setIsPageLoading(false)
+    }, 1500);
 
     const User = JSON.parse(JSON.stringify(
         {
@@ -22,8 +28,11 @@ const AccountCard: FC = () => {
     const {id, login, first_name, last_name, picture} = User.user;
     const { current_balance } = User;
     
+
     return<>
-        <div className={classes.AccountCard}>
+    <div className={classes.AccountCard}>
+    {
+        isPageLoading ? <UserAccountCardLoader/> :<>
             <div className={classes.cardHeader}>
                 <h3 className={classes.title}>My account</h3>
                 <img className={classes.avatar} alt={'user icon'} src={picture}/>
@@ -38,7 +47,9 @@ const AccountCard: FC = () => {
                     <p className={classes.value}>${numberWithCommas(current_balance)}</p>
                 </div>
             </div>
-        </div>
+        </>
+    }
+    </div>
     </>
 }
 export default AccountCard

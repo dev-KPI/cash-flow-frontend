@@ -223,6 +223,7 @@ body{
 }
 footer{
     height: 30px;
+    position: fixed;
 }
 
 div[class*="__container"] {

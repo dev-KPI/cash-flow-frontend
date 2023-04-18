@@ -22,7 +22,7 @@ import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
-import UserExpenseGraphPreloader from './UserExpenseGraphPreloader';
+import UserExpenseGraphPreloader from './UserExpenseGraphLoader';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);

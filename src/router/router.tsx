@@ -1,10 +1,12 @@
 import React, { FC, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { DASHBOARD_PAGE, routesNotAuth, components } from './routes'
+import { DASHBOARD_PAGE, components, routesAuth } from './routes'
 
 //store
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
+import Header from '@components/Header/Header';
+import Footer from '@components/Footer/Footer';
 
 const Router: FC = () => {
 
@@ -14,19 +16,19 @@ const Router: FC = () => {
         ThemeDispatch.initializeTheme()
     }, [])
 
-    return (
-        <Routes>
-            {routesNotAuth.map(({ path, component: Component }) => 
-                <Route key={path} path={path} element={<Component />} />
-            )}
-            {components.map(({ path, component: Component }) =>
-                <Route key={path} path={path} element={<Component />} />
-            )}
-            <Route
-                path="*"
-                element={<Navigate to={DASHBOARD_PAGE} replace />}
-            />
-        </Routes>
+    return (<>
+        <Header/>
+            <Routes>
+                {routesAuth.map(({ path, component: Component }) =>
+                    <Route key={path} path={path} element={<Component />} />
+                )}
+                <Route
+                    path="*"
+                    element={<Navigate to={DASHBOARD_PAGE} replace />}
+                />
+            </Routes>
+        <Footer/>
+        </>
     )
 }
 

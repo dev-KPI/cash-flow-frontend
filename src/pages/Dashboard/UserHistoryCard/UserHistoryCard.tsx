@@ -1,7 +1,7 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, useState, ReactNode } from "react";
 
 //UI
-import classes from './HistoryCard.module.css';
+import classes from './UserHistoryCard.module.css';
 import {ReactComponent as ArrowRight} from '@assets/arrow-right.svg';
 import { RecentOperationDashboardCard } from "@components/RecentOperationsCards/RecentOperationsCards";
 
@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useContentSize } from "@hooks/layoutHooks/useLayout";
 import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
 import { tmpObj } from "./testObj";
+import UserHistoryCardLoader from "./UserHistoryCardLoader";
 
 
 type group_category_props = {
@@ -30,11 +31,14 @@ interface Transaction {
     type: string
 }
 
-const HistoryCard: FC = () => {
+const UserHistoryCard: FC = () => {
     
+    const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
+
+    setTimeout(() => {
+        setIsPageLoading(false)
+    }, 1500);
      
-    const {width} = useContentSize();
-    
     const getMixedHistory = () => {
         const expensesDTO: Transaction[] = [...tmpObj.expenses.map((el: Object) => 
             Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
@@ -65,20 +69,22 @@ const HistoryCard: FC = () => {
 
     return(<>
         <div className={classes.HistoryCard}>
-            <h3>Recent Activity</h3>
-            <ul>
-                {getRecentActivities()}
-                <li key='239j76k'>
-                    <Link to={'/'}>
-                        <div className={classes.ViewMore}>
-                            <p>View More</p>
-                            <ArrowRight className={classes.ArrowRight}/>
-                        </div>
-                    </Link>
-                </li>
-            </ul>
+            {isPageLoading ? <UserHistoryCardLoader/> : <>
+                <h3>Recent Activity</h3>
+                <ul>
+                    {getRecentActivities()}
+                    <li key='239j76k'>
+                        <Link to={'/'}>
+                            <div className={classes.ViewMore}>
+                                <p>View More</p>
+                                <ArrowRight className={classes.ArrowRight}/>
+                            </div>
+                        </Link>
+                    </li>
+                </ul>
+            </>}
         </div>
     </>)
 }
 
-export default HistoryCard;
+export default UserHistoryCard;
