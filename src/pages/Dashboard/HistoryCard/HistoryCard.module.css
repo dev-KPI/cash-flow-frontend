@@ -17,21 +17,21 @@
 }
 
 .ViewMore{
-    margin-top: 10px;
     margin-left: 30px;
     display: flex;
-    flex-direction: row;
+    align-items: center;
     gap: 10px;
+    color: var(--main-text);
 }
-.ViewMore p{
-    font-size: 16px;
-    color: var(--text);
+.ViewMore__title{
+    composes: largeItemTitle from "@styles/style.css";
+    color: var(--main-text);
 }
 .ViewMore:hover{
     text-decoration: underline;
 }
 .ArrowRight{
-    fill: var(--text);
+    fill: var(--main-text);
     font-size: 16px;
 }
 

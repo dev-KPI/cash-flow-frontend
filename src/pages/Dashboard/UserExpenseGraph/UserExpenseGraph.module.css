@@ -9,11 +9,6 @@
 
     grid-column-start: span 2;
 }
-.expenseChartTitle{
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 29px;
-}
 
 .chart__uppernav{
     max-width: 500px;
@@ -30,11 +25,10 @@
 .title{
     composes: cardTitle from "@styles/style.css";
 }
-.chart__titleRange .range{
-    color: var(--text);
+.range{
+    composes: mediumItemTitle from "@styles/style.css";
     font-weight: 500;
-    font-size: 14px;
-    line-height: 18px;
+    
     display: flex;
     align-items: center;
     letter-spacing: 0.0016em;

@@ -28,7 +28,7 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
                 color={ColorBtn} 
                 type={'hollow'}/>
                 <div className={classes.center}>
-                    <h5>{title}</h5>
+                    <h5 className={classes.title}>{title}</h5>
                     <p className={classes.time}>{timeAgo.format(new Date(time))}</p>
                 </div>
             </div>

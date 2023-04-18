@@ -6,7 +6,7 @@
 }
 
 .expenseName {
-    composes: listItemTitle from "@styles/style.css";
+    composes: smallItemTitle from "@styles/style.css";
 }
 
 .icon {

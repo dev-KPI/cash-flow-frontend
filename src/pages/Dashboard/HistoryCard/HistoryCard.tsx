@@ -72,7 +72,7 @@ const HistoryCard: FC = () => {
                 <li key='239k'>
                     <Link to={'/'}>
                         <div className={classes.ViewMore}>
-                            <p>View More</p>
+                            <p className={classes.ViewMore__title}>View More</p>
                             <ArrowRight className={classes.ArrowRight}/>
                         </div>
                     </Link>
