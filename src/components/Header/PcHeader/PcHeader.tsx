@@ -1,15 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {FC, MouseEvent} from 'react';
+import { Link, NavLink } from 'react-router-dom';
 
 //UI
 import classes from './PcHeader.module.css'
 import Logo from "@assets/Header/logo.svg";
 import ProfileIcon from "@assets/user-icon.svg"
-import CloseBtn from "@assets/Header/close-bth.svg";
 import {ThemeButton} from '@components/ThemeButtons/ThemeButtons';
 
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 
-const HeaderSite = () => {
+
+const HeaderSite: FC = () => {
+
+    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+
+    const setActiveLinkClasses = (isActive: boolean) => {
+        let res = isActive ? classes.active : classes.item;
+        res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
+        return res
+    }
+
     return (
         <header className={classes.header}>
             <div className={classes.header__container}>
@@ -38,23 +48,36 @@ const HeaderSite = () => {
                    </div>
                    <nav className={classes.breadcrumbs}>
                         <ul className={classes.navbar}>
-                            <li key={'12hf'} className={classes.active}>
-                                <Link  to="/">Dashboard</Link>
+                            <li 
+                            key={'12hf'}>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/dashboard">Dashboard</NavLink>
                             </li>
                             <li key={'12fgd1'}>
-                                <Link to="/">Analytics</Link>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/analytics">Analytics</NavLink>
                             </li>
                             <li key={'12sf3'}>
-                                <Link to="/">Categories</Link>
+                                <NavLink 
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/categories">Categories</NavLink>
                             </li>
                             <li key={'143dfg2'}>
-                                <Link to="/">Groups</Link>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/groups">Groups</NavLink>
                             </li>
                             <li key={'154asd2'}>
-                                <Link to="/">History</Link>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/history">History</NavLink>
                             </li>
                             <li key={'142gfd2'}>
-                                <Link to="/">Settings</Link>
+                                <NavLink 
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/settings">Settings</NavLink>
                             </li>
                         </ul>
                    </nav>

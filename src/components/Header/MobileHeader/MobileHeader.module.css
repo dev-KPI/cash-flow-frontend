@@ -33,13 +33,14 @@
 .menuBurger {
     width: 250px;
     height: 100%;
-    position: absolute;
+    position: fixed;
     overflow: scroll;
     z-index: 998;
     top: 0;
     opacity: 0;
     left: -100%;
     transition: all 0.3s ease-in-out;
+    box-shadow: 6px 0px 35px -15px rgba(51, 51, 51, 1);
 }
 .menuBurger::-webkit-scrollbar{
     display: none;
@@ -52,7 +53,7 @@
     position: absolute;
     z-index: 990;
     width: 100%;
-    height: 1040px;
+    height: 800px;
     left: 0;
     top: 0;
     background-color: rgba(102, 102, 102, 0.07);

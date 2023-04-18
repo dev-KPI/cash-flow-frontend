@@ -1,8 +1,10 @@
 .burgernav{
     width: 250px;
-    max-height: 1040px;
+    max-height: 800px;
+    padding: 24px 0px;
     display: flex;
-    position: absolute;
+    left: 0;
+    top: 0;
     z-index: 1001;
     flex-direction: column;
     background-color: var(--cardbg);
@@ -11,11 +13,8 @@
     user-select: none;
     cursor: pointer;
 }
-.CloseBtn{
-    fill: var(--main-text);
-}
 .burgernav__title{
-    margin: 24px auto 0px 12px;
+    margin: 0px 12px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -28,7 +27,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     user-select: none;
 }
 .burgernav__title .title{
@@ -76,6 +75,7 @@
 }
 .burgernav__list .item{
     display: flex;
+    height: 18px;
     flex-direction: row;
     padding: 16px 24px;
     text-align: center;
@@ -87,14 +87,16 @@
     flex-direction: row;
     text-align: center;
     align-items: center;
-    padding: 16px 0px 16px 24px;
+    padding: 16px 24px;
     color: var(--main-green);
     transition: .3s ease-in-out;
 }.activeLink::after{
     display: flex;
     content: ' ';
+    position: absolute;
     height: 40px;
     width: 5px;
+    right: 0;
     margin-left: auto;
     background-color: var(--main-green);
     animation: activeLinkAfterAnimation .3s ease-in-out;
@@ -102,7 +104,15 @@
 .shadowLink{
     text-shadow: 0px 0px 8px var(--main-green);
 }
-
+.activeLink{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    align-items: center;
+    padding: 16px 24px;
+    color: var(--main-green);
+    transition: .3s ease-in-out;
+}
 @keyframes activeLinkAfterAnimation {
     from {
         height: 2px;
@@ -191,13 +201,16 @@
 }
 .burgernav__downside{
     display: flex;
+    max-height: 100px;
     padding-top: 16px;
-    margin: 0px 0px 24px 0px;
     color: var(--main-text);
 }
 .burgernav__downside .list {
     display: flex;
     flex-direction: column;
+}
+.burgernav__downside .list li{
+    max-height: 50px;
 }
 .burgernav__downside .item{
     display: flex;
@@ -214,8 +227,8 @@
 
 @-webkit-keyframes ping {
     0% {
-      -webkit-transform: scale(1.1);
-              transform: scale(1.1);
+      -webkit-transform: scale(1.2);
+              transform: scale(1.2);
       opacity: 1;
     }
     50% {
@@ -224,15 +237,15 @@
       opacity: 0.9;
     }
     100% {
-      -webkit-transform: scale(1.1);
-              transform: scale(1.1);
+      -webkit-transform: scale(1.2);
+              transform: scale(1.2);
       opacity: 1;
     }
   }
   @keyframes ping {
     0% {
-        -webkit-transform: scale(1.1);
-                transform: scale(1.1);
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2);
         opacity: 1;
       }
       50% {
@@ -241,8 +254,8 @@
         opacity: 0.9;
       }
       100% {
-        -webkit-transform: scale(1.1);
-                transform: scale(1.1);
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2);
         opacity: 1;
       }
   }
