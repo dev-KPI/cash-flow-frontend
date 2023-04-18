@@ -1,12 +1,4 @@
-[data-theme="light"]{
-    --backgroundClicked: 
-}
-[data-theme="dark"]{
-    --backgroundClicked: 
-}
-
 .ConfirmButton{
-    composes: cardComponent from "@styles/style.css";
     display: flex;
     flex-direction: row;
     align-items: center;

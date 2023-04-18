@@ -7,6 +7,7 @@ import Input from "@components/Input/Input";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import { useWindowSize } from "usehooks-ts";
 
 interface IOperationModalProps{
     type: 'expense' | 'salary'
@@ -29,6 +30,7 @@ const OperationModal: FC<IOperationModalProps> = ({ type, isOperationModalOpen =
 
     const [salaryValue = 0, setSalaryValue] = useState<number>();
     const [descriptionValue = '', setDescriptionValue] = useState<string>();
+    const {width} = useWindowSize()
 
     //submit
     const [isSubmiting = false, setIsSubmiting] = useState<boolean>();
@@ -56,7 +58,11 @@ const OperationModal: FC<IOperationModalProps> = ({ type, isOperationModalOpen =
         >
             <form
             onSubmit={handleSubmit}>
-                <header className={classes.Header}>
+                <div 
+                style={{
+                    paddingTop: width > 768 ? '' : '32px',
+                }}
+                className={classes.Header}>
                     <div className={classes.Icon}>
                         {headerIcon}
                     </div>
@@ -64,9 +70,13 @@ const OperationModal: FC<IOperationModalProps> = ({ type, isOperationModalOpen =
                     <div className={classes.closeBtn}>
                         <CloseButton closeHandler={() => setIsOperationModalOpen(false)}/>
                     </div>
-                </header>
+                </div>
                 <div className={classes.line}></div>
-                <div className={classes.SalaryBody}>
+                <div 
+                style={{
+                    marginTop: width > 768 ? '' : '10%',
+                }}
+                className={classes.OperationBody}>
                     <div className={classes.AmountInput}>
                         <label className={classes.title} htmlFor="salary">{amountTitle}</label>
                         <div className={classes.inputWrapper}>
@@ -88,7 +98,7 @@ const OperationModal: FC<IOperationModalProps> = ({ type, isOperationModalOpen =
                         </div>
                     </div>
                 </div>
-                <footer className={classes.confirmBtnWrapper}>
+                <div className={classes.confirmBtnWrapper}>
                     <ConfirmButton
                     isPending={isSubmiting}
                     title="Submiting..."
@@ -96,7 +106,7 @@ const OperationModal: FC<IOperationModalProps> = ({ type, isOperationModalOpen =
                     btnHeight={36}
                     type="submit"
                     callback={handleSubmit}/>
-                </footer>
+                </div>
             </form>
         </UseModal>
     </>,

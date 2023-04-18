@@ -170,7 +170,7 @@ button {
     --active-filter-color: '';
     --backdrop: #54545490;
     --btnText: #EAEAEA;
-    --confrimBtn: rgba(128, 214, 103, 0.85);
+    --confrimBtn: rgba(128, 214, 103, 1);
     --borderInput: rgba(122, 122, 157, 0.5);
 }
 [data-theme="dark"]{
@@ -184,7 +184,7 @@ button {
     --active-filter-color: #80D667;
     --filterBtn: #333333;
     --backdrop: #00000090;
-    --confrimBtn: rgba(128, 214, 103, 1);
+    --confrimBtn: rgba(128, 214, 103, 0.8);
     --btnText: #EAEAEA;
     --borderInput: rgba(155, 171, 197, 0.5);
 }

@@ -41,8 +41,8 @@ const useModal: FC<IModalProps> = ({
     //initializing page process
     const initializePortal = useCallback(() => {
        
-        containerHeight -= width < 768 ? (32 * 2) : 24;
-        containerWidth -= width < 768 ? (30 * 2) : 24;
+        containerHeight -= width > 768 ? (32 * 2) : 24;
+        containerWidth -= width > 768 ? (30 * 2) : 24;
 
         if (portalPlace) {
             if(isModalOpen){
@@ -70,7 +70,7 @@ const useModal: FC<IModalProps> = ({
                 body.style.paddingRight = '0px';
             }
         }
-    }, [isModalOpen])
+    }, [isModalOpen, width])
 
     useEscapeKey(closeModal);
     useEffect(() => {
@@ -88,8 +88,8 @@ const useModal: FC<IModalProps> = ({
             onClick={closeModal}>
                 <div
                 style={{
-                    maxWidth: containerWidth + 'px',
-                    maxHeight: containerHeight + 'px',
+                    maxWidth: width > 768 ? containerWidth : '100%',
+                    maxHeight: width > 768 ? containerHeight : '100%',
                 }}
                 onClick={(e: MouseEvent<HTMLDivElement>) => {e.preventDefault(); e.stopPropagation();}}
                 className={classes.useModal__wrapper}>
