@@ -13,20 +13,18 @@
     flex-direction: column;
     gap: 10px;
     margin-top: 24px;
-
-    
 }
 .ViewMore {
     position: absolute;
     content: '';
     bottom: 0px;
     left: 0;
+    margin-top: 10px;
+    margin-left: 30px;
 }
 .ViewMore__inner{
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    margin-left: 30px;
     gap: 10px;
     color: var(--main-text);
 }
@@ -53,6 +51,7 @@
         flex-wrap: wrap;
         justify-content: space-between;
         flex-direction: row;
+        margin-bottom: 30px;
     }
 
     .HistoryCard ul > li {
@@ -61,14 +60,10 @@
 }
 
 @media only screen and (max-width: 1028px) {
-    .HistoryCard {
-        padding: 0;
-    }
     .HistoryCard ul {
         margin-top: 0;
-        margin-bottom: 30px;
         row-gap: 0px;
-        column-gap: 21px;
+        column-gap: 20px;
         flex: 1 0 auto;
         flex-direction: column;
         height: 160px;

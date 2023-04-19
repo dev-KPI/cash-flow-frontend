@@ -1,5 +1,4 @@
 .RecentOperationDashboardCard{
-    padding: 3px 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -14,6 +13,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 14px;
+    gap: 2px;
 }
 .title{
     composes: mediumItemTitle from "@styles/style.css";
