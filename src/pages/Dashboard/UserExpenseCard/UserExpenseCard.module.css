@@ -1,6 +1,7 @@
 .expenseChart {
     composes: cardComponent from "@styles/style.css";
     width: 510px;
+    height: 300px;
     position: relative;
     grid-row-start: span 2;
 }
@@ -8,8 +9,6 @@
 .title {
     composes: cardTitle from "@styles/style.css";
 }
-
-
 
 .inner {
     padding: 24px 32px 25px;
@@ -19,7 +18,6 @@
     display: flex;
     margin-top: 9px;
 }
-
 
 .chart {
     position: relative;
@@ -64,7 +62,6 @@
     cursor: pointer;
 }
 
-
 .closeBtn i {
     font-size: 28px;
     display: flex;
@@ -84,10 +81,9 @@
 @media only screen and (max-width: 1440px) {
     .expenseChart {
         width: unset;
-        min-width: 400px
+        min-width: 400px;
     }
     .wrapper {
-        /* justify-content: space-between; */
         column-gap: 30px;
     }
     .info {
@@ -103,7 +99,6 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding: 16px 24px;
     }
 
     .wrapper {
