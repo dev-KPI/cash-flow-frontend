@@ -42,7 +42,7 @@ const HistoryCard: FC = () => {
             Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
     
         const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]
-        return(HistoryArray.sort((a, b) => {
+        return(HistoryArray.sort((b, a) => {
             const dateA = new Date(a.time).getTime();
             const dateB = new Date(b.time).getTime();
             return dateA - dateB;
@@ -69,15 +69,15 @@ const HistoryCard: FC = () => {
             <h3 className={classes.title}>Recent Activity</h3>
             <ul>
                 {getRecentActivities()}
-                <li key='239k'>
-                    <Link to={'/'}>
-                        <div className={classes.ViewMore}>
-                            <p className={classes.ViewMore__title}>View More</p>
-                            <ArrowRight className={classes.ArrowRight}/>
-                        </div>
-                    </Link>
-                </li>
             </ul>
+            <div key='239k' className={classes.ViewMore}>
+                <Link to={'/'}>
+                    <div className={classes.ViewMore__inner}>
+                        <p className={classes.ViewMore__title}>View More</p>
+                        <ArrowRight className={classes.ArrowRight} />
+                    </div>
+                </Link>
+            </div>
         </div>
     </>)
 }

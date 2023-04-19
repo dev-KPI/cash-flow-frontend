@@ -1,10 +1,9 @@
 .HistoryCard{
-    /* width: 374px; */
-    /* height: 480px; */
     margin-left: 30px;
     padding: 0 16px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .title{
     composes: cardTitle from "@styles/style.css";
@@ -14,12 +13,20 @@
     flex-direction: column;
     gap: 10px;
     margin-top: 24px;
-}
 
-.ViewMore{
-    margin-left: 30px;
+    
+}
+.ViewMore {
+    position: absolute;
+    content: '';
+    bottom: 0px;
+    left: 0;
+}
+.ViewMore__inner{
     display: flex;
     align-items: center;
+    margin-top: 10px;
+    margin-left: 30px;
     gap: 10px;
     color: var(--main-text);
 }
@@ -27,7 +34,7 @@
     composes: largeItemTitle from "@styles/style.css";
     color: var(--main-text);
 }
-.ViewMore:hover{
+.ViewMore__inner:hover{
     text-decoration: underline;
 }
 .ArrowRight{
@@ -42,7 +49,7 @@
         flex-direction: column;
     }
     .HistoryCard ul{
-        margin-top: 12px;
+        margin-top: 13px;
         flex-wrap: wrap;
         justify-content: space-between;
         flex-direction: row;
@@ -58,12 +65,16 @@
         padding: 0;
     }
     .HistoryCard ul {
+        margin-top: 0;
+        margin-bottom: 30px;
         row-gap: 0px;
         column-gap: 21px;
+        flex: 1 0 auto;
+        flex-direction: column;
+        height: 160px;
     }
     .HistoryCard ul>li {
         width: unset;
-        flex: 1 0 194px;
+        flex: 1 0 40px;
     }
-
 }
