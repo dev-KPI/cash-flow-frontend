@@ -1,11 +1,6 @@
 .categories {
     composes: cardComponent from "@styles/style.css";
-    /* display: flex; */
-    /* max-width: 540px; */
-    /* min-width: 450px; */
-    /* flex-basis: 540px; */
     height: 300px;
-    /* width: 540px; */
     grid-column-start: span 2;
 }
 
@@ -79,8 +74,6 @@
 }
 
 .item {
-    /* min-width: 65px; */
-    /* max-width: 65px; */
     width: 65px;
     display: flex;
     flex-direction: column;
@@ -145,5 +138,20 @@
 @media only screen and (max-width: 1028px) {
     .list {
         gap: 10px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .categories {
+            height: auto;
+        }
+    .inner {
+        padding: 16px;
+    }
+    .top{
+        margin-bottom: 10px;
+    }
+    .list{
+        row-gap: 7px;
     }
 }

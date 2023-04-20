@@ -1,8 +1,6 @@
-.expenseChart__wrapper{
+.expenseChart__wrapper {
     composes: cardComponent from "@styles/style.css";
-    /* max-width: 1080px; */
     min-height: 480px;
-    /* width: 1080px; */
     display: flex;
     flex-direction: column;
     padding: 24px 32px;
@@ -10,25 +8,21 @@
     grid-column-start: span 2;
 }
 
-.chart__uppernav{
-    max-width: 500px;
-    max-height: 65px;
-    flex-basis: 200px;
+.chart__uppernav {
     display: flex;
     flex-direction: row;
 }
-.chart__titleRange{
-    display: flex;
-    flex-basis: 200px;
-    flex-direction: column;
-}
-.title{
+
+.chart__titleRange {}
+
+.title {
     composes: cardTitle from "@styles/style.css";
 }
-.range{
+
+.range {
     composes: mediumItemTitle from "@styles/style.css";
     font-weight: 500;
-    
+
     display: flex;
     align-items: center;
     letter-spacing: 0.0016em;
@@ -37,10 +31,9 @@
 .chartinner__wrapper {
     max-width: 1015px;
     max-height: 320px;
-    flex-basis: 1015px;
-    display: flex;
     margin-top: 45px;
 }
+
 .chartinner__wrapper h3 {
     font-weight: 400;
     font-size: 14px;
@@ -49,6 +42,7 @@
     align-items: center;
     color: var(--text);
 }
+
 .chartinner__wrapper i {
     color: var(--text);
 }
@@ -58,12 +52,20 @@
         order: 1;
     }
 }
-@media only screen and (max-width: 400px) {
-    .expenseChart__wrapper{
-        padding: 12px;
+
+@media only screen and (max-width: 768px) {
+    .expenseChart__wrapper {
+        grid-column-start: span 1;
+        padding: 16px;
+        min-height: auto;
     }
     .chartinner__wrapper {
-        max-height: 160px;
-        max-width: calc(100% - 24px);
+        margin-top: 25px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .chartinner__wrapper {
+        margin-top: 15px;
     }
 }

@@ -50,17 +50,11 @@
     user-select: none;
 }
 
-@media only screen and (max-width: 400px) {
-    .monthPicker{
-        max-width: 400px;
-        flex-basis: 400px;
-    }
-    .wrapper{
-        padding: 0px;
-        max-width: 400px;
-        flex-basis: 400px;
-        display: flex;
-        justify-content: space-between;    
-        gap: none;
+@media only screen and (max-width: 768px) {
+    .monthPicker {
+        min-width: unset;
+        width: 100%;
+        display: block;
     }
 }
+

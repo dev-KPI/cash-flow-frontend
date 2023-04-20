@@ -1,11 +1,6 @@
 .groups {
     composes: cardComponent from "@styles/style.css";
-    /* display: flex; */
-    /* max-width: 510px; */
-    /* min-width: 450px; */
-    /* flex-basis: 510px; */
     max-height: 120px;
-    /* width: 510px; */
 }
 
 .inner{
@@ -132,27 +127,15 @@
     color: var(--main-text);
 }
 
-@media only screen and (max-width: 1440px) {
-    .groups {
-        /* max-height: unset */
-    }
-}
 
 @media only screen and (max-width: 1028px) {
-    .groups{ 
-        /* max-height: unset; */
-        /* height: 100%; */
-    }
-    .inner {
-        /* padding: 16px; */
-        /* display: flex; */
-        /* flex-direction: column; */
-        /* height: 100%; */
-    }
     .list {
-        /* flex: 1 0 50%; */
-        /* align-items: center; */
         gap: 10px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .inner{
+        padding: 12px 16px;
     }
 }
 
