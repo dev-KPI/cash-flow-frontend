@@ -1,31 +1,23 @@
 .header{
     width: 100%;
     position: fixed;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+    top: 0;
     z-index: 500;
     background-color: var(--cardbg);
 }
-.header__wrapper{
-    margin: 0px 12px;
-    max-width: 370px;
-    max-height: 60px;
-    flex-basis: 370px;
+.header__container{
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    width: 100%;
+    padding: 7px 0;
 }
-.header__wrapper h1{
-    color: var(--main-text);
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 54px;
+.title{
+    composes: pageTitle from "@styles/style.css";
 }
-.header__wrapper span{
+.header__container span{
     color: var(--main-green);
 }
-.header__wrapper .burger{
+.header__container .burger{
     font-size: 24px;
     fill: var(--main-text);
 }

@@ -5,7 +5,7 @@
     z-index: 1000;
 }
 .header__container{
-    padding-top: 30px !important;
+    padding-top: 30px;
     position: relative;
 }
 .header__top{

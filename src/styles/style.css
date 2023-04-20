@@ -204,7 +204,8 @@ div[class*="__container"] {
     max-width: 1524px;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .pageTitle {
     font-weight: 700;
@@ -257,19 +258,25 @@ div[class*="__container"] {
 @media only screen and (max-width: 1440px) {
     div[class*="__container"] {
         max-width: 1090px;
-
     }   
+}
+
+@media only screen and (max-width: 768px) {
+    div[class*="__container"] {
+            max-width: 500px;
+        }
+    main {
+        padding-top: 60px;
+    }
 }
 @media only screen and (max-width: 400px) {
     div[class*="__container"] {
         max-width: 400px;
         padding: 50px 5px 0px;
     }
-} 
-@media only screen and (max-width: 400px) {
-    .cardComponent{
+    .cardComponent {
         padding: 12px;
         border-radius: 10px;
         max-width: 400px;
     }
-}
+} 

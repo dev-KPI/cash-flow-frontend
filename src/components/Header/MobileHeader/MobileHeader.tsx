@@ -38,11 +38,11 @@ const MobileHeader: FC = () => {
 
     return(<>
         <header className={classes.header}>
-            <div className={classes.header__wrapper}>
+            <div className={classes.header__container}>
                 <button onClick={() => setIsOpen(true)}>
                     <Burger className={classes.burger}/>
                 </button>
-                <h1>Cash<span>Flow</span></h1>
+                <h1 className={classes.title}>Cash<span>Flow</span></h1>
                 <img src={Logo} alt="logo" />
             </div>
         </header>
