@@ -2,14 +2,15 @@
     width: 100%;
     height: 160px;
     border-bottom: 1px solid #EEEEEE;
-    position: relative;
     z-index: 1000;
 }
 .header__container{
+    padding-top: 30px !important;
+    position: relative;
 }
 .header__top{
     display: flex;
-    margin-top: 30px;
+    
     justify-content: space-between;
     align-items: center;
     gap: 20px;
@@ -100,12 +101,11 @@
 
 .breadcrumbs{
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: -58px;
+    left: 23%;
 }
 .navbar{
     display: flex;
-    margin-left: 350px;
     margin-bottom: 16px;
     gap: 20px;
 }
