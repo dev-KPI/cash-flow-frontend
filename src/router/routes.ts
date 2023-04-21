@@ -5,6 +5,7 @@ import Categories from "@pages/Categories/Categories";
 //UI
 import MenuBurger from "@components/Header/MobileHeader/MenuBurger/MenuBurger";
 import Header from "@components/Header/Header";
+import Groups from "@pages/Groups/Groups";
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
@@ -30,6 +31,10 @@ export const routesAuth = [
     {
         path: CATEGORIES_PAGE,
         component: Categories
+    },
+    {
+        path: GROUPS_PAGE,
+        component: Groups
     },
 ];
 export const routesMobileNavigation = [

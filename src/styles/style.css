@@ -150,6 +150,9 @@ a{
 button {
     all: unset;
 }
+*{
+    box-sizing: border-box;
+}
 
 :root{
     --main-green: #80D667;

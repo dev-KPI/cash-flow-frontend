@@ -47,14 +47,14 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                 <li key={'1htjyn'}>
                     <NavLink 
                     onClick={closeMenu}
-                    id={'1'}
+                    id={'1jfi2'}
                     to="/dashboard"
                     className={({ isActive }) => setActiveLinkClasses(isActive)}>
                         <div className={classes.burgerIcon}><i className="bi bi-house"></i></div>
                         <h3 className={classes.title}>Dashboard</h3>
                     </NavLink>
                 </li>
-                <li key={'2tre'}>
+                <li key={'2treasjdai'}>
                     <NavLink 
                     onClick={closeMenu}
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
