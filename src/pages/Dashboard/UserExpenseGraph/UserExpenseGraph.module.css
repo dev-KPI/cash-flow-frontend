@@ -58,9 +58,13 @@
         grid-column-start: span 1;
         padding: 16px;
         min-height: auto;
+        order: 2;
+        height: 330px;
     }
     .chartinner__wrapper {
-        margin-top: 25px;
+        margin-top: 21px;
+        min-height: 234px;
+        max-height: 234px;
     }
 }
 

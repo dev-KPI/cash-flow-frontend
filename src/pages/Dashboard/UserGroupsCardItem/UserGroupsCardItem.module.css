@@ -31,3 +31,10 @@
     color: #fff;
     font-size: 18px;
 }
+
+@media only screen and (max-width: 768px) {
+    .icon {
+        height: 42px;
+        width: 42px;
+    }
+}

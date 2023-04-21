@@ -1,11 +1,13 @@
 .groups {
     composes: cardComponent from "@styles/style.css";
     max-height: 120px;
+    overflow: hidden;
 }
 
 .inner{
     width: 100%;
-    padding: 14px 24px 7px 24px;
+    padding: 16px 24px 10px 24px;
+    overflow: hidden;
 }
 
 .title {
@@ -66,8 +68,6 @@
 }
 
 .item {
-    /* min-width: 65px; */
-    /* max-width: 65px; */
     width: 65px;
     display: flex;
     flex-direction: column;
@@ -96,8 +96,8 @@
     justify-content: center;
     align-items: center;
 
-    width: 40px;
-    height: 40px;
+    width: 43px;
+    height: 43px;
     border: 3px dashed var(--text);
     border-radius: 50%;
     background-color: transparent;
@@ -135,7 +135,14 @@
 }
 @media only screen and (max-width: 768px) {
     .inner{
-        padding: 12px 16px;
+        padding: 16px 16px 10px;
+    }
+    .dashed {
+        width: 39px;
+        height: 39px;
+    }
+    .list {
+        gap: 8px;
     }
 }
 

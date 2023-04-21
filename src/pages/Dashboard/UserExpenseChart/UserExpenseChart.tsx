@@ -48,7 +48,6 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
     }
 
     const options = {
-        responsive: true,
         layout: {
             padding: {
                 bottom: 15
@@ -92,9 +91,7 @@ const UserExpenseChart: FC<UserExpenseChartProps> = ({expenses, total, setId}) =
             ctx.save();
             const xCoor = chart.getDatasetMeta(0).data[0].x;
             const yCoor = chart.getDatasetMeta(0).data[0].y;
-            // ctx.font = '600 24px Inter';
             ctx.font = "600 " + 0.12 * chart.chartArea.width + "px Inter";
-            // console.log(chart.chartArea);
             ctx.fillStyle = pluginOptions.color
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';

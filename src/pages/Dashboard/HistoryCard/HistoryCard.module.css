@@ -20,7 +20,7 @@
     bottom: 0px;
     left: 0;
     margin-top: 10px;
-    margin-left: 30px;
+    margin-left: 46px;
 }
 .ViewMore__inner{
     display: flex;
@@ -76,6 +76,7 @@
 @media only screen and (max-width: 768px) {
     .HistoryCard{
         padding: 0 16px;
+        order: 4;
     }
     .HistoryCard ul {
         height: max-content

@@ -126,11 +126,23 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .expenseChart{
+        height: 250px;
+    }
+    .wrapper{
+        margin-top: 12px;
+    }
     .inner {
         padding: 16px;
     }
     .popupList{
         margin-bottom: 15px;
+    }
+    .expensePercent {
+        margin-bottom: 0;
+    }
+    .expenseInfo {
+        margin-bottom: 5px;
     }
 }
 

@@ -21,8 +21,7 @@
 .grid__topleft{
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    
+    gap: 30px;  
 }
 
 .grid__operation{
@@ -66,6 +65,14 @@
     .title{
         width: 100%;
         text-align: left;
+    }
+
+    .grid__topleft {
+        order: 1;
+    }
+
+    .grid__topright {
+        order: 3;
     }
 }
 

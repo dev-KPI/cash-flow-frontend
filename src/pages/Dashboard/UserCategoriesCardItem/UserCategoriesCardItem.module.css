@@ -31,3 +31,10 @@
     line-height: 20px;
     color: #FF2D55;
 }
+
+@media only screen and (max-width: 768px) {
+    .icon {
+        height: 42px;
+        width: 42px;
+    }
+}
