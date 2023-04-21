@@ -8,7 +8,7 @@ import PreLoader from '@components/PreLoader/PreLoader';
 interface IConfirmButtonProps {
     btnWidth?: number
     btnHeight?: number
-    type: 'submit' | 'button'
+    type: 'submit' | 'button' | 'add'
     callback: () => void
     isPending: boolean
     title: string
@@ -22,6 +22,11 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({type, btnWidth = 100, btnHeight
     const setEndHover = () => setIsAnimation(false)
 
     const handleClick = (e: MouseEvent<HTMLButtonElement>) => callback() 
+    const getIcon = () => {
+        return type === 'submit' ? 
+        <i className="bi bi-check2"></i> :
+        type === 'add' ? <i style={{fontSize:'24px'}} className="bi bi-plus"></i> : <div></div>
+    }
 
     return <>
     {!isPending ?
@@ -31,16 +36,15 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({type, btnWidth = 100, btnHeight
             <button
             onMouseEnter={setStartHover}
             onMouseLeave={setEndHover}
-            type={type}
             onClick={handleClick}
             style={{
-                maxWidth: btnWidth + 'px',
+                width: btnWidth + 'px',
                 height: btnHeight + 'px',
                 transition: 'transform 0.3s ease, opacity 0.1s ease',
             }}
             className={classes.ConfirmButton}>
-                <i className="bi bi-check2"></i>
-                <p>Confirm</p>
+                {getIcon()}
+                <p>{title ? title : 'Confirm'}</p>
             </button>
         </ButtonHover> 
     : 
