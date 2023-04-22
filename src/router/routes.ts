@@ -4,7 +4,6 @@ import Analytics from "@pages/Analytics/Analytics";
 import Categories from "@pages/Categories/Categories";
 import Groups from "@pages/Groups/Groups";
 //UI
-import MenuBurger from "@components/Header/MobileHeader/MenuBurger/MenuBurger";
 import Header from "@components/Header/Header";
 
 export const DASHBOARD_PAGE = '/dashboard';

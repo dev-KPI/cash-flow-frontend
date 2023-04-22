@@ -7,6 +7,8 @@ const UserExpenseCardLoader = () => {
         <ContentLoader
             speed={2}
             viewBox="0 0 510 300"
+            width={'100%'}
+            height={'100%'}
             backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
             foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
         >

@@ -1,113 +1,98 @@
 .AccountCard{
     composes: cardComponent from "@styles/style.css";
-    max-width: 374px;
-    min-width: 256px;
-    height: 100%;
+    margin-left: 30px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    flex-basis: 340px;
-    padding: 24px 32px 24px;
-}
-.cardHeader{
-    display: flex;
-    flex-direction: column;
-}
-.AccountCard .title{
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 30px;
-    color: var(--main-text);
-}
-.AccountCard .avatar{
-    max-width: 180px;
-    margin-left: calc((100% - 180px)/2);
-    margin-top: 10px;
-}
-.info__wrapper .text{
-    margin-top: 37px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-.text .name{
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 40px;
-    color: var(--main-text);
-}
-.text .email{
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 20px;
-    color: var(--text);
 }
 
-.AccountCard .info__wrapper{
+.inner {
+    padding: 24px 32px;
+}
+
+.title{
+    composes: cardTitle from "@styles/style.css";
+}
+.avatar{
+    max-width: 180px;
+    display: block;
+    margin: 0 auto;
+}
+
+.user{
+    margin-top: 14px;
     display: flex;
-    margin-top: auto;
     flex-direction: column;
 }
-.info__wrapper .balance {
-    margin-top: 12px;
+
+.personal__data{
+    margin-top: 10px;
 }
-.info__wrapper .balance h3{
+
+.user__info{
+    text-align: center;
+}
+.name{
+    composes: largeText from "@styles/style.css";
+}
+.email{
+    composes: largeItemTitle from "@styles/style.css";
+    font-weight: 500;
+}
+
+.balance {
+    margin-top: 35px;
+    text-align: left;
+}
+.balance h5{
     font-weight: 700;
     font-size: 24px;
     line-height: 29px;
     color: var(--main-text);
+    white-space: nowrap;
 }
-.info__wrapper .value{
-    margin-top: 5px;
+.balance .value{
     font-weight: 600;
     font-size: 32px;
     line-height: 39px;
     color: var(--main-green);
 }
-.info__wrapper .range{
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 19px;
-    color: var(--text);
-}
 
 @media only screen and (max-width: 1440px) {
-    .AccountCard{
-        flex-direction: row;
-        padding-right: 64px;
-        max-height: 240px;
-        max-width: 100%;
-        min-width: 386px;
+    .AccountCard {
+        margin-left: 0;
+    }
+    .avatar {
+        margin: 0;
+    }
+    .user {
+        flex-direction: row
+    }
+    .personal__data {
+        margin-left:40px;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-basis: 100%;
+        flex-direction: column;
+        justify-content: space-around;
     }
-    .AccountCard .cardHeader{
-        width: 150px;
+
+    .balance, .user__info, .personal__data {
+        margin-top: 0;
+        text-align: unset;
     }
+
     .AccountCard .avatar{
         width: 150px;
-        margin: 14px 0px 0px;
     }
     .info__wrapper{
         padding: 32px 0px;
         justify-content: space-between;
     }
-    .info__wrapper .balance{
-    }
-    .info__wrapper .balance h3{
+
+    .info__wrapper .balance h5{
         font-size: 18px;
         line-height: 22px;
     }
-    .AccountCard .text{
-        display: block;
-        text-align: start;
-        justify-content: left;
-        margin: 0;
-    }
-    .AccountCard .value{
+
+    .info__wrapper.value{
         font-size: 24px;
         line-height: 29px;
     }
@@ -117,7 +102,34 @@
     }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 1028px) {
+    .user{
+        flex-wrap: wrap;
+        column-gap: 21px;
+    }
+
+    .balance h5 {
+        font-size: 22px;
+        line-height: 27px;
+    }
+
+    .personal__data {
+        margin-left: 0;
+        flex: 1 0 50%;
+        row-gap: 20px;
+       
+    }
+
+    .user{
+        justify-content: center;
+        text-align: center;
+    }
+    .balance {
+        text-align: left;
+    }
+}
+
+@media only screen and (max-width: 768px) {
     .AccountCard{
         display: none;
     }

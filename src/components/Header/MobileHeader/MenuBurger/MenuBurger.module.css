@@ -1,12 +1,7 @@
 .burgernav{
     width: 250px;
-    max-height: 800px;
     padding: 24px 0px;
-    display: flex;
-    left: 0;
-    top: 0;
     z-index: 1001;
-    flex-direction: column;
     background-color: var(--cardbg);
 }
 .logo{
@@ -16,7 +11,6 @@
 .burgernav__title{
     margin: 0px 12px;
     display: flex;
-    flex-direction: row;
     align-items: center;
     font-weight: 700;
     user-select: none;
@@ -48,7 +42,6 @@
     margin-top: 26px;
     margin-right: auto;
     display: flex;
-    flex-direction: row;
     align-items: center;
 }
 .burgernav__account .title{
@@ -66,31 +59,28 @@
 
 .burgernav__list{
     margin-top: 24px;
-    width: 100%;
-
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 18px;
 }
-.burgernav__list .item{
+ .item{
     display: flex;
-    height: 18px;
-    flex-direction: row;
     padding: 16px 24px;
     text-align: center;
     align-items: center;
     color: var(--text);
 }
+.item:hover{
+    
+}
+.title{
+    /* composes: mediumItemTitle from '@styles/style.css'; */
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+}
 .activeLink{
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    align-items: center;
-    padding: 16px 24px;
     color: var(--main-green);
     transition: .3s ease-in-out;
-}.activeLink::after{
+}
+.activeLink::after{
     display: flex;
     content: ' ';
     position: absolute;
@@ -104,15 +94,7 @@
 .shadowLink{
     text-shadow: 0px 0px 8px var(--main-green);
 }
-.activeLink{
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    align-items: center;
-    padding: 16px 24px;
-    color: var(--main-green);
-    transition: .3s ease-in-out;
-}
+
 @keyframes activeLinkAfterAnimation {
     from {
         height: 2px;
@@ -138,18 +120,15 @@
 }
 
 
-
 .burgernav__list .inc{
     width: 30px;
     height: 100%;
     display: flex;
-    flex-direction: row;
     justify-content: center;
     margin-left: auto;
     border-radius: 20px;
     color: var(--main-green);
     text-shadow: 0px 0px 8px var(--main-green);
-    background-color: var(--background);
     -webkit-animation: ping 1s ease-in-out infinite both;
 	        animation: ping 1s ease-in-out infinite both;
 }
@@ -157,9 +136,8 @@
 .burgernav__groups{
     margin-top: 24px;
 }
-.burgernav__groups .title{
+.burgernav__groups .groupTitle{
     margin-left: 24px;
-    font-style: normal;
     font-weight: 600;
     font-size: 11px;
     line-height: 13px;
@@ -167,59 +145,37 @@
     text-transform: uppercase;
     color: #7A7A9D;
 }
+
 .burgernav__groups .list{
     margin-top: 24px;
-    padding: 0px 24px;
+
 }
 .burgernav__groups .item{
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    align-items: center;
-
-    font-style: normal;
+    padding: 3px 24px;
+}
+.burgernav__groups .title{
+    margin-left: 10px;
     font-weight: 500;
     font-size: 12px;
     line-height: 12px;
-    color: #425466;
+    color: var(--text)
 }
 .burgernav__groups .list li:not(:first-child){
     margin-top: 24px;
 }
-.burgernav__groups .item__title{
-    margin-left: 10px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 12px;
-    line-height: 12px;
-    color: var(--text);
-}
+
 .themeButton{
     margin-top: 56px;
     display: flex;
     justify-content: center;
 }
 .burgernav__downside{
-    display: flex;
-    max-height: 100px;
     padding-top: 16px;
     color: var(--main-text);
 }
-.burgernav__downside .list {
-    display: flex;
-    flex-direction: column;
-}
-.burgernav__downside .list li{
-    max-height: 50px;
-}
-.burgernav__downside .item{
-    display: flex;
-    flex-direction: row;
-    padding: 16px 24px;
-}
+
 .burgernav__downside .title {
     margin-left: 20px;
-    font-style: normal;
     font-weight: 600;
     font-size: 14px;
     line-height: 18px;

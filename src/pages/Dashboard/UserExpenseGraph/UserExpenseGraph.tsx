@@ -4,9 +4,7 @@ import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode
 import DateService from '@services/DateService/DateService';
 //UI
 import classes from './UserExpenseGraph.module.css'
-import MonthPicker from '@components/MonthPicker/MonthPicker';
 import { Bar, Chart } from "react-chartjs-2";
-import { ChartEvent } from 'chart.js/dist/core/core.plugins';
 import { Chart as ChartJS, CategoryScale, LinearScale,
     BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction, 
     ChartType, TooltipModel, Element } from "chart.js";
@@ -15,14 +13,13 @@ import { Context } from 'vm';
 //store
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 
-import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPickerSlice';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
-import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import UserExpenseGraphPreloader from './UserExpenseGraphLoader';
+import { useContentSize } from '@hooks/layoutHooks/useLayout';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -42,7 +39,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
     const setLoadingTime = setTimeout(() => {
         setIsLoadingGraph(false)
     }, 1500);
-
+    const { width } = useContentSize();
     const getYParams = useCallback((): { high: number, step: number } => {
         let highValue = Math.max(...expenses.map(el => el.amount));
         const rank = highValue.toString().length - 1
@@ -95,7 +92,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
     }
 
     const options = {
-        responsive: true,
+        maintainAspectRatio:width<525? false : true,
         elements: {
             bar:{
                 barThickness: 24,
@@ -197,6 +194,8 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
         }
     }
 
+    
+
     return <>
         {isLoadingGraph ? 
             <UserExpenseGraphPreloader/>
@@ -206,7 +205,8 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
                 type="bar"
                 className={classes.chartinner__wrapper}
                 options={options} 
-                data={datasets}/>
+                data={datasets}
+                />
             </>
         }            
     </>

@@ -8,8 +8,8 @@
 
 .lightHollow {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     border-style: solid;
     border-width: 4px;

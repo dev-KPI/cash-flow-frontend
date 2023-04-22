@@ -43,43 +43,44 @@ const HeaderSite: FC = () => {
                             </div>
                             <i className="bi bi-chevron-down"></i>
                         </div>
-                    </div>
+                   </div>
+                   <nav className={classes.breadcrumbs}>
+                        <ul className={classes.navbar}>
+                            <li 
+                            key={'12hf'}>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/dashboard">Dashboard</NavLink>
+                            </li>
+                            <li key={'12fgd1'}>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/analytics">Analytics</NavLink>
+                            </li>
+                            <li key={'12sf3'}>
+                                <NavLink 
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/categories">Categories</NavLink>
+                            </li>
+                            <li key={'143dfg2'}>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/groups">Groups</NavLink>
+                            </li>
+                            <li key={'154asd2'}>
+                                <NavLink
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/history">History</NavLink>
+                            </li>
+                            <li key={'142gfd2'}>
+                                <NavLink 
+                                className={({ isActive }) => setActiveLinkClasses(isActive)}
+                                to="/settings">Settings</NavLink>
+                            </li>
+                        </ul>
+                   </nav>
                 </div>
-                <nav className={classes.breadcrumbs}>
-                    <ul className={classes.navbar}>
-                        <li key={'12hf,f'}>
-                            <NavLink 
-                            className={({ isActive }) => setActiveLinkClasses(isActive)}
-                            to="/dashboard">Dashboard</NavLink>
-                        </li>
-                        <li key={'12fgd1'}>
-                            <NavLink 
-                            className={({ isActive }) => setActiveLinkClasses(isActive)}
-                            to="/analytics">Analytics</NavLink>
-                        </li>
-                        <li key={'12sf3'}>
-                            <NavLink 
-                            className={({ isActive }) => setActiveLinkClasses(isActive)}
-                            to="/categories">Categories</NavLink>
-                        </li>
-                        <li key={'143dfg2'}>
-                            <NavLink 
-                            className={({ isActive }) => setActiveLinkClasses(isActive)}
-                            to="/groups">Groups</NavLink>
-                        </li>
-                        <li key={'154asd2'}>
-                            <NavLink 
-                            className={({ isActive }) => setActiveLinkClasses(isActive)}
-                            to="/history">History</NavLink>
-                        </li>
-                        <li key={'142gfd2'}>
-                            <NavLink 
-                            className={({ isActive }) => setActiveLinkClasses(isActive)}
-                            to="/settings">Settings</NavLink>
-                        </li>
-                    </ul>
-                </nav>
-            </div> 
+            </div>
         </header>
     );
 };

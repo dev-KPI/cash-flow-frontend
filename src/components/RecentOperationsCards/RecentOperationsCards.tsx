@@ -7,6 +7,7 @@ import Light from "@components/Light/Light";
 //logic
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
+import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
 
 export interface IRecentOperationDashboardCard{
     ColorBtn: string,
@@ -21,20 +22,20 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
     const timeAgo = new TimeAgo('en-US')
 
     return (<>
-        <div className={classes.RecentOperationDashboardCard}>
+        <li className={classes.RecentOperationDashboardCard}>
             <div className={classes.info}>
                 <Light 
                 color={ColorBtn} 
                 type={'hollow'}/>
                 <div className={classes.center}>
-                    <h5>{title}</h5>
+                    <h5 className={classes.title}>{title}</h5>
                     <p className={classes.time}>{timeAgo.format(new Date(time))}</p>
                 </div>
             </div>
             <p style={{color: type === 'expense' ? "#FF2D55":"#80D667"}} 
             className={classes.amount}>
-                {`${type === 'expense' ? "-":"+"} $${amount}`}</p>
-        </div>
+                {`${type === 'expense' ? "-":"+"} $${numberWithCommas(amount)}`}</p>
+        </li>
     </>)
 }
 

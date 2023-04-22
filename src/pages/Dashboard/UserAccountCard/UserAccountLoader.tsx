@@ -1,6 +1,5 @@
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import ContentLoader from 'react-content-loader';
-import { useWindowSize } from 'usehooks-ts';
 
 const UserAccountCardLoader = () => {
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
