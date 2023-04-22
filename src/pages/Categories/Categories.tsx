@@ -29,27 +29,27 @@ const Categories: FC = () => {
     const getGroups = () => {
         let res: ReactNode[] = [];
         for(let i = 0; i < 3; i++){
-            res.push(<>
+            res.push(
                 <li key={'12sf3' + i}>
                     <NavLink 
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to="/123"><h4>Family</h4></NavLink>
                 </li>
-            </>)
+            )
         }
         return res;
     }
     const getCategories = () => {
         let res: ReactNode[] = [];
         for(let i = 0; i < 7; i++){
-            res.push(<>
+            res.push(
             <li className={classes.item} key={'12sf3' + i}>
                 <CategoriesCard 
                 id={i}
                 color="#eee333" 
                 title="Family" 
                 icon="bi bi-joystick"/>
-            </li></>)
+            </li>)
         }
         return res
     }

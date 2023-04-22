@@ -10,14 +10,9 @@ import PcHeader from './PcHeader/PcHeader';
 import MobileHeader from './MobileHeader/MobileHeader';
 
 const Header: FC = () => {
-    const {width, height} = useWindowSize();
-
-    const getHeader = useCallback((): ReactNode => {
-        return width < 768 ? (<MobileHeader/>) : (<PcHeader/>)
-    }, [width])
-
     return (<>
-        {getHeader()}
+        <MobileHeader/>
+        <PcHeader/>
     </>);
 };
 
