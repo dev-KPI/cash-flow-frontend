@@ -106,13 +106,13 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                 <h3 className={classes.groupTitle}>Groups</h3>
                 <ul className={classes.list}>
                     <li>
-                        <NavLink to="/" key={'12grt13'} className={classes.item}>
+                        <NavLink to="/" key={'12grt13'} className={classes.groupItem}>
                             <Light type={'solid'} color="#4C6FFF"/>
                             <h4 className={classes.title}>Job</h4>
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/" key={'11jh23'} className={classes.item}>
+                        <NavLink to="/" key={'11jh23'} className={classes.groupItem}>
                             <Light type={'solid'} color="#FF6E01"/>
                             <h4 className={classes.title}>Family</h4>
                         </NavLink>

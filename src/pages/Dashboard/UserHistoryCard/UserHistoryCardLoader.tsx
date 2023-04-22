@@ -7,12 +7,12 @@ const UserHistoryCardLoader = () => {
     const getHistories = () => {
         let res = [];
         for(let i = 0; i < 8; i++){
-            res.push(<>
+            res.push(<li key={'asd' + i}>
                 <circle cx="16" cy={70 + i * 45} r="8" />
                 <rect x="26" y={50 + i * 45} rx="8" ry="8" width="100" height="15" />
                 <rect x="26" y={70 + i * 45} rx="8" ry="8" width="100" height="15" />
                 <rect x="272" y={60 + i * 45} rx="8" ry="8" width="100" height="20" />
-            </>)
+            </li>)
         }
         return res
     }
@@ -25,7 +25,9 @@ const UserHistoryCardLoader = () => {
             foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
         >
             <rect x="0" y="0" rx="8" ry="8" width="190" height="30" />
-            {getHistories()}
+            <ul>
+                {getHistories()}
+            </ul>
             <rect x="26" y="420" rx="8" ry="8" width="100" height="15" />
         </ContentLoader>
     )

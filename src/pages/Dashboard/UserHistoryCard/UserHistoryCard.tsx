@@ -54,15 +54,14 @@ const UserHistoryCard: FC = () => {
 
     const getRecentActivities = () => {
         let res: ReactNode[] = getMixedHistory().map((el, i) => {
-            return <>
-                <RecentOperationDashboardCard
+            return <RecentOperationDashboardCard
                 key={i}
                 type={el.type === 'expense' ? 'expense' : 'replenishment'}
                 ColorBtn={el.category_group?.category?.color || '#80D667'}
                 title={el.category_group?.category?.title || 'Salary'}
                 amount={el.amount}
                 time={el.time}/> 
-            </>
+            
         })
         return res
     }

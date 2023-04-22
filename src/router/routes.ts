@@ -2,9 +2,9 @@
 import Dashboard from "@pages/Dashboard/Dashboard";
 import Analytics from "@pages/Analytics/Analytics";
 import Categories from "@pages/Categories/Categories";
+import Groups from "@pages/Groups/Groups";
 //UI
 import Header from "@components/Header/Header";
-import Groups from "@pages/Groups/Groups";
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';

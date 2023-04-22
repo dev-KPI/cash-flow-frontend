@@ -1,8 +1,13 @@
 .burgernav{
     width: 250px;
+    height: 100%;
+    overflow: scroll;
     padding: 24px 0px;
     z-index: 1001;
     background-color: var(--cardbg);
+}
+.burgernav::-webkit-scrollbar{
+    display: none;
 }
 .logo{
     user-select: none;
@@ -60,16 +65,23 @@
 .burgernav__list{
     margin-top: 24px;
 }
- .item{
+.item{
     display: flex;
-    padding: 16px 24px;
+    height: 50px;
+    padding: 0px 0px 0px 24px;
     text-align: center;
     align-items: center;
     color: var(--text);
 }
-.item:hover{
-    
+.groupItem{
+    display: flex;
+    height: 20px;
+    padding: 0px 0px 0px 24px;
+    text-align: center;
+    align-items: center;
+    color: var(--text);
 }
+
 .title{
     /* composes: mediumItemTitle from '@styles/style.css'; */
     font-size: 14px;
@@ -83,10 +95,9 @@
 .activeLink::after{
     display: flex;
     content: ' ';
-    position: absolute;
+    position: relative;
     height: 40px;
     width: 5px;
-    right: 0;
     margin-left: auto;
     background-color: var(--main-green);
     animation: activeLinkAfterAnimation .3s ease-in-out;
@@ -121,10 +132,14 @@
 
 
 .burgernav__list .inc{
-    width: 30px;
-    height: 100%;
+    padding: 2px 10px;
+    margin-top: auto;
+    margin-right: 10px;
+    margin-bottom: auto;
+    font-weight: 700;
     display: flex;
     justify-content: center;
+    background-color: #7a7a9d17;
     margin-left: auto;
     border-radius: 20px;
     color: var(--main-green);
