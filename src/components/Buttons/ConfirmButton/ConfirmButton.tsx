@@ -43,8 +43,10 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({type, btnWidth = 100, btnHeight
                 transition: 'transform 0.3s ease, opacity 0.1s ease',
             }}
             className={classes.ConfirmButton}>
-                {getIcon()}
-                <p>{title ? title : 'Confirm'}</p>
+                <div className={classes.wrapperbtn}>
+                    {getIcon()}
+                    <p>{title ? title : 'Confirm'}</p>
+                </div>
             </button>
         </ButtonHover> 
     : 

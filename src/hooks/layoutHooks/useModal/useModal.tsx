@@ -16,7 +16,7 @@ interface IModalProps{
     containerHeight?: number
 }
 
-const useModal: FC<IModalProps> = ({ 
+const useModal: FC<IModalProps> = ({
     isModalOpen = false, 
     setIsModalOpen, 
     children, 
@@ -25,7 +25,6 @@ const useModal: FC<IModalProps> = ({
     }) => {
 
     const {width} = useWindowSize()
-    const nodeRef = useRef<HTMLDivElement>(null);
     const portalPlace = document.getElementById('portal');
     const body = document.body;
     
@@ -59,7 +58,6 @@ const useModal: FC<IModalProps> = ({
                 body.style.position = 'fixed';
                 body.style.overflowY = 'scroll';
                 body.style.width = '100%';
-                body.style.paddingRight = '16px';
                 if(width < 768) body.style.paddingRight = '0px';
             };
         } else {
@@ -67,7 +65,6 @@ const useModal: FC<IModalProps> = ({
                 body.style.width = '100%';
                 body.style.position = 'relative';
                 body.style.overflowY = 'scroll';
-                body.style.paddingRight = '0px';
             }
         }
     }, [isModalOpen, width])
@@ -83,7 +80,6 @@ const useModal: FC<IModalProps> = ({
         onAnimationEnd={disablePortal}
         isAnimation={isModalOpen}>
             <div 
-            ref={nodeRef}
             className={classes.useModal}
             onClick={closeModal}>
                 <div

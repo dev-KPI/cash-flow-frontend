@@ -6,7 +6,7 @@ import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategorie
 import classes from './UserCategoriesCardItem.module.css';
 
 
-const UserCategoriesCardDot: FC<ICategoryItem> = ({ category, amount}) => {
+const UserCategoriesCardDot: FC<ICategoryItem> = ({ category, amount }) => {
     const [total = 0, setTotal] = useState<number>();
     const [source = '', setSource] = useState<string>();
     

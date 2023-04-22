@@ -4,180 +4,7 @@ import classes from './UserCategoriesCard.module.css'
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCardLoader';
-const json = {
-    "categoriesByGroup": [
-        {
-            "title": "my",
-            "categories": [
-                {
-                    "category": {
-                        "id": 1,
-                        "title": "Entertainment",
-                        "color": "#0f4f5f",
-                        "icon": "link.com"
-                    },
-                    "amount": 999
-                },
-                {
-                    "category": {
-                        "id": 2,
-                        "title": "Food",
-                        "color": "#FF6E01",
-                        "icon": "link.com"
-                    },
-                    "amount": 59
-                },
-                {
-                    "category": {
-                        "id": 3,
-                        "title": "Products",
-                        "color": "#FF2D55",
-                        "icon": "link.com"
-                    },
-                    "amount": 1709
-                },
-                {
-                    "category": {
-                        "id": 4,
-                        "title": "Cars",
-                        "color": "#4C6FFF",
-                        "icon": "link.com"
-                    },
-                    "amount": 10190
-                },
-                {
-                    "category": {
-                        "id": 5,
-                        "title": "Entertainment",
-                        "color": "#0f4f5f",
-                        "icon": "link.com"
-                    },
-                    "amount": 999
-                },
-                {
-                    "category": {
-                        "id": 6,
-                        "title": "Food",
-                        "color": "#FF6E01",
-                        "icon": "link.com"
-                    },
-                    "amount": 59
-                },
-                {
-                    "category": {
-                        "id": 7,
-                        "title": "Products",
-                        "color": "#FF2D55",
-                        "icon": "link.com"
-                    },
-                    "amount": 1709
-                },
-                {
-                    "category": {
-                        "id": 8,
-                        "title": "Cars",
-                        "color": "#4C6FFF",
-                        "icon": "link.com"
-                    },
-                    "amount": 10190
-                },
-                {
-                    "category": {
-                        "id": 9,
-                        "title": "Food",
-                        "color": "#FF6E01",
-                        "icon": "link.com"
-                    },
-                    "amount": 59
-                },
-                {
-                    "category": {
-                        "id": 10,
-                        "title": "Products",
-                        "color": "#FF2D55",
-                        "icon": "link.com"
-                    },
-                    "amount": 1709
-                },
-                {
-                    "category": {
-                        "id": 11,
-                        "title": "Cars",
-                        "color": "#4C6FFF",
-                        "icon": "link.com"
-                    },
-                    "amount": 10190
-                },
-                
-            ]
-        },
-        {
-            "title": "Family",
-            "categories": [
-                {
-                    "category": {
-                        "id": 1,
-                        "title": "Entertainment",
-                        "color": "#0f4f5f",
-                        "icon": "link.com"
-                    },
-                    "amount": 999
-                },
-                {
-                    "category": {
-                        "id": 2,
-                        "title": "Food",
-                        "color": "#FF6E01",
-                        "icon": "link.com"
-                    },
-                    "amount": 59
-                },
-                {
-                    "category": {
-                        "id": 3,
-                        "title": "Products",
-                        "color": "#FF2D55",
-                        "icon": "link.com"
-                    },
-                    "amount": 1709
-                },
-                {
-                    "category": {
-                        "id": 4,
-                        "title": "Cars",
-                        "color": "#4C6FFF",
-                        "icon": "link.com"
-                    },
-                    "amount": 10190
-                },
-                {
-                    "category": {
-                        "id": 5,
-                        "title": "Entertainment",
-                        "color": "#0f4f5f",
-                        "icon": "link.com"
-                    },
-                    "amount": 999
-                },
-                {
-                    "category": {
-                        "id": 6,
-                        "title": "Food",
-                        "color": "#FF6E01",
-                        "icon": "link.com"
-                    },
-                    "amount": 59
-                }     
-            ]
-        },
-        {
-            "title": "Empty",
-            "categories": [
-                
-            ]
-        }
-    ],
-}
+import { json } from './objUserCategories';
 
 interface Category {
     id: number,
@@ -201,15 +28,20 @@ const UserCategoriesCard = () => {
     const { categoriesByGroup } = json;
     let groups = categoriesByGroup.map(a => a.title);
     
-    useEffect( () => {
+    const initializeCategories = useCallback(() => {
         const newCategories = categoriesByGroup.find(item => item.title === groups[groupIndex])?.categories
         if (newCategories)
             setCategories(newCategories);
     }, [groupIndex])
 
-    useEffect(()=> {
+    const initializeHandleWrapper = useCallback(()=> {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
     }, [height, width, categories])
+
+    useEffect(()=>{
+        initializeCategories()
+        initializeHandleWrapper()
+    }, [initializeCategories, initializeHandleWrapper])
 
     const getCategories = (categories: ICategoryItem[]) => {
         return categories.map((item, i) => <UserCategoriesCardItem key={i} category={item.category} amount={item.amount} />)
