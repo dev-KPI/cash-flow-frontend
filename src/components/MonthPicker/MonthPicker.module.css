@@ -10,11 +10,10 @@
     composes: cardComponent from "@styles/style.css";
 }
 .wrapper{
+    min-width: 320px;
     padding: 18px 30px;
+    
     display: flex;
-    min-width: 270px;
-    max-width: 340px;
-    flex-basis: 340px;
     align-items: center;
     justify-content: space-between;
 }
@@ -51,17 +50,16 @@
     user-select: none;
 }
 
-@media only screen and (max-width: 400px) {
-    .monthPicker{
-        max-width: 400px;
-        flex-basis: 400px;
+@media only screen and (max-width: 768px) {
+    .monthPicker {
+        min-width: unset;
+        width: 100%;
+        display: block;
     }
-    .wrapper{
-        padding: 0px;
-        max-width: 400px;
-        flex-basis: 400px;
-        display: flex;
-        justify-content: space-between;    
-        gap: none;
+}
+
+@media only screen and (max-width: 768px) {
+    .wrapper {
+        min-width: unset;
     }
 }

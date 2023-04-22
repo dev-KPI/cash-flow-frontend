@@ -7,7 +7,6 @@ import { RecentOperationDashboardCard } from "@components/RecentOperationsCards/
 
 //logic
 import { Link } from "react-router-dom";
-import { useContentSize } from "@hooks/layoutHooks/useLayout";
 import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
 import { tmpObj } from "./testObj";
 import UserHistoryCardLoader from "./UserHistoryCardLoader";
@@ -46,7 +45,7 @@ const UserHistoryCard: FC = () => {
             Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
     
         const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]
-        return(HistoryArray.sort((a, b) => {
+        return(HistoryArray.sort((b, a) => {
             const dateA = new Date(a.time).getTime();
             const dateB = new Date(b.time).getTime();
             return dateA - dateB;
@@ -55,34 +54,37 @@ const UserHistoryCard: FC = () => {
 
     const getRecentActivities = () => {
         let res: ReactNode[] = getMixedHistory().map((el, i) => {
-            return <li key={i + 'adsa'}>
-                    <RecentOperationDashboardCard
-                    type={el.type === 'expense' ? 'expense' : 'replenishment'}
-                    ColorBtn={el.category_group?.category?.color || '#80D667'}
-                    title={el.category_group?.category?.title || 'Salary'}
-                    amount={el.amount}
-                    time={el.time}/> 
-                </li>
+            return <>
+                <RecentOperationDashboardCard
+                key={i}
+                type={el.type === 'expense' ? 'expense' : 'replenishment'}
+                ColorBtn={el.category_group?.category?.color || '#80D667'}
+                title={el.category_group?.category?.title || 'Salary'}
+                amount={el.amount}
+                time={el.time}/> 
+            </>
         })
         return res
     }
 
     return(<>
         <div className={classes.HistoryCard}>
-            {isPageLoading ? <UserHistoryCardLoader/> : <>
-                <h3>Recent Activity</h3>
+            {isPageLoading ? <UserHistoryCardLoader /> : 
+            <>
+                <h3 className={classes.title}>Recent Activity</h3>
                 <ul>
                     {getRecentActivities()}
-                    <li key='239j76k'>
-                        <Link to={'/'}>
-                            <div className={classes.ViewMore}>
-                                <p>View More</p>
-                                <ArrowRight className={classes.ArrowRight}/>
-                            </div>
-                        </Link>
-                    </li>
                 </ul>
-            </>}
+                <div key='239k' className={classes.ViewMore}>
+                    <Link to={'/'}>
+                        <div className={classes.ViewMore__inner}>
+                            <p className={classes.ViewMore__title}>View More</p>
+                            <ArrowRight className={classes.ArrowRight} />
+                        </div>
+                    </Link>
+                </div>
+            </>
+            }
         </div>
     </>)
 }

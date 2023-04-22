@@ -2,14 +2,15 @@
     width: 100%;
     height: 160px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    position: relative;
     z-index: 1000;
 }
 .header__container{
+    padding-top: 30px;
+    position: relative;
 }
 .header__top{
     display: flex;
-    margin-top: 30px;
+    
     justify-content: space-between;
     align-items: center;
     gap: 20px;
@@ -19,12 +20,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 300px;
 }
-.header__logo h1{
-    color: var(--main-text);
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 36px;
+.title{
+    composes: pageTitle from "@styles/style.css";
 }
 .header__logo span{
     color: var(--main-green);
@@ -46,21 +45,19 @@
     width: 46px;
     height: 46px;
 }
-.header__profile .profile__inner {
+.profile__inner {
     display: flex;
     align-items: center;
     column-gap: 20px;
-}
-.header__profile .profile__name{
+}   
+.profile__name{
+    composes: largeItemTitle from "@styles/style.css";
     color: var(--main-text);
     font-weight: 700;
-    font-size: 16px;
-    line-height: 19px;
+    
 } 
-.header__profile .profile__email {
-    color: var(--text);
-    font-size: 14px;
-    line-height: 17px;
+.profile__email {
+    composes: mediumItemTitle from "@styles/style.css";
     letter-spacing: -0.4633px
 }
 
@@ -104,12 +101,11 @@
 
 .breadcrumbs{
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: -58px;
+    left: 23%;
 }
 .navbar{
     display: flex;
-    margin-left: 350px;
     margin-bottom: 16px;
     gap: 20px;
 }

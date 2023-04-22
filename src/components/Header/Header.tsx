@@ -13,7 +13,7 @@ const Header: FC = () => {
     const {width, height} = useWindowSize();
 
     const getHeader = useCallback((): ReactNode => {
-        return (width > 320 && width < 400) ? (<MobileHeader/>) : (<PcHeader/>)
+        return width < 768 ? (<MobileHeader/>) : (<PcHeader/>)
     }, [width])
 
     return (<>

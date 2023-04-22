@@ -1,23 +1,13 @@
 .expenseChart {
-    display: inline-block;
     composes: cardComponent from "@styles/style.css";
-    max-width: 510px;
-    max-height: 300px;
-    flex-basis: 510px;
+    width: 510px;
+    height: 300px;
     position: relative;
+    grid-row-start: span 2;
 }
 
 .title {
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 27px;
-    color: var(--main-text)
-}
-
-.secondaryTitle {
-    font-size: 16px;
-    line-height: 20px;
-    color: var(--text);
+    composes: cardTitle from "@styles/style.css";
 }
 
 .inner {
@@ -28,7 +18,6 @@
     display: flex;
     margin-top: 9px;
 }
-
 
 .chart {
     position: relative;
@@ -43,20 +32,19 @@
 }
 
 .expenseTitle {
-    composes: secondaryTitle;
+    composes: mediumItemTitle from "@styles/style.css";
+    white-space: nowrap;
 }
 
 .expensePercent {
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 39px;
-    margin-bottom: 10px;
+    composes: largeText from "@styles/style.css";
+    margin-bottom: 13px;
 }
 
 .expenseAmount {
+    composes: mediumItemTitle from "@styles/style.css";
     font-weight: 600;
-    font-size: 14px;
-    line-height: 17px;
+    color: var(--main-text);
 }
 
 .info {
@@ -65,6 +53,7 @@
 
 
 .viewMore {
+    composes: largeItemTitle from "@styles/style.css";
     margin-top: 7px;
     color: var(--main-text);
 }
@@ -73,7 +62,6 @@
     text-decoration: underline 1px;
     cursor: pointer;
 }
-
 
 .closeBtn i {
     font-size: 28px;
@@ -87,37 +75,88 @@
 .popupList{
     min-width: 146px;
     overflow-y: scroll;
+    overflow-x: hidden;
     max-height: 96px;
     margin: -4px -8px;
     padding: 4px 8px;
+    margin-bottom: 15px;
+}
+@media only screen and (max-width: 1440px) {
+    .expenseChart {
+        width: unset;
+        min-width: 400px;
+    }
+    .wrapper {
+        column-gap: 30px;
+    }
+    .info {
+        margin-left: 0;
+    }
+}
+@media only screen and (max-width: 1028px) {
+    .expenseChart {
+        min-width: unset;
+        height: 100%;
+    }
+    .inner {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .wrapper {
+        flex: 1 0 50%;
+        justify-content: center;
+        align-items: center;
+        column-gap: 0;
+        display: flex;
+        
+    }
+    .chart{
+        height: 180px;
+        width: 180px;
+        flex: 0 1 50%
+    }
+
+    .expensePercent {
+        font-size: 28px;
+        line-height: 36px;
+    }
+    .expenseAmount {
+        font-size: 12px;
+        line-height: 16px;
+    }
+    .info {
+        max-width: 121px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .expenseChart{
+        height: 250px;
+    }
+    .wrapper{
+        margin-top: 12px;
+    }
+    .inner {
+        padding: 16px;
+    }
+    .popupList{
+        margin-bottom: 5px;
+    }
+    .expensePercent {
+        margin-bottom: 0;
+    }
+    .expenseInfo {
+        margin-bottom: 5px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
-    .expenseChart{
-        max-width: 400px;
-        max-height: 360px;
+    .chart {
+        height: 150px;
+        width: 150px;
     }
-    .wrapper{
-        justify-content: space-between;
-        flex-direction: column;
-    }    
-    .inner{
-        padding: 0px;
-        max-height: 540px;
-        justify-content: center;
-    }   
-    .chart{
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .info {
-        width: 100%;
-        min-width: 280px;
-        max-height: 110px;
-        margin-left: 0;
-        margin-right: 0;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
 }
+
+        

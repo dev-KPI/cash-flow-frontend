@@ -15,6 +15,12 @@
 
 
 .itemTitle {
-    composes: secondaryTitle from '../UserExpenseCard/UserExpenseCard.module.css';
+    composes: largeItemTitle from "@styles/style.css";
+    white-space: nowrap;
 }
 
+@media only screen and (max-width: 768px) {
+    .item{
+        gap: 5px;
+    }
+}

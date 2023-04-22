@@ -23,27 +23,25 @@ const HeaderSite: FC = () => {
     return (
         <header className={classes.header}>
             <div className={classes.header__container}>
-                <div className={classes.header__inner}>
-                   <div className={classes.header__top}>
-                        <div className={classes.header__logo}>
-                            <img src={Logo} alt="logo" />
-                            <h1>Cash<span>Flow</span></h1>
+                <div className={classes.header__top}>
+                    <div className={classes.header__logo}>
+                        <img src={Logo} alt="logo" />
+                        <h1 className={classes.title}>Cash<span>Flow</span></h1>
+                    </div>
+                    <div className={classes.header__menu}>
+                        <ThemeButton />
+                        <div className={classes.header__notifications}>
+                            <i className="bi bi-bell"></i>
                         </div>
-                        <div className={classes.header__menu}>
-                            <ThemeButton />
-                            <div className={classes.header__notifications}>
-                                <i className="bi bi-bell"></i>
+                    </div>
+                    <div className={classes.header__profile}>
+                        <img src={ProfileIcon} alt="icon" />
+                        <div className={classes.profile__inner}>
+                            <div className={classes.profile__main}>
+                                <h4 className={classes.profile__name}>John Doe</h4>
+                                <p className={classes.profile__email}>johndoee@gmail.com</p>
                             </div>
-                        </div>
-                        <div className={classes.header__profile}>
-                            <img src={ProfileIcon} alt="icon" />
-                            <div className={classes.profile__inner}>
-                                <div className={classes.profile__main}>
-                                    <h4 className={classes.profile__name}>John Doe</h4>
-                                    <p className={classes.profile__email}>johndoee@gmail.com</p>
-                                </div>
-                                <i className="bi bi-chevron-down"></i>
-                            </div>
+                            <i className="bi bi-chevron-down"></i>
                         </div>
                    </div>
                    <nav className={classes.breadcrumbs}>
@@ -81,7 +79,7 @@ const HeaderSite: FC = () => {
                             </li>
                         </ul>
                    </nav>
-                </div> 
+                </div>
             </div>
         </header>
     );

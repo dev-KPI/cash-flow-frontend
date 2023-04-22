@@ -2,7 +2,7 @@ export const tmpObj = JSON.parse(JSON.stringify({
     "expenses": [
         {
             "id": 1,
-            "time": "2023-04-10T13:26:54",
+            "time": "2023-04-19T13:26:54",
             "description": "Groceries",
             "amount": 50.0,
             "category_group": {
@@ -22,7 +22,7 @@ export const tmpObj = JSON.parse(JSON.stringify({
         },
         {
             "id": 2,
-            "time": "2023-04-10T13:26:59",
+            "time": "2023-04-19T13:26:59",
             "description": "Groceries",
             "amount": 32.0,
             "category_group": {
@@ -42,7 +42,7 @@ export const tmpObj = JSON.parse(JSON.stringify({
         },
         {
             "id": 3,
-            "time": "2023-04-10T13:46:59",
+            "time": "2023-04-18T13:46:59",
             "description": "Groceries",
             "amount": 432.0,
             "category_group": {
@@ -62,9 +62,9 @@ export const tmpObj = JSON.parse(JSON.stringify({
         },
         {
             "id": 1,
-            "time": "2023-04-10T13:26:54",
+            "time": "2023-04-17T13:26:54",
             "description": "Groceries",
-            "amount": 50.0,
+            "amount": 51230.0,
             "category_group": {
                 "group": {
                     "id": 5,
@@ -82,9 +82,9 @@ export const tmpObj = JSON.parse(JSON.stringify({
         },
         {
             "id": 2,
-            "time": "2023-04-10T13:26:59",
+            "time": "2023-04-16T13:26:59",
             "description": "Groceries",
-            "amount": 32.0,
+            "amount": 3122.0,
             "category_group": {
                 "group": {
                     "id": 2,
@@ -102,7 +102,7 @@ export const tmpObj = JSON.parse(JSON.stringify({
         },
         {
             "id": 3,
-            "time": "2023-04-10T13:46:59",
+            "time": "2023-04-14T13:46:59",
             "description": "Groceries",
             "amount": 432.0,
             "category_group": {
@@ -124,13 +124,13 @@ export const tmpObj = JSON.parse(JSON.stringify({
     "replenishments": [
         {
             "id": 1,
-            "amount": 1000,
+            "amount": 100,
             "time": "2023-04-10T13:26:56",
             "description": "Groceries"
         },
         {
             "id": 2,
-            "amount": 10400,
+            "amount": 400,
             "time": "2023-04-10T13:29:56",
             "description": "Groceries"
         }
