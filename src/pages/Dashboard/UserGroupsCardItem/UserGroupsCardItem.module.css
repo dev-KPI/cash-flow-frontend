@@ -13,10 +13,7 @@
     margin-bottom: 5px;
 }
 .expenseName {
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--text);
+    composes: smallItemTitle from "@styles/style.css";
 }
 
 .icon {
@@ -35,9 +32,9 @@
     font-size: 18px;
 }
 
-.expenseAmount {
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 20px;
-    color: #FF2D55;
+@media only screen and (max-width: 768px) {
+    .icon {
+        height: 42px;
+        width: 42px;
+    }
 }

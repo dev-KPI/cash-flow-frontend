@@ -1,10 +1,7 @@
-.incomeCard {
+.operationCard {
     composes: cardComponent from "@styles/style.css";
     display: flex;
-    max-height: 120px;
-    max-width: 255px;
-    min-width: 170px;
-    flex-basis: 255px;
+    width: 255px;
 }
 .inner{
     width: 100%;
@@ -84,19 +81,17 @@
     line-height: 16px;
     color: var(--text);
 }
-
-@media only screen and (max-width: 400px) {
-    .incomeCard{
-        max-width: 400px;
-        min-width: 250px;
-        max-height: 76px;
-        flex-basis: 400px;
+@media only screen and (max-width: 1440px) {
+    .operationCard {
+        width: 100%;
     }
+}
+
+@media only screen and (max-width: 768px) {
     .inner{
-        padding: 0px;
+        padding: 16px;
     }
-    .bottom {
-        margin-top: 6px;
+    .bottom{
+        margin-top: 8px;
     }
-
 }
