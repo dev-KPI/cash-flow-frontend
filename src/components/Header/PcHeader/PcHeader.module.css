@@ -10,7 +10,6 @@
 }
 .header__top{
     display: flex;
-    
     justify-content: space-between;
     align-items: center;
     gap: 20px;
@@ -118,6 +117,11 @@
 .navbar a:hover{
     color: var(--main-green);
 }
+@media (hover: none) {
+    .navbar a:hover {
+        color: var(--main-text);
+    }
+}
 .navbar .active{
     position: relative;
     font-weight: 500;
@@ -130,6 +134,7 @@
     bottom: -16px;
     left: 0;
     right: 0;
+    box-shadow: 0px 0px 8px var(--main-green);
     background-color: var(--main-green);
     height: 2px;
     border-radius: 2px;
