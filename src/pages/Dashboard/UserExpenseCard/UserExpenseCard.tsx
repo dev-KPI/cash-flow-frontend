@@ -55,7 +55,7 @@ const UserExpenseCard = () => {
         timeout = setTimeout(handleCloseExtended, 15000);
     }
 
-    const setTimer = setTimeout(() => {
+    setTimeout(() => {
         setLoading(false)
     }, 1500);
    
@@ -70,7 +70,7 @@ const UserExpenseCard = () => {
                         </div>
                         <div className={classes.info}>
                             <div className={classes.expenseInfo}>
-                                <h5 className={classes.expenseTitle}>{expenseTitle}</h5>
+                                <h5 className={classes.expenseTitle}>{expenseTitle?.slice(0,16)}</h5>
                                 <p className={classes.expensePercent}>{expensePercentage}%</p>
                                 <span className={classes.expenseAmount}>{numberWithCommas(expenseAmount)}$</span>
                             </div>

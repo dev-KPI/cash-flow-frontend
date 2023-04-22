@@ -75,7 +75,7 @@ const UserGroupsCard = () => {
     const properGroups = useGroups(groups!, totalItems!)
 
     
-    const setLoadingTime = setTimeout(() => {
+    setTimeout(() => {
         setLoading(false)
     }, 1500);
     return (

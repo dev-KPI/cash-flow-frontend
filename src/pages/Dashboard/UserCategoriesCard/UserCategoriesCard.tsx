@@ -233,7 +233,7 @@ const UserCategoriesCard = () => {
 
     const properCategories = useCategories(categories, totalItems)
     
-    const setLoadingTime = setTimeout(() => {
+    setTimeout(() => {
         setLoading(false)
     }, 1500);
     return (

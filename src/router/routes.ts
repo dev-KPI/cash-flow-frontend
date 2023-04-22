@@ -3,7 +3,6 @@ import Dashboard from "@pages/Dashboard/Dashboard";
 import Analytics from "@pages/Analytics/Analytics";
 import Categories from "@pages/Categories/Categories";
 //UI
-import MenuBurger from "@components/Header/MobileHeader/MenuBurger/MenuBurger";
 import Header from "@components/Header/Header";
 import Groups from "@pages/Groups/Groups";
 

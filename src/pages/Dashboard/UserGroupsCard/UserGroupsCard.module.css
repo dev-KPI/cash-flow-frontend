@@ -1,22 +1,15 @@
 .groups {
     composes: cardComponent from "@styles/style.css";
-    display: flex;
-    max-width: 510px;
-    min-width: 450px;
-    flex-basis: 510px;
     max-height: 120px;
 }
 
 .inner{
     width: 100%;
-    padding: 14px 24px
+    padding: 16px 24px 5px 24px;
 }
 
 .title {
-    font-weight: 700;
-    font-size: 22px;
-    line-height: 27px;
-    color: var(--main-text)
+    composes: cardTitle from "@styles/style.css";
 }
 
 .categoryName{
@@ -73,8 +66,7 @@
 }
 
 .item {
-    /* min-width: 65px; */
-    max-width: 65px;
+    width: 65px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -88,10 +80,7 @@
 }
 
 .itemTitle {
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-    color: var(--text);
+    composes: smallItemTitle from "@styles/style.css";
 }
 
 .specialItem:hover > * {
@@ -105,8 +94,8 @@
     justify-content: center;
     align-items: center;
 
-    width: 40px;
-    height: 40px;
+    width: 43px;
+    height: 43px;
     border: 3px dashed var(--text);
     border-radius: 50%;
     background-color: transparent;
@@ -135,3 +124,23 @@
     margin-bottom: 20px;
     color: var(--main-text);
 }
+
+
+@media only screen and (max-width: 1028px) {
+    .list {
+        gap: 10px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .inner{
+        padding: 16px 16px 10px;
+    }
+    .dashed {
+        width: 39px;
+        height: 39px;
+    }
+    .list {
+        gap: 8px;
+    }
+}
+

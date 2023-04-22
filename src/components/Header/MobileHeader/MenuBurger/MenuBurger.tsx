@@ -24,7 +24,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
 
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {
-        let res = isActive ? classes.activeLink : classes.item;
+        let res = isActive ? classes.item + ' ' + classes.activeLink : classes.item;
         res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
         return res
     }
@@ -103,18 +103,18 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
             </ul>
             <div className={classes.burgernav__line}></div>
             <div className={classes.burgernav__groups}>
-                <h3 className={classes.title}>Groups</h3>
+                <h3 className={classes.groupTitle}>Groups</h3>
                 <ul className={classes.list}>
                     <li>
                         <NavLink to="/" key={'12grt13'} className={classes.item}>
                             <Light type={'solid'} color="#4C6FFF"/>
-                            <h4 className={classes.item__title}>Job</h4>
+                            <h4 className={classes.title}>Job</h4>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="/" key={'11jh23'} className={classes.item}>
                             <Light type={'solid'} color="#FF6E01"/>
-                            <h4 className={classes.item__title}>Family</h4>
+                            <h4 className={classes.title}>Family</h4>
                         </NavLink>
                     </li>
                 </ul>
