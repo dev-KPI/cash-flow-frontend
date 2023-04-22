@@ -73,6 +73,14 @@
     align-items: center;
     color: var(--text);
 }
+.groupItem{
+    display: flex;
+    height: 20px;
+    padding: 0px 0px 0px 24px;
+    text-align: center;
+    align-items: center;
+    color: var(--text);
+}
 
 .title{
     /* composes: mediumItemTitle from '@styles/style.css'; */

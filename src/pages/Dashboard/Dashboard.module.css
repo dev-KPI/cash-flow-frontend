@@ -63,7 +63,8 @@
     }
 
     .title{
-        display: none;
+        width: 100%;
+        text-align: left;
     }
 
     .grid__topleft {
