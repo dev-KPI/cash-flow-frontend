@@ -1,11 +1,14 @@
-.expenseChart__wrapper {
+.expenseGraph {
     composes: cardComponent from "@styles/style.css";
     min-height: 480px;
+    
+    grid-column-start: span 2;
+}
+.inner {
+    padding: 24px 32px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 24px 32px;
-
-    grid-column-start: span 2;
 }
 
 .chart__uppernav {
@@ -28,40 +31,30 @@
     letter-spacing: 0.0016em;
 }
 
-.chartinner__wrapper {
+.graph {
     max-width: 1015px;
     max-height: 320px;
+    height: 100%;
     margin-top: 45px;
 }
 
-.chartinner__wrapper h3 {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 16px;
-    display: flex;
-    align-items: center;
-    color: var(--text);
-}
-
-.chartinner__wrapper i {
-    color: var(--text);
-}
-
 @media only screen and (max-width: 1440px) {
-    .expenseChart__wrapper {
+    .expenseGraph {
         order: 1;
     }
 }
 
 @media only screen and (max-width: 768px) {
-    .expenseChart__wrapper {
+    .expenseGraph {
         grid-column-start: span 1;
-        padding: 16px;
         min-height: auto;
         order: 2;
         height: 330px;
     }
-    .chartinner__wrapper {
+    .inner{
+        padding: 16px;
+    }
+    .graph {
         margin-top: 21px;
         min-height: 234px;
         max-height: 234px;
@@ -69,7 +62,7 @@
 }
 
 @media only screen and (max-width: 400px) {
-    .chartinner__wrapper {
+    .graph {
         margin-top: 15px;
     }
 }

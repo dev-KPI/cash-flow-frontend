@@ -7,19 +7,26 @@
 
 .inner {
     padding: 24px 32px;
+    height: 100%;
 }
 
 .title{
     composes: cardTitle from "@styles/style.css";
 }
 .avatar{
-    max-width: 180px;
+    width: 180px;
+    height: 180px;
     display: block;
     margin: 0 auto;
 }
 
+.photo{
+    height: 100%;
+    width: 100%
+}
+
 .user{
-    margin-top: 14px;
+    margin-top: 15px;
     display: flex;
     flex-direction: column;
 }
@@ -53,7 +60,7 @@
 .balance .value{
     font-weight: 600;
     font-size: 32px;
-    line-height: 39px;
+    line-height: 37px;
     color: var(--main-green);
 }
 
@@ -81,6 +88,7 @@
 
     .AccountCard .avatar{
         width: 150px;
+        height: 150px;
     }
     .info__wrapper{
         padding: 32px 0px;
@@ -99,6 +107,9 @@
     .info__wrapper .name{
         font-size: 24px;
         line-height: 40px;
+    }
+    .loader{
+        height: 238px;
     }
 }
 
@@ -128,7 +139,11 @@
         text-align: left;
     }
 }
-
+@media only screen and (max-width: 863px) {
+    .loader {
+        height: 380px;
+    }
+}
 @media only screen and (max-width: 768px) {
     .AccountCard{
         display: none;
