@@ -169,6 +169,7 @@ button {
     --main-text: #333333;
     --text: #7A7A9D;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --opacity: 1;
 
     --filterBtn: #F8F8FF;
     --active-filter-color: '';
@@ -183,6 +184,7 @@ button {
     --main-text: #EAEAEA;
     --text: #9BABC5;
     --shadow-color: rgba(29, 8, 8, 0.1);
+    --opacity: 0.5;
 
 
     --active-filter-color: #80D667;
