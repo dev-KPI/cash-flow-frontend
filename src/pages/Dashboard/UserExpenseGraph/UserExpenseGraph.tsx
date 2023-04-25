@@ -25,20 +25,15 @@ import { useContentSize } from '@hooks/layoutHooks/useLayout';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface IUserExpenseGraphProps {
-    expenses: IExpenseItem[],
-    isExpensesLoading: boolean
+    expenses: IExpenseItem[]
 }
 
-const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoading}) => {
+const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
 
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     
-    const [isLoadingGraph = true, setIsLoadingGraph] = useState<boolean>(); 
-    const setLoadingTime = setTimeout(() => {
-        setIsLoadingGraph(false)
-    }, 1500);
     const { width } = useContentSize();
     const getYParams = useCallback((): { high: number, step: number } => {
         let highValue = Math.max(...expenses.map(el => el.amount));
@@ -184,7 +179,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
                     },
                     stepSize: getYParams().step,   
                     callback: (value: string|number, index: number, ticks: Tick[]): string => {
-                        if(window.innerWidth > 320 && window.innerWidth < 440){ 
+                        if(window.innerWidth < 440){ 
                             return +(value)/1000 + 'k$';
                         } 
                         return value + '$';
@@ -194,22 +189,14 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses, isExpensesLoadi
         }
     }
 
-    
-
-    return <>
-        {isLoadingGraph ? 
-            <UserExpenseGraphPreloader/>
-            : 
-            <>
-                <Chart<'bar', { key: string, value: number }[]>
-                type="bar"
-                className={classes.chartinner__wrapper}
-                options={options} 
-                data={datasets}
-                />
-            </>
-        }            
-    </>
+    return (
+            <Chart<'bar', { key: string, value: number }[]>
+            type="bar"
+            className={classes.chartinner__wrapper}
+            options={options} 
+            data={datasets}
+            />
+            )
 }
 
 export default React.memo(UserExpenseGraph)
