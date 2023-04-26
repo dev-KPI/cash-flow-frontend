@@ -5,7 +5,7 @@ import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCardLoader';
 import { json } from './objUserCategories';
-import OperationModal from '@components/ModalWindows/OperationModal/OperationModal';
+import OperationModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 
 interface Category {
@@ -72,9 +72,8 @@ const UserCategoriesCard = () => {
     }
     const getModal = () => {
         return <ExpenseModal
-        type="expense"
-        isOperationModalOpen={isModalOpen && idModalOpen !== -1}
-        setIsOperationModalOpen={setIsModalOpen}
+        isExpenseModalOpen={isModalOpen}
+        setIsExpenseModalOpen={setIsModalOpen}
         />
     }
 
@@ -98,6 +97,7 @@ const UserCategoriesCard = () => {
 
     return (
         <div className={classes.categories}>
+            {getModal()}
             {loading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
@@ -123,7 +123,6 @@ const UserCategoriesCard = () => {
                     </div>
                     <ul className={classes.list} ref={squareRef}>
                         {getCategories(properCategories)}
-                        {getModal()}
                         {
                         categories?.length === 0 ?
                             <div className={classes.emptyList}>
@@ -137,7 +136,8 @@ const UserCategoriesCard = () => {
                             </div> 
                             :
                         !!(categories?.length! >= 11) ?
-                            <li className={`${classes.item} ${classes.specialItem}`}>
+                            <li 
+                            className={`${classes.item} ${classes.specialItem}`}>
                                 <div className={classes.dashed}>
                                     <i className="bi bi-chevron-right"></i>
                                 </div>

@@ -8,8 +8,10 @@ import classes from './useModal.module.css';
 import ModalAnimation from "@components/Animations/ModalAnimation/ModalAnimation";
 
 
+
 interface IModalProps{
     isModalOpen: boolean
+    modalName: string
     setIsModalOpen: (value: boolean) => void
     children: ReactNode
     containerWidth?: number
@@ -17,7 +19,8 @@ interface IModalProps{
 }
 
 const useModal: FC<IModalProps> = ({
-    isModalOpen = false, 
+    isModalOpen = false,
+    modalName = 'portal', 
     setIsModalOpen, 
     children, 
     containerWidth = 100, 
@@ -25,17 +28,18 @@ const useModal: FC<IModalProps> = ({
     }) => {
 
     const {width} = useWindowSize()
-    const portalPlace = document.getElementById('portal');
+    const portalPlace = document.getElementById(modalName);
     const body = document.body;
+    const [isAnimation = true, setIsAnimation] = useState<boolean>();
     
     //handlers
     const closeModal = () => setIsModalOpen(false);
-    const disablePortal = () => {
-        if (portalPlace && isModalOpen === false){
+    const disablePortal = useCallback(() => {
+        if (portalPlace && isModalOpen === false && !isAnimation){
             portalPlace.style.visibility = 'hidden';
             portalPlace.style.display = 'none';
         }
-    }
+    }, [isAnimation, isModalOpen])
 
     //initializing page process
     const initializePortal = useCallback(() => {
@@ -77,7 +81,7 @@ const useModal: FC<IModalProps> = ({
 
     return ReactDOM.createPortal(<>
         <ModalAnimation 
-        onAnimationEnd={disablePortal}
+        disablePortal={disablePortal}
         isAnimation={isModalOpen}>
             <div 
             className={classes.useModal}
@@ -87,14 +91,14 @@ const useModal: FC<IModalProps> = ({
                     maxWidth: width > 768 ? containerWidth : '100%',
                     maxHeight: width > 768 ? containerHeight : '100%',
                 }}
-                onClick={(e: MouseEvent<HTMLDivElement>) => {e.preventDefault(); e.stopPropagation();}}
+                onClick={(e: MouseEvent<HTMLDivElement>) => {e.preventDefault(); e.stopPropagation()}}
                 className={classes.useModal__wrapper}>
                     {children}
                 </div>
             </div>
         </ModalAnimation>
     </>,
-    document.getElementById('portal')!
+    document.getElementById(modalName)!
     );
 };
   

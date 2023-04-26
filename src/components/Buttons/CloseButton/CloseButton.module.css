@@ -1,14 +1,19 @@
 .closeModalBtn{
     cursor: pointer;
+    transition: transform .2s ease-in-out;
 }
 .closeModalBtn i{
     color: var(--main-text);
     transition: color .1s ease-in-out;
 }
 
+.closeModalBtn:hover{
+    transform: scale(1.2);
+}
 .closeModalBtn i:hover {
     color: var(--main-red);
 }
 .closeModalBtn i:active {
     color: var(--text);
+    transform: rotate(360deg);
 }

@@ -7,12 +7,12 @@ import Input from "@components/Input/Input";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+//logic
 import { useWindowSize } from "usehooks-ts";
 
 interface IExpenseModalProps{
-    type: 'expense' | 'salary'
-    isOperationModalOpen: boolean
-    setIsOperationModalOpen: (value: boolean) => void
+    isExpenseModalOpen: boolean
+    setIsExpenseModalOpen: (value: boolean) => void
 }
 
 interface IModalState {
@@ -21,15 +21,14 @@ interface IModalState {
 }
 
 const ExpenseModal: FC<IExpenseModalProps> = ({ 
-    type, 
-    isOperationModalOpen = false, 
-    setIsOperationModalOpen }) => {
+    isExpenseModalOpen = false, 
+    setIsExpenseModalOpen }) => {
 
     const dollarIcon: ReactNode = <i className="bi bi-currency-dollar"></i>
-    const headerIcon: ReactNode = type === 'salary' ? <i className="bi bi-credit-card-2-front"></i> : <i className="bi bi-graph-down-arrow"></i>
-    const titleModal = type === 'salary' ? 'Salary' : 'Expense'
-    const amountTitle = type === 'salary' ? 'Amount of salary' : 'Amount of expense'
-    const descriptionTitle = type === 'salary' ? 'Description of salary' : 'Description of expense'
+    const headerIcon: ReactNode = <i className="bi bi-graph-down-arrow"></i>
+    const titleModal = 'Expense'
+    const amountTitle = 'Amount of expense'
+    const descriptionTitle = 'Description of expense'
 
     const [operationValue = 0, setOperationValue] = useState<number>();
     const [descriptionValue = '', setDescriptionValue] = useState<string>();
@@ -48,15 +47,16 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
         await setTimeout(() => {
             setIsSubmiting(false);
             alert(JSON.stringify(postObject, null, 2));
-            setIsOperationModalOpen(false);
+            setIsExpenseModalOpen(false);
         }, 3000);
     }
 
     return <UseModal
+        modalName="expenseModal"
         containerWidth={600}
         containerHeight={416}
-        setIsModalOpen={setIsOperationModalOpen}
-        isModalOpen={isOperationModalOpen}
+        setIsModalOpen={setIsExpenseModalOpen}
+        isModalOpen={isExpenseModalOpen}
         >
             <form
             onSubmit={handleSubmit}>
@@ -70,7 +70,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     </div>
                     <h3>{titleModal}</h3>
                     <div className={classes.closeBtn}>
-                        <CloseButton closeHandler={() => setIsOperationModalOpen(false)}/>
+                        <CloseButton closeHandler={() => setIsExpenseModalOpen(false)}/>
                     </div>
                 </div>
                 <div className={classes.line}></div>
@@ -84,7 +84,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         <div className={classes.inputWrapper}>
                             <Input 
                             setFormValue={{type: 'cash', callback: setOperationValue}}
-                            isInputMustClear={!isOperationModalOpen} 
+                            isInputMustClear={!isExpenseModalOpen} 
                             Icon={dollarIcon} inputType="cash" id="salary" 
                             name="salary" placeholder="00.00"/>
                         </div>
@@ -94,7 +94,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         <div className={classes.inputWrapper}>
                             <Input 
                             setFormValue={{type: 'text', callback: setDescriptionValue}}
-                            isInputMustClear={!isOperationModalOpen} 
+                            isInputMustClear={!isExpenseModalOpen} 
                             inputType="text" id="description" 
                             name="description"/>
                         </div>

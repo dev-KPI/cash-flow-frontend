@@ -41,7 +41,7 @@ const UserAccountCard: FC = () => {
                             <img className={classes.photo}
                                 alt={'user icon'}
                                 src={picture ? picture : userIcon}
-                                style={{ filter: picture ? (actualTheme == 'light' ? 'invert(0)' : 'invert(1)') : '' }}
+                                style={{ filter: picture ? (actualTheme === 'light' ? 'invert(0)' : 'invert(1)') : '' }}
                             />
                         </div>
                         <div className={classes.personal__data}>

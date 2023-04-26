@@ -240,6 +240,12 @@ div[class*="__container"] {
     padding-right: 5px;
 }
 
+.modal{
+    height: 100%; 
+    width: 100%; 
+    visibility: hidden; 
+    display: none
+}
 .pageTitle {
     font-weight: 700;
     font-size: 36px;

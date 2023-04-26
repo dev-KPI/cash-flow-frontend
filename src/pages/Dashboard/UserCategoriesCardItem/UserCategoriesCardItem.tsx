@@ -4,7 +4,7 @@ import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategorie
 
 //UI
 import classes from './UserCategoriesCardItem.module.css';
-import OperationModal from '@components/ModalWindows/OperationModal/OperationModal';
+import OperationModal from '@components/ModalWindows/OperationModal/SalaryModal';
 
 
 const UserCategoriesCardDot: FC<ICategoryItem> = ({ setIdModalOpen, setIsModalOpen, category, amount = 100 }) => {

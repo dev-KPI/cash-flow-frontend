@@ -1,4 +1,4 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, ReactNode, useMemo} from 'react';
 
 //UI
 import classes from './ModalAnimation.module.css';
@@ -6,15 +6,14 @@ import classes from './ModalAnimation.module.css';
 interface IModalAnimation {
     children: ReactNode,
     isAnimation: boolean,
-    onAnimationEnd: () => void
+    disablePortal: () => void
 }
 
-const ModalAnimation: FC<IModalAnimation> = ({children, isAnimation, onAnimationEnd}) => {
-    const classNames = isAnimation ? classes['in'] : classes['out']
-
+const ModalAnimation: FC<IModalAnimation> = ({children, isAnimation, disablePortal}) => {
+    const classNames = useMemo(() => { return isAnimation ? classes['in'] : classes['out'] }, [isAnimation])
     return(<>
         <div 
-        onAnimationEnd={onAnimationEnd}
+        onAnimationEnd={() => disablePortal()}
         style={{width: '100%', height: '100%'}} 
         className={classNames}>
             {children}

@@ -2,7 +2,7 @@ import React, { useState, FC, useEffect } from 'react';
 
 //UI
 import classes from "./OperationCard.module.css"
-import OperationModal from '@components/ModalWindows/OperationModal/OperationModal';
+import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
 
 interface OperactionCardProps {
     operation: string;
@@ -30,10 +30,9 @@ const OperationCard: FC<OperactionCardProps> = ({ operation }) => {
     }
     return (<>
         {operation === 'Income' ?
-            <OperationModal
-                type="salary"
-                setIsOperationModalOpen={setIsOperationModalOpen}
-                isOperationModalOpen={isOperationModalOpen}
+            <SalaryModal
+                setIsSalaryModalOpen={setIsOperationModalOpen}
+                isSalaryModalOpen={isOperationModalOpen}
             /> : null
         }
         <div className={classes.operationCard}
