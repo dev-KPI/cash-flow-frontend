@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import UserCategoriesCardItem from '@pages/Dashboard/UserCategoriesCardItem/UserCategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCardLoader';
 import { json } from './objUserCategories';
+import OperationModal from '@components/ModalWindows/OperationModal/OperationModal';
+import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 
 interface Category {
     id: number,
@@ -13,16 +15,22 @@ interface Category {
     icon: string
 }
 
-export interface ICategoryItem {
+export interface ISortedCategoryItem {
     category: Category,
-    amount: number
+    amount: number,
+}
+export interface ICategoryItem extends ISortedCategoryItem{
+    setIdModalOpen: (value: number) => void,
+    setIsModalOpen: (value: boolean) => void
 }
 
 const UserCategoriesCard = () => {
-    const [categories = [], setCategories] = useState<ICategoryItem[]>();
+    const [categories = [], setCategories] = useState<ISortedCategoryItem[]>();
     const [totalItems = 11, setTotalItems] = useState<number>();
     const [loading = true, setLoading] = useState<boolean>();
     const [groupIndex = 0, setGroupIndex] = useState<number>();
+    const [idModalOpen = -1, setIdModalOpen] = useState<number>();
+    const [isModalOpen = false, setIsModalOpen] = useState<boolean>();
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
     const { categoriesByGroup } = json;
@@ -38,20 +46,41 @@ const UserCategoriesCard = () => {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
     }, [height, width, categories])
 
+    const autoHandleCloseModal = useCallback(() => {
+        if(!isModalOpen) setIdModalOpen(-1) 
+    }, [isModalOpen])
+
     useEffect(()=>{
         initializeCategories()
         initializeHandleWrapper()
-    }, [initializeCategories, initializeHandleWrapper])
+        autoHandleCloseModal()
+    }, [initializeCategories, 
+        initializeHandleWrapper, 
+        autoHandleCloseModal])
 
-    const getCategories = (categories: ICategoryItem[]) => {
-        return categories.map((item, i) => <UserCategoriesCardItem key={i} category={item.category} amount={item.amount} />)
+    console.log('Outside  ' + idModalOpen)
+
+    const getCategories = (categories: ISortedCategoryItem[]) => {
+        return categories.map((item, i) => 
+            <UserCategoriesCardItem 
+            key={i} 
+            setIdModalOpen={setIdModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            category={item.category} 
+            amount={item.amount}/>
+        )
     }
-    const useCategories = (categories: ICategoryItem[] , total: number) => {
-        const properCategories = useMemo(() => {
-            return categories.slice(0, total)
-        }, [categories, total])
-        return properCategories;
+    const getModal = () => {
+        return <ExpenseModal
+        type="expense"
+        isOperationModalOpen={isModalOpen && idModalOpen !== -1}
+        setIsOperationModalOpen={setIsModalOpen}
+        />
     }
+
+    const properCategories: ISortedCategoryItem[] = useMemo(() => {
+        return categories.slice(0, totalItems)
+    }, [categories, totalItems])
 
     const handleNextGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!groups[groupIndex + 1]) return;
@@ -62,15 +91,14 @@ const UserCategoriesCard = () => {
         if (!groups[groupIndex - 1]) return;
         setGroupIndex(groupIndex - 1); 
     }
-
-    const properCategories = useCategories(categories, totalItems)
     
     setTimeout(() => {
         setLoading(false)
     }, 1500);
+
     return (
         <div className={classes.categories}>
-            {loading ? <UserCategoriesCardLoader /> :
+            {loading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <h3 className={classes.title}>Categories <span className={classes.categoryName}>({groups[groupIndex]})</span></h3>
@@ -95,6 +123,7 @@ const UserCategoriesCard = () => {
                     </div>
                     <ul className={classes.list} ref={squareRef}>
                         {getCategories(properCategories)}
+                        {getModal()}
                         {
                         categories?.length === 0 ?
                             <div className={classes.emptyList}>
@@ -124,7 +153,7 @@ const UserCategoriesCard = () => {
                         }
                     </ul>    
                 </div>
-            }
+            </>}
         </div>
     );
 };

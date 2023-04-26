@@ -2,14 +2,14 @@ import React, {FC, ReactNode, useState} from "react";
 import ReactDOM from 'react-dom';
 
 //UI
-import classes from './OperationModal.module.css';
+import classes from './ExpenseModal.module.css';
 import Input from "@components/Input/Input";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
 import { useWindowSize } from "usehooks-ts";
 
-interface IOperationModalProps{
+interface IExpenseModalProps{
     type: 'expense' | 'salary'
     isOperationModalOpen: boolean
     setIsOperationModalOpen: (value: boolean) => void
@@ -20,7 +20,7 @@ interface IModalState {
     description: string
 }
 
-const OperationModal: FC<IOperationModalProps> = ({ 
+const ExpenseModal: FC<IExpenseModalProps> = ({ 
     type, 
     isOperationModalOpen = false, 
     setIsOperationModalOpen }) => {
@@ -113,4 +113,4 @@ const OperationModal: FC<IOperationModalProps> = ({
         </UseModal>
 };
   
-export default React.memo(OperationModal);
+export default ExpenseModal;

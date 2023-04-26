@@ -1,31 +1,26 @@
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import React, { FC, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { FC, Dispatch, MouseEvent, useCallback, useEffect, useState } from 'react';
 import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
 
 //UI
 import classes from './UserCategoriesCardItem.module.css';
+import OperationModal from '@components/ModalWindows/OperationModal/OperationModal';
 
 
-const UserCategoriesCardDot: FC<ICategoryItem> = ({ category, amount }) => {
-    const [total = 0, setTotal] = useState<number>();
-    const [source = '', setSource] = useState<string>();
+const UserCategoriesCardDot: FC<ICategoryItem> = ({ setIdModalOpen, setIsModalOpen, category, amount = 100 }) => {
+    const [total = amount, setTotal] = useState<number>();
     
-    const updateAmount = (e: React.MouseEvent): void => {
-        e.preventDefault();
-        let newAmount = total
-        if (newAmount !== undefined)
-            newAmount += Number(prompt("Set new amount:"))
-        setTotal(newAmount);
-        setSource(prompt("Set source:") || '');
-    }
-
-    useEffect(() => {
-        setTotal(amount)
-    }, [])
+    const openModal = (e: MouseEvent) => {
+        e.preventDefault()
+        setIdModalOpen(category.id)
+        setIsModalOpen(true)
+    }    
 
     return (
-        <li className={classes.item}
-            onClick={updateAmount}
+        <li 
+        key={'123dsad' + amount + category.title}
+        className={classes.item}
+            onClick={openModal}
         >
             <h6 className={classes.expenseName}>{category.title}</h6>
             <div className={classes.icon} style={{background: category.color}}>
