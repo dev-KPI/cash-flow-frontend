@@ -106,8 +106,7 @@
     line-height: 19px;
 }
 .CategoriesBox{
-    padding: 0px 12px;
-    margin-top: 12px;
+    padding: 12px 12px;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
