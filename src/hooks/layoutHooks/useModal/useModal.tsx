@@ -33,13 +33,13 @@ const useModal: FC<IModalProps> = ({
     const [isAnimation = true, setIsAnimation] = useState<boolean>();
     
     //handlers
-    const closeModal = () => setIsModalOpen(false);
     const disablePortal = useCallback(() => {
-        if (portalPlace && isModalOpen === false && !isAnimation){
+        if (portalPlace && isModalOpen === false){
             portalPlace.style.visibility = 'hidden';
             portalPlace.style.display = 'none';
         }
     }, [isAnimation, isModalOpen])
+    const closeModal = () => setIsModalOpen(false)
 
     //initializing page process
     const initializePortal = useCallback(() => {
