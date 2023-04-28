@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useState} from "react";
+import React, {FC, ReactNode, useState, useCallback} from "react";
 import ReactDOM from 'react-dom';
 
 //UI
@@ -9,6 +9,7 @@ import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
 //logic
 import { useWindowSize } from "usehooks-ts";
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 
 interface IExpenseModalProps{
     isExpenseModalOpen: boolean
@@ -36,6 +37,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
 
     //submit
     const [isSubmiting = false, setIsSubmiting] = useState<boolean>();
+    const [shouldShowTooltip = false, setShouldShowTooltip] = useState<boolean>();
 
     const postObject: IModalState = {
         operation: operationValue,
@@ -45,13 +47,23 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const handleSubmit = async() => {
         setIsSubmiting(true)
         await setTimeout(() => {
+            setShouldShowTooltip(true)
             setIsSubmiting(false);
             alert(JSON.stringify(postObject, null, 2));
             setIsExpenseModalOpen(false);
         }, 3000);
     }
+    const showToolTip = useCallback(() => {
+        if (shouldShowTooltip) {
+            return <StatusTooltip
+            type="success" 
+            title="Expense successfully added"/>
+        }
+    }, [shouldShowTooltip])
 
-    return <UseModal
+    return <>
+    {showToolTip()}
+    <UseModal
         modalName="expenseModal"
         containerWidth={600}
         containerHeight={416}
@@ -111,6 +123,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 </div>
             </form>
         </UseModal>
+    </>
 };
   
 export default ExpenseModal;

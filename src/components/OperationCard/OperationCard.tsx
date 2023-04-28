@@ -1,8 +1,9 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, { useState, FC, useCallback } from 'react';
 
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
+import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 
 interface OperactionCardProps {
     operation: string;
@@ -10,17 +11,10 @@ interface OperactionCardProps {
 
 const OperationCard: FC<OperactionCardProps> = ({ operation }) => {
 
-    const [amount, setAmount] = useState<number>();
+    const [amount = 423, setAmount] = useState<number>();
     const [source, setSource] = useState<string>();
 
     const [isOperationModalOpen = false, setIsOperationModalOpen] = useState<boolean>();
-
-    const updateIncome = (e: React.MouseEvent): void => {
-        e.preventDefault();
-        if (operation !== "Income") return;
-
-        const amountAll = 321;
-    }
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",

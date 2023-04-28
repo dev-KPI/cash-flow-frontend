@@ -98,19 +98,27 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.upSide h5{
+.CategoryTitle{
     margin-left: 10px;
     color: rgba(155, 171, 197, 1);
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 19px;
+    composes: cardTitle from "@styles/style.css";
 }
 .CategoriesBox{
-    padding: 0px 12px;
-    margin-top: 12px;
+    padding: 12px 12px;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 15px;
     row-gap: 15px;
+}
+
+@media only screen and (max-width: 1440px) {
+    .CategoriesBox{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media only screen and (max-width: 768px) {
+    .CategoriesBox{
+        grid-template-columns: repeat(1, 1fr);
+    }
 }

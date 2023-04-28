@@ -45,7 +45,7 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({type, btnWidth = 100, btnHeight
             className={classes.ConfirmButton}>
                 <div className={classes.wrapperbtn}>
                     {getIcon()}
-                    <p>{title ? title : 'Confirm'}</p>
+                    <p style={{display: 'flex', alignItems: 'center'}}>{title ? title : 'Confirm'}</p>
                 </div>
             </button>
         </ButtonHover> 
