@@ -67,7 +67,7 @@ const Categories: FC = () => {
                 </div>
                 <div className={classes.addCategory}>
                     <div className={classes.upSide}>
-                        <h5>Category</h5>
+                        <h5 className={classes.CategoryTitle}>Category</h5>
                         <ConfirmButton
                         isPending={false}
                         callback={() => {console.log('add category')}}

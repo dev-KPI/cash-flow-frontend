@@ -58,8 +58,6 @@ const UserCategoriesCard = () => {
         initializeHandleWrapper, 
         autoHandleCloseModal])
 
-    console.log('Outside  ' + idModalOpen)
-
     const getCategories = (categories: ISortedCategoryItem[]) => {
         return categories.map((item, i) => 
             <UserCategoriesCardItem 

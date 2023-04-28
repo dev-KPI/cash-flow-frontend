@@ -98,12 +98,10 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.upSide h5{
+.CategoryTitle{
     margin-left: 10px;
     color: rgba(155, 171, 197, 1);
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 19px;
+    composes: cardTitle from "@styles/style.css";
 }
 .CategoriesBox{
     padding: 12px 12px;
