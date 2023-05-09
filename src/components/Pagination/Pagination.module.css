@@ -1,0 +1,53 @@
+.inner {
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    color: var(--text);
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 50px;
+}
+
+.nav {
+    display: flex;
+    gap: 25px;
+}
+
+.nav i {
+    color: var(--text);
+}
+
+.btn {
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn i {
+    font-size: 20px;
+    height: 20px;
+    -webkit-text-stroke: 1.5px;
+    color: var(--text)
+}
+
+.btn:hover:not(:disabled) i {
+    color: var(--main-green)
+}
+
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.select {
+    background: transparent;
+    border: transparent;
+    color: inherit;
+    font: inherit;
+}
+
+.select:focus {
+    border: none;
+    outline: none
+}
