@@ -10,30 +10,30 @@ import CategoriesCard from "./CategoriesCard/CategoriesCard";
 
 
 const Categories: FC = () => {
-    
+
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
     const [groups, setGroups] = useState<boolean>()
 
     const initializePage = () => {
-        
+
     }
 
 
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.active : classes.item;
-        res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
+        res += (actualTheme === 'dark' && isActive) ? ' ' + classes.shadowLink : ' ';
         return res
     }
 
     const getGroups = () => {
         let res: ReactNode[] = [];
-        for(let i = 0; i < 3; i++){
+        for (let i = 0; i < 3; i++) {
             res.push(
                 <li key={'12sf3' + i}>
-                    <NavLink 
-                    className={({ isActive }) => setActiveLinkClasses(isActive)}
-                    to="/123"><h4>Family</h4></NavLink>
+                    <NavLink
+                        className={({ isActive }) => setActiveLinkClasses(isActive)}
+                        to="/123"><h4>Family</h4></NavLink>
                 </li>
             )
         }
@@ -41,23 +41,23 @@ const Categories: FC = () => {
     }
     const getCategories = () => {
         let res: ReactNode[] = [];
-        for(let i = 0; i < 7; i++){
+        for (let i = 0; i < 7; i++) {
             res.push(
-            <li className={classes.item} key={'12sf3' + i}>
-                <CategoriesCard 
-                id={i}
-                color="#eee333" 
-                title="Family" 
-                icon="bi bi-joystick"/>
-            </li>)
+                <li className={classes.item} key={'12sf3' + i}>
+                    <CategoriesCard
+                        id={i}
+                        color="#eee333"
+                        title="Family"
+                        icon="bi bi-joystick" />
+                </li>)
         }
         return res
     }
-    
-    return(<>
+
+    return (<>
         <main id='CategoriesPage'>
             <div className={classes.CategoriesPage__container}>
-                <h3>Categories</h3>
+                <h3 className={classes.pageTitle}>Categories</h3>
                 <div className={classes.CategoriesNav}>
                     <nav className={classes.NavWrapper}>
                         <ul className={classes.navbarUl}>
@@ -69,17 +69,17 @@ const Categories: FC = () => {
                     <div className={classes.upSide}>
                         <h5 className={classes.CategoryTitle}>Category</h5>
                         <ConfirmButton
-                        isPending={false}
-                        callback={() => {console.log('add category')}}
-                        type="add"
-                        btnWidth={180} 
-                        btnHeight={36} 
-                        title="Create new category"/>
+                            isPending={false}
+                            callback={() => { console.log('add category') }}
+                            type="add"
+                            btnWidth={180}
+                            btnHeight={36}
+                            title="Create new category" />
                     </div>
                     <div className={classes.line}></div>
                 </div>
                 <ul className={classes.CategoriesBox}>
-                    {getCategories()}                    
+                    {getCategories()}
                 </ul>
             </div>
         </main>
