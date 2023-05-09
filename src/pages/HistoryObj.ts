@@ -1,4 +1,4 @@
-export const tmpObj = JSON.parse(JSON.stringify({
+export const HistoryObj = JSON.parse(JSON.stringify({
     "expenses": [
         {
             "id": 1,

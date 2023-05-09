@@ -8,7 +8,7 @@ import { RecentOperationDashboardCard } from "@components/RecentOperationsCards/
 //logic
 import { Link } from "react-router-dom";
 import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
-import { tmpObj } from "./testObj";
+import { HistoryObj } from "@pages/HistoryObj";
 import UserHistoryCardLoader from "./UserHistoryCardLoader";
 
 
@@ -39,9 +39,9 @@ const UserHistoryCard: FC = () => {
     }, 1500);
 
     const getMixedHistory = () => {
-        const expensesDTO: Transaction[] = [...tmpObj.expenses.map((el: Object) =>
+        const expensesDTO: Transaction[] = [...HistoryObj.expenses.map((el: Object) =>
             Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-        const replenishmentsDTO: Transaction[] = [...tmpObj.replenishments.map((el: Object) =>
+        const replenishmentsDTO: Transaction[] = [...HistoryObj.replenishments.map((el: Object) =>
             Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
 
         const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]

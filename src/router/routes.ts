@@ -3,6 +3,7 @@ import Dashboard from "@pages/Dashboard/Dashboard";
 import Analytics from "@pages/Analytics/Analytics";
 import Categories from "@pages/Categories/Categories";
 import Groups from "@pages/Groups/Groups";
+import History from "@pages/History/History";
 //UI
 import Header from "@components/Header/Header";
 
@@ -34,6 +35,10 @@ export const routesAuth = [
     {
         path: GROUPS_PAGE,
         component: Groups
+    },
+    {
+        path: HISTORY_PAGE,
+        component: History
     },
 ];
 export const routesMobileNavigation = [
