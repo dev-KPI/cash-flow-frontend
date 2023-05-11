@@ -85,9 +85,11 @@ const Groups: FC = () => {
                         </thead>
                         <tbody className={classes.tableText}>
                             {getRecentActivities()}
-                            <tr className={classes.pagination}>
+                            <tr>
                                 <td colSpan={5}>
-                                    <Pagination />
+                                    <div className={classes.paginationWrapper}>
+                                        <Pagination />
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

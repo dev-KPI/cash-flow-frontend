@@ -7,7 +7,6 @@ import Light from "@components/Light/Light";
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
 import DateService from "@services/DateService/DateService"
-
 export interface IRecentOperationDashboardCard {
     description: string,
     categoryColor: string,
@@ -19,12 +18,12 @@ export interface IRecentOperationDashboardCard {
     type: 'expense' | 'replenishment'
 }
 export const HistoryItem: FC<IRecentOperationDashboardCard> = ({ description, type, categoryColor, groupColor, categoryTitle, groupTitle, amount, time }) => {
-
     return (
         <tr>
             <td>{description}</td>
             <td>
                 <Light
+                    className={classes.dotLight}
                     style={{ display: type === 'expense' ? 'inline-block' : 'none' }}
                     color={categoryColor}
                     type='solid' />
@@ -32,6 +31,7 @@ export const HistoryItem: FC<IRecentOperationDashboardCard> = ({ description, ty
             </td>
             <td>
                 <Light
+                    className={classes.dotLight}
                     style={{ display: type === 'expense' ? 'inline-block' : 'none' }}
                     color={groupColor}
                     type='solid' />

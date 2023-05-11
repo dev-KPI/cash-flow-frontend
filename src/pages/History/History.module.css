@@ -45,13 +45,75 @@
     height: 80px;
     border-bottom: 1px solid var(--borderInput);
     vertical-align: middle;
-    padding: 0 30px;
+    padding: 0px 30px;
 }
 
 .recentOperations__table tbody tr:last-child td {
     border: none;
 }
 
-.pagination {
-    height: 140px;
+.paginationWrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 45px;
+}
+
+@media only screen and (max-width: 1028px) {
+    .recentOperations__table tbody td {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    .tableText {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .tableTitle {
+        font-size: 22px;
+        line-height: 27px;
+    }
+
+    .paginationWrapper {
+        padding: 35px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .tableTitle {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .tableText {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .paginationWrapper {
+        padding: 29px 0;
+    }
+
+
+    .recentOperations__table thead :nth-child(4) {
+        display: none;
+    }
+
+    .recentOperations__table tbody td:nth-child(4) {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .recentOperations__table thead :nth-child(3) {
+        display: none;
+    }
+
+    .recentOperations__table tbody td:nth-child(3) {
+        display: none;
+    }
+
+    .paginationWrapper {
+        padding: 10px;
+    }
 }
