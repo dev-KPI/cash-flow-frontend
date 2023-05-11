@@ -1,0 +1,10 @@
+.itemTitle {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+@media only screen and (max-width: 768px) {
+    .dotLight {
+        display: none !important;
+    }
+}

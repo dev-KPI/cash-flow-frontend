@@ -1,4 +1,4 @@
-import { ICategoryExpenseItemUPDATE, IUserExpenseChartDataItem } from './UserCategoryExpensetInterfaces';
+import { ICategoryExpenseItemUPDATE, IUserExpenseChartDataItem } from './UserCategoryExpenseInterfaces';
 import { api } from '@store/api';
 
 
@@ -14,8 +14,8 @@ export const UserCategoryExpenseApiSlice = api.injectEndpoints({
                 arg
             ) => response.status,
             providesTags: (result) => result ? [...result.map(item => ({ type: 'CategoryExpenses' as const, id: item.id })),
-                { type: 'CategoryExpenses', id: 'ADD_EXPENSE' },
-                { type: 'CategoryExpenses', id: 'DELETE_EXPENSE' }]
+            { type: 'CategoryExpenses', id: 'ADD_EXPENSE' },
+            { type: 'CategoryExpenses', id: 'DELETE_EXPENSE' }]
                 :
                 [{ type: 'CategoryExpenses', id: 'ADD_EXPENSE' },
                 { type: 'CategoryExpenses', id: 'DELETE_EXPENSE' }],
@@ -31,7 +31,7 @@ export const UserCategoryExpenseApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: (result, error, id) => [{ type: 'CategoryExpenses', id: result?.id }]
         }),
-        getCategoryExpensesTotal: builder.query<{total: number}, null>({
+        getCategoryExpensesTotal: builder.query<{ total: number }, null>({
             query: () => ({
                 url: `/categoryExpensesTotal`,
             }),
@@ -66,7 +66,7 @@ export const UserCategoryExpenseApiSlice = api.injectEndpoints({
                 meta,
                 arg
             ) => response.status,
-            invalidatesTags: (result,error) => [{ type: 'CategoryExpenses', id: result.id }],
+            invalidatesTags: (result, error) => [{ type: 'CategoryExpenses', id: result.id }],
         }),
         deleteCategoryExpense: builder.mutation({
             query: (id: number) => ({
@@ -85,12 +85,12 @@ export const UserCategoryExpenseApiSlice = api.injectEndpoints({
     overrideExisting: false,
 })
 
-export const { 
-    useGetCategoryExpensesQuery, 
-    useGetCategoryExpenseByIdQuery, 
-    useGetCategoryExpensesTotalQuery, 
+export const {
+    useGetCategoryExpensesQuery,
+    useGetCategoryExpenseByIdQuery,
+    useGetCategoryExpensesTotalQuery,
     useAddCategoryExpenseMutation,
     useUpdateCategoryExpenseMutation,
-    useDeleteCategoryExpenseMutation 
+    useDeleteCategoryExpenseMutation
 } = UserCategoryExpenseApiSlice
 

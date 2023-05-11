@@ -1,41 +1,46 @@
-.CategoriesPage__container{
-    margin-top: 20px;
+.CategoriesPage__container {
+    margin-top: 22px;
 }
-.CategoriesPage__container h3{
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 44px;
-    color: var(--main-text);
+
+.pageTitle {
+    composes: pageTitle from "@styles/style.css";
 }
-.CategoriesNav{
+
+.CategoriesNav {
     width: 100%;
     margin-top: 24px;
     border-bottom: 1px solid var(--borderInput);
 }
-.NavWrapper{
+
+.NavWrapper {
     max-width: 1515px;
     height: 60px;
 }
-.line{
+
+.line {
     width: 100%;
     border-bottom: 1px solid var(--borderInput);
 }
-.navbarUl{
+
+.navbarUl {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
-.navbarUl li{
+
+.navbarUl li {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: flex-start;
 }
-.navbarUl h4{
+
+.navbarUl h4 {
     margin-left: 10px;
 }
-.navbarUl a{
+
+.navbarUl a {
     width: 100%;
     height: 100%;
     font-weight: 700;
@@ -45,22 +50,25 @@
     opacity: .5;
     transition: all .1s ease-in-out;
 }
-.navbarUl a:hover{
+
+.navbarUl a:hover {
     color: var(--main-green);
 }
+
 @media (hover: none) {
-    .navbarUl a:hover{
+    .navbarUl a:hover {
         color: var(--main-text);
     }
 }
-.navbarUl .active{
+
+.navbarUl .active {
     position: relative;
     color: var(--main-text);
     opacity: 1;
     transition: .2s ease-in-out;
 }
 
-.navbarUl .active::after{
+.navbarUl .active::after {
     position: absolute;
     content: "";
     bottom: 0;
@@ -74,36 +82,43 @@
     border-radius: 2px;
     animation: activeLinkAfterAnimation .3s ease-in-out;
 }
+
 @keyframes activeLinkAfterAnimation {
     from {
         width: 2px;
         opacity: 0;
     }
+
     to {
         width: 100%;
         opacity: 1;
     }
 }
-.shadowLink{
+
+.shadowLink {
     text-shadow: 0px 0px 8px var(--main-text);
 }
-.addCategory{
+
+.addCategory {
     display: flex;
     flex-direction: column;
     gap: 24px;
     margin-top: 22px;
 }
-.addCategory .upSide{
+
+.addCategory .upSide {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-.CategoryTitle{
+
+.CategoryTitle {
     margin-left: 10px;
     color: rgba(155, 171, 197, 1);
     composes: cardTitle from "@styles/style.css";
 }
-.CategoriesBox{
+
+.CategoriesBox {
     padding: 12px 12px;
     height: 100%;
     display: grid;
@@ -113,12 +128,13 @@
 }
 
 @media only screen and (max-width: 1440px) {
-    .CategoriesBox{
+    .CategoriesBox {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
 @media only screen and (max-width: 768px) {
-    .CategoriesBox{
+    .CategoriesBox {
         grid-template-columns: repeat(1, 1fr);
     }
 }

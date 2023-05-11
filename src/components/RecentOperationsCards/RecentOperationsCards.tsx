@@ -9,33 +9,33 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
 
-export interface IRecentOperationDashboardCard{
+export interface IRecentOperationDashboardCard {
     ColorBtn: string,
-    title: string, 
-    time: string, 
+    title: string,
+    time: string,
     amount: number,
-    type:  'expense' | 'replenishment'
+    type: 'expense' | 'replenishment'
 }
-export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ColorBtn, title, time, amount, type}) => {
-    
+export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ ColorBtn, title, time, amount, type }) => {
+
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
 
-    return (<>
+    return (
         <li className={classes.RecentOperationDashboardCard}>
             <div className={classes.info}>
-                <Light 
-                color={ColorBtn} 
-                type={'hollow'}/>
+                <Light
+                    color={ColorBtn}
+                    type={'hollow'} />
                 <div className={classes.center}>
                     <h5 className={classes.title}>{title}</h5>
                     <p className={classes.time}>{timeAgo.format(new Date(time))}</p>
                 </div>
             </div>
-            <p style={{color: type === 'expense' ? "#FF2D55":"#80D667"}} 
-            className={classes.amount}>
-                {`${type === 'expense' ? "-":"+"} $${numberWithCommas(amount)}`}</p>
+            <p style={{ color: type === 'expense' ? "#FF2D55" : "#80D667" }}
+                className={classes.amount}>
+                {`${type === 'expense' ? "-" : "+"}$${numberWithCommas(amount)}`}</p>
         </li>
-    </>)
+    )
 }
 

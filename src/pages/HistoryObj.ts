@@ -1,4 +1,4 @@
-export const tmpObj = JSON.parse(JSON.stringify({
+export const HistoryObj = JSON.parse(JSON.stringify({
     "expenses": [
         {
             "id": 1,
@@ -54,7 +54,7 @@ export const tmpObj = JSON.parse(JSON.stringify({
                 },
                 "category": {
                     "id": 4,
-                    "title": "Book",
+                    "title": "Entertainment",
                     "color": "#FF6E01",
                     "icon": "link.com"
                 }
@@ -114,7 +114,7 @@ export const tmpObj = JSON.parse(JSON.stringify({
                 },
                 "category": {
                     "id": 4,
-                    "title": "Book",
+                    "title": "Entertainmet",
                     "color": "#FF6E01",
                     "icon": "link.com"
                 }
