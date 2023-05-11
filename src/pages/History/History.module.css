@@ -80,6 +80,15 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .page__container {
+        margin-top: 14px;
+    }
+
+    .recentOperations__table {
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+
     .tableTitle {
         font-size: 18px;
         line-height: 22px;
