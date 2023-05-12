@@ -1,0 +1,27 @@
+.page__container {
+    margin-top: 22px;
+}
+
+.pageTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pageTitle {
+    composes: pageTitle from "@styles/style.css";
+}
+
+.pageTitle span {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 18px;
+    color: var(--text)
+}
+
+.groups{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(356px, 1fr));
+    gap: 30px;
+    margin-top: 38px;
+}
