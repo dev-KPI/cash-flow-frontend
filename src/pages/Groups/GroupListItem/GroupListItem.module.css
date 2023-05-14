@@ -1,13 +1,11 @@
 .group {
     composes: cardComponent from '@styles/style.css';
-    /* max-width: 356px; */
-    
 }
 
 .title{
     composes: cardTitle from '@styles/style.css';
     border-bottom: var(--text) 1px solid;
-    padding: 24px 0 8px 24px;
+    padding: 24px 24px 8px 24px;
 }
 
 .content{
@@ -27,10 +25,9 @@
     width: 46px;
     justify-content: center;
     align-items: center;
-    background: var(--main-green);
+    background: var(--main-blue);
     border-radius: 50%;
 }
-
 
 .icon i {
     display: flex;
@@ -53,7 +50,9 @@
     color: var(--main-text);
     line-height: 21px;
     margin-bottom: 11px;
+    min-height: 63px;
 }
+
 .contentBottom{
     display: flex;
     justify-content: space-between;
@@ -69,24 +68,37 @@
 
 .photo {
     height: 100%;
-    width: 100%
+    width: 100%;
+    border-radius: 50%;
 }
 
 .avatar:not(:first-child)  {
     margin-left: -10px;
 }
 
-
 .avatar{
     background-color: #F0EEFF;
     border-radius: 50%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatarLeftMembers{
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+}
+.leftMembers{
+    /* position: absolute; */
     color: #4C6FFF;
     font-weight: 500;
     font-size: 8px;
     line-height: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    filter: brightness(0.85);
 }
 
 .moreBtn{
@@ -109,3 +121,12 @@
     height: 4px;
     border-radius: 50%;
 }
+
+ @media only screen and (max-width: 768px) {
+    .title{
+        padding: 16px 16px 9px;
+    }
+    .content{
+        padding: 16px;
+    }
+ }

@@ -21,7 +21,19 @@
 
 .groups{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(356px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 30px;
     margin-top: 38px;
+}
+
+@media only screen and (max-width: 400px) {
+    .pageTitle{
+        margin-bottom: 20px;
+    }
+    .pageTop{
+        display: block;
+    }
+    .addButton {
+        width: 100% !important; 
+    }
 }

@@ -2,7 +2,7 @@
 import Dashboard from "@pages/Dashboard/Dashboard";
 import Analytics from "@pages/Analytics/Analytics";
 import Categories from "@pages/Categories/Categories";
-import Groups from "@pages/Groups/Groups";
+import Groups from "@pages/Groups/GroupsPage";
 import History from "@pages/History/History";
 //UI
 import Header from "@components/Header/Header";
