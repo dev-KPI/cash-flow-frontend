@@ -1,13 +1,13 @@
 import React, { FC, useState, ReactNode } from "react";
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-//UI
-import classes from './History.module.css'
-    ;
-import { HistoryObj } from "@pages/HistoryObj";
-import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods";
-import { HistoryItem } from "./HistoryItem/HistoryItem";
 import Pagination from "@components/Pagination/Pagination";
+import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods";
+//UI
+import classes from './History.module.css';
+import { HistoryObj } from "@pages/HistoryObj";
+import { HistoryItem } from "./HistoryItem/HistoryItem";
+
 
 type group_category_props = {
     id: number,
