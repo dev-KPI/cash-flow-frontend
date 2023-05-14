@@ -16,6 +16,7 @@ const Light: FC<ILight> = ({ type, color, style, className }: ILight) => {
 
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     const shadow = actualTheme === 'light' ? 'none' : `0px 0px 8px ${parseColors(color)}`
+    className = className ? className : '';
     if (type === 'solid') {
         return (
             <div

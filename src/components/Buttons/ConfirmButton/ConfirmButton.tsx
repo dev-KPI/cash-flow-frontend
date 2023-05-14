@@ -12,9 +12,10 @@ interface IConfirmButtonProps {
     callback: () => void
     isPending: boolean
     title: string
+    className?: string
 }
 
-const ConfirmButton: FC<IConfirmButtonProps> = ({type, btnWidth = 100, btnHeight = 50, callback, isPending, title = '' }) => {
+const ConfirmButton: FC<IConfirmButtonProps> = ({ type, btnWidth = 100, btnHeight = 50, callback, isPending, title = '', className}) => {
 
     const [isAnimation = false, setIsAnimation] = useState<boolean>();
 
@@ -27,22 +28,22 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({type, btnWidth = 100, btnHeight
         <i className="bi bi-check2"></i> :
         type === 'add' ? <i style={{fontSize:'24px'}} className="bi bi-plus"></i> : <div></div>
     }
-
+    className = className ? className : '';
     return <>
     {!isPending ?
         <ButtonHover
         isAnimation={isAnimation}
         >        
             <button
-            onMouseEnter={setStartHover}
-            onMouseLeave={setEndHover}
-            onClick={handleClick}
-            style={{
-                width: btnWidth + 'px',
-                height: btnHeight + 'px',
-                transition: 'transform 0.3s ease, opacity 0.1s ease',
-            }}
-            className={classes.ConfirmButton}>
+                onMouseEnter={setStartHover}
+                onMouseLeave={setEndHover}
+                onClick={handleClick}
+                style={{
+                    width: btnWidth + 'px',
+                    height: btnHeight + 'px',
+                    transition: 'transform 0.3s ease, opacity 0.1s ease',
+                }}
+                className={`${classes.ConfirmButton} ${className}`}>
                 <div className={classes.wrapperbtn}>
                     {getIcon()}
                     <p style={{display: 'flex', alignItems: 'center'}}>{title ? title : 'Confirm'}</p>
@@ -51,12 +52,12 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({type, btnWidth = 100, btnHeight
         </ButtonHover> 
     : 
         <div 
-        style={{
-            width: btnWidth + 'px',
-            height: btnHeight + 'px',
-            transition: 'all 0.3s ease',
-        }}
-        className={classes.loadingButton}>
+            style={{
+                width: btnWidth + 'px',
+                height: btnHeight + 'px',
+                transition: 'all 0.3s ease',
+            }}
+            className={`${classes.loadingButton} ${className}`}>
             <p>{title}</p>
             <PreLoader type="confirmButton" preLoaderSize={20}/>
         </div>
