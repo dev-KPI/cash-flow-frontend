@@ -50,7 +50,7 @@
     color: var(--main-text);
     line-height: 21px;
     margin-bottom: 11px;
-    min-height: 63px;
+    height: 63px;
 }
 
 .contentBottom{

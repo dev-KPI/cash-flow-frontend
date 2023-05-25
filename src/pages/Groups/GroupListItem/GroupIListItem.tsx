@@ -14,7 +14,7 @@ interface IGroupItemProps {
     memberIcons: string[]
 }
 const GroupItem: FC<IGroupItemProps> = ({ title, description, icon, adminName, adminEmail, color, memberIcons }) => {
-    description = description.length > 150 ? description.slice(0, 150) + '...' : description;
+    description = description.length > 150 ? description.slice(0, 120) + '...' : description;
 
     const getMemberIcons = () => {
         return memberIcons.map((icon, i) => 
