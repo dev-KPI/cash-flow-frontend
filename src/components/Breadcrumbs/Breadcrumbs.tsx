@@ -35,11 +35,9 @@ const Breadcrumbs:FC<IBreadcrumbsProps> = ({breadcrumbs}) => {
         })
     }
     return (
-        <nav className={classes.breadcrumbs}>
-            <ul className={classes.navbar}>
-                {getBreadcrumbs()}
-            </ul>
-        </nav>
+        <ul className={classes.navbar}>
+            {getBreadcrumbs()}
+        </ul>
     );
 };
 

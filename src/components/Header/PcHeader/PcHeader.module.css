@@ -97,6 +97,12 @@
     gap: 20px;
 }
 
+.breadcrumbs {
+    position: absolute;
+    bottom: -58px;
+    left: 23%;
+}
+
 @media only screen and (max-width: 768px) {
     .header{
         display: none;

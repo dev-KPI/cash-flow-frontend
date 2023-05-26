@@ -26,7 +26,7 @@ type group_props = {
     admin: people_props,
     members: people_props[]
 }
-interface Group {
+export interface IGroup {
     group: group_props,
     status: string,
     date_join: string
@@ -41,7 +41,7 @@ const Groups: FC = () => {
 
     
     const getGroups = () => {
-        let groups: Group[] = GroupObj;
+        let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
             const memberIcons = el.group.members.map(member => member.picture);
             return (<GroupListItem

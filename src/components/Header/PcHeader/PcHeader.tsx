@@ -65,7 +65,9 @@ const HeaderSite: FC = () => {
                             <i className="bi bi-chevron-down"></i>
                         </div>
                    </div>
-                    <Breadcrumbs breadcrumbs={breadcrumbs} />
+                    <nav className={classes.breadcrumbs}>
+                        <Breadcrumbs breadcrumbs={breadcrumbs} />
+                    </nav>
                 </div>
             </div>
         </header>

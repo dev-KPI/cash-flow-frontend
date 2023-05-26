@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 
+import userIcon from '@assets/user-icon.svg';
+import { isUrl } from '@services/UsefulMethods/UIMethods';
 //UI
 import classes from './GroupListItem.module.css'
-import userIcon from '@assets/user-icon.svg';
+
 
 interface IGroupItemProps {
     title: string,
@@ -26,10 +28,7 @@ const GroupItem: FC<IGroupItemProps> = ({ title, description, icon, adminName, a
             </div>
         ).slice(0,3)
     }
-    const isUrl = (link:string) => {
-        try { return Boolean(new URL(link)); }
-        catch (e) { return false; }
-    }
+
     const getAdminIcon = () => {
         return isUrl(icon) ? 
             <div className={classes.icon}
