@@ -51,3 +51,8 @@ export function handleWrap(
         }
     }
 }
+
+export const isUrl = (link: string) => {
+    try { return Boolean(new URL(link)); }
+    catch (e) { return false; }
+}
