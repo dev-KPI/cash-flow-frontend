@@ -1,5 +1,4 @@
-import React, {FC, MouseEvent} from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, {FC} from 'react';
 
 //UI
 import classes from './PcHeader.module.css'
@@ -8,17 +7,39 @@ import ProfileIcon from "@assets/user-icon.svg"
 import {ThemeButton} from '@components/ThemeButtons/ThemeButtons';
 
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 
 
 const HeaderSite: FC = () => {
 
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
-    const setActiveLinkClasses = (isActive: boolean) => {
-        let res = isActive ? classes.active : classes.item;
-        res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
-        return res
-    }
+    const breadcrumbs = [
+        {
+            'title': 'Dashboard',
+            'link': '/dashboard'
+        },
+        {
+            'title': 'Analytics',
+            'link': '/analytics'
+        },
+        {
+            'title': 'Categories',
+            'link': '/categories'
+        },
+        {
+            'title': 'Groups',
+            'link': '/groups'
+        },
+        {
+            'title': 'History',
+            'link': '/history'
+        },
+        {
+            'title': 'Settings',
+            'link': '/settings'
+        },
+    ]
 
     return (
         <header className={classes.header}>
@@ -44,41 +65,7 @@ const HeaderSite: FC = () => {
                             <i className="bi bi-chevron-down"></i>
                         </div>
                    </div>
-                   <nav className={classes.breadcrumbs}>
-                        <ul className={classes.navbar}>
-                            <li 
-                            key={'12hf'}>
-                                <NavLink
-                                className={({ isActive }) => setActiveLinkClasses(isActive)}
-                                to="/dashboard">Dashboard</NavLink>
-                            </li>
-                            <li key={'12fgd1'}>
-                                <NavLink
-                                className={({ isActive }) => setActiveLinkClasses(isActive)}
-                                to="/analytics">Analytics</NavLink>
-                            </li>
-                            <li key={'12sf3'}>
-                                <NavLink 
-                                className={({ isActive }) => setActiveLinkClasses(isActive)}
-                                to="/categories">Categories</NavLink>
-                            </li>
-                            <li key={'143dfg2'}>
-                                <NavLink
-                                className={({ isActive }) => setActiveLinkClasses(isActive)}
-                                to="/groups">Groups</NavLink>
-                            </li>
-                            <li key={'154asd2'}>
-                                <NavLink
-                                className={({ isActive }) => setActiveLinkClasses(isActive)}
-                                to="/history">History</NavLink>
-                            </li>
-                            <li key={'142gfd2'}>
-                                <NavLink 
-                                className={({ isActive }) => setActiveLinkClasses(isActive)}
-                                to="/settings">Settings</NavLink>
-                            </li>
-                        </ul>
-                   </nav>
+                    <Breadcrumbs breadcrumbs={breadcrumbs} />
                 </div>
             </div>
         </header>
