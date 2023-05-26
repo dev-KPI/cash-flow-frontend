@@ -8,14 +8,15 @@ import PreLoader from '@components/PreLoader/PreLoader';
 interface IConfirmButtonProps {
     btnWidth?: number
     btnHeight?: number
-    type: 'submit' | 'button' | 'add'
+    type: 'submit' | 'button' | 'add' | 'refuse' | 'none',
+    background?: 'solid' | 'outline'
     callback: () => void
     isPending: boolean
     title: string
     className?: string
 }
 
-const ConfirmButton: FC<IConfirmButtonProps> = ({ type, btnWidth = 100, btnHeight = 50, callback, isPending, title = '', className}) => {
+const ConfirmButton: FC<IConfirmButtonProps> = ({ type, btnWidth = 100, btnHeight = 50, callback, isPending, background, title = '', className}) => {
 
     const [isAnimation = false, setIsAnimation] = useState<boolean>();
 
@@ -24,11 +25,22 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({ type, btnWidth = 100, btnHeigh
 
     const handleClick = (e: MouseEvent<HTMLButtonElement>) => callback() 
     const getIcon = () => {
-        return type === 'submit' ? 
-        <i className="bi bi-check2"></i> :
-        type === 'add' ? <i style={{fontSize:'24px'}} className="bi bi-plus"></i> : <div></div>
+        return type === 'submit' ? <i className="bi bi-check2"></i>
+            : type === 'add' ? <i style={{ fontSize: '24px' }} className="bi bi-plus"></i>
+            : type === 'refuse' ? <i style={{ fontSize: '24px' }} className="bi bi-x"></i> 
+            : ''
     }
     className = className ? className : '';
+    const backgroundStyle = background === 'outline' ?
+        {
+            border: '1px solid var(--confrimBtn)',
+            background: 'transparent',
+            color: 'var(--confrimBtn)'
+        } : 
+        {
+            color: 'var(--btnText)'  
+        }
+        
     return <>
     {!isPending ?
         <ButtonHover
@@ -38,11 +50,12 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({ type, btnWidth = 100, btnHeigh
                 onMouseEnter={setStartHover}
                 onMouseLeave={setEndHover}
                 onClick={handleClick}
-                style={{
+                    style={{
+                    ...backgroundStyle,
                     width: btnWidth + 'px',
                     height: btnHeight + 'px',
-                    transition: 'transform 0.3s ease, opacity 0.1s ease',
-                }}
+                    transition: 'transform 0.3s ease, opacity 0.1s ease'
+                    }}
                 className={`${classes.ConfirmButton} ${className}`}>
                 <div className={classes.wrapperbtn}>
                     {getIcon()}
