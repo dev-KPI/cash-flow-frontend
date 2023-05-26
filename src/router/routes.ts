@@ -3,6 +3,7 @@ import Dashboard from "@pages/Dashboard/Dashboard";
 import Analytics from "@pages/Analytics/Analytics";
 import Categories from "@pages/Categories/Categories";
 import Groups from "@pages/Groups/GroupsPage";
+import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
 //UI
 import Header from "@components/Header/Header";
@@ -12,6 +13,7 @@ export const ANALYTICS_PAGE = '/analytics';
 export const NOTIFICATIONS_PAGE = '/notifications';
 export const CATEGORIES_PAGE = '/categories';
 export const GROUPS_PAGE = '/groups';
+export const GROUP_PAGE = '/group';
 export const HISTORY_PAGE = '/history';
 export const SETTINGS_PAGE = '/settings';
 export const LOG_IN_PAGE = '/login';
@@ -35,6 +37,10 @@ export const routesAuth = [
     {
         path: GROUPS_PAGE,
         component: Groups
+    },
+    {
+        path: GROUP_PAGE,
+        component: Group
     },
     {
         path: HISTORY_PAGE,
