@@ -52,6 +52,7 @@ const Pagination = ({rowsPerPage, setRowsPerPage, lastAction, firstAction, total
                     <i id='chevron' className="bi bi-chevron-left"></i>
                 </button>
                 <button
+                    disabled={lastAction === totalActions}
                     onClick={e => updatePage(e, 'next')}
                     type="submit"
                     className={classes.btn + ' ' + classes.next}

@@ -86,7 +86,7 @@ const Groups: FC = () => {
                                         page={page}
                                         setPage={setPage}
                                         firstAction={page*limit - limit + 1}
-                                        lastAction={page*limit}
+                                        lastAction={page*limit > HistoryArray.length ? page*limit-(page*limit-HistoryArray.length) : page*limit}
                                         totalActions={HistoryArray.length}
                                         rowsPerPage={limit}
                                         setRowsPerPage={setLimit}/>
