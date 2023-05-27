@@ -75,7 +75,7 @@ const UserHistoryCard: FC = () => {
                         {getRecentActivities()}
                     </ul>
                     <div key='239k23' className={classes.ViewMore}>
-                        <Link to={'/'}>
+                        <Link to={'/history'}>
                             <div className={classes.ViewMore__inner}>
                                 <p className={classes.ViewMore__title}>View More</p>
                                 <ArrowRight className={classes.ArrowRight} />
