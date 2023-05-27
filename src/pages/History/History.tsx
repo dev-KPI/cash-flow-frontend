@@ -43,7 +43,7 @@ const Groups: FC = () => {
             const dateA = new Date(a.time).getTime();
             const dateB = new Date(b.time).getTime();
             return dateA - dateB;
-        })).slice(limit*page - limit, limit*page - 1)
+        })).slice(limit*page - limit, limit*page)
     }
 
     const getRecentActivities = (rowsPerPage: number) => {
