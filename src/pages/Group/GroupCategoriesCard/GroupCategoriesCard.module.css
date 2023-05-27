@@ -1,0 +1,38 @@
+.CategoriesCard{
+    /* width: 1080px; */
+    grid-column-start: span 2;
+}
+.title {
+    composes: cardTitle from "@styles/style.css";
+    margin-bottom: 14px;
+}
+.inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.list {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 1 0 auto;
+}
+
+.item {
+    width: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0 auto;
+    gap: 5px;
+}
+
+.item:hover {
+    background-size: 100%;
+    cursor: pointer;
+}
+
+.itemTitle {
+    composes: smallItemTitle from "@styles/style.css";
+}

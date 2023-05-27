@@ -1,0 +1,6 @@
+.InfoCard{
+    width: 374px;
+    composes: cardComponent from '@styles/style.css';
+    grid-row-start: span 2;
+    margin-left: 30px;
+}

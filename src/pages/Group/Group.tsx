@@ -3,13 +3,17 @@ import React from 'react';
 import { GroupObj } from '@pages/Groups/GroupObj';
 import userIcon from '@assets/user-icon.svg';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
-import { IGroup }  from '@pages/Groups/GroupsPage';
+import { IGroup } from '@pages/Groups/GroupsPage';
+
 //UI
 import classes from './Group.module.css';
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import CloseButton from '@components/Buttons/CloseButton/CloseButton';
 import ConfirmButton from '@components/Buttons/ConfirmButton/ConfirmButton';
 import OperationCard from '@components/OperationCard/OperationCard';
+import GroupCategoriesCard from './GroupCategoriesCard/GroupCategoriesCard';
+import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
+import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
 
 
 
@@ -81,14 +85,14 @@ const Group = () => {
             </div>
             <div className={classes.page__container}>
                 <div className={classes.grid}>
-                    <div className={classes.grid__topleft}>
-                        <div className={classes.grid__operation}>
-                            <OperationCard operation={'Income'} />
-                            <OperationCard operation={'Expenses'} />
-                        </div>
+                    <GroupCategoriesCard />
+                    <GroupInfoCard />
+                    <div className={classes.grid__operation}>
+                        <OperationCard operation={'Income'} />
+                        <OperationCard operation={'Expenses'} />
                     </div>
-                    <div className={classes.grid__topright}>
-                    </div>
+                    <GroupSpendersCard/>
+
 
                 </div>
             </div>
