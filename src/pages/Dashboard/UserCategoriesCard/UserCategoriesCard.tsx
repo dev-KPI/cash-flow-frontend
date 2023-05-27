@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import UserCategoriesCardItem from '@pages/Dashboard/UserCategoriesCardItem/UserCategoriesCardItem';
+import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
@@ -60,7 +60,7 @@ const UserCategoriesCard = () => {
 
     const getCategories = (categories: ISortedCategoryItem[]) => {
         return categories.map((item, i) => 
-            <UserCategoriesCardItem 
+            <CategoriesCardItem 
             key={i} 
             setIdModalOpen={setIdModalOpen}
             setIsModalOpen={setIsModalOpen}
