@@ -1,11 +1,10 @@
 import React, { FC, useState, ReactNode } from "react";
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-//UI
-import classes from './History.module.css'
-    ;
-import { HistoryObj } from "@pages/HistoryObj";
 import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods";
+//UI
+import classes from './History.module.css';
+import { HistoryObj } from "@pages/HistoryObj";
 import { HistoryItem } from "./HistoryItem/HistoryItem";
 import Pagination from "@components/Pagination/Pagination";
 
@@ -29,31 +28,26 @@ interface Transaction {
 
 const Groups: FC = () => {
 
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const [items = [], setItems] = useState<Transaction[]>();
+    const [limit = 8, setLimit] = useState<number>();
+    const [page = 1, setPage] = useState<number>();
 
-    const [items, setItems] = useState<Transaction[]>([]);
-    const [totalPages, setTotalPages] = useState(0);
-    const [limit, setLimit] = useState(8);
-    const [page, setPage] = useState(1);
+    const expensesDTO: Transaction[] = [...HistoryObj.expenses.map((el: Object) =>
+        Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
+    const replenishmentsDTO: Transaction[] = [...HistoryObj.replenishments.map((el: Object) =>
+        Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
+    const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]
 
-    const getMixedHistory = () => {
-        const expensesDTO: Transaction[] = [...HistoryObj.expenses.map((el: Object) =>
-            Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-        const replenishmentsDTO: Transaction[] = [...HistoryObj.replenishments.map((el: Object) =>
-            Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
-
-        const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]
-        console.log(HistoryArray);
+    const getMixedHistory = (limit: number) => {     
         return (HistoryArray.sort((b, a) => {
             const dateA = new Date(a.time).getTime();
             const dateB = new Date(b.time).getTime();
             return dateA - dateB;
-        }))
+        })).slice(limit*page - limit, limit*page - 1)
     }
 
-    const getRecentActivities = () => {
-
-        let res: ReactNode[] = getMixedHistory().map((el, i) =>
+    const getRecentActivities = (rowsPerPage: number) => {
+        let res: ReactNode[] = getMixedHistory(rowsPerPage).map((el, i) =>
             <HistoryItem
                 key={i}
                 description={el.description}
@@ -84,11 +78,18 @@ const Groups: FC = () => {
                             </tr>
                         </thead>
                         <tbody className={classes.tableText}>
-                            {getRecentActivities()}
+                            {getRecentActivities(limit)}
                             <tr>
                                 <td colSpan={5}>
                                     <div className={classes.paginationWrapper}>
-                                        <Pagination />
+                                        <Pagination
+                                        page={page}
+                                        setPage={setPage}
+                                        firstAction={page*limit - limit + 1}
+                                        lastAction={page*limit}
+                                        totalActions={HistoryArray.length}
+                                        rowsPerPage={limit}
+                                        setRowsPerPage={setLimit}/>
                                     </div>
                                 </td>
                             </tr>
