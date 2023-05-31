@@ -3,7 +3,8 @@ import React, {FC} from 'react'
 const Footer: FC = () => {
     return <>
         <footer style={{
-            height: '30px',
+            marginTop: '5px',
+            height: '25px',
             position: 'relative',
             backgroundColor: 'var(--background)',
         }}></footer>
