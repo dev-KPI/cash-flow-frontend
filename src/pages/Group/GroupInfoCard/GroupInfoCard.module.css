@@ -1,0 +1,74 @@
+.GroupInfoCard{
+    width: 374px;
+    composes: cardComponent from '@styles/style.css';
+    grid-row-start: span 2;
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.inner {
+    padding: 24px 32px;
+    height: 100%;
+}
+
+.title {
+    composes: cardTitle from "@styles/style.css";
+    text-align: center;
+}
+
+.avatar {
+    width: 180px;
+    height: 180px;
+    display: block;
+    margin: 0 auto;
+}
+
+.photo {
+    height: 100%;
+    width: 100%
+}
+.icon {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    background: var(--main-blue);
+    border-radius: 50%;
+}
+
+.icon i {
+    display: flex;
+    color: #fff;
+    font-size: 60px;
+}
+
+.group__info {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.details{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 24px;
+}
+.detailItem{
+    flex: 0 1 50%;
+}
+
+.detailNumber{
+   composes: cardTitle from '@styles/style.css'
+}
+
+.detailTitle{
+    composes: largeItemTitle from '@styles/style.css'
+}
+
+.description {
+    composes: largeItemTitle from '@styles/style.css';
+    color: var(--main-text);
+    height: 100px;
+}

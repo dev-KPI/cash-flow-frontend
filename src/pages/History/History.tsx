@@ -1,12 +1,14 @@
 import React, { FC, useState, ReactNode } from "react";
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import Pagination from "@components/Pagination/Pagination";
+
 import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods";
 //UI
 import classes from './History.module.css';
 import { HistoryObj } from "@pages/HistoryObj";
 import { HistoryItem } from "./HistoryItem/HistoryItem";
-import Pagination from "@components/Pagination/Pagination";
+
 
 type group_category_props = {
     id: number,
@@ -65,7 +67,7 @@ const Groups: FC = () => {
     return (<>
         <main id='HistoryPage'>
             <div className={classes.page__container}>
-                <h3 className={classes.pageTitle}>History</h3>
+                <h1 className={classes.pageTitle}>History</h1>
                 <section className={classes.recentOperations}>
                     <table className={classes.recentOperations__table}>
                         <thead className={classes.tableTitle}>

@@ -1,0 +1,5 @@
+.SpendersCard {
+    width: 510px;
+    height: 120px;
+    composes: cardComponent from "@styles/style.css"
+}

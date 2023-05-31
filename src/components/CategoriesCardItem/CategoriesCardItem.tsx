@@ -3,7 +3,7 @@ import React, { FC, Dispatch, MouseEvent, useCallback, useEffect, useState } fro
 import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
 
 //UI
-import classes from './UserCategoriesCardItem.module.css';
+import classes from './CategoriesCardItem.module.css';
 import OperationModal from '@components/ModalWindows/OperationModal/SalaryModal';
 
 
@@ -15,14 +15,14 @@ const UserCategoriesCardDot: FC<ICategoryItem> = ({ setIdModalOpen, setIsModalOp
         setIdModalOpen(category.id)
         setIsModalOpen(true)
     }    
-
+    const categoryTitle = category.title.length > 8 ? `${category.title.slice(0, 7)}..` : category.title;
     return (
         <li 
         key={'123dsad' + amount + category.title}
         className={classes.item}
             onClick={openModal}
         >
-            <h6 className={classes.expenseName}>{category.title}</h6>
+            <h6 className={classes.expenseName}>{categoryTitle}</h6>
             <div className={classes.icon} style={{background: category.color}}>
                 <i className="bi bi-credit-card-2-front"></i>
             </div>
