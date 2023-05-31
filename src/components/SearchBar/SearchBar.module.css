@@ -1,0 +1,38 @@
+.searchBar{
+    position: relative;
+}
+.searchBtn {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    cursor: pointer;
+}
+
+.searchInput:focus {
+    outline: none
+}
+
+.searchInput{
+    width: 100%;
+    background: transparent;
+    padding: 15px 30px 15px 42px;
+    border: 1px solid var(--text);
+    color: var(--main-text);
+    border-radius: 8px;
+
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.searchInput::placeholder {
+    font-weight: 500;
+    color: var(--main-text);
+}
+
+.searchBtn{
+    position: absolute;
+    left: 0;
+    top: calc(50% - 8px);
+    margin-left: 16px;
+    color: var(--main-text);
+}
