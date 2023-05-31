@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 
 //UI
 import classes from './UserAccountCard.module.css';
-import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import userIcon from '@assets/user-icon.svg';
 import UserAccountCardLoader from './UserAccountLoader';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
@@ -31,6 +31,7 @@ const UserAccountCard: FC = () => {
     const { current_balance } = User;
 
 
+
     return <>
         <div className={classes.AccountCard}>
             {isPageLoading ? <UserAccountCardLoader /> :
@@ -40,8 +41,8 @@ const UserAccountCard: FC = () => {
                         <div className={classes.avatar}>
                             <img className={classes.photo}
                                 alt={'user icon'}
-                                src={picture ? picture : userIcon}
-                                style={{ filter: picture ? (actualTheme === 'light' ? 'invert(0)' : 'invert(1)') : '' }}
+                                src={isUrl(picture) ? picture : userIcon}
+                                // style={{ filter: picture ? (actualTheme === 'light' ? 'invert(0)' : 'invert(1)') : '' }}
                             />
                         </div>
                         <div className={classes.personal__data}>

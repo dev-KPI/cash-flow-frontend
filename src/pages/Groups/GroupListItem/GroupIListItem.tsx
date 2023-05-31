@@ -31,19 +31,11 @@ const GroupItem: FC<IGroupItemProps> = ({ title, description, icon, adminName, a
 
     const getAdminIcon = () => {
         return isUrl(icon) ? 
-            <div className={classes.icon}
-                style={{ backgroundColor: color }}
-            >
-                <img className={classes.photo}
-                    alt={'user icon'}
-                    src={icon}/>
-            </div>
+            <img className={classes.photo}
+                alt={'user icon'}
+                src={icon}/>
             :
-            <div className={classes.icon}
-                style={{ backgroundColor: color }}
-            >
-                <i className={"bi bi-people"}></i>
-            </div>
+            <i className={"bi bi-people"}></i>
     }
 
     return (
@@ -51,14 +43,15 @@ const GroupItem: FC<IGroupItemProps> = ({ title, description, icon, adminName, a
             <h4 className={classes.title}>{title}</h4>
             <div className={classes.content}>
                 <div className={classes.details}>
-                    {getAdminIcon()}
+                    <div className={classes.icon}
+                        style={{ backgroundColor: color }}
+                    >{getAdminIcon()}</div>
                     <div className={classes.info}>
                         <h6 className={classes.ownerName}>{adminName}</h6>
                         <p className={classes.ownerEmail}>{adminEmail}</p>
                     </div>
                 </div>
-                <div className={classes.description}>{description}
-                </div>
+                <div className={classes.description}>{description}</div>
                 <div className={classes.contentBottom}>
                     <div className={classes.members}>
                         {getMemberIcons()}
