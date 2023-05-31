@@ -91,3 +91,27 @@
     gap: 30px;
 }
 
+.search {
+    margin-left: 30px;
+    grid-row-start: span 1;
+}
+.cardTitle {
+    composes: cardTitle from "@styles/style.css";
+    margin-bottom: 14px;
+}
+.searchTop{
+    display: flex;
+    justify-content: space-between;
+}
+.membersLink {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    color: var(--main-green);
+}
+
+.charts{
+    background-color: blue;
+    height: 300px;
+    grid-column-start: span 2 ;
+}

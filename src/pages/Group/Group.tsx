@@ -14,6 +14,8 @@ import OperationCard from '@components/OperationCard/OperationCard';
 import GroupCategoriesCard from './GroupCategoriesCard/GroupCategoriesCard';
 import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
 import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
+import SearchBar from '@components/SearchBar/SearchBar';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -86,13 +88,27 @@ const Group = () => {
             <div className={classes.page__container}>
                 <div className={classes.grid}>
                     <GroupCategoriesCard />
-                    <GroupInfoCard />
+                    <div className={classes.search}>
+                        <div className={classes.searchTop}>
+                            <h3 className={classes.cardTitle}>Members</h3>
+                            <NavLink
+                                to="/group/members"
+                                className={classes.membersLink}
+                                >
+                                See all
+                            </NavLink>
+                        </div>
+                        
+                        <SearchBar/>
+                    </div>
+                    
                     <div className={classes.grid__operation}>
                         <OperationCard operation={'Income'} />
                         <OperationCard operation={'Expenses'} />
                     </div>
-                    <GroupSpendersCard/>
-
+                    <GroupSpendersCard />
+                    <GroupInfoCard />
+                    <div className={classes.charts}></div>
 
                 </div>
             </div>

@@ -39,9 +39,7 @@ const GroupCategoriesCard = () => {
     return (
         <div className={classes.CategoriesCard}>
             <div className={classes.inner}>
-                <div className={classes.top}>
-                    <h3 className={classes.title}>Categories</h3>
-                </div>
+                {/* <h3 className={classes.title}>Categories</h3> */}
                 <ul className={classes.list}>
                     {getCategories(categories)}
                 </ul>

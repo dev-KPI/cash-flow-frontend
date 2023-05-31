@@ -60,10 +60,10 @@ const Groups: FC = () => {
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
-                    <h3 className={classes.pageTitle}>Groups
+                    <h1 className={classes.pageTitle}>Groups
                         <span> | </span>
                         <span className={classes.groupAmount}>{GroupObj.length}</span>
-                    </h3>
+                    </h1>
                     <ConfirmButton
                         isPending={false}
                         title="Add new group"
