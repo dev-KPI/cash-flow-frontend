@@ -1,29 +1,59 @@
-import React from 'react';
+import React, {ChangeEvent, MouseEvent} from 'react';
 //UI
 import classes from './Pagination.module.css'
-const Pagination = () => {
+
+interface IPaginationProps{
+    rowsPerPage: number,
+    setRowsPerPage: (ctx: number) => void,
+    lastAction: number,
+    firstAction: number,
+    totalActions: number,
+    page: number,
+    setPage: (ctx: number) => void
+}
+
+const Pagination = ({rowsPerPage, setRowsPerPage, lastAction, firstAction, totalActions, page, setPage}: IPaginationProps) => {
+
+    const setRowsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
+        setRowsPerPage(+e.target.value)
+    } 
+    const updatePage = (e: MouseEvent<HTMLButtonElement>, option: 'prev' | 'next') => {
+        if(option === 'next') setPage(page + 1)
+        else setPage(page - 1)
+    }
+
     return (
         <div className={classes.inner}>
             <div className={classes.selector}>
                 <span>Rows per page: </span>
-                <select className={classes.select} name="select">
-                    <option value="1">1</option>
-                    <option value="2" selected>2</option>
-                    <option value="3">3</option>
+                <select 
+                defaultValue={'8'}
+                className={classes.select} 
+                name="rowsPerPage"
+                onChange={setRowsPerPageHandler}>
+                    <option value={4} selected>4</option>
+                    <option value={6}>6</option>
+                    <option selected value={8}>8</option>
+                    <option value={16}>16</option>
+                    <option value={24}>24</option>
                 </select>
             </div>
             <div className={classes.counter}>
-                <span>1-8</span>
-                <span> of 1240</span>
+                <span>{firstAction}-{lastAction}</span>
+                <span> of {totalActions}</span>
             </div>
             <div className={classes.nav}>
                 <button
+                    disabled={page === 1}
+                    onClick={e => updatePage(e, 'prev')}
                     type="submit"
                     className={classes.btn + ' ' + classes.previous}
                 >
                     <i id='chevron' className="bi bi-chevron-left"></i>
                 </button>
                 <button
+                    disabled={lastAction === totalActions}
+                    onClick={e => updatePage(e, 'next')}
                     type="submit"
                     className={classes.btn + ' ' + classes.next}
                 >
