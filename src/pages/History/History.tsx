@@ -71,7 +71,7 @@ const Groups: FC = () => {
     return (<>
         <main id='HistoryPage'>
             <div className={classes.page__container}>
-                <h3 className={classes.pageTitle}>History</h3>
+                <h1 className={classes.pageTitle}>History</h1>
                 <section className={classes.recentOperations}>
                     <table className={classes.recentOperations__table}>
                         <thead className={classes.tableTitle}>

@@ -19,11 +19,11 @@ const UserExpenseGraphCard = () => {
     }, 1500);
 
     const RangeTitle: ReactNode = 
-            <h2 className={classes.range}>From {
+            <h3 className={classes.range}>From {
                 new Date(expenses[0]?.time).getDate() + ' ' + currentMonth.slice(0,3)
             } - {
                 new Date(expenses[expenses?.length - 1]?.time).getDate() + ' ' + currentMonth.slice(0,3)
-            }</h2>;
+            }</h3>;
 
     return (
         <div className={classes.expenseGraph}>
