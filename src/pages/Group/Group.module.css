@@ -111,7 +111,7 @@
 }
 
 .charts{
-    background-color: blue;
+    composes: cardComponent from "@styles/style.css";
     height: 300px;
     grid-column-start: span 2 ;
 }
