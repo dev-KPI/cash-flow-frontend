@@ -105,8 +105,7 @@
 }
 .membersLink {
     font-weight: 600;
-    font-size: 16px;
-    line-height: 20px;
+    composes: largeItemTitle from "@styles/style.css";
     color: var(--main-green);
 }
 
