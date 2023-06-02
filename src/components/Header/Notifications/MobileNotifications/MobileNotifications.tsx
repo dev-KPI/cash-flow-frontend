@@ -22,9 +22,9 @@ const MobileNotifications: FC = ({}) => {
 
 
     const getInvites = (invites: IInvite[]): ReactNode[] => {
-        return invites.map(el => 
+        return invites.map((el, i) => 
         <li className={classes.inviteLi} 
-        key={el.userName + '289idf'}>
+        key={el.userName + el.group + el.groupUrl + i}>
             <form className={classes.inviteForm}>
                 <img width={40} src={el.avatar} alt='Avatar' />
                 <p className={classes.Promo}>

@@ -34,9 +34,9 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({animation, closeNotifi
     const setAnimationOut = () => setAnimation('out')
 
     const getInvites = (invites: IInvite[]): ReactNode[] => {
-        return invites.map(el => 
+        return invites.map((el, i) => 
         <li className={classes.inviteLi} 
-        key={el.userName + '289idf'}>
+        key={el.userName + el.group + el.groupUrl + i*i}>
             <form className={classes.inviteForm}>
                 <img width={40} src={el.avatar} alt='Avatar' />
                 <p className={classes.Promo}>
@@ -71,7 +71,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({animation, closeNotifi
                 <CloseButton size={24} closeHandler={() => {setAnimationOut();}}/>
             </div>
             <ul>
-                {getInvites(invites)}
+                {getInvites(invites).slice(0,6)}
             </ul>
             <div key='239k23' className={classes.ViewMore}>
                 <Link onClick={() => {setAnimationOut();}} to={'/notifications'}>

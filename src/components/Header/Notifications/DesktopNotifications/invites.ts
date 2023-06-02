@@ -31,6 +31,21 @@ export const invites = [
         group: 'Auto',
         avatar: icon,
         groupUrl: '/'
+    },{
+        userName: 'Calendar Casper',
+        group: 'Auto',
+        avatar: icon,
+        groupUrl: '/'
+    },{
+        userName: 'Calendar Casper',
+        group: 'Auto',
+        avatar: icon,
+        groupUrl: '/'
+    },{
+        userName: 'Calendar Casper',
+        group: 'Auto',
+        avatar: icon,
+        groupUrl: '/'
     },
 
 ]
