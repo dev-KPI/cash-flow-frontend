@@ -1,0 +1,30 @@
+.rejectBtn{
+    cursor: pointer;
+    width: 60px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--main-text);
+    border-radius: 6px;
+    transition: transform .2s ease-in-out;
+}
+.rejectBtnTitle{
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 12px;
+    color: var(--main-text);
+    transition: color .1s ease-in-out;
+}
+
+.rejectBtn:hover{
+    border: 1px solid var(--main-red);
+    transform: scale(1.1);
+}
+.rejectBtnTitle:hover {
+    color: var(--main-red);
+}
+.rejectBtnTitle:active {
+    color: var(--text);
+    transform: rotate(360deg);
+}
