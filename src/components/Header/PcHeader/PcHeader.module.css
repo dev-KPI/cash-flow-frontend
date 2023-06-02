@@ -28,6 +28,7 @@
     color: var(--main-green);
 }
 
+
 .header__profile{
     padding: 6px 20px 6px 25px;
     column-gap: 10px;
@@ -96,7 +97,6 @@
     margin-left: auto;
     gap: 20px;
 }
-
 .breadcrumbs {
     position: absolute;
     bottom: -58px;
