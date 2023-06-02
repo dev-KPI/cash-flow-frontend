@@ -7,6 +7,7 @@ import Light from "@components/Light/Light";
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
 import DateService from "@services/DateService/DateService"
+
 export interface IRecentOperationDashboardCard {
     description: string,
     categoryColor: string,
@@ -16,10 +17,11 @@ export interface IRecentOperationDashboardCard {
     time: string,
     amount: number,
     type: 'expense' | 'replenishment'
+    animation: 'in'
 }
-export const HistoryItem: FC<IRecentOperationDashboardCard> = ({ description, type, categoryColor, groupColor, categoryTitle, groupTitle, amount, time }) => {
+export const HistoryItem: FC<IRecentOperationDashboardCard> = ({ animation, description, type, categoryColor, groupColor, categoryTitle, groupTitle, amount, time }) => {
     return (
-        <tr>
+        <tr className={classes[animation]}>
             <td>{description}</td>
             <td>
                 <Light
