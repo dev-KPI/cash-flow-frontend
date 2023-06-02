@@ -1,10 +1,10 @@
 .navbar {
     display: flex;
     margin-bottom: 16px;
-    gap: 20px;
 }
 
 .navbar a {
+    margin-left: 20px;
     font-size: 14px;
     line-height: 17px;
     color: var(--main-text);
@@ -24,6 +24,7 @@
 .navbar .active {
     position: relative;
     font-weight: 500;
+    font-size: 16px;
     transition: .2s ease-in-out;
 }
 
