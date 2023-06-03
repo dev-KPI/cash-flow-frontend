@@ -271,80 +271,104 @@
       "id": 30
     }
   ],
-  "categoryExpenses": [
+  "categoryExpenses":[
     {
-      "id": 0,
-      "title": "Entertainment",
-      "amount": 7659.1,
-      "color": "#4C6FFF"
+        "category": {
+            "id": 0,
+            "title": "Entertainment",
+            "color": "#4C6FFF"
+        },
+        "amount": 7659.1
     },
     {
-      "id": 1,
-      "title": "Entertai",
-      "amount": 762.1,
-      "color": "#4C6FFF"
+        "category": {
+            "id": 1,
+            "title": "Entertai",
+            "color": "#4C6FFF"
+        },
+        "amount": 76.1
     },
     {
-      "id": 2,
-      "title": "Food",
-      "amount": 2540,
-      "color": "#FF6E01"
+        "category": {
+            "id": 2,
+            "title": "Food",
+            "color": "#FF6E01"
+        },
+        "amount": 2540
     },
     {
-      "id": 3,
-      "title": "Products",
-      "amount": 990.6,
-      "color": "#FF2D55"
+        "category": {
+            "id": 3,
+            "title": "Products",
+            "color": "#FF2D55"
+        },
+        "amount": 990.6
     },
     {
-      "id": 4,
-      "title": "Other",
-      "amount": 500.6,
-      "color": "#4C6FFF"
+        "category": {
+            "id": 4,
+            "title": "Other",
+            "color": "#4C6FFF"
+        },
+        "amount": 500.6
     },
     {
-      "id": 5,
-      "title": "Other",
-      "amount": 500.6,
-      "color": "#D96FF8"
+        "category": {
+            "id": 5,
+            "title": "Other",
+            "color": "#D96FF8"
+        },
+        "amount": 500.6
     },
     {
-      "id": 6,
-      "title": "Other",
-      "amount": 500.6,
-      "color": "#FF6E01"
+        "category": {
+            "id": 6,
+            "title": "Other",
+            "color": "#FF6E01"
+        },
+        "amount": 500.6
     },
     {
-      "id": 7,
-      "title": "Entertainment",
-      "amount": 500.6,
-      "color": "#FF6E01"
+        "category": {
+            "id": 7,
+            "title": "Entertainment",
+            "color": "#FF6E01"
+        },
+        "amount": 500.6
     },
     {
-      "id": 8,
-      "title": "Other",
-      "amount": 500.6,
-      "color": "#FF2D55"
+        "category": {
+            "id": 8,
+            "title": "Other",
+            "color": "#FF2D55"
+        },
+        "amount": 500.6
     },
     {
-      "id": 9,
-      "title": "Other",
-      "amount": 500.6,
-      "color": "#D96FF8"
+        "category": {
+            "id": 9,
+            "title": "Other",
+            "color": "#D96FF8"
+        },
+        "amount": 500.6
     },
     {
-      "id": 10,
-      "title": "Other",
-      "amount": 500.6,
-      "color": "#D96FF8"
+        "category": {
+            "id": 10,
+            "title": "Other",
+            "color": "#D96FF8"
+        },
+        "amount": 500.6
     },
     {
-      "id": 11,
-      "title": "Hello world",
-      "amount": 999,
-      "color": "#0f4f5f"
+        "category": {
+            "id": 11,
+            "title": "Hello world",
+            "color": "#0f4f5f"
+        },
+        "amount": 999
     }
-  ],
+],
   "categoryExpensesTotal": {
     "total": 20504
   },

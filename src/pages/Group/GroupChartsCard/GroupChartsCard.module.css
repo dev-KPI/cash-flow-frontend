@@ -1,0 +1,13 @@
+.ChartsCard {
+    composes: cardComponent from "@styles/style.css";
+    height: 300px;
+    grid-column-start: span 2;
+    display: flex;
+    justify-content: space-between;
+}
+/* .inner{
+    padding: 16px 24px 5px 24px;
+}
+.title{
+    composes: cardTitle from "@styles/style.css";
+} */
