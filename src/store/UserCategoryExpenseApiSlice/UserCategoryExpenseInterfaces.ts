@@ -1,19 +1,28 @@
+import IUser from "@models/IUser"
+
 export interface IUserExpenseChartDataItem { 
-    id: number,
-    title: string,
-    amount: number,
-    color: string
+    category: {
+        id: number,
+        title: string,
+        color: string
+    },
+    amount: number
+
 }
 export interface ICategoryExpenseItemADD {
-    id?: number,
-    title: string,
+    category: {
+        id?: number,
+        title: string,
+        color: string
+    },
     amount: number,
-    color: string
 }
 
 export interface ICategoryExpenseItemUPDATE {
-    id: number,
-    title?: string,
+    category: {
+        id: number,
+        title?: string,
+        color?: string
+    },
     amount?: number,
-    color?: string
 }
