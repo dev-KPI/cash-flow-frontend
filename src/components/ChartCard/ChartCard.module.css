@@ -1,9 +1,5 @@
-.expenseChart {
-    composes: cardComponent from "@styles/style.css";
-    width: 510px;
-    height: 300px;
+.ChartCard {
     position: relative;
-    grid-row-start: span 2;
 }
 
 .title {
@@ -69,11 +65,11 @@
 }
 
 .chartList{
-    min-width: 146px;
+    width: 146px;
 }
 
 .popupList{
-    min-width: 146px;
+    width: 162px;
     overflow-y: scroll;
     overflow-x: hidden;
     max-height: 96px;
@@ -82,7 +78,7 @@
     margin-bottom: 15px;
 }
 @media only screen and (max-width: 1440px) {
-    .expenseChart {
+    .ChartCard {
         width: unset;
         min-width: 400px;
     }
@@ -94,7 +90,7 @@
     }
 }
 @media only screen and (max-width: 1028px) {
-    .expenseChart {
+    .ChartCard {
         min-width: unset;
         height: 100%;
     }
@@ -109,8 +105,7 @@
         justify-content: center;
         align-items: center;
         column-gap: 0;
-        display: flex;
-        
+        display: flex;  
     }
     .chart{
         height: 180px;
@@ -132,7 +127,7 @@
 }
 
 @media only screen and (max-width: 768px) {
-    .expenseChart{
+    .ChartCard{
         height: 250px;
     }
     .wrapper{

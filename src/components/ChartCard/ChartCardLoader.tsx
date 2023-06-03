@@ -2,7 +2,7 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-const UserExpenseCardLoader = () => {
+const ChartCardLoader = () => {
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     const getItems = () => {
         let res = [];
@@ -36,4 +36,4 @@ const UserExpenseCardLoader = () => {
     )
 };
 
-export default UserExpenseCardLoader;
+export default ChartCardLoader;
