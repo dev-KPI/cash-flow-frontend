@@ -109,8 +109,3 @@
     color: var(--main-green);
 }
 
-.charts{
-    composes: cardComponent from "@styles/style.css";
-    height: 300px;
-    grid-column-start: span 2 ;
-}

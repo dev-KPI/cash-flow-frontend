@@ -8,7 +8,6 @@ import { IGroup } from '@pages/Groups/GroupsPage';
 //UI
 import classes from './Group.module.css';
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
-import CloseButton from '@components/Buttons/CloseButton/CloseButton';
 import ConfirmButton from '@components/Buttons/ConfirmButton/ConfirmButton';
 import OperationCard from '@components/OperationCard/OperationCard';
 import GroupCategoriesCard from './GroupCategoriesCard/GroupCategoriesCard';
@@ -16,6 +15,7 @@ import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
 import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
 import SearchBar from '@components/SearchBar/SearchBar';
 import { NavLink } from 'react-router-dom';
+import GroupChartsCard from './GroupChartsCard/GroupChartsCard';
 
 
 
@@ -42,7 +42,7 @@ const Group = () => {
     const memberIcons = groups[2].group.members.map(member => member.picture);
     const getMemberIcons = () => {
         return memberIcons.map((icon, i) =>
-            <div className={classes.avatar}>
+            <div key={i} className={classes.avatar}>
                 <img className={classes.photo}
                     alt={'user icon'}
                     src={isUrl(icon) ? icon : userIcon}
@@ -50,6 +50,7 @@ const Group = () => {
             </div>
         ).slice(0, 3)
     }
+    
     return (
         <main id='GroupPage'>
             <div className={classes.header}>
@@ -108,7 +109,7 @@ const Group = () => {
                     </div>
                     <GroupSpendersCard />
                     <GroupInfoCard />
-                    <div className={classes.charts}></div>
+                    <GroupChartsCard/>
 
                 </div>
             </div>
