@@ -1,6 +1,5 @@
 import React, { FC, Dispatch, SetStateAction, useEffect } from 'react';
 
-
 import { IMembersExpensesChart } from '../ChartCard';
 //UI
 import classes from './ChartCardDot.module.css'

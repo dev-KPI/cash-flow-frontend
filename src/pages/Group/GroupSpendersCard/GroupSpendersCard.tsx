@@ -2,17 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import userIcon from '@assets/user-icon.svg';
 
+//logic
+import IUser from '@models/IUser';
+
 //UI
 import classes from './GroupSpendersCard.module.css';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
-
-interface IUser {
-    id: number,
-    login: string,
-    first_name: string,
-    last_name: string,
-    picture: string
-}
 
 interface ISpenders {
     user: IUser,
@@ -60,7 +55,8 @@ const GroupSpendersCard = () => {
         return spenders.map((item, i) => {
             const photo = item.user.picture
             const name = item.user.first_name + " " + item.user.last_name
-            return (<li className={classes.spender}>
+            return (<li key = {`${i} + ${item.amount}`}
+                        className={classes.spender}>
                 <p className={classes.order}>{i + 1}.</p>
                 <div className={classes.details}>
                     <div className={classes.info}>

@@ -1,17 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
+//logic
 import { json } from '@pages/Dashboard/UserCategoriesCard/objUserCategories';
+import { ICategory } from '@models/ICategory';
 //UI
 import classes from './GroupCategoriesCard.module.css';
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 
-interface Category {
-    id: number,
-    title: string,
-    color: string,
-    icon: string
-}
+
 export interface ISortedCategoryItem {
-    category: Category,
+    category: ICategory,
     amount: number,
 }
 

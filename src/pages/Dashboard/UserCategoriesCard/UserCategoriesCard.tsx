@@ -1,22 +1,19 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
-import classes from './UserCategoriesCard.module.css'
+
+//logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
+import { ICategory } from '@models/ICategory';
+//UI
+import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
+import classes from './UserCategoriesCard.module.css'
 import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCardLoader';
 import { json } from './objUserCategories';
-import OperationModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 
-interface Category {
-    id: number,
-    title: string,
-    color: string,
-    icon: string
-}
 
 export interface ISortedCategoryItem {
-    category: Category,
+    category: ICategory,
     amount: number,
 }
 export interface ICategoryItem extends ISortedCategoryItem{
