@@ -26,13 +26,13 @@ const ChartCardDot: FC<ChartCardDotProps> = ({ item, setId }) => {
     }
     if ('member' in item) { 
         color = item.member.color || '#4C6FFF'
-        title = item?.member.first_name + " " + item?.member.last_name
+        title = item?.member.first_name.slice(0,1) + ". " + item?.member.last_name
     } else if ('category' in item) {
         color = item.category.color;
         title = item?.category.title || '';
     }
 
-    title = title.length > 13 ? title.slice(0,10) + '..' : title
+    title = title.length > 13 ? title.slice(0,12) + '..' : title
     return (
         <li className={classes.item} onClick={onClick}>
             <Light type={'solid'} color={color}></Light>
