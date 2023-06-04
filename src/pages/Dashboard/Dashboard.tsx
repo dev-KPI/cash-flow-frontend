@@ -8,8 +8,8 @@ import classes from './Dashboard.module.css'                                    
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 import OperationCard from '@components/OperationCard/OperationCard';
 
-import ChartCard from '@components/ChartCard/ChartCard';            //local components
-import UserExpenseGraphCard from '@pages/Dashboard/UserExpenseGraph/UserExpenseGraphCard';
+//local components
+import UserGraphCard from '@pages/Dashboard/UserGraphCard/UserGraphCard';
 import UserAccountCard from '@pages/Dashboard/UserAccountCard/UserAccountCard';
 import UserHistoryCard from '@pages/Dashboard/UserHistoryCard/UserHistoryCard';
 import UserCategoriesCard from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
@@ -39,7 +39,7 @@ const Dashboard = () => {
                         <UserGroupsCard />
                     </div>
                     <UserAccountCard />
-                    <UserExpenseGraphCard />
+                    <UserGraphCard />
                     <UserHistoryCard />
                 </div>
             </div>

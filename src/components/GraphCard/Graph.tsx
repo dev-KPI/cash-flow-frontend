@@ -3,7 +3,7 @@ import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode
 //logic
 import DateService from '@services/DateService/DateService';
 //UI
-import classes from './UserExpenseGraph.module.css'
+import classes from './GraphCard.module.css'
 import { Bar, Chart } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale,
     BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction, 
@@ -18,7 +18,7 @@ import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerI
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
-import UserExpenseGraphPreloader from './UserExpenseGraphLoader';
+import UserExpenseGraphPreloader from './GraphCardLoader';
 import { useContentSize } from '@hooks/layoutHooks/useLayout';
 
 
@@ -87,7 +87,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
     }
 
     const options = {
-        maintainAspectRatio:width<525? false : true,
+        maintainAspectRatio: false,
         elements: {
             bar:{
                 barThickness: 24,
