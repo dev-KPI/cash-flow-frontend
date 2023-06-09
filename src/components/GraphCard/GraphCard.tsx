@@ -9,9 +9,12 @@ import { useGetExpensesPerLastMonthQuery } from "@store/ExpenseApiSlice/ExpenseA
 import { IMonthPickerState } from "@store/UI_store/MonthPickerSlice/MonthPickerInterfaces";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import GraphCardLoader from "./GraphCardLoader";
+import ToggleButton from "@components/ToggleButton/ToggleButton";
+import StackedGraph from "./StackedGraph";
 
 const GraphCard = () => {
     const [loading = true, setLoading] = useState<boolean>();
+    const [isToggled, setIsToggled] = useState<boolean>(false);
     const {data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     setTimeout(() => {
@@ -24,20 +27,27 @@ const GraphCard = () => {
             } - {
                 new Date(expenses[expenses?.length - 1]?.time).getDate() + ' ' + currentMonth.slice(0,3)
             }</h3>;
-
     return (
             loading ? <GraphCardLoader/> :
             <div className={classes.inner}>
-                <div className={classes.chart__uppernav}>
-                    <div className={classes.chart__titleRange}>
+                <div className={classes.uppernav}>
+                    <div className={classes.titleRange}>
                         <h2 className={classes.title}>Statistic</h2>
                         {RangeTitle}
                     </div>
+                    <div className={classes.button}>
+                        <span className={classes.buttonText}>Members</span>
+                        <ToggleButton isToggle={isToggled} onToggle={() => setIsToggled(!isToggled)} />
+                    </div>
                 </div>
                 <div className={classes.graph}>
-                    <Graph
-                        expenses={expenses}
-                    />
+                    {isToggled ?
+                        <Graph
+                            expenses={expenses}
+                        />
+                        :
+                        <StackedGraph expenses={expenses}/>
+                     }
                 </div>
             </div>
     )

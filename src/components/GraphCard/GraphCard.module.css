@@ -5,17 +5,25 @@
     flex-direction: column;
 }
 
-.chart__uppernav {
+.uppernav {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
 }
 
-.chart__titleRange {}
+.titleRange {}
 
 .title {
     composes: cardTitle from "@styles/style.css";
 }
-
+.button{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.buttonText{
+    composes: mediumItemTitle from "@styles/style.css";
+    font-weight: 400;
+}
 .range {
     composes: mediumItemTitle from "@styles/style.css";
     font-weight: 500;

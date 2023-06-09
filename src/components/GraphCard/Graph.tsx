@@ -6,7 +6,7 @@ import DateService from '@services/DateService/DateService';
 import classes from './GraphCard.module.css'
 import { Bar, Chart } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale,
-    BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction, 
+    BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction,
     ChartType, TooltipModel, Element } from "chart.js";
 import { Context } from 'vm';
 
@@ -177,13 +177,13 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
                         size: 14,
                         weight: "300",
                     },
-                    stepSize: getYParams().step,   
+                    stepSize: getYParams().step,
                     callback: (value: string|number, index: number, ticks: Tick[]): string => {
-                        if(window.innerWidth < 440){ 
+                        if(window.innerWidth < 440){
                             return +(value)/1000 + 'k$';
-                        } 
+                        }
                         return value + '$';
-                    }                 
+                    }
                 },
             }
         }
@@ -193,7 +193,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
             <Chart<'bar', { key: string, value: number }[]>
             type="bar"
             className={classes.chartinner__wrapper}
-            options={options} 
+            options={options}
             data={datasets}
             />
             )
