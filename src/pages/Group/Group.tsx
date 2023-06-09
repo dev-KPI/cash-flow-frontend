@@ -16,7 +16,7 @@ import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
 import SearchBar from '@components/SearchBar/SearchBar';
 import { NavLink } from 'react-router-dom';
 import GroupChartsCard from './GroupChartsCard/GroupChartsCard';
-
+import GroupGraphCard from './GroupGraphCard/GroupGraphCard';
 
 
 const Group = () => {
@@ -109,7 +109,8 @@ const Group = () => {
                     </div>
                     <GroupSpendersCard />
                     <GroupInfoCard />
-                    <GroupChartsCard/>
+                    <GroupChartsCard />
+                    <GroupGraphCard/>
 
                 </div>
             </div>

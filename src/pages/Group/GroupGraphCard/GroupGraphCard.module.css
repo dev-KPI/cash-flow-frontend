@@ -1,0 +1,26 @@
+.GroupGraph {
+    composes: cardComponent from "@styles/style.css";
+    min-height: 480px;
+    grid-column-start: span 2;
+}
+
+@media only screen and (max-width: 1440px) {
+    .GroupGraph {
+        order: 1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .GroupGraph {
+        grid-column-start: span 1;
+        min-height: auto;
+        order: 2;
+        height: 330px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .GroupGraph {
+        margin-top: 15px;
+    }
+}
