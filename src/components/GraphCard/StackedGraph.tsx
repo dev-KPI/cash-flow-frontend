@@ -14,128 +14,30 @@ import { Context } from 'vm';
 
 //store
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
-
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
-
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-
-import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
-import UserExpenseGraphPreloader from './GraphCardLoader';
-import { useContentSize } from '@hooks/layoutHooks/useLayout';
 import IUser from '@models/IUser';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-type Colors = {
-    [key: string]: string;
-};
 
-const colors: Colors = {
-    blue: "#4C6FFF",
-    orange: "#FF6E01",
-    red: "#FF2D55",
-    green: "#28CD41",
-    purple: "#D96FF8"
-};
-
-function getRandomColor() {
-    const colorKeys = Object.keys(colors);
-    const randomIndex = Math.floor(Math.random() * colorKeys.length);
-    const randomColorKey = colorKeys[randomIndex];
-    return colors[randomColorKey];
-}
-interface IGraphGroupCategory {
+interface IGraphGroupMembers {
     date: string,
     details: {
         user: IUser
         amount: number
     }[]
 }
-const existingData = [
-    {
-        date: '2023-04-01',
-        details: [
-            {
-                user: {
-                    id: 0,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'John',
-                    last_name: 'Doe',
-                    picture: 'ref.com',
-                },
-                amount: 132,
-            },
-            {
-                user: {
-                    id: 1,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'Dima',
-                    last_name: 'Rezenkov',
-                    picture: 'ref.com',
-                },
-                amount: 24,
-            },
-        ],
-    },
-];
 
-const startDate = new Date('2023-04-02');
-const endDate = new Date('2023-04-30');
-
-const newData = [];
-
-for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-    const dateString = date.toISOString().split('T')[0];
-    const object = {
-        date: dateString,
-        details: [
-            {
-                user: {
-                    id: 0,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'John',
-                    last_name: 'Doe',
-                    picture: 'ref.com',
-                },
-                amount: Math.floor(Math.random() * (2110 - 100 + 1)) + 100,
-            },
-            {
-                user: {
-                    id: 1,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'Dima',
-                    last_name: 'Rezenkov',
-                    picture: 'ref.com',
-                },
-                amount: Math.floor(Math.random() * (2200 - 100 + 1)) + 100,
-            },
-            {
-                user: {
-                    id: 31,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'Dima',
-                    last_name: 'Pestenkov',
-                    picture: 'ref.com',
-                },
-                amount: Math.floor(Math.random() * (2110 - 100 + 1)) + 100,
-            },
-        ],
-    };
-    newData.push(object);
+interface IStackedGraphProps {
+    data: IGraphGroupMembers[]
 }
 
-const combinedData = [...existingData, ...newData];
-
-
-interface IUserExpenseGraphProps {
-    expenses: IExpenseItem[]
-}
-
-const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({ expenses }) => {
+const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
-    function findMaxAmount(existingData: IGraphGroupCategory[]) {
+    function findMaxAmount(existingData: IGraphGroupMembers[]) {
         let maxAmount = 0;
 
         existingData.forEach((item) => {
@@ -148,17 +50,17 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({ expenses }) => {
 
         return maxAmount;
     }
-    const { width } = useContentSize();
+
     const getYParams = useCallback((): { high: number, step: number } => {
-        let highValue = findMaxAmount(combinedData)
+        let highValue = findMaxAmount(data)
         const rank = highValue.toString().length - 1
         let highValueForY = (Math.floor(highValue / 10 ** rank) + 1) * 10 ** rank
         return { high: highValueForY, step: highValueForY /= 5 }
-    }, [expenses])
+    }, [data])
 
     const getXParams = useCallback((): { high: number, step: number } => {
         return { high: 2, step: 5 }
-    }, [expenses])
+    }, [data])
 
     const textColor = (context: Context): string => {
         return ThemeStore.textColor
@@ -192,10 +94,10 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({ expenses }) => {
         return amount
     }
 
-    function getAmountsByUserId(newData: IGraphGroupCategory[], userId: number): number[] {
+    function getAmountsByUserId(data: IGraphGroupMembers[], userId: number): number[] {
         const amounts: number[] = [];
 
-        newData.forEach((item) => {
+        data.forEach((item) => {
             const details = item.details.find((detail) => detail.user.id === userId);
             if (details) {
                 amounts.push(details.amount);
@@ -206,10 +108,10 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({ expenses }) => {
 
         return amounts;
     }
-    function findAllUsers(combinedData: IGraphGroupCategory[]) {
+    function findAllUsers(data: IGraphGroupMembers[]) {
         const fullNameUserMap: { [key: string]: number } = {};
 
-        combinedData.forEach((item) => {
+        data.forEach((item) => {
             item.details.forEach((detail) => {
                 const { user } = detail;
                 const fullName = `${user.first_name} ${user.last_name}`;
@@ -221,21 +123,39 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({ expenses }) => {
 
         return fullNameUserMap;
     }
+    function getUserColor(data: IGraphGroupMembers[]) {
+        const userColorMap: { [key: number]: string } = {};
+
+        data.forEach((item) => {
+            item.details.forEach((detail) => {
+                const { user } = detail;
+                const color = user.color ?? ''
+                const userId = user.id;
+
+                userColorMap[userId] = color;
+            });
+        });
+        
+
+        return userColorMap;
+    }
 
     const getChartData = useCallback(() => {
-        const users = findAllUsers(combinedData);
+        const users = findAllUsers(data);
+        const colors = getUserColor(data)
         return Object.keys(users).map((user) => {
+            const id = users[user]
             return {
                 label: user,
-                key: combinedData.map((el) => new Date(el.date).toISOString().split('T')[0]),
-                data: getAmountsByUserId(combinedData, users[user]),
-                backgroundColor: getRandomColor()
+                key: data.map((el) => new Date(el.date).toISOString().split('T')[0]),
+                data: getAmountsByUserId(data, id),
+                backgroundColor: colors[id]
             };
         });
-    }, [combinedData]);
-    console.log(getChartData());
+    }, [data]);
+
     const datasets = {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'],
+        labels: data.map((el) => new Date(el.date).getDate()),
         datasets: getChartData(),
     };
 
@@ -323,7 +243,7 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({ expenses }) => {
                 }
             },
         },
-        responsive: true,
+        // responsive: true,
         scales: {
             x: {
                 stacked: true,
@@ -390,4 +310,4 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({ expenses }) => {
     )
 }
 
-export default React.memo(UserExpenseGraph)
+export default React.memo(StackedGraph)

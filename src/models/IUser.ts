@@ -3,5 +3,6 @@ export default interface IUser {
     login: string,
     first_name: string,
     last_name: string,
-    picture: string
+    picture: string,
+    color?: string 
 }
