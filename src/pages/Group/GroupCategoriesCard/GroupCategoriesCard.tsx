@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 //logic
 import { json } from '@pages/Dashboard/UserCategoriesCard/objUserCategories';
-import { ICategory } from '@models/ICategory';
+import ICategory  from '@models/ICategory';
 //UI
 import classes from './GroupCategoriesCard.module.css';
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';

@@ -12,47 +12,41 @@ import { Context } from 'vm';
 
 //store
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
-
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
-
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-
 import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
-import UserExpenseGraphPreloader from './GraphCardLoader';
-import { useContentSize } from '@hooks/layoutHooks/useLayout';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-interface IUserExpenseGraphProps {
-    expenses: IExpenseItem[]
+interface IGraphProps {
+    data: IExpenseItem[]
 }
 
-const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
+const Graph: FC<IGraphProps> = ({data}) => {
 
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     
-    const { width } = useContentSize();
     const getYParams = useCallback((): { high: number, step: number } => {
-        let highValue = Math.max(...expenses.map(el => el.amount));
+        let highValue = Math.max(...data.map(el => el.amount));
         const rank = highValue.toString().length - 1
         let highValueForY = (Math.floor(highValue / 10**rank) + 1) * 10**rank
         return { high: highValueForY, step: highValueForY /= 5 }
-    }, [expenses])
+    }, [data])
 
     const getXParams = useCallback((): { high: number, step: number } => {
         return { high: 2, step: 5 }
-    }, [expenses])
+    }, [data])
     
     const getChartData = useCallback((): { key: string; value: number }[] => {
-        return [...expenses.map(el => {return {
+        return [...data.map(el => {return {
             key: new Date(el.time).getDate() + '',
             value: el.amount,
             data: el
         }})]
-    }, [expenses])
+    }, [data])
 
     const datasets: ChartData<'bar', { key: string, value: number }[]> = {
         datasets: [{
@@ -99,10 +93,11 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
         plugins: {
             legend: { display: false },
             tooltip: {
-                boxWidth: 132,
-                boxHeight: 82,
+                boxWidth: 10,
+                boxHeight: 10,
                 padding: 8,
                 cornerRadius: 10,
+                caretSize: 0,
                 displayColors: false,
                 backgroundColor: "rgba(75, 79, 82, 0.85)",
                 bodyFont: {
@@ -178,9 +173,10 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
                         weight: "300",
                     },
                     stepSize: getYParams().step,
-                    callback: (value: string|number, index: number, ticks: Tick[]): string => {
-                        if(window.innerWidth < 440){
-                            return +(value)/1000 + 'k$';
+                    callback: (value: string | number, index: number, ticks: Tick[]): string => {
+                        const resValue = +(value);
+                        if (window.innerWidth < 440 && resValue >= 1000) {
+                            return resValue / 1000 + 'k$'
                         }
                         return value + '$';
                     }
@@ -199,4 +195,4 @@ const UserExpenseGraph: FC<IUserExpenseGraphProps> = ({expenses}) => {
             )
 }
 
-export default React.memo(UserExpenseGraph)
+export default React.memo(Graph)

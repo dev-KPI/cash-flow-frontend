@@ -3,7 +3,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 //logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
-import { ICategory } from '@models/ICategory';
+import ICategory from '@models/ICategory';
 //UI
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
