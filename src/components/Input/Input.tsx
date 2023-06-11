@@ -6,6 +6,8 @@ import { IInputProps } from "./InputTypes";
 import classes from './Input.module.css'
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
+import { InputTextarea } from 'primereact/inputtextarea';
+        
 
 const Input: FC<IInputProps> = ({
     inputType, 
@@ -58,6 +60,7 @@ const Input: FC<IInputProps> = ({
         min={0}
         maxLength={46}
         style={{
+            height: '50px',
             backgroundColor: 'var(--cardBg)',
             borderRadius: '10px',
             paddingLeft: Icon ? '' : '12px',
@@ -66,11 +69,57 @@ const Input: FC<IInputProps> = ({
         value={inputStringValue}
         name={name} 
         id={id}/>
+    //----------------------------------------------{NAME INPUT}-----------------------------------------------------
+    const nameInput = <InputText
+        onInput={(e: FormEvent<HTMLInputElement>) => {
+            const regExp = /[^А-ЯЁA-Z]/ig
+            if (setFormValue.type === 'name') { 
+                setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
+            }
+            setInputStringValue(e.currentTarget.value.replace(regExp, ''))
+        }} 
+        min={0}
+        maxLength={46}
+        style={{
+            height: '50px',
+            backgroundColor: 'var(--cardBg)',
+            borderRadius: '10px',
+            paddingLeft: Icon ? '' : '12px',
+        }}
+        className={classes.Input} 
+        value={inputStringValue}
+        name={name} 
+        id={id}/>
+    //----------------------------------------------{AREA INPUT}-----------------------------------------------------
+    const areaInput = <InputTextarea
+    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const regExp = /[^А-ЯЁA-Z]/ig
+        if (setFormValue.type === 'name') { 
+            setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
+        }
+        setInputStringValue(e.currentTarget.value.replace(regExp, ''));
+    }} 
+    maxLength={200}
+    style={{
+        height: '100px',
+        resize: 'none', 
+        border: 'none',
+        backgroundColor: 'var(--cardBg)',
+        borderRadius: '10px',
+        paddingLeft: Icon ? '' : '12px',
+    }}
+    className={classes.Input} 
+    value={inputStringValue}
+    name={name} 
+    id={id}/>
+    
 
     //splitter for inputs
     const getCurrentInput: ReactNode = 
     inputType === 'cash' ? cashInput :  
-    inputType === 'text' ? textInput : <></>;
+    inputType === 'text' ? textInput :
+    inputType === 'name' ? nameInput :
+    inputType === 'area' ? areaInput : <></>;
 
     return(<>
         <div className={classes.wrapper}>

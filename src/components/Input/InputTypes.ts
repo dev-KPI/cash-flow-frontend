@@ -8,13 +8,20 @@ export interface ITextInputCallback {
     type: 'text'
     callback: (value: string) => void 
 }
-
+export interface INameInputCallback {
+    type: 'name'
+    callback: (value: string) => void
+}
+export interface IAreaInputCallback {
+    type: 'area'
+    callback: (value: string) => void
+}
 export interface IInputProps {
-    setFormValue: ICashInputCallback  | ITextInputCallback
+    setFormValue: ICashInputCallback  | ITextInputCallback | INameInputCallback | IAreaInputCallback
     placeholder?: string | number
     Icon?: ReactNode
     name: string
     id: string
-    inputType: 'cash' | 'text' | 'else'
+    inputType: 'cash' | 'text' | 'name' | 'area' |'else'
     isInputMustClear: boolean
 }

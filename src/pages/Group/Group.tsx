@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import { GroupObj } from '@pages/Groups/GroupObj';
 import userIcon from '@assets/user-icon.svg';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
@@ -18,7 +18,6 @@ import { NavLink } from 'react-router-dom';
 import GroupChartsCard from './GroupChartsCard/GroupChartsCard';
 import GroupGraphCard from './GroupGraphCard/GroupGraphCard';
 import GroupHistoryCard from './GroupHistoryCard/GroupHistoryCard';
-
 
 const Group = () => {
 
@@ -51,8 +50,9 @@ const Group = () => {
             </div>
         ).slice(0, 3)
     }
-    
-    return (
+
+
+    return (<>
         <main id='GroupPage'>
             <div className={classes.header}>
                 <div className={classes.header__container}>
@@ -113,11 +113,10 @@ const Group = () => {
                     <GroupChartsCard />
                     <GroupGraphCard />
                     <GroupHistoryCard/>
-
                 </div>
             </div>
         </main>
-    );
+        </>);
 };
 
 export default Group;

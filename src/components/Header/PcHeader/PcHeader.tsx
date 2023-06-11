@@ -1,47 +1,29 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback, MouseEvent, useState} from 'react';
 
 //UI
 import classes from './PcHeader.module.css'
 import Logo from "@assets/Header/logo.svg";
 import ProfileIcon from "@assets/user-icon.svg"
 import {ThemeButton} from '@components/ThemeButtons/ThemeButtons';
+import DesktopNotifications from '@components/Header/Notifications/DesktopNotifications/DesktopNotifications';
 
-import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
+import { breadcrumbs } from './breadcrumbs';
 
 
 const HeaderSite: FC = () => {
 
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const [isNotificationsOpen = false, setIsNotificationsOpen] = useState<boolean>();
 
-    const breadcrumbs = [
-        {
-            'title': 'Dashboard',
-            'link': '/dashboard'
-        },
-        {
-            'title': 'Analytics',
-            'link': '/analytics'
-        },
-        {
-            'title': 'Categories',
-            'link': '/categories'
-        },
-        {
-            'title': 'Groups',
-            'link': '/groups'
-        },
-        {
-            'title': 'History',
-            'link': '/history'
-        },
-        {
-            'title': 'Settings',
-            'link': '/settings'
-        },
-    ]
+    const getNotifications = (e: MouseEvent<HTMLButtonElement>) => {
+        setIsNotificationsOpen(true)
+    }
+    return (<>
+        {isNotificationsOpen && 
+        <DesktopNotifications 
+        closeNotifications={() => setIsNotificationsOpen(false)}
+        animation={isNotificationsOpen}/>}
 
-    return (
         <header className={classes.header}>
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
@@ -51,9 +33,9 @@ const HeaderSite: FC = () => {
                     </div>
                     <div className={classes.header__menu}>
                         <ThemeButton />
-                        <div className={classes.header__notifications}>
+                        <button onClick={e => getNotifications(e)} className={classes.header__notifications}>
                             <i className="bi bi-bell"></i>
-                        </div>
+                        </button>
                     </div>
                     <div className={classes.header__profile}>
                         <img src={ProfileIcon} alt="icon" />
@@ -71,7 +53,7 @@ const HeaderSite: FC = () => {
                 </div>
             </div>
         </header>
-    );
+    </>);
 };
 
 export default HeaderSite;
