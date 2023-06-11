@@ -5,9 +5,10 @@ import Categories from "@pages/Categories/Categories";
 import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
-import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
+import Login from "@pages/Login/Login";
 //UI
 import Header from "@components/Header/Header";
+import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
@@ -21,7 +22,15 @@ export const LOG_IN_PAGE = '/login';
 export const SIGN_UP_PAGE = '/signup';
 export const LOG_OUT = '/logout';
 
-
+export const routesNotAuth = [
+    {
+        path: LOG_IN_PAGE,
+        component: Login
+    },{
+        path: SIGN_UP_PAGE,
+        component: Login
+    }
+];
 export const routesAuth = [
     {
         path: DASHBOARD_PAGE,

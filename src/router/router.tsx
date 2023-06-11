@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { DASHBOARD_PAGE, components, routesAuth, routesMobileNavigation } from './routes'
+import { DASHBOARD_PAGE, components, routesAuth, routesMobileNavigation, routesNotAuth } from './routes'
 
 //store
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
@@ -17,20 +17,23 @@ const Router: FC = () => {
     }, [])
 
     return (<>
-        <Header/>
             <Routes>
-                {routesAuth.map(({ path, component: Component }) =>
+                {
+                    routesNotAuth.map(({ path, component: Component }) =>
                     <Route key={path} path={path} element={<Component />} />
                 )}
-                {routesMobileNavigation.map(({ path, component: Component }) =>
-                    <Route key={path} path={path} element={<Component />} />
+                {
+                    routesAuth.map(({ path, component: Component }) =>
+                        <Route key={path} path={path} element={<Component />} />)}
+                {
+                    routesMobileNavigation.map(({ path, component: Component }) =>
+                        <Route key={path} path={path} element={<Component />} />
                 )}
                 <Route
                     path="*"
                     element={<Navigate to={DASHBOARD_PAGE} replace />}
                 />
             </Routes>
-        <Footer/>
         </>
     )
 }
