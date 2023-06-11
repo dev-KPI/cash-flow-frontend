@@ -6,6 +6,7 @@ import { GroupObj } from "./GroupObj";
 import classes from './GroupsPage.module.css'
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
+import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
 
 
 interface people_props {
@@ -35,11 +36,6 @@ export interface IGroup {
 const Groups: FC = () => {
 
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-    const handleSubmit = () => {
-        console.log(1);
-    }
-
-    
     const getGroups = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
@@ -56,7 +52,22 @@ const Groups: FC = () => {
             />)
         })
     }
+
+    const [isGroupModal = false, setIsGroupModal] = useState<boolean>();
+
+    const openModal = () => {
+        setIsGroupModal(!isGroupModal)
+    }
+
+    const getCategoriesModal = () => {
+        return <GroupModal
+        setIsGroupModalOpen={setIsGroupModal}
+        isGroupModalOpen={isGroupModal}
+        />
+    }
+
     return (<>
+        {getCategoriesModal()}
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
@@ -70,7 +81,7 @@ const Groups: FC = () => {
                         btnWidth={170}
                         btnHeight={36}
                         type="add"
-                        callback={handleSubmit}
+                        callback={openModal}
                         className={classes.addButton} />
                 </div>
                 <section className={classes.groups}>
