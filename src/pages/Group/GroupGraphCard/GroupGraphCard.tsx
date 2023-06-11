@@ -136,10 +136,9 @@ const GroupGraphCard: FC = () => {
     }, 1500);
     
     const RangeTitle = (startDate: string, endDate: string) => {
-        return (<h3 className={classes.range}>From
-            {new Date(startDate).getDate() + ' ' + currentMonth.slice(0, 3)}
-            -
-            {new Date(endDate).getDate() + ' ' + currentMonth.slice(0, 3)}
+        return (<h3 className={classes.range}>From {
+            new Date(startDate).getDate() + ' ' + currentMonth.slice(0, 3)
+        } - {new Date(endDate).getDate() + ' ' + currentMonth.slice(0, 3)}
         </h3>);
     }
 
