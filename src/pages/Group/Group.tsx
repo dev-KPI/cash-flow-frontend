@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState} from 'react';
 import { GroupObj } from '@pages/Groups/GroupObj';
 import userIcon from '@assets/user-icon.svg';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
@@ -16,7 +16,6 @@ import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
 import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
 import SearchBar from '@components/SearchBar/SearchBar';
 import { NavLink } from 'react-router-dom';
-
 
 
 const Group = () => {
@@ -50,7 +49,8 @@ const Group = () => {
             </div>
         ).slice(0, 3)
     }
-    return (
+
+    return (<>
         <main id='GroupPage'>
             <div className={classes.header}>
                 <div className={classes.header__container}>
@@ -113,7 +113,7 @@ const Group = () => {
                 </div>
             </div>
         </main>
-    );
+        </>);
 };
 
 export default Group;

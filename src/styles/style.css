@@ -165,6 +165,11 @@
      --main-red: #FF2D55;
      --main-purple: #D96FF8;
      --main-orange: #FF6E01;
+     --main-green-50: #81d6677d;
+     --main-blue-50: #4c70ff83;
+     --main-red-50: #ff2d5380;
+     --main-purple-50: #d86ff87e;
+     --main-orange-50: #ff6f017f;
  }
 
  [data-theme="light"] {
@@ -174,6 +179,7 @@
      --text: #7A7A9D;
      --shadow-color: rgba(0, 0, 0, 0.1);
      --opacity: 1;
+     --colorPicker: #EFF0F8;
 
      --filterBtn: #F8F8FF;
      --active-filter-color: '';
@@ -190,6 +196,7 @@
      --text: #9BABC5;
      --shadow-color: rgba(29, 8, 8, 0.1);
      --opacity: 0.5;
+     --colorPicker: #2b2b2b;
 
 
      --active-filter-color: #80D667;
