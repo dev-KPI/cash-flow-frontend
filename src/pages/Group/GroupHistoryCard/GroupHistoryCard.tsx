@@ -1,19 +1,20 @@
 import React, { FC, useState, ReactNode } from "react";
 
 //UI
-import classes from './UserHistoryCard.module.css';
+import classes from './GroupHistoryCard.module.css';
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
-import { RecentOperationDashboardCard } from "@components/RecentOperationsCards/RecentOperationsCards";
+import { RecentOperationGroupCard } from "@components/RecentOperationsCards/RecentOperationsCards";
 
 //logic
 import { Link } from "react-router-dom";
 import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
-import { HistoryObj } from "@pages/HistoryObj";
-import UserHistoryCardLoader from "./UserHistoryCardLoader";
+import { MembersHistoryObj } from "@pages/MembersHistoryObj";
+import UserHistoryCardLoader from "./GroupHistoryCardLoader";
 import ICategory from "@models/ICategory";
+import IUser from "@models/IUser";
 
 
-interface Transaction {
+interface GroupTransaction {
     id: number;
     amount: number;
     time: string;
@@ -22,10 +23,11 @@ interface Transaction {
         group?: ICategory // but IGroup
         category?: ICategory
     },
+    user: IUser
     type: string
 }
 
-const UserHistoryCard: FC = () => {
+const GroupHistoryCard: FC = () => {
 
     const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
 
@@ -34,12 +36,12 @@ const UserHistoryCard: FC = () => {
     }, 1500);
 
     const getMixedHistory = () => {
-        const expensesDTO: Transaction[] = [...HistoryObj.expenses.map((el: Object) =>
+        const expensesDTO: GroupTransaction[] = [...MembersHistoryObj.expenses.map((el: Object) =>
             Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-        const replenishmentsDTO: Transaction[] = [...HistoryObj.replenishments.map((el: Object) =>
+        const replenishmentsDTO: GroupTransaction[] = [...MembersHistoryObj.replenishments.map((el: Object) =>
             Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
 
-        const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]
+        const HistoryArray: GroupTransaction[] = [...expensesDTO, ...replenishmentsDTO]
         return (HistoryArray.sort((b, a) => {
             const dateA = new Date(a.time).getTime();
             const dateB = new Date(b.time).getTime();
@@ -50,13 +52,14 @@ const UserHistoryCard: FC = () => {
     const getRecentActivities = () => {
 
         let res: ReactNode[] = getMixedHistory().map((el, i) =>
-            <RecentOperationDashboardCard
+            <RecentOperationGroupCard
                 key={i}
                 type={el.type === 'expense' ? 'expense' : 'replenishment'}
-                ColorBtn={el.category_group?.category?.color || '#80D667'}
-                title={el.category_group?.category?.title || 'Salary'}
+                categoryColor={el.category_group?.category?.color || '#80D667'}
+                categoryTitle={el.category_group?.category?.title || 'Salary'}
+                member={el.user}
                 amount={el.amount}
-                time={el.time}></RecentOperationDashboardCard>
+                time={el.time}></RecentOperationGroupCard>
         )
         return res
     }
@@ -83,4 +86,4 @@ const UserHistoryCard: FC = () => {
     </>)
 }
 
-export default UserHistoryCard;
+export default GroupHistoryCard;

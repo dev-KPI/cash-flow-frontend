@@ -17,6 +17,7 @@ import SearchBar from '@components/SearchBar/SearchBar';
 import { NavLink } from 'react-router-dom';
 import GroupChartsCard from './GroupChartsCard/GroupChartsCard';
 import GroupGraphCard from './GroupGraphCard/GroupGraphCard';
+import GroupHistoryCard from './GroupHistoryCard/GroupHistoryCard';
 
 
 const Group = () => {
@@ -110,7 +111,8 @@ const Group = () => {
                     <GroupSpendersCard />
                     <GroupInfoCard />
                     <GroupChartsCard />
-                    <GroupGraphCard/>
+                    <GroupGraphCard />
+                    <GroupHistoryCard/>
 
                 </div>
             </div>
