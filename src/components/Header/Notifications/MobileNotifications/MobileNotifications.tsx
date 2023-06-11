@@ -7,6 +7,7 @@ import classes from './MobileNotifications.module.css';
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
 import RejectButton from "@components/Buttons/RejectButton/RejectButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
+import Header from "@components/Header/Header";
 
 interface IMobileNotifications {
 }
@@ -50,8 +51,9 @@ const MobileNotifications: FC = ({}) => {
     }
 
     return(<>
+        <Header/>
         <div 
-        style={{marginTop: '75px'}} 
+        style={{marginTop: '20px'}}
         className={'MobileNotifications__container'}>
             <div className={classes.MobileNotifications}>
                 <div style={{display: 'flex', justifyContent: 'space-between'}}>

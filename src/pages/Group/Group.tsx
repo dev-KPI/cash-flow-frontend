@@ -16,6 +16,8 @@ import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
 import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
 import SearchBar from '@components/SearchBar/SearchBar';
 import { NavLink } from 'react-router-dom';
+import Header from '@components/Header/Header';
+import Footer from '@components/Footer/Footer';
 
 
 const Group = () => {
@@ -51,6 +53,7 @@ const Group = () => {
     }
 
     return (<>
+        <Header/>
         <main id='GroupPage'>
             <div className={classes.header}>
                 <div className={classes.header__container}>
@@ -113,6 +116,7 @@ const Group = () => {
                 </div>
             </div>
         </main>
+        <Footer/>
         </>);
 };
 

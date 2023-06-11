@@ -8,6 +8,8 @@ import classes from './Categories.module.css'
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
 import CategoriesCard from "./CategoriesCard/CategoriesCard";
 import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal";
+import Header from "@components/Header/Header";
+import Footer from "@components/Footer/Footer";
 
 const Categories: FC = () => {
 
@@ -69,6 +71,7 @@ const Categories: FC = () => {
 
     return (<>
         {getCategoriesModal()}
+        <Header/>
         <main id='CategoriesPage'>
             <div className={classes.CategoriesPage__container}>
                 <h3 className={classes.pageTitle}>Categories</h3>
@@ -97,6 +100,7 @@ const Categories: FC = () => {
                 </ul>
             </div>
         </main>
+        <Footer/>
     </>)
 }
 

@@ -7,6 +7,8 @@ import classes from './GroupsPage.module.css'
 import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
+import Header from "@components/Header/Header";
+import Footer from "@components/Footer/Footer";
 
 
 interface people_props {
@@ -68,6 +70,7 @@ const Groups: FC = () => {
 
     return (<>
         {getCategoriesModal()}
+        <Header/>
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
@@ -89,6 +92,7 @@ const Groups: FC = () => {
                 </section>
             </div>
         </main>
+        <Footer/>
     </>)
 }
 

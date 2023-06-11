@@ -8,6 +8,8 @@ import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods"
 import classes from './History.module.css';
 import { HistoryObj } from "@pages/HistoryObj";
 import { HistoryItem } from "./HistoryItem/HistoryItem";
+import Header from "@components/Header/Header";
+import Footer from "@components/Footer/Footer";
 
 type group_category_props = {
     id: number,
@@ -69,6 +71,7 @@ const Groups: FC = () => {
     },[limit, page])
 
     return (<>
+        <Header/>
         <main id='HistoryPage'>
             <div className={classes.page__container}>
                 <h1 className={classes.pageTitle}>History</h1>
@@ -104,6 +107,7 @@ const Groups: FC = () => {
                 </section>
             </div>
         </main>
+        <Footer/>
     </>)
 }
 
