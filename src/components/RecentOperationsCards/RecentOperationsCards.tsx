@@ -70,7 +70,7 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ catego
                     <div className={classes.icon}
                     >{getAdminIcon()}</div>
                     <div className={classes.memberInfo}>
-                        <h6 className={classes.ownerName}>{name}</h6>
+                        <h6 className={classes.name}>{name}</h6>
                         <p className={classes.time}>{timeAgo.format(new Date(time))}</p>
                     </div>
             </div>
