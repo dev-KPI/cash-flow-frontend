@@ -50,7 +50,7 @@ const getBars = () => {
 }
 
 
-const UserExpenseGraphPreloader: FC<IContentLoaderProps> = () => {
+const GraphCardLoader: FC<IContentLoaderProps> = () => {
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     return (
         <ContentLoader
@@ -71,4 +71,4 @@ const UserExpenseGraphPreloader: FC<IContentLoaderProps> = () => {
     )
 }
 
-export default UserExpenseGraphPreloader
+export default GraphCardLoader

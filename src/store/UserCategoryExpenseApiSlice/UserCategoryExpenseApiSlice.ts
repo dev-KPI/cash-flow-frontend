@@ -13,7 +13,7 @@ export const UserCategoryExpenseApiSlice = api.injectEndpoints({
                 meta,
                 arg
             ) => response.status,
-            providesTags: (result) => result ? [...result.map(item => ({ type: 'CategoryExpenses' as const, id: item.id })),
+            providesTags: (result) => result ? [...result.map(item => ({ type: 'CategoryExpenses' as const, id: item.category.id })),
             { type: 'CategoryExpenses', id: 'ADD_EXPENSE' },
             { type: 'CategoryExpenses', id: 'DELETE_EXPENSE' }]
                 :
@@ -29,7 +29,7 @@ export const UserCategoryExpenseApiSlice = api.injectEndpoints({
                 meta,
                 arg
             ) => response.status,
-            providesTags: (result, error, id) => [{ type: 'CategoryExpenses', id: result?.id }]
+            providesTags: (result, error, id) => [{ type: 'CategoryExpenses', id: result?.category.id }]
         }),
         getCategoryExpensesTotal: builder.query<{ total: number }, null>({
             query: () => ({
@@ -57,7 +57,7 @@ export const UserCategoryExpenseApiSlice = api.injectEndpoints({
         }),
         updateCategoryExpense: builder.mutation({
             query: (body: ICategoryExpenseItemUPDATE) => ({
-                url: `/categoryExpenses/${body.id}`,
+                url: `/categoryExpenses/${body.category.id}`,
                 method: 'PUT',
                 body
             }),

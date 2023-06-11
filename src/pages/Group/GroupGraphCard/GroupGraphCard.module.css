@@ -1,9 +1,9 @@
-.expenseGraph {
+.GroupGraph {
     composes: cardComponent from "@styles/style.css";
     min-height: 480px;
-    
     grid-column-start: span 2;
 }
+
 .inner {
     padding: 24px 32px;
     height: 100%;
@@ -11,15 +11,26 @@
     flex-direction: column;
 }
 
-.chart__uppernav {
+.uppernav {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
 }
 
-.chart__titleRange {}
+.titleRange {}
 
 .title {
     composes: cardTitle from "@styles/style.css";
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.buttonText {
+    composes: mediumItemTitle from "@styles/style.css";
+    font-weight: 400;
 }
 
 .range {
@@ -38,22 +49,11 @@
     margin-top: 45px;
 }
 
-@media only screen and (max-width: 1440px) {
-    .expenseGraph {
-        order: 1;
-    }
-}
-
 @media only screen and (max-width: 768px) {
-    .expenseGraph {
-        grid-column-start: span 1;
-        min-height: auto;
-        order: 2;
-        height: 330px;
-    }
-    .inner{
+    .inner {
         padding: 16px;
     }
+
     .graph {
         margin-top: 21px;
         min-height: 234px;
@@ -61,8 +61,23 @@
     }
 }
 
+@media only screen and (max-width: 1440px) {
+    .GroupGraph {
+        order: 1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .GroupGraph {
+        grid-column-start: span 1;
+        min-height: auto;
+        order: 2;
+        height: 330px;
+    }
+}
+
 @media only screen and (max-width: 400px) {
-    .graph {
+    .GroupGraph {
         margin-top: 15px;
     }
 }

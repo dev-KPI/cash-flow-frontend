@@ -178,6 +178,7 @@
      --main-text: #333333;
      --text: #7A7A9D;
      --shadow-color: rgba(0, 0, 0, 0.1);
+     --itemHover: rgba(0, 0, 0, 0.1);
      --opacity: 1;
      --colorPicker: #EFF0F8;
 
@@ -195,9 +196,9 @@
      --main-text: #EAEAEA;
      --text: #9BABC5;
      --shadow-color: rgba(29, 8, 8, 0.1);
+     --itemHover: rgba(81, 81, 81, 0.2);
      --opacity: 0.5;
      --colorPicker: #2b2b2b;
-
 
      --active-filter-color: #80D667;
      --filterBtn: #333333;
