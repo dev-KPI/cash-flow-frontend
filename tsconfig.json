@@ -24,6 +24,8 @@
       "@hooks": ["src/hooks"],
       "@services": ["src/services"],
       "@services/*": ["src/services/*"],
+      "@models/*": ["src/models/*"],
+      "@models": ["src/models"],
       //store
       "@store/*": ["src/store/*"],
       "@store": ["src/store"],

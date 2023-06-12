@@ -4,6 +4,14 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.RecentOperationGroupCard {
+    display: grid;
+    grid-template-columns: 50% 25% 25%;
+    gap: 10px;
+    align-items: center;
+}
+
 .info{
     display: flex;
     flex-direction: row;
@@ -23,11 +31,45 @@
 .time{
     composes: mediumItemTitle from "@styles/style.css";
 }
+
 .amount{
     color: var(--main-red);
     font-weight: 500;
     font-size: 15px;
     line-height: 20px;
+    text-align: end;
+}
+.details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon {
+    display: flex;
+    height: 46px;
+    width: 46px;
+    justify-content: center;
+    align-items: center;
+    background: var(--main-blue);
+    border-radius: 50%;
+}
+
+.icon i {
+    display: flex;
+    color: #fff;
+    font-size: 18px;
+}
+
+.name {
+    composes: mediumItemTitle from '@styles/style.css';
+    font-weight: 600;
+    color: var(--main-text)
+}
+
+.category {
+    display: flex;
+    gap: 10px;
 }
 
 @media only screen and (max-width: 1440px) {

@@ -11,11 +11,7 @@
 }
 
 .title{
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 16px;
-
-    color: var(--text);
+    composes: smallItemTitle from "@styles/style.css";
     margin-bottom: 4px;
 }
 

@@ -35,7 +35,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation }) => {
             <div className={classes.inner}>
                 <div className={classes.top}>
                     <div className={classes.info}>
-                        <h6 className={classes.title}>{operation}</h6>
+                        <h3 className={classes.title}>{operation}</h3>
                         <p className={classes.amount}>{amount}$</p>
                     </div>
                     <div

@@ -1,10 +1,12 @@
-import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import React, { FC, Dispatch, MouseEvent, useCallback, useEffect, useState } from 'react';
-import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
+
+//logic
+import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 
 //UI
 import classes from './CategoriesCardItem.module.css';
-import OperationModal from '@components/ModalWindows/OperationModal/SalaryModal';
+import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
+
 
 
 const UserCategoriesCardDot: FC<ICategoryItem> = ({ setIdModalOpen, setIsModalOpen, category, amount = 100 }) => {
