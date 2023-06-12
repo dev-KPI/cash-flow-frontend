@@ -109,3 +109,19 @@
     color: var(--main-green);
 }
 
+@media only screen and (max-width: 1440px) {
+    .grid {
+        max-width: 1090px;
+        gap: 20px;
+        grid-template-columns: repeat(2, 1fr)
+    }
+    .search {
+        display: none;
+    }
+
+    .grid__topleft,
+    .grid__operation,
+    .grid__topright {
+        gap: 20px;
+    }
+}

@@ -1,5 +1,5 @@
 .GroupInfoCard{
-    width: 374px;
+    /* width: 374px; */
     composes: cardComponent from '@styles/style.css';
     grid-row-start: span 2;
     margin-left: 30px;
@@ -71,4 +71,12 @@
     composes: largeItemTitle from '@styles/style.css';
     color: var(--main-text);
     height: 100px;
+    overflow-y: auto;
+}
+@media only screen and (max-width: 1440px) {
+    .GroupInfoCard{
+        margin-left: 0;
+        order: 1;
+        grid-row-start: span 1;
+    }
 }

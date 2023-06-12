@@ -77,7 +77,8 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ catego
             <div className={classes.category}>
                 <Light
                     color={categoryColor}
-                    type={'hollow'} />
+                    type={'hollow'}
+                    className={classes.categoryColor} />
                 <h5 className={classes.title}>{categoryTitle}</h5>
             </div>
             <p style={{ color: type === 'expense' ? "#FF2D55" : "#80D667" }}

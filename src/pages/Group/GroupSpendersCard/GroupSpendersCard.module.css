@@ -70,3 +70,9 @@
 .amount {
     color: var(--main-green);
 }
+
+@media only screen and (max-width: 1440px) {
+    .SpendersCard {
+        width: unset;
+    }
+}
