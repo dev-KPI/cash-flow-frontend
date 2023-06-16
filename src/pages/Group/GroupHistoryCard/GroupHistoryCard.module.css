@@ -51,14 +51,11 @@
         max-width: unset;
         flex-direction: column;
     }
-    /* .HistoryCard ul{
+    .HistoryCard ul{
         margin-top: 9px;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        flex-direction: row;
         margin-bottom: 30px;
     }
-
+    /* 
     .HistoryCard ul > li {
         width: 200px;
     }
