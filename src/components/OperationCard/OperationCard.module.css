@@ -83,6 +83,11 @@
     }
 }
 
+@media only screen and (max-width: 1028px) {
+    .amount{
+        min-width: 0
+    }
+}
 @media only screen and (max-width: 768px) {
     .inner{
         padding: 16px;

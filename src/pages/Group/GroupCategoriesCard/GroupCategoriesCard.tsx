@@ -27,6 +27,7 @@ const GroupCategoriesCard = () => {
     const { categoriesByGroup } = json;
     const initializeHandleWrapper = useCallback(() => {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 1);
+        console.log(1);
     }, [height, width, categories])
     useEffect(() => {
         setCategories(categoriesByGroup[0].categories)
@@ -66,7 +67,7 @@ const GroupCategoriesCard = () => {
         <div className={classes.CategoriesCard}>
             {getModal()}
             <div className={classes.inner}>
-                <ul className={classes.list}>
+                <ul className={classes.list} ref={squareRef}>
                     {getCategories(properCategories)}
                     {
                     categories?.length === 0 ?

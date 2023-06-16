@@ -76,3 +76,28 @@
         width: unset;
     }
 }
+
+@media only screen and (max-width: 1028px) {
+    .inner{
+        padding: 16px 16px 5px 16px;
+    }
+    .spender{
+        flex: 1;
+    }
+    .order, .name, .amount {
+        text-align: left;
+    }
+    .avatar {
+        display: none;
+    }
+    .spenders{
+        gap: 0px;
+    }
+    .details{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+}
