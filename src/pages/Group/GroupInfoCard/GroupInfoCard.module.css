@@ -47,13 +47,13 @@
 .group__info {
     margin-top: 10px;
     text-align: center;
+    margin-bottom: 24px;
 }
 
 .details{
     display: flex;
     align-items: center;
     margin-top: 14px;
-    margin-bottom: 24px;
 }
 .detailItem{
     flex: 0 1 50%;
@@ -78,5 +78,11 @@
         margin-left: 0;
         order: 1;
         grid-row-start: span 1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .inner{
+        padding: 16px;
     }
 }

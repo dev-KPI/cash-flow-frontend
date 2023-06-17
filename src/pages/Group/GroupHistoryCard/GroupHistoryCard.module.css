@@ -55,45 +55,27 @@
         margin-top: 9px;
         margin-bottom: 30px;
     }
-    /* 
-    .HistoryCard ul > li {
-        width: 200px;
-    }
-    .loader {
+    /* .loader {
         height: 238px;
     } */
 }
-/*
 @media only screen and (max-width: 1028px) {
     .HistoryCard ul {
-        margin-top: 0;
-        row-gap: 0px;
-        column-gap: 20px;
-        flex: 1 0 auto;
-        flex-direction: column;
-        height: 160px;
-    }
-    .HistoryCard ul>li {
-        width: unset;
-        flex: 1 0 40px;
+        margin-top: 4px;
     }
 }
+/*
 @media only screen and (max-width: 863px){
     .loader{
         height: 378px;
     }
-}
+} */
 @media only screen and (max-width: 768px) {
-    .HistoryCard{
-        order: 4;
-    }
     .inner{
         padding: 0 16px;
     }
-    .HistoryCard ul {
-        height: max-content
-    }
-    .loader {
+
+    /* .loader {
         height: 374px;
-    }
-} */
+    } */
+}
