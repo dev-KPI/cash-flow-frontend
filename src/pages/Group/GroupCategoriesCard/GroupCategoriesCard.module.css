@@ -3,6 +3,7 @@
     grid-column-start: span 2;
 }
 .title {
+    display: none;
     composes: cardTitle from "@styles/style.css";
     margin-bottom: 14px;
 }
@@ -96,16 +97,18 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .CategoriesCard {
+        grid-column-start: span 1;
+    }
+    .title{
+        display: block;
+    }
     .categories {
         height: 250px;
     }
 
     .inner {
-        padding: 16px;
-    }
-
-    .top {
-        margin-bottom: 8px;
+        /* padding: 16px; */
     }
 
     .dashed {

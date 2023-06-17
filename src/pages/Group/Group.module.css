@@ -125,3 +125,24 @@
         gap: 20px;
     }
 }
+
+
+@media only screen and (max-width: 768px) {
+    .grid {
+        margin-top: 20px;
+    }
+    .header{
+        margin-top: 14px;
+        height: 80px;
+    }
+    .grid {
+        grid-template-columns: minmax(0,500px)
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    
+    .grid__operation{
+        flex-direction: column;
+    }
+}

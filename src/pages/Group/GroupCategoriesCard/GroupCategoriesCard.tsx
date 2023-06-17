@@ -67,6 +67,7 @@ const GroupCategoriesCard = () => {
         <div className={classes.CategoriesCard}>
             {getModal()}
             <div className={classes.inner}>
+                <h3 className={classes.title}>Categories</h3>
                 <ul className={classes.list} ref={squareRef}>
                     {getCategories(properCategories)}
                     {

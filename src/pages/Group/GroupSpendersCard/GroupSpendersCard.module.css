@@ -84,9 +84,7 @@
     .spender{
         flex: 1;
     }
-    .order, .name, .amount {
-        text-align: left;
-    }
+
     .avatar {
         display: none;
     }
