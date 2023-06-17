@@ -27,7 +27,6 @@ const GroupCategoriesCard = () => {
     const { categoriesByGroup } = json;
     const initializeHandleWrapper = useCallback(() => {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 1);
-        console.log(1);
     }, [height, width, categories])
     useEffect(() => {
         setCategories(categoriesByGroup[0].categories)

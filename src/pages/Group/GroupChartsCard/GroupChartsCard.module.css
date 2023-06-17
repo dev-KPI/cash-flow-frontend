@@ -15,7 +15,12 @@
 @media only screen and (max-width: 768px) {
     .ChartsCard {
         grid-column-start: span 1;
-        height: unset;
+        height: 500px;
         flex-direction:column;
     }
 }
+/* @media only screen and (max-width: 768px) {
+    .UserChart {
+        height: 250px;
+    }
+} */

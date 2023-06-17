@@ -55,27 +55,22 @@
         margin-top: 9px;
         margin-bottom: 30px;
     }
-    /* .loader {
-        height: 238px;
-    } */
+    .loader {
+        height: 448px;
+    }
 }
 @media only screen and (max-width: 1028px) {
     .HistoryCard ul {
         margin-top: 4px;
     }
 }
-/*
-@media only screen and (max-width: 863px){
-    .loader{
-        height: 378px;
-    }
-} */
+
 @media only screen and (max-width: 768px) {
     .inner{
         padding: 0 16px;
     }
 
-    /* .loader {
-        height: 374px;
-    } */
+    .loader {
+        height: 398px;
+    }
 }

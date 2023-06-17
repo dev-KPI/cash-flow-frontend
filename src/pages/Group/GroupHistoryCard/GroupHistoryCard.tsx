@@ -9,7 +9,7 @@ import { RecentOperationGroupCard } from "@components/RecentOperationsCards/Rece
 import { Link } from "react-router-dom";
 import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
 import { MembersHistoryObj } from "@pages/MembersHistoryObj";
-import UserHistoryCardLoader from "./GroupHistoryCardLoader";
+import GroupHistoryCardLoader from "./GroupHistoryCardLoader";
 import ICategory from "@models/ICategory";
 import IUser from "@models/IUser";
 
@@ -66,7 +66,7 @@ const GroupHistoryCard: FC = () => {
 
     return (<>
         <div className={classes.HistoryCard}>
-            {isPageLoading ? <UserHistoryCardLoader /> :
+            {isPageLoading ? <GroupHistoryCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Recent Activity</h3>
                     <ul>
