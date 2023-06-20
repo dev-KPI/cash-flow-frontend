@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { CATEGORIES_PAGE } from "src/router/routes";
 //UI
 import classes from './Categories.module.css'
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import CategoriesCard from "./CategoriesCard/CategoriesCard";
 
 
@@ -68,13 +68,15 @@ const Categories: FC = () => {
                 <div className={classes.addCategory}>
                     <div className={classes.upSide}>
                         <h5 className={classes.CategoryTitle}>Category</h5>
-                        <ConfirmButton
+                        <CustomButton
                             isPending={false}
                             callback={() => { console.log('add category') }}
-                            type="add"
+                            icon="add"
+                            type="primary"
                             btnWidth={180}
                             btnHeight={36}
-                            title="Create new category" />
+                            children="Create new category"
+                            className={`btn-primary`} />
                     </div>
                     <div className={classes.line}></div>
                 </div>

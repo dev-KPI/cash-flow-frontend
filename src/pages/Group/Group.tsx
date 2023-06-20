@@ -8,7 +8,7 @@ import { IGroup } from '@pages/Groups/GroupsPage';
 //UI
 import classes from './Group.module.css';
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
-import ConfirmButton from '@components/Buttons/ConfirmButton/ConfirmButton';
+import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import OperationCard from '@components/OperationCard/OperationCard';
 import GroupCategoriesCard from './GroupCategoriesCard/GroupCategoriesCard';
 import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
@@ -75,15 +75,16 @@ const Group = () => {
                                 : null
                             }
                         </div>
-                        <ConfirmButton
+                        <CustomButton
                             isPending={false}
-                            title="Leave"
+                            children="Leave group"
                             btnWidth={120}
                             btnHeight={30}
+                            icon={'none'}
+                            type="danger"
                             background={'outline'}
-                            type="none"
                             callback={handleSubmit}
-                            className={classes.leaveButton} />
+                            className={`${classes.leaveButton} btn-danger outline`} />
                     </div>
                 </div>
             </div>

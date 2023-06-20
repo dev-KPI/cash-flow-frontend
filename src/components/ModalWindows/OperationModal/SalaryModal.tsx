@@ -6,7 +6,7 @@ import classes from './SalaryModal.module.css';
 import Input from "@components/Input/Input";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import UseModal from "@hooks/layoutHooks/useModal/useModal";
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 //logic
 import { useWindowSize } from "usehooks-ts";
 
@@ -101,13 +101,15 @@ const SalaryModal: FC<IOperationModalProps> = ({
                     </li>
                 </ul>
                 <div className={classes.confirmBtnWrapper}>
-                    <ConfirmButton
+                <CustomButton
                     isPending={isSubmiting}
-                    title="Confirm"
+                    children="Confirm"
                     btnWidth={170}
                     btnHeight={36}
-                    type="submit"
-                    callback={handleSubmit}/>
+                    icon="submit"
+                    type='primary'
+                    callback={handleSubmit}
+                    className={`btn-primary`} />
                 </div>
             </form>
         </UseModal>

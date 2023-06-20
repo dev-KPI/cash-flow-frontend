@@ -4,7 +4,7 @@ import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { GroupObj } from "./GroupObj";
 //UI
 import classes from './GroupsPage.module.css'
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 
 
@@ -64,14 +64,15 @@ const Groups: FC = () => {
                         <span> | </span>
                         <span className={classes.groupAmount}>{GroupObj.length}</span>
                     </h1>
-                    <ConfirmButton
+                    <CustomButton
                         isPending={false}
-                        title="Add new group"
+                        children="Add new group"
                         btnWidth={170}
                         btnHeight={36}
-                        type="add"
+                        icon="add"
+                        type="primary"
                         callback={handleSubmit}
-                        className={classes.addButton} />
+                        className={`${classes.addButton} btn-primary`} />
                 </div>
                 <section className={classes.groups}>
                     {getGroups()}
