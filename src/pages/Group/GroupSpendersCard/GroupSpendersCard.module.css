@@ -19,6 +19,11 @@
     font-weight: 600;
     composes: largeItemTitle from "@styles/style.css";
     color: var(--main-green);
+    transition: all .1s ease;
+}
+
+.spendersLink:hover {
+    filter: brightness(0.8);
 }
 
 .avatar {
