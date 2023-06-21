@@ -73,8 +73,6 @@ const Categories: FC = () => {
                             callback={() => { console.log('add category') }}
                             icon="add"
                             type="primary"
-                            btnWidth={180}
-                            btnHeight={36}
                             children="Create new category"
                             className={`btn-primary`} />
                     </div>

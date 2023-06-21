@@ -67,8 +67,6 @@ const Groups: FC = () => {
                     <CustomButton
                         isPending={false}
                         children="Add new group"
-                        btnWidth={170}
-                        btnHeight={36}
                         icon="add"
                         type="primary"
                         callback={handleSubmit}
