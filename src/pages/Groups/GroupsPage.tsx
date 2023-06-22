@@ -6,6 +6,7 @@ import { GroupObj } from "./GroupObj";
 import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
+import { NavLink, Route, Router, Routes } from "react-router-dom";
 
 
 interface people_props {
@@ -44,17 +45,21 @@ const Groups: FC = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
             const memberIcons = el.group.members.map(member => member.picture);
-            return (<GroupListItem
-                key={i}
-                description={el.group.description}
-                title={el.group.title}
-                icon={el.group.admin.picture}
-                adminName={el.group.admin.first_name}
-                adminEmail={el.group.admin.last_name}
-                color={el.group.color}
-                memberIcons={memberIcons}
-            />)
+            return (<NavLink to={`/group/${el.group.id}`}>
+                <GroupListItem
+                    key={i}
+                    description={el.group.description}
+                    title={el.group.title}
+                    icon={el.group.admin.picture}
+                    adminName={el.group.admin.first_name}
+                    adminEmail={el.group.admin.last_name}
+                    color={el.group.color}
+                    memberIcons={memberIcons}
+                />
+            </NavLink>
+            )  
         })
+           
     }
     return (<>
         <main id='GroupsPage'>

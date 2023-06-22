@@ -1,9 +1,12 @@
 
 import React from 'react';
+
 import { GroupObj } from '@pages/Groups/GroupObj';
-import userIcon from '@assets/user-icon.svg';
+
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { IGroup } from '@pages/Groups/GroupsPage';
+import { NavLink } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 //UI
 import classes from './Group.module.css';
@@ -14,14 +17,14 @@ import GroupCategoriesCard from './GroupCategoriesCard/GroupCategoriesCard';
 import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
 import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
 import SearchBar from '@components/SearchBar/SearchBar';
-import { NavLink } from 'react-router-dom';
 import GroupChartsCard from './GroupChartsCard/GroupChartsCard';
 import GroupGraphCard from './GroupGraphCard/GroupGraphCard';
 import GroupHistoryCard from './GroupHistoryCard/GroupHistoryCard';
+import userIcon from '@assets/user-icon.svg';
 
 
 const Group = () => {
-
+    const { id } = useParams();
     const breadcrumbs = [
         {
             'title': 'Dashboard',
@@ -29,11 +32,11 @@ const Group = () => {
         },
         {
             'title': 'Members',
-            'link': '/group/members'
+            'link': '/group/member/1'
         },
         {
             'title': 'History',
-            'link': '/group/members'
+            'link': '/group/history'
         },
     ]
     const handleSubmit = () => {
