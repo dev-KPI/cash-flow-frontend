@@ -24,73 +24,10 @@ import userIcon from '@assets/user-icon.svg';
 
 
 const Group = () => {
-    const { id } = useParams();
-    const breadcrumbs = [
-        {
-            'title': 'Dashboard',
-            'link': '/group'
-        },
-        {
-            'title': 'Members',
-            'link': '/group/member/1'
-        },
-        {
-            'title': 'History',
-            'link': '/group/history'
-        },
-    ]
-    const handleSubmit = () => {
-        console.log(1);
-    }
-    let groups: IGroup[] = GroupObj;
-    const memberIcons = groups[2].group.members.map(member => member.picture);
-    const getMemberIcons = () => {
-        return memberIcons.map((icon, i) =>
-            <div key={i} className={classes.avatar}>
-                <img className={classes.photo}
-                    alt={'user icon'}
-                    src={isUrl(icon) ? icon : userIcon}
-                />
-            </div>
-        ).slice(0, 3)
-    }
+    const { groupId } = useParams();
     
     return (
         <main id='GroupPage'>
-            <div className={classes.header}>
-                <div className={classes.header__container}>
-                    <h1 className={`${classes.title} pageTitle`}>Group</h1>
-                    <nav className={classes.breadcrumbs}>
-                        <Breadcrumbs breadcrumbs={breadcrumbs} />
-                    </nav>
-                    <div className={classes.header__right}>
-                        <div className={classes.members}>
-                            {getMemberIcons()}
-                            {memberIcons.length > 3 ?
-                                <div className={classes.avatar}>
-                                    <div className={classes.avatarLeftMembers}
-                                        style={{ backgroundColor: 'var(--main-green)' }}></div>
-                                    <p className={classes.leftMembers}
-                                        style={{ color: 'var(--main-green)' }}
-                                    >+{memberIcons.length - 3}
-                                    </p>
-                                </div>
-                                : null
-                            }
-                        </div>
-                        <CustomButton
-                            isPending={false}
-                            children="Leave group"
-                            btnWidth={120}
-                            btnHeight={30}
-                            icon={'none'}
-                            type="danger"
-                            background={'outline'}
-                            callback={handleSubmit}
-                            className={`${classes.leaveButton} btn-danger outline`} />
-                    </div>
-                </div>
-            </div>
             <div className={classes.page__container}>
                 <div className={classes.grid}>
                     <GroupCategoriesCard />
@@ -98,7 +35,7 @@ const Group = () => {
                         <div className={classes.searchTop}>
                             <h3 className={classes.cardTitle}>Members</h3>
                             <NavLink
-                                to="/group/members"
+                                to={`/group/${groupId}/member/1`}
                                 className={classes.membersLink}
                                 >
                                 See all
