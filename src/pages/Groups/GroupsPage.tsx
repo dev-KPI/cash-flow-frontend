@@ -45,14 +45,16 @@ const Groups: FC = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
             const memberIcons = el.group.members.map(member => member.picture);
-            return (<NavLink to={`/group/${el.group.id}`}>
+            return (<NavLink
+                key={`${i}-${el.group.title}-${el.date_join}`}
+                to={`/group/${el.group.id}`}      
+            >
                 <GroupListItem
-                    key={i}
                     description={el.group.description}
                     title={el.group.title}
                     icon={el.group.admin.picture}
-                    adminName={el.group.admin.first_name}
-                    adminEmail={el.group.admin.last_name}
+                    adminName={`${el.group.admin.first_name} ${el.group.admin.last_name}`}
+                    adminEmail={el.group.admin.login}
                     color={el.group.color}
                     memberIcons={memberIcons}
                 />
