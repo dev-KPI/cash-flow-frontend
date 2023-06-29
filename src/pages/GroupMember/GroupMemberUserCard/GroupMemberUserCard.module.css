@@ -1,0 +1,109 @@
+.infoCard{
+    composes: cardComponent from '@styles/style.css';
+    width: 540px
+}
+
+.inner{
+    display: flex;
+    justify-content: space-between;
+}
+
+.cardsWrapper > div{ 
+    box-shadow: none;
+}
+
+.avatar {
+    width: 180px;
+    height: 180px;
+    display: block;
+    margin: 0 auto;
+}
+
+.photo {
+    height: 100%;
+    width: 100%
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    padding: 25px 50px;
+}
+
+.personal__data {
+    margin-top: 10px;
+}
+
+.user__info {
+    text-align: center;
+}
+
+.name {
+    composes: largeText from "@styles/style.css";
+}
+
+.email {
+    composes: largeItemTitle from "@styles/style.css";
+    font-weight: 500;
+}
+
+.expensesCount {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px;
+}
+
+.title {
+    composes: smallItemTitle from "@styles/style.css";
+    margin-bottom: 4px;
+}
+
+.subtitle{
+    composes: smallItemTitle from "@styles/style.css";
+    font-weight: 500;
+}
+
+.numberTitle {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 26px;
+    min-width: 120px;
+    color: var(--main-text);
+}
+
+.cardInner{
+    display: flex;
+    flex-direction: column;
+    padding: 16px 24px;
+}
+        
+.top {
+    display: flex;
+    margin-bottom: 4px;
+}
+
+.icon {
+    display: flex;
+    height: 46px;
+    width: 46px;
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+    background: var(--main-green);
+    border-radius: 50%;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.icon i {
+    display: flex;
+    color: #fff;
+    font-size: 18px;
+}
+
+.cardsWrapper{
+
+}
