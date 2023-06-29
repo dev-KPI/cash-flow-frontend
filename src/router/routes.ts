@@ -6,8 +6,8 @@ import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
 import Header from "@components/Header/Header";
-import GroupMember from "@pages/Group/GroupMember/GroupMember";
-import GroupMembers from "@pages/Group/GroupMembers/GroupMembers";
+import GroupMember from "@pages/GroupMember/GroupMember";
+import GroupMembers from "@pages/GroupMembers/GroupMembers";
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
