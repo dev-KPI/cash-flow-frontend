@@ -1,26 +1,18 @@
-
 import React from 'react';
-
-import { GroupObj } from '@pages/Groups/GroupObj';
-
-import { isUrl } from '@services/UsefulMethods/UIMethods';
-import { IGroup } from '@pages/Groups/GroupsPage';
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 //UI
 import classes from './Group.module.css';
-import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
-import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import OperationCard from '@components/OperationCard/OperationCard';
-import GroupCategoriesCard from './GroupCategoriesCard/GroupCategoriesCard';
-import GroupSpendersCard from './GroupSpendersCard/GroupSpendersCard';
-import GroupInfoCard from './GroupInfoCard/GroupInfoCard';
+import GroupCategoriesCard from '@pages/Group/GroupCategoriesCard/GroupCategoriesCard';
+import GroupSpendersCard from '@pages/Group/GroupSpendersCard/GroupSpendersCard';
+import GroupInfoCard from '@pages/Group/GroupInfoCard/GroupInfoCard';
 import SearchBar from '@components/SearchBar/SearchBar';
-import GroupChartsCard from './GroupChartsCard/GroupChartsCard';
-import GroupGraphCard from './GroupGraphCard/GroupGraphCard';
-import GroupHistoryCard from './GroupHistoryCard/GroupHistoryCard';
-import userIcon from '@assets/user-icon.svg';
+import GroupChartsCard from '@pages/Group/GroupChartsCard/GroupChartsCard';
+import GroupGraphCard from '@pages/Group/GroupGraphCard/GroupGraphCard';
+import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
+
 
 
 const Group = () => {

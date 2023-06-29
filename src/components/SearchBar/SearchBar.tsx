@@ -4,7 +4,7 @@ import { useOnClickOutside } from 'usehooks-ts'
 import { NavLink } from 'react-router-dom';
 
 //store
-import IUser from '@models/IUser'
+import IMember from '@models/IMember';
 
 //UI
 import classes from './SearchBar.module.css'
@@ -12,16 +12,8 @@ import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import { MembersObj } from '@pages/MembersObj';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
-;
 
 
-
-interface IMember {
-    user: IUser,
-    status: string
-    date_join: string
-
-}
 const SearchBar = () => {
     const [filter, setFilter] = useState<{query: string, list: IMember[]}>({
         query: '',

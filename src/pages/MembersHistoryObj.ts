@@ -35,10 +35,10 @@ export const MembersHistoryObj = JSON.parse(JSON.stringify({
                 }
             },
             "user": {
-                "id": 1,
+                "id":2,
                 "login": "johndoe@gmail.com",
                 "first_name": "John",
-                "last_name": "Doe",
+                "last_name": "Eqw",
                 "picture": "ref.com"
             }
         },
@@ -56,10 +56,10 @@ export const MembersHistoryObj = JSON.parse(JSON.stringify({
                 }
             },
             "user": {
-                "id": 1,
+                "id": 3,
                 "login": "johndoe@gmail.com",
                 "first_name": "John",
-                "last_name": "Doe",
+                "last_name": "Dqwee",
                 "picture": "ref.com"
             }
         },

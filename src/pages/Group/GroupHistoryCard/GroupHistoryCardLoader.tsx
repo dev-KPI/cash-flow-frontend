@@ -13,7 +13,7 @@ const GroupHistoryCardLoader = () => {
             res.push(<React.Fragment key={'thf43' + i}>
                 <rect x="280" y={61 + i * 47} rx="4" ry="4" width="60" height="12" />
                 <rect x="170" y={61 + i * 47} rx="4" ry="4" width="60" height="12" />
-                <circle cx="24" cy={67 + i * 47} r="8" />
+                <circle cx="24" cy={67 + i * 47} r="16" />
                 <rect x="46" y={73 + i * 47} rx="4" ry="4" width="80" height="12" />
                 <rect x="46" y={53 + i * 47} rx="4" ry="4" width="60" height="12" />
             </React.Fragment >)

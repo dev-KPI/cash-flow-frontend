@@ -2,12 +2,7 @@
     composes: cardComponent from "@styles/style.css";
     width: 510px;
     height: 300px;
-    grid-row-start: span 2;
 }
-
-/* .inner {
-    padding: 16px 24px 5px 24px;
-} */
 
 .title {
     composes: cardTitle from "@styles/style.css";
