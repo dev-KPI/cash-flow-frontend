@@ -14,7 +14,7 @@ import GroupInfoCard from '@pages/Group/GroupInfoCard/GroupInfoCard';;
 const GroupMember = () => {
 
     return (
-        <main id={'GroupMemberPage'}>
+        <main id={'GroupMemberPage'} className={'no-padding'}>
             <div className={classes.page__container}>
                 <div className={classes.grid}>
                     <GroupMemberUserCard />

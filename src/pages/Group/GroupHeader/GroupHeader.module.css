@@ -70,3 +70,15 @@
     filter: brightness(0.85);
 }
 
+@media only screen and (max-width: 768px) {
+    .header{
+        margin-top: 74px;
+        height: 80px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .breadcrumbs {
+        left: 10%;
+    }
+}

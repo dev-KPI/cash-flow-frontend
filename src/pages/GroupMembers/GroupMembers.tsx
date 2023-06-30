@@ -7,7 +7,7 @@ const GroupMember = () => {
     // const { groupId, memberId } = useParams();
     
     return (
-        <main id={'GroupMembersPage'}>
+        <main id={'GroupMembersPage'} className={'no-padding'}>
             <h1>MEMBERS PAGE</h1>
             
         </main>

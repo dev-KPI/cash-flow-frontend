@@ -18,7 +18,7 @@ const Group = () => {
     const { groupId } = useParams();
 
     return (<>
-        <main id='GroupPage'>
+        <main id='GroupPage' className={'no-padding'}>
             <div className={classes.page__container}>
                 <div className={classes.grid}>
                     <GroupCategoriesCard />

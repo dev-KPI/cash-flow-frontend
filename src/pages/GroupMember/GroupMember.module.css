@@ -7,6 +7,9 @@
     gap: 30px;
     column-gap: 30px;
 }
+.page__container{
+
+}
 
 @media only screen and (max-width: 1440px) {
     .grid {

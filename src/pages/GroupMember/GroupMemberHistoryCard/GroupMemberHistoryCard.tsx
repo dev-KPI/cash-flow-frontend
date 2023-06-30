@@ -57,7 +57,7 @@ const GroupHistoryCard: FC = () => {
     const getRecentActivities = () => {
         let res: ReactNode[] = []
         if (memberId) {
-            res = getMixedHistory().filter(el => el.user.id === +memberId)
+            res = getMixedHistory()
             .map((el, i) =>
                 <RecentOperationGroupCard
                     key={i}
