@@ -7,9 +7,11 @@ import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 
 interface OperactionCardProps {
     operation: string;
+    title?: string;
+    className?: string;
 }
 
-const OperationCard: FC<OperactionCardProps> = ({ operation }) => {
+const OperationCard: FC<OperactionCardProps> = ({ operation, title, className }) => {
 
     const [amount = 423, setAmount] = useState<number>();
     const [source, setSource] = useState<string>();
@@ -22,6 +24,8 @@ const OperationCard: FC<OperactionCardProps> = ({ operation }) => {
         percentBackground: operation === "Income" ? "rgba(128, 214, 103, 0.20)" : "rgba(255, 45, 85, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
+
+    const cardTitle = title ? title : operation;
     return (<>
         {operation === 'Income' ?
             <SalaryModal
@@ -29,13 +33,13 @@ const OperationCard: FC<OperactionCardProps> = ({ operation }) => {
                 isSalaryModalOpen={isOperationModalOpen}
             /> : null
         }
-        <div className={classes.operationCard}
+        <div className={`${classes.operationCard} ${className ? className : ''}`}
             onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
             <div className={classes.inner}>
                 <div className={classes.top}>
                     <div className={classes.info}>
-                        <h3 className={classes.title}>{operation}</h3>
+                        <h3 className={classes.title}>{cardTitle}</h3>
                         <p className={classes.amount}>{amount}$</p>
                     </div>
                     <div
