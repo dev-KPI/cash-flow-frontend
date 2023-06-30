@@ -11,7 +11,10 @@ import IMember from '@models/IMember';
 import OperationCard from '@components/OperationCard/OperationCard';
 
 const GroupMemberUserCard = () => {
-    const { groupId, memberId } = useParams();
+    const { groupId, memberId } = useParams<{
+        groupId: string,
+        memberId: string
+    }>();
     const members: IMember[] = MembersObj.members
 
     let picture = ''
@@ -38,16 +41,18 @@ const GroupMemberUserCard = () => {
                         />
                     </div>
                     <div className={classes.personal__data}>
-                        <div className={classes.user__info}>
-                            <h4 className={classes.name}>{fullname}</h4>
-                            <p className={classes.email}>{login}</p>
-                        </div>
+                        <h4 className={classes.name}>{fullname}</h4>
+                        <p className={classes.email}>{login}</p>
                     </div>
                 </div>
                 <div className={classes.cardsWrapper}>
-                    <OperationCard operation={'Expenses'} />
+                    <OperationCard
+                        operation={'Expenses'}
+                        title={`${name}' expenses`}
+                        className={classes.expensesCard}
+                    />
                     <div className={classes.cardInner}>
-                        <h3 className={classes.title}>{`${name}'s expenses`}</h3>
+                        <h3 className={classes.title}>{`${name}'s total count of expenses`}</h3>
                         <p className={classes.numberTitle}>10</p>
                     </div>
                     <div className={classes.cardInner}>

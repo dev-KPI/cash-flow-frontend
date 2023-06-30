@@ -6,10 +6,17 @@
 .inner{
     display: flex;
     justify-content: space-between;
+    padding: 24px;
+    gap: 20px;
 }
 
-.cardsWrapper > div{ 
+.expensesCard{ 
     box-shadow: none;
+    background: none;
+    width: unset;
+}
+.expensesCard > div {
+    padding: 0;
 }
 
 .avatar {
@@ -17,34 +24,49 @@
     height: 180px;
     display: block;
     margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .photo {
     height: 100%;
-    width: 100%
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .user {
     display: flex;
     flex-direction: column;
-    padding: 25px 50px;
+    width: 50%;
+
+    flex: 1;
+    min-width: 0;
 }
 
 .personal__data {
     margin-top: 10px;
-}
-
-.user__info {
+    flex: 1;
+    min-width: 0;
     text-align: center;
 }
 
+
 .name {
     composes: largeText from "@styles/style.css";
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .email {
     composes: largeItemTitle from "@styles/style.css";
     font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .expensesCount {
@@ -71,11 +93,16 @@
     color: var(--main-text);
 }
 
-.cardInner{
+.cardsWrapper {
     display: flex;
     flex-direction: column;
-    padding: 16px 24px;
+    justify-content: space-between;
 }
+
+.cardInner{
+    /* display: flex;
+    flex-direction: column;*/
+} 
         
 .top {
     display: flex;
@@ -104,6 +131,20 @@
     font-size: 18px;
 }
 
-.cardsWrapper{
-
+ @media only screen and (max-width: 1440px) {
+    .infoCard{
+        width: unset;
+    }
 }
+
+ @media only screen and (max-width: 1028px) {
+    .avatar {
+        width: unset;
+        height: 150px;
+    }
+    .name {
+        font-size: 28px;
+        line-height: 32px;
+    }
+ }
+

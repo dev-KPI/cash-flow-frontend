@@ -69,7 +69,7 @@ const GroupHistoryCard: FC = () => {
                     time={el.time}></RecentOperationGroupCard>
             )
         }
-        return res.slice(0,8)
+        return res.slice(0,4)
     }
 
     return (<>
@@ -80,14 +80,28 @@ const GroupHistoryCard: FC = () => {
                     <ul>
                         {getRecentActivities()}
                     </ul>
-                    <div key='239k23' className={classes.ViewMore}>
-                        <Link to={'/history'}>
-                            <div className={classes.ViewMore__inner}>
-                                <p className={classes.ViewMore__title}>View More</p>
-                                <ArrowRight className={classes.ArrowRight} />
+                    {
+                        getRecentActivities().length > 4 ?
+                            <div key='239k23' className={classes.ViewMore}>
+                                <Link to={'/history'}>
+                                    <div className={classes.ViewMore__inner}>
+                                        <p className={classes.ViewMore__title}>View More</p>
+                                        <ArrowRight className={classes.ArrowRight} />
+                                    </div>
+                                </Link>
                             </div>
-                        </Link>
-                    </div>
+                        : 
+                        null
+                    }
+                    {
+                        getRecentActivities().length === 0 ?
+                            <div className={classes.emptyList}>
+                                <i className="bi bi-clock-history"></i>
+                                <p className={classes.emptyTitle}>Activity list is empty!</p>
+                            </div> 
+                            :
+                            null
+                    }
                 </div>
             }
         </div>
