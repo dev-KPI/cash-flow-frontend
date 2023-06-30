@@ -5,6 +5,9 @@ import Categories from "@pages/Categories/Categories";
 import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
+
+import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
+//UI
 import Header from "@components/Header/Header";
 import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
@@ -28,16 +31,16 @@ export const routesAuth = [
     {
         path: DASHBOARD_PAGE,
         component: Dashboard
-    },
-    {
+    }, {
         path: ANALYTICS_PAGE,
-        component: Analytics
-    },
-    {
+        component: Dashboard
+    }, {
+        path: NOTIFICATIONS_PAGE,
+        component: MobileNotifications
+    }, {
         path: CATEGORIES_PAGE,
         component: Categories
-    },
-    {
+    }, {
         path: GROUPS_PAGE,
         component: Groups
     },
@@ -63,16 +66,16 @@ export const routesMobileNavigation = [
         component: Dashboard
     }, {
         path: NOTIFICATIONS_PAGE,
-        component: Dashboard
+        component: MobileNotifications
     }, {
         path: CATEGORIES_PAGE,
         component: Categories
     }, {
         path: GROUPS_PAGE,
-        component: Dashboard
+        component: Groups
     }, {
         path: HISTORY_PAGE,
-        component: Dashboard
+        component: History
     },
 ];
 

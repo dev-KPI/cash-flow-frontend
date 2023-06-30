@@ -6,7 +6,8 @@ import { GroupObj } from "./GroupObj";
 import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
-import { NavLink, Route, Router, Routes } from "react-router-dom";
+import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
+import { NavLink } from "react-router-dom";
 
 
 interface people_props {
@@ -36,11 +37,6 @@ export interface IGroup {
 const Groups: FC = () => {
 
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-    const handleSubmit = () => {
-        console.log(1);
-    }
-
-    
     const getGroups = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
@@ -63,7 +59,22 @@ const Groups: FC = () => {
         })
            
     }
+
+    const [isGroupModal = false, setIsGroupModal] = useState<boolean>();
+
+    const openModal = () => {
+        setIsGroupModal(!isGroupModal)
+    }
+
+    const getCategoriesModal = () => {
+        return <GroupModal
+        setIsGroupModalOpen={setIsGroupModal}
+        isGroupModalOpen={isGroupModal}
+        />
+    }
+
     return (<>
+        {getCategoriesModal()}
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
@@ -76,8 +87,9 @@ const Groups: FC = () => {
                         children="Add new group"
                         icon="add"
                         type="primary"
-                        callback={handleSubmit}
+                        callback={getCategoriesModal}
                         className={`${classes.addButton} btn-primary`} />
+
                 </div>
                 <section className={classes.groups}>
                     {getGroups()}

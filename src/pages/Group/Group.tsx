@@ -14,11 +14,10 @@ import GroupGraphCard from '@pages/Group/GroupGraphCard/GroupGraphCard';
 import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
 
 
-
 const Group = () => {
     const { groupId } = useParams();
-    
-    return (
+
+    return (<>
         <main id='GroupPage'>
             <div className={classes.page__container}>
                 <div className={classes.grid}>
@@ -46,11 +45,10 @@ const Group = () => {
                     <GroupChartsCard />
                     <GroupGraphCard />
                     <GroupHistoryCard/>
-
                 </div>
             </div>
         </main>
-    );
+        </>);
 };
 
 export default Group;

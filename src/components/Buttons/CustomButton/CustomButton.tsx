@@ -19,13 +19,15 @@ interface ICustomButtonProps {
 }
 
 const CustomButton: FC<ICustomButtonProps> = ({ icon, btnWidth, btnHeight, callback, isPending, type, background, children, className, disableScale = false}) => {
-
     const [isAnimation = false, setIsAnimation] = useState<boolean>();
 
     const setStartHover = () => setIsAnimation(!disableScale)
     const setEndHover = () => setIsAnimation(false)
 
-    const handleClick = (e: MouseEvent<HTMLButtonElement>) => callback() 
+    const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        callback()
+    } 
     const getIcon = () => {
         return icon === 'submit' ? <i className="bi bi-check2"></i>
             : icon === 'add' ? <i style={{ fontSize: '24px' }} className="bi bi-plus"></i>

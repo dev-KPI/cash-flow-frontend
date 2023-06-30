@@ -1,6 +1,9 @@
 import React, { FC, useEffect } from 'react';
+
 import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import { DASHBOARD_PAGE, components, routesAuth, groupRoutes } from './routes'
+
+
 
 //store
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
@@ -71,9 +74,7 @@ export const GroupLayout = () => {
 export const MainLayout = () => {
     return (<>
         <Header />
-        <Outlet/>
+        <Outlet />
         <Footer />
-    </>
-    )
+    </>)
 }
-

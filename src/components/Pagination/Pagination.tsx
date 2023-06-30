@@ -27,13 +27,13 @@ const Pagination = ({rowsPerPage, setRowsPerPage, lastAction, firstAction, total
             <div className={classes.selector}>
                 <span>Rows per page: </span>
                 <select 
-                defaultValue={'8'}
+                defaultValue={'6'}
                 className={classes.select} 
                 name="rowsPerPage"
                 onChange={setRowsPerPageHandler}>
-                    <option value={4} selected>4</option>
+                    <option value={4}>4</option>
                     <option value={6}>6</option>
-                    <option selected value={8}>8</option>
+                    <option value={8}>8</option>
                     <option value={16}>16</option>
                     <option value={24}>24</option>
                 </select>

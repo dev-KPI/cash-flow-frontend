@@ -7,18 +7,23 @@ import { CATEGORIES_PAGE } from "src/router/routes";
 import classes from './Categories.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import CategoriesCard from "./CategoriesCard/CategoriesCard";
-
+import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal";
 
 const Categories: FC = () => {
 
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
-    const [groups, setGroups] = useState<boolean>()
+    const [groups = false, setGroups] = useState<boolean>();
+    const [isCategoryModal = false, setIsCategoryModal] = useState<boolean>();
 
     const initializePage = () => {
 
     }
 
+    const openModal = () => {
+        setIsCategoryModal(!isCategoryModal)
+        console.log(isCategoryModal)
+    }
 
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.active : classes.item;
@@ -39,6 +44,7 @@ const Categories: FC = () => {
         }
         return res;
     }
+
     const getCategories = () => {
         let res: ReactNode[] = [];
         for (let i = 0; i < 7; i++) {
@@ -54,7 +60,15 @@ const Categories: FC = () => {
         return res
     }
 
+    const getCategoriesModal = () => {
+        return <CategoryModal
+        setIsCategoryModalOpen={setIsCategoryModal}
+        isCategoryModalOpen={isCategoryModal}
+        />
+    }
+
     return (<>
+        {getCategoriesModal()}
         <main id='CategoriesPage'>
             <div className={classes.CategoriesPage__container}>
                 <h3 className={classes.pageTitle}>Categories</h3>
