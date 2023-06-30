@@ -48,7 +48,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({animation, closeNotifi
                     <CustomButton 
                         btnWidth={60}
                         btnHeight={25}
-                        icon="submit"
+                        icon="none"
                         type="primary" 
                         isPending={false}
                         children="Accept"

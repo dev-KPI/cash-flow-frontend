@@ -39,7 +39,7 @@ const MobileNotifications: FC = ({}) => {
                         isPending={false}
                         callback={() => { }}
                         children="Accept"
-                        icon="submit"
+                        icon="none"
                         type='primary'/>
                     <RejectButton 
                         title="Reject"
