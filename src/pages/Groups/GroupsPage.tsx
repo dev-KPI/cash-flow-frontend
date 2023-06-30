@@ -87,8 +87,8 @@ const Groups: FC = () => {
                         children="Add new group"
                         icon="add"
                         type="primary"
-                        callback={getCategoriesModal}
-                        className={`${classes.addButton} btn-primary`} />
+                        callback={openModal}
+                        className={classes.addButton} />
 
                 </div>
                 <section className={classes.groups}>

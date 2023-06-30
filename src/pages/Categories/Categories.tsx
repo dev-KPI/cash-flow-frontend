@@ -84,7 +84,7 @@ const Categories: FC = () => {
                         <h5 className={classes.CategoryTitle}>Category</h5>
                         <CustomButton
                             isPending={false}
-                            callback={() => { console.log('add category') }}
+                            callback={openModal}
                             icon="add"
                             type="primary"
                             children="Create new category"
