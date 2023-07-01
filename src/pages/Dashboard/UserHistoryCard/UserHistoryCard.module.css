@@ -43,6 +43,23 @@
     font-size: 16px;
 }
 
+.emptyList {
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    color: var(--main-text);
+}
+
+.emptyList i {
+    font-size: 50px;
+}
+
+.emptyTitle {
+    margin-top: 10px;
+    composes: largeItemTitle from "@styles/style.css";
+    color: var(--main-text);
+}
+
 @media only screen and (max-width: 1440px) {
     .HistoryCard{
         margin-left: 0;

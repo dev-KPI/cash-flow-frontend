@@ -1,5 +1,6 @@
-import React, { FC, useState, ReactNode } from "react";
+import React, { FC, useState, ReactNode, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useWindowSize } from "usehooks-ts";
 //UI
 import classes from './GroupMemberHistoryCard.module.css';
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
@@ -35,7 +36,7 @@ const GroupHistoryCard: FC = () => {
         memberId: string,
     }>()
     const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
-
+    const {width} = useWindowSize();
     setTimeout(() => {
         setIsPageLoading(false)
     }, 1500);
@@ -58,6 +59,7 @@ const GroupHistoryCard: FC = () => {
         let res: ReactNode[] = []
         if (memberId) {
             res = getMixedHistory()
+            .filter(el => el.user.id === +memberId)
             .map((el, i) =>
                 <RecentOperationGroupCard
                     key={i}
@@ -69,8 +71,15 @@ const GroupHistoryCard: FC = () => {
                     time={el.time}></RecentOperationGroupCard>
             )
         }
-        return res.slice(0,4)
+        return []
     }
+
+    const getHistory = useCallback(() => {
+        if (width > 1440)
+            return getRecentActivities().slice(0, 4)
+        else
+            return getRecentActivities().slice(0, 7)
+    }, [width])
 
     return (<>
         <div className={classes.HistoryCard}>
@@ -78,7 +87,7 @@ const GroupHistoryCard: FC = () => {
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Recent Activity</h3>
                     <ul>
-                        {getRecentActivities()}
+                        {getHistory()}
                     </ul>
                     {
                         getRecentActivities().length > 4 ?

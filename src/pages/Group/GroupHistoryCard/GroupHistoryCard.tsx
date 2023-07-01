@@ -60,8 +60,8 @@ const GroupHistoryCard: FC = () => {
                 member={el.user}
                 amount={el.amount}
                 time={el.time}></RecentOperationGroupCard>
-        )
-        return res
+        ) 
+        return []
     }
 
     return (<>
@@ -70,16 +70,28 @@ const GroupHistoryCard: FC = () => {
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Recent Activity</h3>
                     <ul>
-                        {getRecentActivities()}
+                        {getRecentActivities().slice(0,7)}
                     </ul>
-                    <div key='239k23' className={classes.ViewMore}>
-                        <Link to={'/history'}>
-                            <div className={classes.ViewMore__inner}>
-                                <p className={classes.ViewMore__title}>View More</p>
-                                <ArrowRight className={classes.ArrowRight} />
-                            </div>
-                        </Link>
-                    </div>
+                    { getRecentActivities().length > 7 ?
+                        <div key='239k23' className={classes.ViewMore}>
+                            <Link to={'/history'}>
+                                <div className={classes.ViewMore__inner}>
+                                    <p className={classes.ViewMore__title}>View More</p>
+                                    <ArrowRight className={classes.ArrowRight} />
+                                </div>
+                            </Link>
+                        </div>
+                        :null
+                    }
+                    {
+                        getRecentActivities().length === 0 ?
+                            <div className={classes.emptyList}>
+                                <i className="bi bi-clock-history"></i>
+                                <p className={classes.emptyTitle}>Activity list is empty!</p>
+                            </div> 
+                            :
+                            null
+                    }
                 </div>
             }
         </div>

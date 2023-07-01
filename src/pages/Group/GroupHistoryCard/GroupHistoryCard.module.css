@@ -11,11 +11,14 @@
 .title{
     composes: cardTitle from "@styles/style.css";
 }
+.HistoryCard li:first-child {
+    margin-top: 24px;
+}
+
 .HistoryCard ul{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 24px;
 }
 .ViewMore {
     position: absolute;
@@ -43,6 +46,22 @@
     font-size: 16px;
 }
 
+.emptyList {
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    color: var(--main-text);
+}
+
+.emptyList i {
+    font-size: 50px;
+}
+
+.emptyTitle {
+    margin-top: 10px;
+    composes: largeItemTitle from "@styles/style.css";
+    color: var(--main-text);
+}
 
  @media only screen and (max-width: 1440px) {
     .HistoryCard{
@@ -51,8 +70,10 @@
         max-width: unset;
         flex-direction: column;
     }
-    .HistoryCard ul{
+    .HistoryCard li:first-child {
         margin-top: 9px;
+    }
+    .HistoryCard li:last-child {
         margin-bottom: 30px;
     }
     .loader {

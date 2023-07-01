@@ -48,7 +48,7 @@
 
 .emptyList {
     margin-top: auto;
-    margin-bottom: 40%;
+    margin-bottom: auto;
     text-align: center;
     color: var(--main-text);
 }
@@ -76,18 +76,18 @@
     .HistoryCard li:last-child {
         margin-bottom: 30px;
     }
-    
+    .HistoryCard ul {
+        gap: 10px;
+    }
     .loader {
         height: 448px;
     }
 }
-@media only screen and (max-width: 1028px) {
+
+@media only screen and (max-width: 768px) {
     .HistoryCard li:first-child {
         margin-top: 4px;
     }
-}
-
-@media only screen and (max-width: 768px) {
     .inner{
         padding: 0 16px;
     }
