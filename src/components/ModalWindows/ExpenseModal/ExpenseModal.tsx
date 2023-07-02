@@ -6,7 +6,7 @@ import classes from './ExpenseModal.module.css';
 import Input from "@components/Input/Input";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import UseModal from "@hooks/layoutHooks/useModal/useModal";
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 //logic
 import { useWindowSize } from "usehooks-ts";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
@@ -113,13 +113,15 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     </li>
                 </ul>
                 <div className={classes.confirmBtnWrapper}>
-                    <ConfirmButton
-                    isPending={isSubmiting}
-                    title="Confirm"
-                    btnWidth={170}
-                    btnHeight={36}
-                    type="submit"
-                    callback={handleSubmit}/>
+                    <CustomButton
+                        isPending={isSubmiting}
+                        children="Confirm"
+                        btnWidth={170}
+                        btnHeight={36}
+                        icon="submit"
+                        type={'primary'}
+                        callback={handleSubmit}
+                        />
                 </div>
             </form>
         </UseModal>

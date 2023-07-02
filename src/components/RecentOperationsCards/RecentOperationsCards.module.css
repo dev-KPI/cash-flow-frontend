@@ -7,7 +7,7 @@
 
 .RecentOperationGroupCard {
     display: grid;
-    grid-template-columns: 50% 25% 25%;
+    grid-template-columns: 2fr 1fr 1fr;
     gap: 10px;
     align-items: center;
 }
@@ -28,8 +28,20 @@
     color: var(--main-text);
     font-weight: 700;
 }
+
+.memberInfo{
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-width: 0;
+}
 .time{
     composes: mediumItemTitle from "@styles/style.css";
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .amount{
@@ -43,6 +55,9 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
+    flex: 1;
+    min-width: 0;
 }
 
 .icon {
@@ -60,23 +75,37 @@
     color: #fff;
     font-size: 18px;
 }
-
+.photo{
+    width: 100%;
+    height: 100%;
+}
 .name {
     composes: mediumItemTitle from '@styles/style.css';
     font-weight: 600;
-    color: var(--main-text)
+    color: var(--main-text);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .category {
     display: flex;
-    gap: 10px;
+    gap: 7px;
+    align-items: center;
+}
+.categoryColor{
+    width: 12px !important;
+    height: 12px !important;
+    border-width: 3px !important;
 }
 
-@media only screen and (max-width: 1440px) {
-}
 
-@media only screen and (max-width: 1028px) {
-
+@media only screen and (max-width: 768px) {
+    .icon{
+        width: 40px;
+        height: 40px;
+    }
 }
 
 @media only screen and (max-width: 400px) {

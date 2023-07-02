@@ -1,5 +1,12 @@
 .group {
     composes: cardComponent from '@styles/style.css';
+    transition: all 0.3s ease;
+}
+
+.group:hover{
+    box-shadow: rgba(0, 0, 0, 0.22) 0px 15px 15px;
+    transform: translate3d(1px, -2px, 0px);
+    cursor: pointer;
 }
 
 .title{

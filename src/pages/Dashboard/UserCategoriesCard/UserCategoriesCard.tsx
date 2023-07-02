@@ -130,7 +130,7 @@ const UserCategoriesCard = () => {
                                 </li>
                             </div> 
                             :
-                        !!(categories?.length! >= 11) ?
+                        categories?.length! >= totalItems ?
                             <li 
                             className={`${classes.item} ${classes.specialItem}`}>
                                 <div className={classes.dashed}>

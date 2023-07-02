@@ -35,10 +35,31 @@ export const MembersHistoryObj = JSON.parse(JSON.stringify({
                 }
             },
             "user": {
-                "id": 1,
+                "id":2,
                 "login": "johndoe@gmail.com",
                 "first_name": "John",
-                "last_name": "Doe",
+                "last_name": "Eqw",
+                "picture": "ref.com"
+            }
+        },
+        {
+            "id": 3,
+            "time": "2023-04-19T13:26:54",
+            "description": "Gr123es",
+            "amount": 51230.0,
+            "category_group": {
+                "category": {
+                    "id": 5,
+                    "title": "Book",
+                    "color": "#0f6f8f",
+                    "icon": "link.com"
+                }
+            },
+            "user": {
+                "id": 3,
+                "login": "johndoe@gmail.com",
+                "first_name": "John",
+                "last_name": "Dqwee",
                 "picture": "ref.com"
             }
         },

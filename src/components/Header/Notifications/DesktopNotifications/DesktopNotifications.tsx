@@ -2,7 +2,7 @@ import React, {FC, MouseEvent, ReactNode, useState} from "react";
 
 //UI
 import classes from './DesktopNotifications.module.css';
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import RejectButton from "@components/Buttons/RejectButton/RejectButton";
 //logic
@@ -45,17 +45,17 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({animation, closeNotifi
                     {el.group}</Link>
                 </p>
                 <div className={classes.buttonGroup}>
-                    <ConfirmButton 
-                    btnWidth={60}
-                    btnHeight={25}
-                    titleFontWeight={400}
-                    type="none" 
-                    isPending={false}
-                    title="Accept"
-                    callback={()=>{console.log(1)}}/>
+                    <CustomButton 
+                        btnWidth={60}
+                        btnHeight={25}
+                        icon="none"
+                        type="primary" 
+                        isPending={false}
+                        children="Accept"
+                        callback={()=>{console.log(1)}}/>
                     <RejectButton 
-                    title="Reject"
-                    RejectHandler={()=>{console.log(1)}}/>
+                        title="Reject"
+                        RejectHandler={()=>{console.log(1)}}/>
                 </div>
             </form>
         </li>)

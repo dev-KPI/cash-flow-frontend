@@ -24,7 +24,7 @@ const GroupInfoCard: FC = () => {
                     "picture": "resd3f.3com"
                 },
                 "color_code": "#4C6FFF",
-                "icon_url": "https://lh3.googleusercontent.com/drive-viewer/AFGJ81qgOaBvl_AdAHFGcXQvuZNRHXjtNsOgVjJaQWV_kQa8Tj3i_1Sm5xXWrNsOg2Iz9I8x1mWc2cjbKSSHM-wMaUwh6hFGNA=w1920-h937"
+                "icon_url": "https://lh3.googleusercontent.com/drive-viewer/AFGJ81rEWXFEZp7U0wBui-1pSqWj0HjweJaJQ6O5tW77mK86lr8lVruUdpB7DLE9wbit73fmcbDptSF6bXVhr99mDiasN4Zexg=w1920-h937"
             },
             "details": {
                 "members": 4,

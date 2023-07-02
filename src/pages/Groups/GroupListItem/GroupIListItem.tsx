@@ -20,7 +20,10 @@ const GroupItem: FC<IGroupItemProps> = ({ title, description, icon, adminName, a
 
     const getMemberIcons = () => {
         return memberIcons.map((icon, i) => 
-            <div className={classes.avatar}>
+            <div
+                className={classes.avatar}
+                key={i}
+            >
                 <img className={classes.photo}
                     alt={'user icon'}
                     src={isUrl(icon) ? icon : userIcon}

@@ -7,7 +7,7 @@ import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import Input from "@components/Input/Input";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
         
 //logic
@@ -158,13 +158,15 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
                     </div>
                 </div>
                 <div className={classes.confirmBtnWrapper}>
-                    <ConfirmButton
-                    isPending={isSubmiting}
-                    title="Confirm"
-                    btnWidth={170}
-                    btnHeight={36}
-                    type="submit"
-                    callback={handleSubmit}/>
+                    <CustomButton
+                        isPending={isSubmiting}
+                        children="Confirm"
+                        btnWidth={170}
+                        btnHeight={36}
+                        icon="submit"
+                        type='primary'
+                        callback={handleSubmit}
+                        className={`btn-primary`} />
                 </div>
             </form>
     </UseModal>

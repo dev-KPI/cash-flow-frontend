@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { invites } from "../DesktopNotifications/invites";
 //UI
 import classes from './MobileNotifications.module.css';
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import RejectButton from "@components/Buttons/RejectButton/RejectButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 
@@ -33,17 +33,17 @@ const MobileNotifications: FC = ({}) => {
                     {el.group}</Link>
                 </p>
                 <div className={classes.buttonGroup}>
-                    <ConfirmButton 
-                    btnWidth={60}
-                    btnHeight={25}
-                    titleFontWeight={400}
-                    type="none" 
-                    isPending={false}
-                    title="Accept"
-                    callback={()=>{}}/>
+                    <CustomButton 
+                        btnWidth={60}
+                        btnHeight={25}
+                        isPending={false}
+                        callback={() => { }}
+                        children="Accept"
+                        icon="none"
+                        type='primary'/>
                     <RejectButton 
-                    title="Reject"
-                    RejectHandler={()=>{}}/>
+                        title="Reject"
+                        RejectHandler={()=>{}}/>
                 </div>
             </form>
         </li>)

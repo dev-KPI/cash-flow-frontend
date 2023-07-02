@@ -107,5 +107,48 @@
     font-weight: 600;
     composes: largeItemTitle from "@styles/style.css";
     color: var(--main-green);
+
+    transition: all .1s ease;
 }
 
+.membersLink:hover {
+    filter: brightness(0.8);
+}
+
+@media only screen and (max-width: 1440px) {
+    .grid {
+        max-width: 1090px;
+        gap: 20px;
+        grid-template-columns: repeat(2, 1fr)
+    }
+    .search {
+        display: none;
+    }
+
+    .grid__topleft,
+    .grid__operation,
+    .grid__topright {
+        gap: 20px;
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    .grid {
+        margin-top: 20px;
+    }
+    .header{
+        margin-top: 14px;
+        height: 80px;
+    }
+    .grid {
+        grid-template-columns: minmax(0,500px)
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    
+    .grid__operation{
+        flex-direction: column;
+    }
+}

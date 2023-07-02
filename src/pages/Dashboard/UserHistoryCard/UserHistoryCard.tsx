@@ -44,7 +44,7 @@ const UserHistoryCard: FC = () => {
             const dateA = new Date(a.time).getTime();
             const dateB = new Date(b.time).getTime();
             return dateA - dateB;
-        })).slice(0, 8)
+        }))
     }
 
     const getRecentActivities = () => {
@@ -66,17 +66,29 @@ const UserHistoryCard: FC = () => {
             {isPageLoading ? <UserHistoryCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Recent Activity</h3>
-                    <ul>
-                        {getRecentActivities()}
+                    <ul style={{ flex: getRecentActivities().length === 0 ? '0' : '1 0  auto'}}>
+                        {getRecentActivities().slice(0,8)}
                     </ul>
-                    <div key='239k23' className={classes.ViewMore}>
-                        <Link to={'/history'}>
-                            <div className={classes.ViewMore__inner}>
-                                <p className={classes.ViewMore__title}>View More</p>
-                                <ArrowRight className={classes.ArrowRight} />
+                    {getRecentActivities().length > 8 ?
+                        <div key='239k23' className={classes.ViewMore}>
+                            <Link to={'/history'}>
+                                <div className={classes.ViewMore__inner}>
+                                    <p className={classes.ViewMore__title}>View More</p>
+                                    <ArrowRight className={classes.ArrowRight} />
+                                </div>
+                            </Link>
+                        </div>
+                        : null
+                    }
+                    {
+                        getRecentActivities().length === 0 ?
+                            <div className={classes.emptyList}>
+                                <i className="bi bi-clock-history"></i>
+                                <p className={classes.emptyTitle}>Activity list is empty!</p>
                             </div>
-                        </Link>
-                    </div>
+                            :
+                            null
+                    }
                 </div>
             }
         </div>

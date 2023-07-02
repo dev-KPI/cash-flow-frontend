@@ -2,6 +2,8 @@ import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import React, { FC } from "react"
 import ContentLoader, { IContentLoaderProps } from "react-content-loader"
 
+//UI
+import classes from './GraphCard.module.css'
 
 const getYScale = () => {
     let res = [];
@@ -61,6 +63,7 @@ const GraphCardLoader: FC<IContentLoaderProps> = () => {
             backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
             foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
             preserveAspectRatio="none"
+            className={classes.loader}
         >
             <rect x="32" y="24" rx="4" ry="4" width="100" height="26" />
             <rect x="32" y="55" rx="4" ry="4" width="130" height="12" />

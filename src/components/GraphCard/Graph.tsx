@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode
 
 //logic
 import DateService from '@services/DateService/DateService';
+import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 //UI
 import classes from './GraphCard.module.css'
 import { Bar, Chart } from "react-chartjs-2";
@@ -15,6 +16,7 @@ import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
+
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -176,9 +178,9 @@ const Graph: FC<IGraphProps> = ({data}) => {
                     callback: (value: string | number, index: number, ticks: Tick[]): string => {
                         const resValue = +(value);
                         if (window.innerWidth < 440 && resValue >= 1000) {
-                            return resValue / 1000 + 'k$'
+                            return numberWithCommas(resValue / 1000)  + 'k$'
                         }
-                        return value + '$';
+                        return numberWithCommas(resValue) + '$';
                     }
                 },
             }
