@@ -58,7 +58,7 @@ const UserHistoryCard: FC = () => {
                 amount={el.amount}
                 time={el.time}></RecentOperationDashboardCard>
         )
-        return []
+        return res
     }
 
     return (<>

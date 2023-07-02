@@ -61,7 +61,7 @@ const GroupHistoryCard: FC = () => {
                 amount={el.amount}
                 time={el.time}></RecentOperationGroupCard>
         ) 
-        return []
+        return res
     }
 
     return (<>

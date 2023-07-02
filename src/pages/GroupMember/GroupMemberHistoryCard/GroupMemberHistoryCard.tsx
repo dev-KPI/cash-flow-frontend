@@ -71,7 +71,7 @@ const GroupHistoryCard: FC = () => {
                     time={el.time}></RecentOperationGroupCard>
             )
         }
-        return []
+        return res
     }
 
     const getHistory = useCallback(() => {
