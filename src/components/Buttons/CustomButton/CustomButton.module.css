@@ -27,7 +27,7 @@
     background: none;
 }
 
-.btnpPrimary.outline {
+.btnPrimary.outline {
     border: 1px solid var(--main-green);
     color: var(--main-green);
 }
