@@ -8,72 +8,74 @@
 
 .CategoriesNav {
     width: 100%;
-    margin-top: 38px;
-    border-bottom: 1px solid var(--borderInput);
+    
 }
 
-.NavWrapper {
-    max-width: 1515px;
-    height: 60px;
-}
 
 .line {
     width: 100%;
     border-bottom: 1px solid var(--borderInput);
 }
 
-.navbarUl {
+.NavWrapper {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    margin-top: 38px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--borderInput);
 }
 
-.navbarUl li {
+.NavWrapper li {
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: flex-start;
 }
 
-.navbarUl h4 {
+.NavWrapper h4 {
     margin-left: 10px;
 }
+.NavWrapper input[type="radio"] {
+    display: none;
+}
+.groupTitle {
+    composes: largeText from '@styles/style.css';
+    white-space: nowrap;
 
-.navbarUl a {
-    width: 100%;
-    height: 100%;
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 39px;
-    color: var(--main-text);
-    opacity: .5;
-    transition: all .1s ease-in-out;
+    /* overflow: hidden;
+    width: 150px;
+    text-overflow: ellipsis;
+     */
+    flex: 1;
+    padding-left: 15px;
+
+    opacity: 0.7;
+    transition: all .1s ease;   
 }
 
-.navbarUl a:hover {
-    color: var(--main-green);
+.inputItem:checked + label {
+    position: relative;
+    color: var(--main-text);
+    opacity: 1;
+}
+.NavWrapper label:hover {
+    opacity: 1;
 }
 
 @media (hover: none) {
-    .navbarUl a:hover {
+    .NavWrapper button:hover {
         color: var(--main-text);
     }
 }
 
-.navbarUl .active {
-    position: relative;
-    color: var(--main-text);
-    opacity: 1;
-    transition: .2s ease-in-out;
-}
-
-.navbarUl .active::after {
+.inputItem:checked+label::after {
+    display: block;
     position: absolute;
     content: "";
-    bottom: 0;
+    bottom: -19px;
     left: 0;
-    top: 59px;
     box-shadow: 0px 0px 8px var(--main-green);
     right: 0;
     z-index: 100;
@@ -108,7 +110,6 @@
 
 .addCategory .upSide {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
 }
 
@@ -119,12 +120,15 @@
 }
 
 .CategoriesBox {
-    padding: 12px 12px;
+    padding: 12px;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 15px;
-    row-gap: 15px;
+    gap: 15px;
+}
+
+.groupMoreButton{
+    margin-left: 20px;
 }
 
 @media only screen and (max-width: 1440px) {
