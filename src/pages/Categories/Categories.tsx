@@ -1,4 +1,4 @@
-import React, { FC, useState, ReactNode, Fragment, useCallback, useEffect, useMemo } from "react";
+import React, { FC, useState, ReactNode, Fragment, useCallback, useEffect, useMemo, useRef } from "react";
 import { categoriesObj } from './categoriesObj';
 
 import uuid from 'react-uuid';
@@ -10,6 +10,7 @@ import classes from './Categories.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import CategoriesCard from "./CategoriesCard/CategoriesCard";
 import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal";
+import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 
 
 
@@ -32,7 +33,7 @@ const Groups = [
     },
     {
         "id": 2,
-        "title": "small",
+        "title": "group",
         "groups": {
             "color_code": "#FF6600",
             "icon_url": "bi bi-badge-vr"
@@ -71,10 +72,10 @@ const Categories: FC = () => {
     const [categories, setCategories] = useState<ICategory[]>([])
     const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [isCategoryModal = false, setIsCategoryModal] = useState<boolean>();
-    
+    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
+
     const { categoriesJson } = categoriesObj;
     
-
     const initializeCategories = useCallback(() => {
         const newCategories = categoriesJson.find(item => item.id === selectedGroup)?.categories
         if (newCategories) {
@@ -85,6 +86,7 @@ const Categories: FC = () => {
     useEffect(() => {
         initializeCategories()
     }, [initializeCategories])
+    
     const openModal = () => {
         setIsCategoryModal(!isCategoryModal)
     }
@@ -94,10 +96,11 @@ const Categories: FC = () => {
 
     const getGroups = () => {
         let res: ReactNode[] = [];
-        Groups.slice(0,5).map((el, i) => {
+        let groupsItems: ReactNode[] = [];
+        Groups.map((el, i) => {
             const title = el.title.length > 12 ? el.title.slice(0, 9).trim() + "..." : el.title
-            return res.push(
-                <Fragment key={'12sf3' + i}>
+            return groupsItems.push(
+                <div key={'12sf3' + i} className={classes.groupNavItem}>
                     <input
                         type='radio'
                         value={el.id}
@@ -110,13 +113,24 @@ const Categories: FC = () => {
                         htmlFor={`group-item-${i}`}
                         className={classes.groupTitle}
                     >{title}</label>
-                </Fragment>
+                </div>
             )}
         )
+        res.push(groupsItems.slice(0,4))
         if (Groups.length > 4) {
+            res.push(<SmallModal
+                title={'Groups'}
+                active={isGroupModal}
+                setActive={setIsGroupModal}
+                className={classes.groupsModalNav}
+                children={ 
+                    <div className={classes.groupModalWrapper}>
+                        {groupsItems.slice(4)} 
+                </div>
+                } />)
             res.push(<CustomButton
                 isPending={false}
-                callback={() => console.log(1)}
+                callback={()=>setIsGroupModal(true)}
                 icon="none"
                 type="primary"
                 children="View More"
@@ -150,7 +164,7 @@ const Categories: FC = () => {
         <main id='CategoriesPage'>
             <div className={classes.CategoriesPage__container}>
                 <h3 className={classes.pageTitle}>Categories</h3>
-                <nav className={classes.NavWrapper}>
+                <nav className={classes.groupsNav}>
                     {getGroups()}
                 </nav>
                 <div className={classes.addCategory}>
