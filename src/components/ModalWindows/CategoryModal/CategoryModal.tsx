@@ -106,7 +106,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen = false, s
                     </div>
                 </div>
                 <div className={classes.line}></div>
-                <div className={classes.modalBody}>
+                <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameCategory}>
                         <label className={classes.title} htmlFor="categoryName">Please сreate new category:</label>
                         <div className={classes.inputWrapper}>

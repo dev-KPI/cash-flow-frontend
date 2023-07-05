@@ -104,7 +104,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
                     </div>
                 </div>
                 <div className={classes.line}></div>
-                <div className={classes.modalBody}>
+                <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameGroup}>
                         <label className={classes.title} htmlFor="groupName">Please сreate new group:</label>
                         <div className={classes.inputWrapper}>
