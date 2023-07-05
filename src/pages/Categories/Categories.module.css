@@ -14,17 +14,21 @@
     width: 100%;
     border-bottom: 1px solid var(--border-input);
 }
+.groupsNavWrapper{
+    display: flex;
+    align-items: center;
+    
+}
 
 .groupsNav {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    margin-top: 38px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--border-input);
-
+    flex: 1;
     position: relative;
+    margin-top: 38px;
+    /* padding-bottom: 18px; */
+    border-bottom: 1px solid var(--border-input);
 }
 
 .groupsNav .inputItem{
@@ -33,18 +37,19 @@
 
 .groupNavItem{
     flex: 1;
+    min-width: 0px;
 }
 .groupTitle {
     composes: largeText from '@styles/style.css';
     display: block;
     width: 100%;
+    height: 60px;
     padding-left: 15px;
 
     white-space: nowrap;
-    /* overflow: hidden;
-    width: 150px;
+    overflow: hidden;
     text-overflow: ellipsis;
-    */
+   
 
     opacity: 0.7;
     transition: all .1s ease;
@@ -69,7 +74,7 @@
 .inputItem:checked+label::after {
     position: absolute;
     content: "";
-    bottom: -19px;
+    bottom:0px;
     left: 0;
     box-shadow: 0px 0px 8px var(--main-green);
     right: 0;
@@ -118,7 +123,35 @@
 }
 
 .groupMoreButton {
+    /* display: inline-block; */
     margin-left: 20px;
+}
+
+.moreBtn {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    gap: 3px;
+    width: 18px;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.moreBtn:hover {
+    transition: all .2s ease;
+}
+
+.moreBtn>div {
+    background-color: var(--main-text);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+}
+
+.moreBtn:hover>div {
+    background-color: var(--main-green);
 }
 
 .addCategory {
@@ -131,6 +164,7 @@
 .addCategory .upSide {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .CategoryTitle {
@@ -160,6 +194,11 @@
 
     .CategoriesPage__container {
         margin-top: 14px;
+    }
+
+    .groupTitle{
+        padding-left: 5px;
+        height: 40px;
     }
 }
 

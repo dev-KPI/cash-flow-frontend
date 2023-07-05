@@ -41,7 +41,7 @@ const Groups = [
     },
     {
         "id": 3,
-        "title": "-_-",
+        "title": "-_-qwe qweqw eqweq",
         "groups": {
             "color_code": "#FF6600",
             "icon_url": "bi bi-badge-vr"
@@ -73,7 +73,7 @@ const Categories: FC = () => {
     const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [isCategoryModal = false, setIsCategoryModal] = useState<boolean>();
     const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
-
+    const buttonRef = useRef(null);
     const { categoriesJson } = categoriesObj;
     
     const initializeCategories = useCallback(() => {
@@ -93,12 +93,15 @@ const Categories: FC = () => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
         setSelectedGroup(+event.target.value)
     }
+    const handleGroupModalOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+        if (!isGroupModal)
+            setIsGroupModal(true)
+    }
 
     const getGroups = () => {
         let res: ReactNode[] = [];
         let groupsItems: ReactNode[] = [];
         Groups.map((el, i) => {
-            const title = el.title.length > 12 ? el.title.slice(0, 9).trim() + "..." : el.title
             return groupsItems.push(
                 <div key={'12sf3' + i} className={classes.groupNavItem}>
                     <input
@@ -112,7 +115,7 @@ const Categories: FC = () => {
                     <label
                         htmlFor={`group-item-${i}`}
                         className={classes.groupTitle}
-                    >{title}</label>
+                    >{el.title}</label>
                 </div>
             )}
         )
@@ -123,20 +126,30 @@ const Categories: FC = () => {
                 active={isGroupModal}
                 setActive={setIsGroupModal}
                 className={classes.groupsModalNav}
-                children={ 
+                children={
                     <div className={classes.groupModalWrapper}>
-                        {groupsItems.slice(4)} 
-                </div>
-                } />)
-            res.push(<CustomButton
-                isPending={false}
-                callback={()=>setIsGroupModal(true)}
-                icon="none"
-                type="primary"
-                children="View More"
-                // disableScale={true}
-                className={classes.groupMoreButton}
+                        {groupsItems.slice(4)}
+                    </div>
+                }
+                buttonRef={buttonRef}
             />)
+            res.push(
+                <button className={classes.moreBtn}
+                    ref={buttonRef}
+                    onClick={handleGroupModalOpen}>
+                <div></div>
+                <div></div>
+                <div></div>
+            </button>)
+            // res.push( <CustomButton
+            //     isPending={false}
+            //     callback={() => setIsGroupModal(true)}
+            //     icon="none"
+            //     type="primary"
+            //     children="View More"
+            //     // disableScale={true}
+            //     className={classes.groupMoreButton}
+            // />)
         }
         return res;
     }

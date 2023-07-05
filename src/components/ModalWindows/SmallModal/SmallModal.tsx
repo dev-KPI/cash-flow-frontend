@@ -9,12 +9,19 @@ interface ISmallModalProps {
     setActive: Dispatch<SetStateAction<boolean>>;
     children: ReactNode,
     title: string;
-    className: string
+    className: string,
+    buttonRef?: React.RefObject<HTMLElement>
 }
-const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, className, title }) => {
+const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, className, title, buttonRef }) => {
     const ref = useRef(null);
-    useOnClickOutside(ref, () => {
-        setActive(false)
+    useOnClickOutside(ref, (event) => {
+        if (buttonRef) {
+            if (buttonRef.current && !buttonRef.current.contains(event.target as Node))
+                setActive(false)
+        } else {
+            setActive(false)
+        }
+        
     })
     return (
         <div
@@ -23,8 +30,8 @@ const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, classNa
             ref={ref}>
             <div className={classes.modalHeader}>
                 <h5 className={classes.title}>{title}</h5>
-                    <CloseButton size={24} closeHandler={() => { setActive(false) }} />
-                </div>
+                <CloseButton size={24} closeHandler={() => { setActive(false) }} />
+            </div>
             <div className={classes.modal__content}>
                 {children}
             </div>
