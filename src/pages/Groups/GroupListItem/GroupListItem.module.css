@@ -116,10 +116,11 @@
     align-items: center;
     justify-content: center;
     transition: all .2s ease;
+    cursor: pointer;
 }
 .moreBtn:hover{
-    border-radius: 4px;
-    scale: 1.2;
+    /* border-radius: 4px; */
+    /* scale: 1.2; */
     transition: all .2s ease;
 }
 .moreBtn > div {
@@ -127,6 +128,9 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
+}
+.moreBtn:hover > div{
+    background-color: var(--main-green);
 }
 
 @media only screen and (max-width: 768px) {
