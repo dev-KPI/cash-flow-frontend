@@ -39,7 +39,7 @@
 
 .content{
     composes: cardComponent from "@styles/style.css";
-    box-shadow: 0px 2px 8px var(--borderInput);
+    box-shadow: 0px 2px 8px var(--border-input);
     display: block;
     position: absolute;
     width: 100%;
@@ -79,7 +79,7 @@
     color: var(--main-text)
 }
 .options li:hover{
-    background-color: var(--itemHover);
+    background-color: var(--item-hover);
 } 
 
 .member{

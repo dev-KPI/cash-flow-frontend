@@ -43,7 +43,7 @@
 
 .recentOperations__table tbody td {
     height: 80px;
-    border-bottom: 1px solid var(--borderInput);
+    border-bottom: 1px solid var(--border-input);
     vertical-align: middle;
     padding: 0px 30px;
 }

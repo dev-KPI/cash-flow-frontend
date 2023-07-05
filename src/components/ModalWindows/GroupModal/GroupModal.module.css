@@ -43,7 +43,7 @@
     padding: 16px 0px;
     display: flex;
     flex-wrap: wrap;
-    background-color: var(--colorPicker);
+    background-color: var(--color-picker);
 }
 .pickBody > div {
     margin-left: 12px;

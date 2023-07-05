@@ -12,7 +12,7 @@
 
 .line {
     width: 100%;
-    border-bottom: 1px solid var(--borderInput);
+    border-bottom: 1px solid var(--border-input);
 }
 
 .groupsNav {
@@ -22,7 +22,7 @@
 
     margin-top: 38px;
     padding-bottom: 18px;
-    border-bottom: 1px solid var(--borderInput);
+    border-bottom: 1px solid var(--border-input);
 
     position: relative;
 }
@@ -110,7 +110,7 @@
 .groupsModalNav .inputItem:checked+.groupTitle,
 .groupsModalNav .groupTitle:hover {
     background: var(--main-text);
-    color: var(--btnText);
+    color: var(--filter-btn);
 }
 
 .groupsModalNav .inputItem:checked+label::after {

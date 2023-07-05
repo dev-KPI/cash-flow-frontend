@@ -41,14 +41,14 @@
 .btnPrimary.outline:focus,
 .btnPrimary.outline:active {
     background: var(--main-green);
-    color: var(--btnText);
+    color: var(--btn-text);
 }
 
 .btnDanger.outline:hover,
 .btnDanger.outline:focus,
 .btnDanger.outline:active {
     background: var(--main-red);
-    color: var(--btnText);
+    color: var(--btn-text);
 }
 
 .btnWhite.outline {
@@ -60,7 +60,7 @@
 .btnWhite.outline:focus,
 .btnWhite.outline:active {
     background: var(--main-text);
-    color: var(--btnText);
+    color: var(--filter-btn);
 }
 
 .wrapperbtn{
@@ -69,11 +69,11 @@
     gap: 8px;
 }
 .CustomButton i {
-    /* color: var(--btnText); */
+    /* color: var(--btn-text); */
     font-size: 16px;
 }
 .CustomButton {
-    color: var(--btnText);
+    color: var(--btn-text);
     font-weight: 700;
     font-size: 12px;
     line-height: 18px;
