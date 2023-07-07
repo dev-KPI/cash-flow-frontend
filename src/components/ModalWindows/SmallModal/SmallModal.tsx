@@ -13,6 +13,7 @@ interface ISmallModalProps {
     buttonRef?: React.RefObject<HTMLElement>
 }
 const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, className, title, buttonRef }) => {
+    const [isVisible, setIsVisible] = useState<boolean>(active)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const ref = useRef(null);
     useOnClickOutside(ref, (event) => {
@@ -24,32 +25,25 @@ const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, classNa
         }
     })
     useEffect(() => {
-        if (!active)
-            setIsFadeOut(true) 
-    }, [active])
-    // const handleButtonClick = (newVisibility: boolean) => {
-    //     if (newVisibility) {
-    //         setActive(true)
-    //     } else {
-    //         setIsFadeOut(true)
-    //     }
-    // }
-    const handleAnimationEnd = (e: React.AnimationEvent<HTMLDivElement>) => {
-        if (e.animationName === 'fadeOut') { 
-            setActive(false)
+        if (active) {
+            setIsVisible(true);
             setIsFadeOut(false)
-            console.log(1);
+        } else {
+            setIsFadeOut(true);
         }
-    }
-    const handleCloseModal = () => { 
-        // if (active)
-            setActive(false)
+    }, [active])
+
+    const handleAnimationEnd = (e: React.AnimationEvent<HTMLDivElement>) => {
+        if (e.animationName.includes('fadeOut')) { 
+            setIsVisible(false)
+            setIsFadeOut(false)
+        }
     }
     return (
         <>
-            {active && 
+            {isVisible && 
                 <div
-                    className={`${className ? className : ''} + ${isFadeOut ? `${classes.modal} ${classes.cardFadeOut}` : classes.modal}`}
+                    className={`${className ? className : ''}  ${isFadeOut ? `${classes.modal} ${classes.cardFadeOut}` : classes.modal}`}
                     onClick={(e) => e.stopPropagation()}
                     onAnimationEnd={handleAnimationEnd}
                     ref={ref}>

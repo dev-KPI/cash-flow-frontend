@@ -94,8 +94,7 @@ const Categories: FC = () => {
         setSelectedGroup(+event.target.value)
     }
     const handleGroupModalOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-        if (!isGroupModal)
-            setIsGroupModal(true)
+        setIsGroupModal(!isGroupModal)
     }
 
     const getGroups = () => {

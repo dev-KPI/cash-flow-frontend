@@ -4,19 +4,10 @@
     position: absolute;
     top: 25px;
     right: 25px;
-    /* visibility: hidden; */
     transition: 0.5s;
     z-index: 9;
 
     animation: fadeIn 0.5s forwards;
-    /* opacity: 0 */
-}
-
-.modal.active{
-    visibility: visible;
-    animation: fadeOut 0.5s forwards;
-    /* opacity: 1 */
-
 }
 
 .cardFadeOut {
