@@ -68,8 +68,8 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({isActive, setIsActive,
         buttonRef={buttonRef}
         children={
             <>
-                <ul>
-                {getInvites(invites).slice(0,6)}
+                <ul className={classes.inviteList}>
+                {getInvites(invites)}
                 </ul>
                 <div key='239k23' className={classes.ViewMore}>
                     <Link 
