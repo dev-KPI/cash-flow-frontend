@@ -1,29 +1,28 @@
-import React, {FC, useCallback, MouseEvent, useState} from 'react';
+import React, {FC, useCallback, MouseEvent, useState, useRef, ReactNode} from 'react';
 
 //UI
 import classes from './PcHeader.module.css'
 import Logo from "@assets/Header/logo.svg";
 import ProfileIcon from "@assets/user-icon.svg"
 import {ThemeButton} from '@components/ThemeButtons/ThemeButtons';
-import DesktopNotifications from '@components/Header/Notifications/DesktopNotifications/DesktopNotifications';
+
 
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import { breadcrumbs } from './breadcrumbs';
 
+import DesktopNotifications from '@components/Header/Notifications/DesktopNotifications/DesktopNotifications';
+
 
 const HeaderSite: FC = () => {
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
+    const buttonRef = useRef(null);
 
-    const [isNotificationsOpen = false, setIsNotificationsOpen] = useState<boolean>();
-
-    const getNotifications = (e: MouseEvent<HTMLButtonElement>) => {
-        setIsNotificationsOpen(true)
-    }
     return (<>
-        {isNotificationsOpen && 
-        <DesktopNotifications 
-        closeNotifications={() => setIsNotificationsOpen(false)}
-        animation={isNotificationsOpen}/>}
-
+        <DesktopNotifications
+            isActive={isNotificationsOpen}
+            setIsActive={setIsNotificationsOpen}
+            buttonRef={buttonRef}
+        />
         <header className={classes.header}>
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
@@ -33,7 +32,11 @@ const HeaderSite: FC = () => {
                     </div>
                     <div className={classes.header__menu}>
                         <ThemeButton />
-                        <button onClick={e => getNotifications(e)} className={classes.header__notifications}>
+                        <button 
+                        onClick={e => setIsNotificationsOpen(!isNotificationsOpen) } 
+                        className={classes.header__notifications}
+                        ref={buttonRef}
+                        >
                             <i className="bi bi-bell"></i>
                         </button>
                     </div>

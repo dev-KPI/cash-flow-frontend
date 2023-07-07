@@ -11,8 +11,9 @@ interface ISmallModalProps {
     title: string;
     className: string,
     buttonRef?: React.RefObject<HTMLElement>
+    disableHeader?: boolean
 }
-const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, className, title, buttonRef }) => {
+const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, className, title, buttonRef, disableHeader = false }) => {
     const [isVisible, setIsVisible] = useState<boolean>(active)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const ref = useRef(null);
@@ -47,10 +48,11 @@ const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, classNa
                     onClick={(e) => e.stopPropagation()}
                     onAnimationEnd={handleAnimationEnd}
                     ref={ref}>
+                    {!disableHeader && 
                     <div className={classes.modalHeader}>
                         <h5 className={classes.title}>{title}</h5>
                         <CloseButton size={24} closeHandler={() => { setActive(false) }} />
-                    </div>
+                    </div>}
                     <div className={classes.modal__content}>
                         {children}
                     </div>

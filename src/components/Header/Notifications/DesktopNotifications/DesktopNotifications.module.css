@@ -1,12 +1,8 @@
-.DesktopNotifications{
-    width: 440px;
-    height: 460px;
-    position: absolute;
-    padding: 16px;
+.notficationsModal{
     top: 100px;
     right: 260px;
-    z-index: 9999;
-    composes: cardComponent from "@styles/style.css"
+    width: 440px;
+    height: 460px;
 }
 .TitleInvitesBlock{
     font-size: 20px;
@@ -98,5 +94,11 @@
     100% {
         opacity: 0;
         transform: translateY(-50px);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .notficationsModal{
+        display: none;
     }
 }
