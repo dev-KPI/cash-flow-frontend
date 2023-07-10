@@ -13,20 +13,20 @@
 }
 .tableTitle {
     font-weight: 600;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: 21px;
+    line-height: 27px;
     color: var(--main-text);
 }
 
 .tableText {
     font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 18px;
+    line-height: 22px;
     color: var(--main-text);
 }
 
 .recentOperations__table {
-    margin-top: 38px;
+    margin-top: 30px;
     width: 100%;
     padding-top: 30px;
     composes: cardComponent from "@styles/style.css";
@@ -42,35 +42,50 @@
 }
 
 .recentOperations__table tbody td {
-    height: 80px;
+    height: 60px;
     border-bottom: 1px solid var(--border-input);
     vertical-align: middle;
     padding: 0px 30px;
     text-align: center;
+
+    width: 200px
+}
+
+.recentOperations__table tbody td:last-child{
+    width: 120px;
 }
 
 .recentOperations__table tbody tr:last-child td {
     border: none;
 }
-
+.amount{
+    width: 70px;
+}
 .itemTitle {
     display: inline-block;
     margin-left: 8px;
 }
-
+.wrapItem{
+    white-space: nowrap;
+}
+.headerHover{
+    cursor: pointer;
+    user-select: none;
+}
+.counter{
+    width: 160px;
+}
+#sortBtn{
+    padding-left: 5px;
+}
 /* pagination */
 
-.paginationWrapper {
-    display: flex;
-    justify-content: flex-end;
-    padding: 45px;
-}
 .pagination{
     display: flex;
     align-items: center;
     gap: 50px;
     justify-content: flex-end;
-    padding: 45px;
+    padding: 30px;
 
     font-weight: 500;
     font-size: 24px;
@@ -118,7 +133,6 @@
 
 @media only screen and (max-width: 1028px) {
     .recentOperations__table tbody td {
-        height: 60px;
         padding: 0 15px;
     }
 
@@ -141,6 +155,13 @@
     .page__container {
         margin-top: 14px;
     }
+    .recentOperations__table tbody td {
+        width: 150px;
+        padding: 0 7px;
+    }
+    .recentOperations__table tbody td:last-child {
+        width: 50px;
+    }
 
     .recentOperations__table {
         margin-top: 20px;
@@ -156,12 +177,19 @@
         font-size: 14px;
         line-height: 16px;
     }
+    .counter {
+        width: 120px;
+    }
 
-    .recentOperations__table thead :nth-child(4) {
+    #sortBtn {
+        padding-left: 0px;
+    }
+
+    .recentOperations__table thead :nth-child(3) {
         display: none;
     }
 
-    .recentOperations__table tbody td:nth-child(4) {
+    .recentOperations__table tbody td:nth-child(3) {
         display: none;
     } 
     /* pagination */

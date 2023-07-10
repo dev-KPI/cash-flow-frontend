@@ -282,8 +282,8 @@ export const HistoryObj = JSON.parse(JSON.stringify({
         },
         {
             "id": 15,
-            "time": "2023-04-16T13:26:59",
-            "description": "Groceries",
+            "time": "2022-04-16T13:26:59",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             "amount": 3122.0,
             "category_group": {
                 "group": {
@@ -302,7 +302,7 @@ export const HistoryObj = JSON.parse(JSON.stringify({
         },
         {
             "id": 16,
-            "time": "2023-04-16T13:26:59",
+            "time": "2021-04-16T13:26:59",
             "description": "Groceries",
             "amount": 3122.0,
             "category_group": {

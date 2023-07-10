@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react'
+import React, {FC, useState} from 'react';
 
 //UI
 import classes from './History.module.css';
@@ -13,11 +13,12 @@ import {
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
+    getSortedRowModel,
+    SortingState,
     useReactTable,
 } from '@tanstack/react-table'
 import Light from '@components/Light/Light';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
-
 
 interface Transaction {
     id: number;
@@ -36,29 +37,30 @@ const columnHelper = createColumnHelper<Transaction>()
 const columns = [
     columnHelper.accessor('description', {
         header: () =>'Description',
-        cell: info => info.getValue(),
+        cell: info => info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue(),
     }),
     columnHelper.accessor('category_group.category.title', {
         header: () => 'Category',
-        cell: info => <>
+        cell: info => info.renderValue() ? <div className={classes.wrapItem}>
             <Light
                 className={classes.dotLight}
                 style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
                 color={info.row.original.category_group?.category?.color || 'var(--main-green)'}
                 type='solid' />
-            <p className={classes.itemTitle}>{info.getValue() ?? '-'}</p>
-        </>,
+            <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
+        </div> : '-',
     }),
     columnHelper.accessor('category_group.group.title', {
         header: () => 'Group',
-        cell: info => <>
+        cell: info => info.renderValue() ? <div className={classes.wrapItem}>
             <Light
                 className={classes.dotLight}
                 style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
                 color={info.row.original.category_group?.group?.color || 'var(--main-green)'}
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue() ?? '-'}</p>
-        </>,
+        </div> :
+            '-'
     }),
     columnHelper.accessor('time', {
         header: () => 'Time',
@@ -66,8 +68,11 @@ const columns = [
     }),
     columnHelper.accessor('amount', {
         header: () => 'Amount',
+        meta: {
+            width: '100px'
+        },
         cell: info =>
-            <p style={{ color: info.row.original.type === 'expense' ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.type === 'expense' ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
+            <p className={classes.amount} style={{ color: info.row.original.type === 'expense' ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.type === 'expense' ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
     }),
 ]
 const expensesDTO: Transaction[] = [...HistoryObj.expenses.map((el: Object) =>
@@ -85,17 +90,23 @@ const getMixedHistory = () => {
 }
 
  const History:React.FC = () => {
-    const [data, setData] = useState(() => [...getMixedHistory()])
+     const [data, setData] = useState(() => [...getMixedHistory()])
+     const [sorting, setSorting] = React.useState<SortingState>([]) 
     const rerender = React.useReducer(() => ({}), {})[1]
 
     const table = useReactTable({
         data,
         columns,
+        state: {
+            sorting
+        },
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         initialState: {
             pagination: {
-                pageSize: 6
+                pageSize: 8
             }
         }
     })
@@ -113,13 +124,26 @@ const getMixedHistory = () => {
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map(header => (
-                                    <th key={header.id}>
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
+                                    <th key={header.id} colSpan={header.colSpan}>
+                                        {header.isPlaceholder ? null : (
+                                            <div
+                                                {...{
+                                                    className: header.column.getCanSort()
+                                                        ? classes.headerHover
+                                                        : '',
+                                                    onClick: header.column.getToggleSortingHandler(),
+                                                }}
+                                            >
+                                                {flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )}
+                                                {{
+                                                    asc: <i id={classes.sortBtn} className="bi bi-caret-up-fill" style={{ fontSize: 16, position: 'absolute'}}></i>,
+                                                    desc: <i id={classes.sortBtn} className="bi bi-caret-down-fill" style={{ fontSize: 16, position: 'absolute'}}></i>
+                                                }[header.column.getIsSorted() as string] ?? null }
+                                            </div>
+                                        )}
                                     </th>
                                 ))}
                             </tr>
@@ -143,7 +167,6 @@ const getMixedHistory = () => {
                                         <select
                                             value={pageSize}
                                             className={classes.select}
-                                            defaultValue={6}
                                             onChange={e => {
                                                 table.setPageSize(Number(e.target.value))
                                             }}
