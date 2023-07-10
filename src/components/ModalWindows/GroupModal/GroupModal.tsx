@@ -130,27 +130,29 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
                             <AccordionTab title="Select color" choosedItem={light}>
                                 <div className={classes.pickBody}>
                                     {
-                                        colors.map(el => 
-                                        <div 
-                                        onClick={(e) => changeColor(e, el)}
-                                        style={{width: '24px', height: '24px', 
-                                        borderRadius: '100%', backgroundColor: el, 
-                                        cursor: 'pointer'}}></div>)
+                                        colors.map( (el, i) => 
+                                            <div 
+                                                key={i}
+                                                onClick={(e) => changeColor(e, el)}
+                                                style={{width: '24px', height: '24px', 
+                                                borderRadius: '100%', backgroundColor: el, 
+                                                cursor: 'pointer'
+                                                }}>
+                                            </div>)
                                     }
                                 </div>
                             </AccordionTab>
                             <AccordionTab title="Select icon" choosedItem={iconDisplayed}>
                                 <div className={classes.pickBody}>
                                     {
-                                        icons.map(el => 
-                                        <div 
-                                        onClick={(e) => changeIcon(e, el)}
-                                        style={{fontSize: '24px', 
-                                        cursor: 'pointer'}}>
-                                            <i 
-                                            style={{color: 'var(--main-text)'}}
-                                            className={el}></i>
-                                        </div>)
+                                        icons.map((el,i) => 
+                                            <div 
+                                                key={i}
+                                                onClick={(e) => changeIcon(e, el)}
+                                                style={{fontSize: '24px', 
+                                                cursor: 'pointer'}}>
+                                                <i style={{color: 'var(--main-text)'}} className={el}></i>
+                                            </div>)
                                     }
                                 </div>
                             </AccordionTab>
