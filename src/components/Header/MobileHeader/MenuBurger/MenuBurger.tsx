@@ -12,6 +12,7 @@ import { ThemeButton } from "@components/ThemeButtons/ThemeButtons";
 //store
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
+import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
 
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
@@ -40,7 +41,10 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
             </div>
             <div className={classes.burgernav__account}>
                 <img alt="Avatar" src={Avatar} width="46px" height="46px" />
-                <h2 className={classes.title}>John Doe</h2>
+                <div className={classes.account__info}>
+                    <h2 className={classes.title}>John Doe</h2>
+                    <p className={classes.balance}>{numberWithCommas(4124)}$</p>
+                </div>
             </div>
             <div className={classes.burgernav__line}></div>
             <ul className={classes.burgernav__list}>

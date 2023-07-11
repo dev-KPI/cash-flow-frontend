@@ -8,95 +8,150 @@
 
 .CategoriesNav {
     width: 100%;
-    margin-top: 38px;
-    border-bottom: 1px solid var(--borderInput);
-}
-
-.NavWrapper {
-    max-width: 1515px;
-    height: 60px;
 }
 
 .line {
     width: 100%;
-    border-bottom: 1px solid var(--borderInput);
+    border-bottom: 1px solid var(--border-input);
+}
+.groupsNavWrapper{
+    display: flex;
+    align-items: center;
+    
 }
 
-.navbarUl {
+.groupsNav {
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex: 1;
+    position: relative;
+    margin-top: 38px;
+    /* padding-bottom: 18px; */
+    border-bottom: 1px solid var(--border-input);
 }
 
-.navbarUl li {
+.groupsNav .inputItem{
+    display: none;
+}
+
+.groupNavItem{
+    flex: 1;
+    min-width: 0px;
+}
+.groupTitle {
+    composes: largeText from '@styles/style.css';
+    display: block;
     width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: flex-start;
+    height: 60px;
+    padding-left: 15px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   
+
+    opacity: 0.7;
+    transition: all .1s ease;
+    cursor: pointer;   
 }
 
-.navbarUl h4 {
-    margin-left: 10px;
-}
-
-.navbarUl a {
-    width: 100%;
-    height: 100%;
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 39px;
+.inputItem:checked + .groupTitle {
+    position: relative;
     color: var(--main-text);
-    opacity: .5;
-    transition: all .1s ease-in-out;
+    opacity: 1;
 }
-
-.navbarUl a:hover {
-    color: var(--main-green);
+.groupsNav .groupTitle:hover {
+    opacity: 1;
 }
 
 @media (hover: none) {
-    .navbarUl a:hover {
+    .groupsNav button:hover {
         color: var(--main-text);
     }
 }
 
-.navbarUl .active {
-    position: relative;
-    color: var(--main-text);
-    opacity: 1;
-    transition: .2s ease-in-out;
-}
-
-.navbarUl .active::after {
+.inputItem:checked+label::after {
     position: absolute;
     content: "";
-    bottom: 0;
+    bottom:0px;
     left: 0;
-    top: 59px;
     box-shadow: 0px 0px 8px var(--main-green);
     right: 0;
-    z-index: 100;
     background-color: var(--main-green);
     height: 2px;
     border-radius: 2px;
     animation: activeLinkAfterAnimation .3s ease-in-out;
 }
 
-@keyframes activeLinkAfterAnimation {
-    from {
-        width: 2px;
-        opacity: 0;
-    }
-
-    to {
-        width: 100%;
-        opacity: 1;
-    }
+.groupModalWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.shadowLink {
-    text-shadow: 0px 0px 8px var(--main-text);
+.groupsModalNav .groupNavItem {
+    display: flex;
+    align-items: center;
+}
+
+.groupsModalNav .inputItem {
+    width: 0;
+    position: fixed;
+}
+
+.groupsModalNav .groupTitle {
+    border: 1px solid var(--main-text);
+    color: var(--main-text);
+
+    border-radius: 6px;
+    padding: 8px 40px 8px 14px;
+
+    font-size: 20px;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.groupsModalNav .inputItem:checked+.groupTitle,
+.groupsModalNav .groupTitle:hover {
+    background: var(--main-text);
+    color: var(--filter-btn);
+}
+
+.groupsModalNav .inputItem:checked+label::after {
+    height: 0;
+}
+
+.groupMoreButton {
+    /* display: inline-block; */
+    margin-left: 20px;
+}
+
+.moreBtn {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    gap: 3px;
+    width: 18px;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.moreBtn:hover {
+    transition: all .2s ease;
+}
+
+.moreBtn>div {
+    background-color: var(--main-text);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+}
+
+.moreBtn:hover>div {
+    background-color: var(--main-green);
 }
 
 .addCategory {
@@ -108,8 +163,8 @@
 
 .addCategory .upSide {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 
 .CategoryTitle {
@@ -119,12 +174,11 @@
 }
 
 .CategoriesBox {
-    padding: 12px 12px;
+    padding: 12px;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    column-gap: 15px;
-    row-gap: 15px;
+    gap: 15px;
 }
 
 @media only screen and (max-width: 1440px) {
@@ -140,5 +194,22 @@
 
     .CategoriesPage__container {
         margin-top: 14px;
+    }
+
+    .groupTitle{
+        padding-left: 5px;
+        height: 40px;
+    }
+}
+
+@keyframes activeLinkAfterAnimation {
+    from {
+        width: 2px;
+        opacity: 0;
+    }
+
+    to {
+        width: 100%;
+        opacity: 1;
     }
 }

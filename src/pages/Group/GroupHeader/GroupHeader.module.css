@@ -13,6 +13,9 @@
 
 .page__container {}
 
+.title{
+    white-space: nowrap;
+}
 .breadcrumbs {
     position: absolute;
     bottom: 0px;

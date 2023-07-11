@@ -1,17 +1,13 @@
-.DesktopNotifications{
-    width: 440px;
-    height: 460px;
-    position: absolute;
-    padding: 16px;
+.notficationsModal{
     top: 100px;
     right: 260px;
-    z-index: 9999;
-    composes: cardComponent from "@styles/style.css"
+    width: 456px;
+    height: 460px;
 }
-.TitleInvitesBlock{
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: var(--main-text);
+.inviteList{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 360px;
 }
 .inviteLi{
     width: 100%;
@@ -98,5 +94,11 @@
     100% {
         opacity: 0;
         transform: translateY(-50px);
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .notficationsModal{
+        display: none;
     }
 }

@@ -43,7 +43,7 @@ interface IAccordionProps {
     width?: number,
     children: ReactNode[]
 }
-const Accordion: FC<IAccordionProps> = ({width = 440, children}) => {
+const Accordion: FC<IAccordionProps> = ({width, children}) => {
     return (
         <ul 
         style={{

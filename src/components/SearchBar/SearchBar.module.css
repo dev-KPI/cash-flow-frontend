@@ -38,12 +38,14 @@
 }
 
 .content{
+    composes: cardComponent from "@styles/style.css";
+    box-shadow: 0px 2px 8px var(--border-input);
     display: block;
     position: absolute;
     width: 100%;
     padding: 16px;
-    composes: cardComponent from "@styles/style.css";
-    border-radius: 0 0 20px 20px;
+    
+    border-radius: 5px 5px 20px 20px;
 
     max-height: 250px;
     overflow-y: auto;
@@ -77,7 +79,7 @@
     color: var(--main-text)
 }
 .options li:hover{
-    background-color: var(--itemHover);
+    background-color: var(--item-hover);
 } 
 
 .member{

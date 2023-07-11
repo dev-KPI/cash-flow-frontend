@@ -1,18 +1,19 @@
-import React, {FC, MouseEvent, ReactNode, useState} from "react";
+import React, {FC, MouseEvent, ReactNode, useState, SetStateAction, Dispatch} from "react";
 
 //UI
 import classes from './DesktopNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
-import RejectButton from "@components/Buttons/RejectButton/RejectButton";
+
 //logic
 import { invites } from "./invites";
 import { Link } from "react-router-dom";
-import CloseButton from "@components/Buttons/CloseButton/CloseButton";
+import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 
 interface IDesktopNotifications {
-    animation: boolean,
-    closeNotifications: () => void
+    isActive: boolean,
+    setIsActive:  Dispatch<SetStateAction<boolean>>;
+    buttonRef: React.RefObject<HTMLElement>
 }
 
 interface IInvite {
@@ -22,17 +23,7 @@ interface IInvite {
     groupUrl: string
 }
 
-const DesktopNotifications: FC<IDesktopNotifications> = ({animation, closeNotifications}) => {
-
-    const [Animation = 'in', setAnimation] = useState<'in'|'out'>();
-
-    const closeNotificationsHandler = () => {
-        if (Animation === 'out'){
-            closeNotifications()
-        }
-    }
-    const setAnimationOut = () => setAnimation('out')
-
+const DesktopNotifications: FC<IDesktopNotifications> = ({isActive, setIsActive, buttonRef}) => {
     const getInvites = (invites: IInvite[]): ReactNode[] => {
         return invites.map((el, i) => 
         <li className={classes.inviteLi} 
@@ -53,36 +44,46 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({animation, closeNotifi
                         isPending={false}
                         children="Accept"
                         callback={()=>{console.log(1)}}/>
-                    <RejectButton 
-                        title="Reject"
-                        RejectHandler={()=>{console.log(1)}}/>
+                    <CustomButton 
+                        btnWidth={60}
+                        btnHeight={25}
+                        icon="none"
+                        type="danger"
+                        background="outline" 
+                        isPending={false}
+                        children="Reject"
+                        disableScale={true}
+                        callback={()=>{console.log(1)}}/>
                 </div>
             </form>
         </li>)
     }
 
-    return(<>
-        <div style={{position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, zIndex: 4884}} 
-        onClick={(e: MouseEvent<HTMLDivElement>) => {e.preventDefault(); e.stopPropagation(); setAnimationOut()}}></div>
-        <div onAnimationEnd={e => closeNotificationsHandler()}
-        className={classes.DesktopNotifications  + ' ' + classes[Animation]}>
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                <h5 className={classes.TitleInvitesBlock}>Notifications</h5>
-                <CloseButton size={24} closeHandler={() => {setAnimationOut();}}/>
-            </div>
-            <ul>
-                {getInvites(invites).slice(0,6)}
-            </ul>
-            <div key='239k23' className={classes.ViewMore}>
-                <Link onClick={() => {setAnimationOut();}} to={'/notifications'}>
-                    <div className={classes.ViewMore__inner}>
-                        <p className={classes.ViewMore__title}>View More</p>
-                        <ArrowRight className={classes.ArrowRight} />
-                    </div>
-                </Link>
-            </div>
-        </div>
-    </>)
+    return(
+        <SmallModal
+        active={isActive} 
+        setActive={setIsActive} 
+        className={classes.notficationsModal} 
+        title='Notifications' 
+        buttonRef={buttonRef}
+        children={
+            <>
+                <ul className={classes.inviteList}>
+                {getInvites(invites)}
+                </ul>
+                <div key='239k23' className={classes.ViewMore}>
+                    <Link 
+                    onClick={() => {setIsActive(false);}}
+                    to={'/notifications'}>
+                        <div className={classes.ViewMore__inner}>
+                            <p className={classes.ViewMore__title}>View More</p>
+                            <ArrowRight className={classes.ArrowRight} />
+                        </div>
+                    </Link>
+                </div>
+            </>}
+            />
+        )
 }
 
 export default DesktopNotifications

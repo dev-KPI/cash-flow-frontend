@@ -41,28 +41,30 @@ const MobileNotifications: FC = ({}) => {
                         children="Accept"
                         icon="none"
                         type='primary'/>
-                    <RejectButton 
-                        title="Reject"
-                        RejectHandler={()=>{}}/>
+                    <CustomButton 
+                        btnWidth={60}
+                        btnHeight={25}
+                        icon="none"
+                        type="danger"
+                        background="outline" 
+                        isPending={false}
+                        children="Reject"
+                        disableScale={true}
+                        callback={()=>{console.log(1)}}/>
                 </div>
             </form>
         </li>)
     }
 
-    return(<>
-        <div 
-        style={{marginTop: '75px'}} 
-        className={'MobileNotifications__container'}>
-            <div className={classes.MobileNotifications}>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <h5 className={classes.TitleInvitesBlock}>Notifications</h5>
-                </div>
+    return(
+        <main>
+            <div className={classes.MobileNotifications__container}>
+                <h3 className={classes.title}>Notifications</h3>
                 <ul>
                     {getInvites(invites)}
-                </ul>
-            </div>
-        </div>
-    </>)
+                </ul> 
+            </div>     
+    </main>)
 }
 
 export default MobileNotifications

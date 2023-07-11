@@ -11,6 +11,9 @@
     font-size: 36px;
     line-height: 44px;
 }
+.modal__wrapper {
+    margin: 0 30px;
+}
 .closeBtn{
     margin-left: auto;
 }
@@ -26,9 +29,6 @@
     line-height: 29px;
 }
 
-.modalBody{
-    margin: 0 30px;
-}
 .inputWrapper{
     margin-top: 10px;
 }
@@ -37,7 +37,7 @@
     padding: 16px 0px;
     display: flex;
     flex-wrap: wrap;
-    background-color: var(--colorPicker);
+    background-color: var(--color-picker);
 }
 .pickBody > div {
     margin-left: 12px;
@@ -61,4 +61,12 @@
     justify-content: center;
     font-size: 32px;
     color: var(--main-text);
+}
+
+@media only screen and (max-width: 768px) {
+    .modal__wrapper {
+        max-width: 510px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
 }

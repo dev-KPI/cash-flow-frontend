@@ -47,7 +47,7 @@
     align-items: center;
     gap: 5px;
 
-    background: linear-gradient(var(--itemHover) 0 0) no-repeat;
+    background: linear-gradient(var(--item-hover) 0 0) no-repeat;
     background-size: 0%;
     border-radius: 7px;
 

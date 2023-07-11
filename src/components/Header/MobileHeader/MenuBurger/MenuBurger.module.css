@@ -49,11 +49,20 @@
     display: flex;
     align-items: center;
 }
-.burgernav__account .title{
+.account__info{
+    /* display:  */
     margin-left: 15px;
+}
+.burgernav__account .title{
     font-weight: 700;
     font-size: 16px;
     color: var(--main-text);
+}
+.balance {
+    font-size: 17px;
+    line-height: 22px;
+    font-weight: 500;
+    color: var(--main-green)
 }
 
 .burgernav__line{
