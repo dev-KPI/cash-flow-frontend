@@ -1,4 +1,6 @@
 import React, { FC, useState, ReactNode } from "react";
+import { NavLink } from "react-router-dom";
+
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { GroupObj } from "./GroupObj";
@@ -7,7 +9,8 @@ import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
-import { NavLink } from "react-router-dom";
+
+
 
 
 interface people_props {

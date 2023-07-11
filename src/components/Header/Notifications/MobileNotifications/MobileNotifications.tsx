@@ -7,6 +7,7 @@ import classes from './MobileNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import RejectButton from "@components/Buttons/RejectButton/RejectButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
+import Header from "@components/Header/Header";
 
 interface IMobileNotifications {
 }

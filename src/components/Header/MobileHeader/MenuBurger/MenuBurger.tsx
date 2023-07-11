@@ -7,7 +7,7 @@ import Avatar from "@assets/user-icon.svg";
 import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
 import {ReactComponent as CloseBtn} from '@assets/close-bth.svg'
-import { ThemeButton } from "@components/ThemeButtons/ThemeButtons";
+import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 
 //store
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";

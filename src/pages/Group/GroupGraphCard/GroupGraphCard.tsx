@@ -2,7 +2,7 @@ import React, { FC, MouseEvent, ReactNode, useCallback, useState } from "react";
 
 //UI
 import classes from './GroupGraphCard.module.css';
-import ToggleButton from "@components/ToggleButton/ToggleButton";
+import ToggleButton from "@components/Buttons/ToggleButton/ToggleButton";
 import GraphCardLoader from "@components/GraphCard/GraphCardLoader";
 import StackedGraph from "@components/GraphCard/StackedGraph";
 import Graph from "@components/GraphCard/Graph";
@@ -128,7 +128,7 @@ const updatedData = addColorToUser(combinedData)
 
 const GroupGraphCard: FC = () => {
     const [loading = true, setLoading] = useState<boolean>();
-    const [isToggled, setIsToggled] = useState<boolean>(false);
+    const [isToggled = false, setIsToggled] = useState<boolean>();
     const { data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     setTimeout(() => {

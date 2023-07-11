@@ -1,0 +1,14 @@
+.contextModal{
+    top: 100px;
+    right: 5px;
+}
+
+.List{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.Link{
+    composes: smallText from '@styles/style.css'
+}

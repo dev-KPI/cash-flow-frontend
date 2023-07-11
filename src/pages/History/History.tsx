@@ -20,6 +20,7 @@ import {
 import Light from '@components/Light/Light';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 
+
 interface Transaction {
     id: number;
     amount: number;

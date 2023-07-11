@@ -5,12 +5,13 @@ import Categories from "@pages/Categories/Categories";
 import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
-
+import Login from "@pages/Login/Login";
+import Register from "@pages/Register/Register";
 import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
-//UI
 import Header from "@components/Header/Header";
 import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
+
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
@@ -23,10 +24,18 @@ export const GROUP_MEMBER_PAGE = '/group/:groupId/member/:memberId';
 export const HISTORY_PAGE = '/history';
 export const SETTINGS_PAGE = '/settings';
 export const LOG_IN_PAGE = '/login';
-export const SIGN_UP_PAGE = '/signup';
+export const SIGN_UP_PAGE = '/register';
 export const LOG_OUT = '/logout';
 
-
+export const routesNotAuth = [
+    {
+        path: LOG_IN_PAGE,
+        component: Login
+    },{
+        path: SIGN_UP_PAGE,
+        component: Register
+    }
+];
 export const routesAuth = [
     {
         path: DASHBOARD_PAGE,

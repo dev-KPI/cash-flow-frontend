@@ -39,6 +39,8 @@
 
     background-color: var(--cardbg);
     border-radius: 20px;
+
+    cursor: pointer;
 }
 
 .header__profile img{
