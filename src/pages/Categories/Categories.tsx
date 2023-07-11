@@ -121,6 +121,7 @@ const Categories: FC = () => {
         res.push(groupsItems.slice(0,4))
         if (Groups.length > 4) {
             res.push(<SmallModal
+                key={'qwe'}
                 title={'Groups'}
                 active={isGroupModal}
                 setActive={setIsGroupModal}
@@ -133,12 +134,12 @@ const Categories: FC = () => {
                 buttonRef={buttonRef}
             />)
             res.push(
-                <button className={classes.moreBtn}
+                <button key={'werww1'} className={classes.moreBtn}
                     ref={buttonRef}
                     onClick={handleGroupModalOpen}>
-                <div></div>
-                <div></div>
-                <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
             </button>)
             // res.push( <CustomButton
             //     isPending={false}
