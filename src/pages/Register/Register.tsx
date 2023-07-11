@@ -1,7 +1,7 @@
-import React, {FC} from "react";
+import React, {FC, useEffect, useState} from "react";
 
 //UI
-import classes from'./Login.module.css';
+import classes from'./Register.module.css';
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import logo from '@assets/Header/logo.svg'
 import googleSvg from '@assets/google.svg';
@@ -13,13 +13,13 @@ import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 import { Link } from "react-router-dom";
 import PageGlobalLoader from "@components/PageGlobalPreloader/PageGlobalPreloader";
 
-const Login: FC = () => {
+const Register: FC = () => {
 
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     return(<>
-        {<PageGlobalLoader/>}
-        <div className="Login__container">
+    {<PageGlobalLoader/>}
+    <div className="Register__container">
         <header className={classes.Header}>
             <div className={classes.leftSide}>
                 <img src={logo} alt="logo" />
@@ -31,14 +31,14 @@ const Login: FC = () => {
         <main id={'LoginPage'} className={classes.pageContent}>
             <img className={classes.devices} src={ThemeStore.theme === 'light' ? devicesLight : devicesDark} alt="devices dark" />
             <div className={classes.form}>
-                <h2 className={classes.CashFlow}>Log <span style={{color: 'var(--main-green)'}}>In</span></h2>
+                <h2 className={classes.CashFlow}>Sign <span style={{color: 'var(--main-green)'}}>Up</span></h2>
                 <Link to={"/"} className={classes.SubmitButton}>
                     <div style={{display: 'flex', gap: '20px', alignItems: 'center'}}>
-                    <img src={googleSvg} style={{width: '26px'}} alt='google svg'></img>Log In with Google</div>
+                    <img src={googleSvg} style={{width: '26px'}} alt='google svg'></img>Sign Up with Google</div>
                 </Link>
-                <p className={classes.underText}>Don`t have an account? 
-                    <Link to='/register' style={{fontWeight: '700'}}>
-                        <span style={{color: 'var(--main-text)'}}> Sign Up</span>
+                <p className={classes.underText}>Already have an account? 
+                    <Link to='/login' style={{fontWeight: '700'}}>
+                        <span style={{color: 'var(--main-text)'}}> Log In</span>
                     </Link>
                 </p>
             </div>
@@ -47,4 +47,4 @@ const Login: FC = () => {
     </div></>)
 }
 
-export default Login
+export default Register

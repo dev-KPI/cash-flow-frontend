@@ -1,0 +1,49 @@
+.List{
+    position: absolute;
+    top: 100px;
+    right: 5px;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    z-index: 9950;
+    composes: cardComponent from "@styles/style.css";
+}
+
+.Link{
+    composes: smallText from '@styles/style.css'
+}
+
+
+.in {
+    animation: fadeIn 0.5s;
+    opacity: 1
+}
+  
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+.out {
+    animation: fadeOut 0.5s;
+    opacity: 0
+}
+  
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}

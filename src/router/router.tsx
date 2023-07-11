@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import { DASHBOARD_PAGE, components, routesAuth, routesMobileNavigation, routesNotAuth } from './routes'
+import { DASHBOARD_PAGE, routesAuth, routesMobileNavigation, routesNotAuth } from './routes'
 
 //store
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";

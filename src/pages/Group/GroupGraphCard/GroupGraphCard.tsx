@@ -2,7 +2,7 @@ import React, { FC, MouseEvent, ReactNode, useCallback, useState } from "react";
 
 //UI
 import classes from './GroupGraphCard.module.css';
-import ToggleButton from "@components/ToggleButton/ToggleButton";
+import ToggleButton from "@components/Buttons/ToggleButton/ToggleButton";
 import GraphCardLoader from "@components/GraphCard/GraphCardLoader";
 import StackedGraph from "@components/GraphCard/StackedGraph";
 import Graph from "@components/GraphCard/Graph";

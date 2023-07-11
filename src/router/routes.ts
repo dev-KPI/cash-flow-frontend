@@ -6,6 +6,7 @@ import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
 import Login from "@pages/Login/Login";
+import Register from "@pages/Register/Register";
 //UI
 import Header from "@components/Header/Header";
 import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
@@ -19,7 +20,7 @@ export const GROUP_PAGE = '/group';
 export const HISTORY_PAGE = '/history';
 export const SETTINGS_PAGE = '/settings';
 export const LOG_IN_PAGE = '/login';
-export const SIGN_UP_PAGE = '/signup';
+export const SIGN_UP_PAGE = '/register';
 export const LOG_OUT = '/logout';
 
 export const routesNotAuth = [
@@ -28,7 +29,7 @@ export const routesNotAuth = [
         component: Login
     },{
         path: SIGN_UP_PAGE,
-        component: Login
+        component: Register
     }
 ];
 export const routesAuth = [
@@ -47,6 +48,9 @@ export const routesAuth = [
     }, {
         path: GROUPS_PAGE,
         component: Groups
+    },{
+        path: GROUP_PAGE,
+        component: Group
     }, {
         path: HISTORY_PAGE,
         component: History
@@ -72,13 +76,4 @@ export const routesMobileNavigation = [
         path: HISTORY_PAGE,
         component: History
     },
-];
-
-
-
-export const components = [
-    {
-        path: "/components/Header",
-        component: Header
-    }
 ];

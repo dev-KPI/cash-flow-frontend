@@ -16,10 +16,7 @@
     width: 1050px;
 }
 .CashFlow{
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 54px;
-    color: var(--main-text);
+    composes: largeText from "@styles/style.css"
 }
 .leftSide {
     display: flex;

@@ -4,7 +4,7 @@
     position: absolute;
     padding: 16px;
     top: 100px;
-    right: 260px;
+    right: 80px;
     z-index: 9999;
     composes: cardComponent from "@styles/style.css"
 }

@@ -46,8 +46,6 @@ const GroupSpendersCard = () => {
             },
             "amount": 777
         }
-
-
     ] 
     ))
     const getSpenders = () => {

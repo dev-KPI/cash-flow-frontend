@@ -22,7 +22,7 @@ export const ThemeSlice = createSlice({
         setTheme: (initialState): void => {
             initialState.theme = (initialState.theme === 'light') ? 'dark' : 'light'
             initialState.cardBackgroundColor = (initialState.theme === 'light') ? '0F0F0F': '#FFFFFF'
-            initialState.backgroundColor = (initialState.theme === 'light') ? '#151515' : '#F8F8FF'
+            initialState.backgroundColor = (initialState.theme === 'light') ? '#F8F8FF' : '#151515'
             initialState.mainTextColor = (initialState.theme === 'light') ? '#333333' : '#EAEAEA'
             initialState.textColor = (initialState.theme === 'light') ? '#7A7A9D' : '#9BABC5'
             const body = document.querySelector('body') as HTMLElement;
