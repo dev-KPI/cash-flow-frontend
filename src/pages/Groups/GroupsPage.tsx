@@ -1,14 +1,16 @@
 import React, { FC, useState, ReactNode } from "react";
+import { NavLink } from "react-router-dom";
+
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { GroupObj } from "./GroupObj";
 //UI
 import classes from './GroupsPage.module.css'
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
-import Header from "@components/Header/Header";
-import Footer from "@components/Footer/Footer";
+
+
 
 
 interface people_props {
@@ -42,17 +44,23 @@ const Groups: FC = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
             const memberIcons = el.group.members.map(member => member.picture);
-            return (<GroupListItem
-                key={i}
-                description={el.group.description}
-                title={el.group.title}
-                icon={el.group.admin.picture}
-                adminName={el.group.admin.first_name}
-                adminEmail={el.group.admin.last_name}
-                color={el.group.color}
-                memberIcons={memberIcons}
-            />)
+            return (<NavLink
+                key={`${i}-${el.group.title}-${el.date_join}`}
+                to={`/group/${el.group.id}`}      
+            >
+                <GroupListItem
+                    description={el.group.description}
+                    title={el.group.title}
+                    icon={el.group.admin.picture}
+                    adminName={`${el.group.admin.first_name} ${el.group.admin.last_name}`}
+                    adminEmail={el.group.admin.login}
+                    color={el.group.color}
+                    memberIcons={memberIcons}
+                />
+            </NavLink>
+            )  
         })
+           
     }
 
     const [isGroupModal = false, setIsGroupModal] = useState<boolean>();
@@ -70,7 +78,6 @@ const Groups: FC = () => {
 
     return (<>
         {getCategoriesModal()}
-        <Header/>
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
@@ -78,21 +85,20 @@ const Groups: FC = () => {
                         <span> | </span>
                         <span className={classes.groupAmount}>{GroupObj.length}</span>
                     </h1>
-                    <ConfirmButton
+                    <CustomButton
                         isPending={false}
-                        title="Add new group"
-                        btnWidth={170}
-                        btnHeight={36}
-                        type="add"
+                        children="Add new group"
+                        icon="add"
+                        type="primary"
                         callback={openModal}
                         className={classes.addButton} />
+
                 </div>
                 <section className={classes.groups}>
                     {getGroups()}
                 </section>
             </div>
         </main>
-        <Footer/>
     </>)
 }
 

@@ -5,7 +5,7 @@
     width: 100%;
     border-radius: 10px;
     z-index: 9999;
-    border: 1px solid var(--borderInput);
+    border: 1px solid var(--border-input);
 }
 .Input{
     flex: 1;

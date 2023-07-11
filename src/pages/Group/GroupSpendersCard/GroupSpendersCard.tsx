@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import userIcon from '@assets/user-icon.svg';
 
 //logic
@@ -15,6 +15,11 @@ interface ISpenders {
 }
 
 const GroupSpendersCard = () => {
+    const { groupId, memberId } = useParams<{
+        groupId: string,
+        memberId: string
+    }>();
+    
     const SpendersObj = JSON.parse(JSON.stringify([
         {
             "user": {
@@ -28,7 +33,7 @@ const GroupSpendersCard = () => {
         },
         {
             "user": {
-                "id": 1,
+                "id": 2,
                 "login": "johndoe@gmail.com",
                 "first_name": "Dima",
                 "last_name": "Rezenkov",
@@ -38,7 +43,7 @@ const GroupSpendersCard = () => {
         },
         {
             "user": {
-                "id": 1,
+                "id": 3,
                 "login": "johndoe@gmail.com",
                 "first_name": "Dima",
                 "last_name": "Pestenkov",
@@ -53,24 +58,29 @@ const GroupSpendersCard = () => {
         return spenders.map((item, i) => {
             const photo = item.user.picture
             const name = item.user.first_name + " " + item.user.last_name
-            return (<li key = {`${i} + ${item.amount}`}
-                        className={classes.spender}>
-                <p className={classes.order}>{i + 1}.</p>
-                <div className={classes.details}>
-                    <div className={classes.info}>
-                        <div className={classes.avatar}>
-                            <img className={classes.photo}
-                                alt={'user icon'}
-                                src={isUrl(photo) ? photo : userIcon}
-                            />
+            return (
+                <li key={`${i} + ${item.amount}`}>
+                    <NavLink
+                        to={`./member/${item.user.id}`}
+                        className={classes.spender}
+                        >
+                        <p className={classes.order}>{i + 1}.</p>
+                        <div className={classes.details}>
+                            <div className={classes.info}>
+                                <div className={classes.avatar}>
+                                    <img className={classes.photo}
+                                        alt={'user icon'}
+                                        src={isUrl(photo) ? photo : userIcon}
+                                    />
+                                </div>
+                                <p className={classes.name}>{name}</p>
+                            </div>
+                            <p className={classes.amount}>{numberWithCommas(item.amount)}$</p>
                         </div>
-                        <p className={classes.name}>{name}</p>
-                    </div>
-                    <p className={classes.amount}>{numberWithCommas(item.amount)}$</p>
-                </div>
-
-            </li>)
-        }
+                    </NavLink>
+        
+                </li>)
+            }
         )
     }
     return (
@@ -79,7 +89,7 @@ const GroupSpendersCard = () => {
                 <div className={classes.top}>
                     <h2 className={classes.title}>The spender of the month</h2>
                     <NavLink
-                        to="/"
+                        to={'./members'}
                         className={classes.spendersLink}
                     >
                         See all

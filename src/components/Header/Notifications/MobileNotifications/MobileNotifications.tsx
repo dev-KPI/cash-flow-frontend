@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { invites } from "../DesktopNotifications/invites";
 //UI
 import classes from './MobileNotifications.module.css';
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import RejectButton from "@components/Buttons/RejectButton/RejectButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import Header from "@components/Header/Header";
@@ -34,37 +34,38 @@ const MobileNotifications: FC = ({}) => {
                     {el.group}</Link>
                 </p>
                 <div className={classes.buttonGroup}>
-                    <ConfirmButton 
-                    btnWidth={60}
-                    btnHeight={25}
-                    titleFontWeight={400}
-                    type="none" 
-                    isPending={false}
-                    title="Accept"
-                    callback={()=>{}}/>
-                    <RejectButton 
-                    title="Reject"
-                    RejectHandler={()=>{}}/>
+                    <CustomButton 
+                        btnWidth={60}
+                        btnHeight={25}
+                        isPending={false}
+                        callback={() => { }}
+                        children="Accept"
+                        icon="none"
+                        type='primary'/>
+                    <CustomButton 
+                        btnWidth={60}
+                        btnHeight={25}
+                        icon="none"
+                        type="danger"
+                        background="outline" 
+                        isPending={false}
+                        children="Reject"
+                        disableScale={true}
+                        callback={()=>{console.log(1)}}/>
                 </div>
             </form>
         </li>)
     }
 
-    return(<>
-        <Header/>
-        <div 
-        style={{marginTop: '20px'}}
-        className={'MobileNotifications__container'}>
-            <div className={classes.MobileNotifications}>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <h5 className={classes.TitleInvitesBlock}>Notifications</h5>
-                </div>
+    return(
+        <main>
+            <div className={classes.MobileNotifications__container}>
+                <h3 className={classes.title}>Notifications</h3>
                 <ul>
                     {getInvites(invites)}
-                </ul>
-            </div>
-        </div>
-    </>)
+                </ul> 
+            </div>     
+    </main>)
 }
 
 export default MobileNotifications

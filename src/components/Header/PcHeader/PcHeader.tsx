@@ -1,4 +1,4 @@
-import React, {FC, useCallback, MouseEvent, useState} from 'react';
+import React, {FC, useCallback, MouseEvent, useState, useRef, ReactNode} from 'react';
 
 //UI
 import classes from './PcHeader.module.css'
@@ -13,8 +13,10 @@ import ContextUser from '@components/ContextUser/ContextUser';
 
 
 const HeaderSite: FC = () => {
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
+    const buttonRef = useRef(null);
 
-    const [isNotificationsOpen = false, setIsNotificationsOpen] = useState<boolean>();
+   const [isNotificationsOpen = false, setIsNotificationsOpen] = useState<boolean>();
     const [isContextUserOpen = false, setIsContextUserOpen] = useState<boolean>();
 
     const getNotifications = (e: MouseEvent<HTMLButtonElement>) => {
@@ -23,9 +25,14 @@ const HeaderSite: FC = () => {
 
     const getContextUser = (e: MouseEvent<HTMLButtonElement>) => {
         setIsContextUserOpen(true)
-    }
+    } 
 
     return (<>
+        <DesktopNotifications
+            isActive={isNotificationsOpen}
+            setIsActive={setIsNotificationsOpen}
+            buttonRef={buttonRef}
+        />
         <header className={classes.header}>
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
@@ -39,7 +46,11 @@ const HeaderSite: FC = () => {
                         closeNotifications={() => setIsNotificationsOpen(false)}
                         animation={isNotificationsOpen}/>}
                         <ThemeButton />
-                        <button onClick={e => getNotifications(e)} className={classes.header__notifications}>
+                        <button 
+                        onClick={e => setIsNotificationsOpen(!isNotificationsOpen) } 
+                        className={classes.header__notifications}
+                        ref={buttonRef}
+                        >
                             <i className="bi bi-bell"></i>
                         </button>
                     </div>

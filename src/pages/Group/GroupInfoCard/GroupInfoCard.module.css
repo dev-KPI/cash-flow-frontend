@@ -1,5 +1,5 @@
 .GroupInfoCard{
-    width: 374px;
+    /* width: 374px; */
     composes: cardComponent from '@styles/style.css';
     grid-row-start: span 2;
     margin-left: 30px;
@@ -47,13 +47,13 @@
 .group__info {
     margin-top: 10px;
     text-align: center;
+    margin-bottom: 24px;
 }
 
 .details{
     display: flex;
     align-items: center;
-    margin-top: 10px;
-    margin-bottom: 24px;
+    margin-top: 14px;
 }
 .detailItem{
     flex: 0 1 50%;
@@ -71,4 +71,18 @@
     composes: largeItemTitle from '@styles/style.css';
     color: var(--main-text);
     height: 100px;
+    overflow-y: auto;
+}
+@media only screen and (max-width: 1440px) {
+    .GroupInfoCard{
+        margin-left: 0;
+        order: 1;
+        grid-row-start: span 1;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .inner{
+        padding: 16px;
+    }
 }

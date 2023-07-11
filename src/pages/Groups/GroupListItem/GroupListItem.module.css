@@ -1,5 +1,12 @@
 .group {
     composes: cardComponent from '@styles/style.css';
+    transition: all 0.3s ease;
+}
+
+.group:hover{
+    box-shadow: rgba(0, 0, 0, 0.22) 0px 15px 15px;
+    transform: translate3d(1px, -2px, 0px);
+    cursor: pointer;
 }
 
 .title{
@@ -109,10 +116,11 @@
     align-items: center;
     justify-content: center;
     transition: all .2s ease;
+    cursor: pointer;
 }
 .moreBtn:hover{
-    border-radius: 4px;
-    scale: 1.2;
+    /* border-radius: 4px; */
+    /* scale: 1.2; */
     transition: all .2s ease;
 }
 .moreBtn > div {
@@ -121,12 +129,22 @@
     height: 4px;
     border-radius: 50%;
 }
+.moreBtn:hover > div{
+    background-color: var(--main-green);
+}
 
- @media only screen and (max-width: 768px) {
+@media only screen and (max-width: 768px) {
     .title{
         padding: 16px 16px 9px;
     }
     .content{
         padding: 16px;
     }
- }
+}
+
+@media only screen and (max-width: 400px) {
+    .description{
+        height: unset;
+        min-height: 63px;
+    }
+}

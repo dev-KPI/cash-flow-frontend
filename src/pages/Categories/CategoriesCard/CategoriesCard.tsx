@@ -14,7 +14,7 @@ interface ICategoriesCard {
 const CategoriesCard: FC<ICategoriesCard> = ({id = 1, title = 'Text', color = '#333333', icon = 'bi bi-joystick'}) => {
     
     
-    return(<>
+    return(<li className={classes.item}>
         <NavLink to={'/categories'} className={classes.CategoriesCard}>
             <div 
             style={{backgroundColor: color}}
@@ -28,6 +28,6 @@ const CategoriesCard: FC<ICategoriesCard> = ({id = 1, title = 'Text', color = '#
                 <p className={classes.title}>{title}</p>
             </div>
         </NavLink>
-    </>)
+    </li>)
 }
 export default React.memo(CategoriesCard)

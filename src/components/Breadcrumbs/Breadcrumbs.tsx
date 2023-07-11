@@ -27,7 +27,7 @@ const Breadcrumbs:FC<IBreadcrumbsProps> = ({breadcrumbs}) => {
         return breadcrumbs.map((el:IBreadcrumb, i) => {
             return (<li
                 key={i}>
-                <NavLink
+                <NavLink end
                     className={({ isActive }) => setActiveLinkClasses(isActive)}
                     to={el.link}>{el.title}
                 </NavLink>

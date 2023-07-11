@@ -7,7 +7,7 @@ import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import Input from "@components/Input/Input";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import ConfirmButton from "@components/Buttons/ConfirmButton/ConfirmButton";
+import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
         
 //logic
@@ -104,7 +104,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
                     </div>
                 </div>
                 <div className={classes.line}></div>
-                <div className={classes.modalBody}>
+                <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameGroup}>
                         <label className={classes.title} htmlFor="groupName">Please сreate new group:</label>
                         <div className={classes.inputWrapper}>
@@ -130,27 +130,29 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
                             <AccordionTab title="Select color" choosedItem={light}>
                                 <div className={classes.pickBody}>
                                     {
-                                        colors.map(el => 
-                                        <div 
-                                        onClick={(e) => changeColor(e, el)}
-                                        style={{width: '24px', height: '24px', 
-                                        borderRadius: '100%', backgroundColor: el, 
-                                        cursor: 'pointer'}}></div>)
+                                        colors.map( (el, i) => 
+                                            <div 
+                                                key={i}
+                                                onClick={(e) => changeColor(e, el)}
+                                                style={{width: '24px', height: '24px', 
+                                                borderRadius: '100%', backgroundColor: el, 
+                                                cursor: 'pointer'
+                                                }}>
+                                            </div>)
                                     }
                                 </div>
                             </AccordionTab>
                             <AccordionTab title="Select icon" choosedItem={iconDisplayed}>
                                 <div className={classes.pickBody}>
                                     {
-                                        icons.map(el => 
-                                        <div 
-                                        onClick={(e) => changeIcon(e, el)}
-                                        style={{fontSize: '24px', 
-                                        cursor: 'pointer'}}>
-                                            <i 
-                                            style={{color: 'var(--main-text)'}}
-                                            className={el}></i>
-                                        </div>)
+                                        icons.map((el,i) => 
+                                            <div 
+                                                key={i}
+                                                onClick={(e) => changeIcon(e, el)}
+                                                style={{fontSize: '24px', 
+                                                cursor: 'pointer'}}>
+                                                <i style={{color: 'var(--main-text)'}} className={el}></i>
+                                            </div>)
                                     }
                                 </div>
                             </AccordionTab>
@@ -158,13 +160,15 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
                     </div>
                 </div>
                 <div className={classes.confirmBtnWrapper}>
-                    <ConfirmButton
-                    isPending={isSubmiting}
-                    title="Confirm"
-                    btnWidth={170}
-                    btnHeight={36}
-                    type="submit"
-                    callback={handleSubmit}/>
+                    <CustomButton
+                        isPending={isSubmiting}
+                        children="Confirm"
+                        btnWidth={170}
+                        btnHeight={36}
+                        icon="submit"
+                        type='primary'
+                        callback={handleSubmit}
+                        className={`btn-primary`} />
                 </div>
             </form>
     </UseModal>

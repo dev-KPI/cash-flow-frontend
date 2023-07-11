@@ -19,6 +19,11 @@
     font-weight: 600;
     composes: largeItemTitle from "@styles/style.css";
     color: var(--main-green);
+    transition: all .1s ease;
+}
+
+.spendersLink:hover {
+    filter: brightness(0.8);
 }
 
 .avatar {
@@ -42,7 +47,7 @@
     align-items: center;
     gap: 5px;
 
-    background: linear-gradient(var(--itemHover) 0 0) no-repeat;
+    background: linear-gradient(var(--item-hover) 0 0) no-repeat;
     background-size: 0%;
     border-radius: 7px;
 
@@ -69,4 +74,33 @@
 }
 .amount {
     color: var(--main-green);
+}
+
+@media only screen and (max-width: 1440px) {
+    .SpendersCard {
+        width: unset;
+    }
+}
+
+@media only screen and (max-width: 1028px) {
+    .inner{
+        padding: 16px 16px 5px 16px;
+    }
+    .spender{
+        flex: 1;
+    }
+
+    .avatar {
+        display: none;
+    }
+    .spenders{
+        gap: 0px;
+    }
+    .details{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
 }

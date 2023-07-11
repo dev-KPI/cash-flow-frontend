@@ -4,6 +4,7 @@
 
 .title {
     composes: cardTitle from "@styles/style.css";
+    white-space: nowrap;
 }
 
 .inner {
@@ -149,8 +150,8 @@
 
 @media only screen and (max-width: 400px) {
     .chart {
-        height: 150px;
-        width: 150px;
+        height: 160px;
+        width: 160px;
     }
 }
 

@@ -1,4 +1,4 @@
-.searchBar{
+.searchBar, .searchForm{
     position: relative;
 }
 .searchBtn {
@@ -36,3 +36,134 @@
     margin-left: 16px;
     color: var(--main-text);
 }
+
+.content{
+    composes: cardComponent from "@styles/style.css";
+    box-shadow: 0px 2px 8px var(--border-input);
+    display: block;
+    position: absolute;
+    width: 100%;
+    padding: 16px;
+    
+    border-radius: 5px 5px 20px 20px;
+
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.show{
+    visibility: visible;
+    
+}
+.hide{
+    display: none;
+}
+
+
+.optionsTitle{
+    composes: smallItemTitle from '@styles/style.css';
+}
+
+.options{
+    margin-bottom: 14px;
+}
+
+.options li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-radius: 7px;
+    padding: 0 10px;
+    height: 50px;
+    color: var(--main-text)
+}
+.options li:hover{
+    background-color: var(--item-hover);
+} 
+
+.member{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.name{
+    composes: mediumItemTitle from '@styles/style.css';
+    color: var(--main-text);
+    font-weight: 600;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+.icon {
+    display: flex;
+    height: 36px;
+    width: 36px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+}
+
+.btnChild{
+    display: flex;
+    gap: 8px;
+}
+
+.moreBlock{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-top: 10px;
+    position: relative;
+}
+.moreBlock:before{
+    position: absolute;
+    content: '';
+    height: 1px;
+    top: 0;
+    left: -16px;
+    right: -16px;
+    background: var(--text);
+}
+
+.membersLink{
+    font-weight: 600;
+    composes: largeItemTitle from "@styles/style.css";
+    color: var(--main-green);
+
+    position: relative;
+    text-decoration: none;
+    transition: all .1s ease;
+}
+
+.membersLink:hover{
+    filter: brightness(0.8);
+}
+/* .membersLink::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--main-green);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+    transform: scaleX(0);
+}
+
+.membersLink:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+} */

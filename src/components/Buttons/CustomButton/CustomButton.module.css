@@ -1,0 +1,103 @@
+.CustomButton{
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+    padding: 8px 14px;
+    
+    cursor: pointer;
+    filter: blur(.0px); /* fix blur when scale */
+}
+
+.btnPrimary {
+    background: var(--main-green);
+}
+
+.btnDanger {
+    background: var(--main-red);
+}
+
+.btnWhite {
+    background: var(--main-text)
+}
+
+.outline {
+    background: none;
+}
+
+.btnPrimary.outline {
+    border: 1px solid var(--main-green);
+    color: var(--main-green);
+}
+
+.btnDanger.outline {
+    border: 1px solid var(--main-red);
+    color: var(--main-red);
+}
+
+.btnPrimary.outline:hover,
+.btnPrimary.outline:focus,
+.btnPrimary.outline:active {
+    background: var(--main-green);
+    color: var(--btn-text);
+}
+
+.btnDanger.outline:hover,
+.btnDanger.outline:focus,
+.btnDanger.outline:active {
+    background: var(--main-red);
+    color: var(--btn-text);
+}
+
+.btnWhite.outline {
+    border: 1px solid var(--main-text);
+    color: var(--main-text);
+}
+
+.btnWhite.outline:hover,
+.btnWhite.outline:focus,
+.btnWhite.outline:active {
+    background: var(--main-text);
+    color: var(--filter-btn);
+}
+
+.wrapperbtn{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.CustomButton i {
+    /* color: var(--btn-text); */
+    font-size: 16px;
+}
+.CustomButton {
+    color: var(--btn-text);
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+
+    white-space: nowrap;
+}
+button.CustomButton:active{
+    opacity: 0.5;
+}
+
+.loadingButton{
+    cursor: wait;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    user-select: none;
+    background-color: rgba(40, 205, 65, 0.25);;
+}
+.loadingButton {
+    color: var(--text);
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+}
