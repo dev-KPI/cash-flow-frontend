@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 
 import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
-import { DASHBOARD_PAGE, components, routesAuth, groupRoutes } from './routes'
+import { DASHBOARD_PAGE, components, routesAuth, groupRoutes, routesNotAuth } from './routes'
 
 //store
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
@@ -45,6 +45,17 @@ const Router: FC = () => {
             element: <GroupLayout />,
             children: [
                 ...groupRoutes.map(({ path, component: Component }) =>
+                ({
+                    path: path,
+                    element: < Component />
+                })
+                )
+            ]
+        },
+        {
+            element: <Outlet />,
+            children: [
+                ...routesNotAuth.map(({ path, component: Component }) =>
                 ({
                     path: path,
                     element: < Component />

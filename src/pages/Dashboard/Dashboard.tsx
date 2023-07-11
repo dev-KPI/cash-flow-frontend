@@ -14,15 +14,12 @@ import UserAccountCard from '@pages/Dashboard/UserAccountCard/UserAccountCard';
 import UserHistoryCard from '@pages/Dashboard/UserHistoryCard/UserHistoryCard';
 import UserCategoriesCard from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
 import UserGroupsCard from '@pages/Dashboard/UserGroupsCard/UserGroupsCard';
-import Header from '@components/Header/Header';
-import Footer from '@components/Footer/Footer';
 import UserChartCard from './UserChartCard/UserChartCard';
 
 
 const Dashboard = () => {
     
     return (<>
-        <Header/>
         <main id='DashboardPage'>
             <div className='dashboard__container'>
                 <div className={classes.header}>
@@ -47,7 +44,6 @@ const Dashboard = () => {
                 </div>
             </div>
         </main>
-        <Footer/>
     </>);
 };
 

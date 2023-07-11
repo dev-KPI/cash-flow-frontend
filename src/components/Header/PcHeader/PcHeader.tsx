@@ -13,26 +13,14 @@ import ContextUser from '@components/ContextUser/ContextUser';
 
 
 const HeaderSite: FC = () => {
-    const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
-    const buttonRef = useRef(null);
+    const [isNotificationsOpen  = false, setIsNotificationsOpen] = useState<boolean>(false)
+    const notificationsButtonRef = useRef(null);
 
-   const [isNotificationsOpen = false, setIsNotificationsOpen] = useState<boolean>();
-    const [isContextUserOpen = false, setIsContextUserOpen] = useState<boolean>();
-
-    const getNotifications = (e: MouseEvent<HTMLButtonElement>) => {
-        setIsNotificationsOpen(true)
-    }
-
-    const getContextUser = (e: MouseEvent<HTMLButtonElement>) => {
-        setIsContextUserOpen(true)
-    } 
+    const [isContextUserOpen, setIsContextUserOpen] = useState<boolean>(false);
+    const contextButtonRef = useRef(null);
+ 
 
     return (<>
-        <DesktopNotifications
-            isActive={isNotificationsOpen}
-            setIsActive={setIsNotificationsOpen}
-            buttonRef={buttonRef}
-        />
         <header className={classes.header}>
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
@@ -41,32 +29,35 @@ const HeaderSite: FC = () => {
                         <h1 className={classes.title}>Cash<span>Flow</span></h1>
                     </div>
                     <div className={classes.header__menu}>
-                    {isNotificationsOpen && 
-                        <DesktopNotifications 
-                        closeNotifications={() => setIsNotificationsOpen(false)}
-                        animation={isNotificationsOpen}/>}
+                        <DesktopNotifications
+                            isActive={isNotificationsOpen}
+                            setIsActive={setIsNotificationsOpen}
+                            buttonRef={notificationsButtonRef}
+                        />
+                        <ContextUser
+                            isActive={isContextUserOpen}
+                            setIsActive={setIsContextUserOpen}
+                            buttonRef={contextButtonRef} />
                         <ThemeButton />
                         <button 
                         onClick={e => setIsNotificationsOpen(!isNotificationsOpen) } 
                         className={classes.header__notifications}
-                        ref={buttonRef}
+                            ref={notificationsButtonRef}
                         >
                             <i className="bi bi-bell"></i>
                         </button>
                     </div>
-                    <button style={{cursor: 'pointer'}} onClick={(e)=>{getContextUser(e)}}>
+                    <button
+                        onClick={e => setIsContextUserOpen(!isContextUserOpen)}
+                        ref={contextButtonRef}>
                         <div className={classes.header__profile}>
-                        {isContextUserOpen && 
-                        <ContextUser 
-                        closeContextUser={() => setIsContextUserOpen(false)}
-                        animation={isContextUserOpen}/>}
                             <img src={ProfileIcon} alt="icon" />
                             <div className={classes.profile__inner}>
                                 <div className={classes.profile__main}>
                                     <h4 className={classes.profile__name}>John Doe</h4>
                                     <p className={classes.profile__email}>johndoee@gmail.com</p>
                                 </div>
-                                    <i className="bi bi-chevron-down"></i>
+                                <i className="bi bi-chevron-down"></i>
                             </div>
                         </div>
                     </button>
