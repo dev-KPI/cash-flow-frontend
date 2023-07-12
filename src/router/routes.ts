@@ -6,7 +6,6 @@ import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
 import Login from "@pages/Login/Login";
-import Register from "@pages/Register/Register";
 import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
 import Header from "@components/Header/Header";
 import GroupMember from "@pages/GroupMember/GroupMember";
@@ -31,9 +30,6 @@ export const routesNotAuth = [
     {
         path: LOG_IN_PAGE,
         component: Login
-    },{
-        path: SIGN_UP_PAGE,
-        component: Register
     }
 ];
 export const routesAuth = [

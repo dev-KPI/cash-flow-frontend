@@ -1,18 +1,22 @@
 import { FC, Dispatch, SetStateAction, DragEvent } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
+//logic
+import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
+import { auth } from "@services/Auth/firebaseInitialization";
+//store
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { IUserState } from "@store/UserSlice/UserInterfaces";
+import { UserSliceActions } from "@store/UserSlice/UserSlice";
 //UI
 import classes from "./MenuBurger.module.css";
-import Avatar from "@assets/user-icon.svg";
+import userIcon from '@assets/user-icon.svg';
 import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
-import {ReactComponent as CloseBtn} from '@assets/close-bth.svg'
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
-
-//store
-import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
+
+
 
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
@@ -22,7 +26,19 @@ interface IPropsMenuBurger {
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+    const UserDispatch = useActionCreators(UserSliceActions);
+    const navigate = useNavigate();
 
+    const GoogleLogOut = async () => {
+        try {
+            auth.signOut()
+            UserDispatch.setNullCredentials();
+            navigate('/login')
+        } catch (err) { 
+            console.log(err)
+        }
+    }
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.item + ' ' + classes.activeLink : classes.item;
@@ -40,9 +56,10 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                 </div>
             </div>
             <div className={classes.burgernav__account}>
-                <img alt="Avatar" src={Avatar} width="46px" height="46px" />
+                <img alt="Avatar" src={UserStore.photo ? UserStore.photo : userIcon} width="46px" style={{borderRadius: '10px'}}/>
                 <div className={classes.account__info}>
-                    <h2 className={classes.title}>John Doe</h2>
+                    <h2 className={classes.title}>{UserStore.name}</h2>
+                    <h2 className={classes.title}>{UserStore.surname}</h2>
                     <p className={classes.balance}>{numberWithCommas(4124)}$</p>
                 </div>
             </div>
@@ -135,10 +152,10 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/" key={'erf2'} className={classes.item}>
+                        <button onClick={GoogleLogOut} key={'erf2'} className={classes.item}>
                             <i className="bi bi-box-arrow-left"></i>
-                            <h3 className={classes.title}>Logout</h3>
-                        </NavLink>
+                            <h3 className={classes.title}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h3>
+                        </button>
                     </li>
                 </ul>
             </div>

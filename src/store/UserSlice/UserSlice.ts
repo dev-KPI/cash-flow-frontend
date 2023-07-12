@@ -4,19 +4,33 @@ import { IUserState } from './UserInterfaces';
 
 
 const initialState: IUserState = {
-    int: 0
+    firebaseId: '',
+    name: '',
+    surname: '',
+    email: '',
+    photo: '',
 }
 
 export const UserSlice = createSlice({
     name: 'UserSlice',
     initialState,
     reducers: {
-        setInt: (state, action: PayloadAction<number>) => {
-            state.int = action.payload
+        setUserCredentials: (state, action: PayloadAction<IUserState>) => {
+            state.firebaseId = action.payload.firebaseId;
+            state.name = action.payload.name;
+            state.surname = action.payload.surname.length > 1 ? action.payload.surname : '';
+            state.email = action.payload.email;
+            state.photo = action.payload.photo;
         },
+        setNullCredentials: (state) => {
+            state.firebaseId = '';
+            state.name = '';
+            state.surname = '';
+            state.email = '';
+            state.photo = '';
+        }
     },
 })
-
-export const { setInt } = UserSlice.actions
+export const { reducer: UserSliceReducer, actions: UserSliceActions } = UserSlice;
 
 export default UserSlice.reducer

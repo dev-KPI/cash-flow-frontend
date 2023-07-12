@@ -16,15 +16,13 @@ export const persistConfig = {
 
 //Theme
 const persistedThemeSlice = persistReducer(persistConfig, ThemeSlice);
-//UI
-const persistedUserSlice = persistReducer(persistConfig, UserSlice);
 
 const devToolsCompose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 export const store = configureStore({
     reducer: {
-        persistedUserSlice,
         persistedThemeSlice,
         MonthPickerSlice,
+        UserSlice,
         [api.reducerPath]: api.reducer,
     },
     devTools: devToolsCompose,

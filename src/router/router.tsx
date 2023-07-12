@@ -1,8 +1,9 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 
-import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
+import {createBrowserRouter,RouterProvider, Outlet, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { DASHBOARD_PAGE, components, routesAuth, groupRoutes, routesNotAuth } from './routes'
-
+import { useAuthState } from 'react-firebase-hooks/auth' 
+import { auth } from '@services/Auth/firebaseInitialization';
 //store
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
@@ -11,33 +12,44 @@ import Footer from '@components/Footer/Footer';
 import GroupHeader from '@pages/Group/GroupHeader/GroupHeader';
 import Dashboard from '@pages/Dashboard/Dashboard';
 
+
 const Router: FC = () => {
 
     const ThemeDispatch = useActionCreators(ThemeActions);
+    const [user, loading] = useAuthState(auth);
 
-    useEffect(()=>{
+    useEffect(() => {
         ThemeDispatch.initializeTheme()
-    }, [])
+    },[]);
 
-    const BrowserRoutes = createBrowserRouter([
+
+    const BrowserRoutesForNotAuth = createBrowserRouter([
         {
-            // path: "/",
-            element: <MainLayout/>,
+            element: <Outlet />,
             children: [
-                {  
-                    path: '/dashboard',
-                    element: <Dashboard/>
-                },
-                ...routesAuth.map(({ path, component: Component }) =>
+                ...routesNotAuth.map(({ path, component: Component }) =>
                 ({
                     path: path,
                     element: < Component />
                 })
-                ),
-                {
-                    path: '*',
-                    element: <Navigate to="/dashboard" />,
-                },
+                )
+            ]
+        }
+    ])
+    const BrowserRoutesForAuth = createBrowserRouter([
+        {
+            // path: "*",
+            element: <MainLayout/>,
+            children: [
+                ...routesAuth.map(({ path, component: Component }) =>
+                    ({
+                        path: path,
+                        element: < Component />
+                    }),{
+                        path: '*',
+                        element: <Navigate to="/dashboard" />,
+                    },
+                )
             ]    
         },
         {
@@ -52,22 +64,14 @@ const Router: FC = () => {
                 )
             ]
         },
-        {
-            element: <Outlet />,
-            children: [
-                ...routesNotAuth.map(({ path, component: Component }) =>
-                ({
-                    path: path,
-                    element: < Component />
-                })
-                )
-            ]
-        }
     ])
-    return <RouterProvider router={BrowserRoutes}/>
+    
+    return <RouterProvider router={user ? BrowserRoutesForAuth : BrowserRoutesForNotAuth}/>
 }
 
 export default Router;
+
+
 
 export const GroupLayout = () => {
     return (<>
@@ -78,8 +82,6 @@ export const GroupLayout = () => {
     </>
     );
 }
-
-
 export const MainLayout = () => {
     return (<>
         <Header />
