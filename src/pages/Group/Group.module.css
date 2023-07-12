@@ -1,0 +1,154 @@
+.header{
+    position: relative;
+    margin-top: 22px;
+    height: 60px;
+    border-bottom: 1px solid rgba(238, 238, 238, var(--opacity));
+}
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.page__container{
+    
+}
+.breadcrumbs {
+    position: absolute;
+    bottom: 0px;
+    left: 23%;
+}
+.header__right{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.members {
+    display: flex;
+}
+
+.avatar {
+    width: 20px;
+    height: 20px;
+}
+
+.photo {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.avatar:not(:first-child) {
+    margin-left: -10px;
+}
+
+.avatar {
+    background-color: #F0EEFF;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatarLeftMembers {
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+}
+
+.leftMembers {
+    /* position: absolute; */
+    color: #4C6FFF;
+    font-weight: 500;
+    font-size: 8px;
+    line-height: 10px;
+    filter: brightness(0.85);
+}
+
+.title {}
+
+.grid {
+    max-width: 1514px;
+    margin: 30px auto;
+    display: grid;
+    justify-items: stretch;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    column-gap: 30px;
+}
+
+.grid__left {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.grid__operation {
+    display: flex;
+    gap: 30px;
+}
+
+.search {
+    margin-left: 30px;
+    grid-row-start: span 1;
+}
+.cardTitle {
+    composes: cardTitle from "@styles/style.css";
+    margin-bottom: 14px;
+}
+.searchTop{
+    display: flex;
+    justify-content: space-between;
+}
+.membersLink {
+    font-weight: 600;
+    composes: largeItemTitle from "@styles/style.css";
+    color: var(--main-green);
+
+    transition: all .1s ease;
+}
+
+.membersLink:hover {
+    filter: brightness(0.8);
+}
+
+@media only screen and (max-width: 1440px) {
+    .grid {
+        max-width: 1090px;
+        gap: 20px;
+        grid-template-columns: repeat(2, 1fr)
+    }
+    .search {
+        display: none;
+    }
+
+    .grid__topleft,
+    .grid__operation,
+    .grid__topright {
+        gap: 20px;
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    .grid {
+        margin-top: 20px;
+    }
+    .header{
+        margin-top: 14px;
+        height: 80px;
+    }
+    .grid {
+        grid-template-columns: minmax(0,500px)
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    
+    .grid__operation{
+        flex-direction: column;
+    }
+}

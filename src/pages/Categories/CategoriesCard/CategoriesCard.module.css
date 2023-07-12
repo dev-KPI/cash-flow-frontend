@@ -1,0 +1,50 @@
+.CategoriesCard{
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: 100%;
+    border-radius: 5px;
+    gap: 16px;
+    overflow: hidden;
+    composes: cardComponent from "@styles/style.css";
+}
+.item{
+    animation: fadeIn 0.5s;
+}
+.CategoriesCard .tooltip{
+    width: 4px;
+    height: 100%;
+}
+.CategoriesCardBody{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+}
+.CategoriesCard .IconMix{
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.CategoriesCard .title{
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--main-text);
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

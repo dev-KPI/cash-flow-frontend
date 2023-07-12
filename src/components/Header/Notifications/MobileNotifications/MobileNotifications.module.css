@@ -1,0 +1,70 @@
+
+.title{
+    margin-bottom: 15px;
+    composes: largeText from '@styles/style.css'
+}
+.MobileNotifications__container {
+    margin-top: 22px;
+}
+
+.inviteLi{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+.inviteForm{
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+.InviteGroupRef{
+    font-weight: 600;
+    color: rgba(78, 125, 150, 1);
+    text-decoration: underline;
+}
+.InviteGroupRef:hover {
+    color: var(--main-red);
+}
+.buttonGroup{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+}
+.Promo{
+    composes: largeItemTitle from '@styles/style.css'
+}
+.ViewMore {
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.ViewMore__inner{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(78, 125, 150, 1);
+}
+.ViewMore__title{
+    composes: largeItemTitle from "@styles/style.css";
+    font-size: 20px;
+    color: rgba(78, 125, 150, 1);
+}
+.ViewMore__inner:hover{
+    text-decoration: underline;
+}
+.ArrowRight{
+    fill: rgba(78, 125, 150, 1);
+    font-size: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    .MobileNotifications__container {
+        margin-top: 14px;
+    }
+}

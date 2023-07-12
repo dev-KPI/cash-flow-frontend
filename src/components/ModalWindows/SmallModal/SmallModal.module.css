@@ -1,0 +1,51 @@
+.modal{
+    composes: cardComponent from '@styles/style.css';
+    padding: 16px;
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    transition: 0.5s;
+    z-index: 9;
+
+    animation: fadeIn 0.5s forwards;
+}
+
+.cardFadeOut {
+    animation: fadeOut 0.5s forwards;
+}
+
+.modal__content{
+   margin-top: 10px;
+}
+.modalHeader{
+    display: flex;
+    justify-content: space-between;
+}
+.title{ 
+    composes: cardTitle from "@styles/style.css";
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}

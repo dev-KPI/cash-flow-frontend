@@ -1,0 +1,49 @@
+.page__container {
+    margin-top: 22px;
+    margin-bottom: 30px;
+}
+
+.pageTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pageTitle {
+    composes: pageTitle from "@styles/style.css";
+}
+
+.pageTitle span {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 18px;
+    color: var(--text)
+}
+
+.groups{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 38px;
+}
+
+@media only screen and (max-width: 768px) {
+    .page__container {
+        margin-top: 14px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .pageTitle{
+        margin-bottom: 20px;
+    }
+    .pageTop{
+        display: block;
+    }
+    .addButton {
+        width: 100% !important; 
+    }
+    .groups {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+}
