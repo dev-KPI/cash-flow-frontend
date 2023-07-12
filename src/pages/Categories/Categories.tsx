@@ -69,10 +69,10 @@ const Categories: FC = () => {
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
     const [groups = false, setGroups] = useState<boolean>();
-    const [categories, setCategories] = useState<ICategory[]>([])
-    const [selectedGroup, setSelectedGroup] = useState<number>(0);
+    const [categories = [], setCategories] = useState<ICategory[]>()
+    const [selectedGroup = 0, setSelectedGroup] = useState<number>();
     const [isCategoryModal = false, setIsCategoryModal] = useState<boolean>();
-    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
+    const [isGroupModal = false, setIsGroupModal] = useState<boolean>();
     const buttonRef = useRef(null);
     const { categoriesJson } = categoriesObj;
     
@@ -124,7 +124,7 @@ const Categories: FC = () => {
                 key={'qwe'}
                 title={'Groups'}
                 active={isGroupModal}
-                setActive={setIsGroupModal}
+                setActive={() => setIsGroupModal}
                 className={classes.groupsModalNav}
                 children={
                     <div className={classes.groupModalWrapper}>

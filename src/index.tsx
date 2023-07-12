@@ -4,6 +4,7 @@ import './styles/style.css';
 import ReactDOM from 'react-dom/client';
 
 //router
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { BrowserRouter } from 'react-router-dom'; 
 import Router from './router/router';
 //store
@@ -19,9 +20,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistedStore}>
-        {/* <BrowserRouter> */}
-            <Router />
-        {/* </BrowserRouter>  */}
+        <Router />
       </PersistGate>
     </Provider>
   </React.StrictMode>

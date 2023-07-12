@@ -10,13 +10,19 @@ import DesktopNotifications from '@components/Header/Notifications/DesktopNotifi
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import { breadcrumbs } from './breadcrumbs';
 import ContextUser from '@components/ContextUser/ContextUser';
+//store
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IUserState } from '@store/UserSlice/UserInterfaces';
 
 
 const HeaderSite: FC = () => {
-    const [isNotificationsOpen  = false, setIsNotificationsOpen] = useState<boolean>(false)
+
+    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+
+    const [isNotificationsOpen  = false, setIsNotificationsOpen] = useState<boolean>()
     const notificationsButtonRef = useRef(null);
 
-    const [isContextUserOpen, setIsContextUserOpen] = useState<boolean>(false);
+    const [isContextUserOpen = false, setIsContextUserOpen] = useState<boolean>();
     const contextButtonRef = useRef(null);
  
 
@@ -31,12 +37,12 @@ const HeaderSite: FC = () => {
                     <div className={classes.header__menu}>
                         <DesktopNotifications
                             isActive={isNotificationsOpen}
-                            setIsActive={setIsNotificationsOpen}
+                            setIsActive={() => setIsNotificationsOpen}
                             buttonRef={notificationsButtonRef}
                         />
                         <ContextUser
                             isActive={isContextUserOpen}
-                            setIsActive={setIsContextUserOpen}
+                            setIsActive={() => setIsContextUserOpen}
                             buttonRef={contextButtonRef} />
                         <ThemeButton />
                         <button 
@@ -51,11 +57,11 @@ const HeaderSite: FC = () => {
                         onClick={e => setIsContextUserOpen(!isContextUserOpen)}
                         ref={contextButtonRef}>
                         <div className={classes.header__profile}>
-                            <img src={ProfileIcon} alt="icon" />
+                            <img style={{borderRadius: '10px'}} src={UserStore.photo} alt="icon" />
                             <div className={classes.profile__inner}>
                                 <div className={classes.profile__main}>
-                                    <h4 className={classes.profile__name}>John Doe</h4>
-                                    <p className={classes.profile__email}>johndoee@gmail.com</p>
+                                    <h4 className={classes.profile__name}>{UserStore.name} {UserStore.surname}</h4>
+                                    <p className={classes.profile__email}>{UserStore.email}</p>
                                 </div>
                                 <i className="bi bi-chevron-down"></i>
                             </div>

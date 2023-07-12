@@ -12,7 +12,7 @@ const PageGlobalLoader = () => {
 
     setTimeout(() => {
         setIsPageLoading(false)
-    }, 2000)
+    }, 1500)
 
     return isPageLoading ? <div style={{position:'absolute', zIndex: 9999, 
     width: '100%', height: '100%', backgroundColor: ThemeStore.backgroundColor,

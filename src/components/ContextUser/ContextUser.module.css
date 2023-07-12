@@ -1,14 +1,18 @@
 .contextModal{
     top: 100px;
     right: 5px;
+    width: 260px;
+    height: 150px;
+    padding: 20px;
 }
 
 .List{
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
 }
 
 .Link{
+    font-weight: 500;
     composes: smallText from '@styles/style.css'
 }

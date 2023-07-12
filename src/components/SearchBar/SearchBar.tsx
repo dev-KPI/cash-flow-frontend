@@ -15,11 +15,11 @@ import { isUrl } from '@services/UsefulMethods/UIMethods';
 
 
 const SearchBar = () => {
-    const [filter, setFilter] = useState<{query: string, list: IMember[]}>({
+    const [filter = {
         query: '',
         list: []
-    })
-    const [isOpen, setIsOpen] = useState<boolean>(false)
+    }, setFilter] = useState<{query: string, list: IMember[]}>()
+    const [isOpen = false, setIsOpen] = useState<boolean>()
     const ref = useRef(null)
     
 

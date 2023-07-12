@@ -1,3 +1,8 @@
 export interface IUserState {
-    int: number
+    firebaseId: string,
+    name: string,
+    surname: string,
+    email: string,
+    photo: string,
 }
+

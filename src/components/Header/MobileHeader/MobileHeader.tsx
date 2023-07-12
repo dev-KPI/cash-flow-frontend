@@ -3,14 +3,19 @@ import React, { FC } from "react";
 //logic
 import {useMemo, useRef, useState, useEffect} from 'react';
 import { Link } from "react-router-dom";
+//store
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { IUserState } from "@store/UserSlice/UserInterfaces";
 //UI
 import classes from './MobileHeader.module.css'
-import {ReactComponent as Burger} from '@assets/Header/burger.svg'
-import Logo from '@assets/user-icon.svg'
+import userIcon from '@assets/user-icon.svg';
 import MenuBurger from "./MenuBurger/MenuBurger";
 import useClickOutsideRef from "@hooks/layoutHooks/useClickOutsideRef";
 
+
 const MobileHeader: FC = () => {
+
+    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
 
     const BurgerNavRef = useRef<HTMLDivElement>(null);
 
@@ -37,7 +42,7 @@ const MobileHeader: FC = () => {
                 <Link to="/dashboard">
                     <h1 className={classes.title}>Cash<span>Flow</span></h1>
                 </Link>
-                <img src={Logo} alt="logo" />
+                <img style={{borderRadius: '10px'}} width={46} src={UserStore.photo ? UserStore.photo : userIcon} alt="logo" />
             </div>
         </header>
         <div 
