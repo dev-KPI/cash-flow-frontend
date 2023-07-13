@@ -17,7 +17,7 @@ import { IUserState } from '@store/UserSlice/UserInterfaces';
 
 const HeaderSite: FC = () => {
 
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
 
     const [isNotificationsOpen  = false, setIsNotificationsOpen] = useState<boolean>()
     const notificationsButtonRef = useRef(null);

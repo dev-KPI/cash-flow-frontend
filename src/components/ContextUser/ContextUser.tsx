@@ -19,7 +19,7 @@ interface IContenxtUserProps {
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
 
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
     const UserDispatch = useActionCreators(UserSliceActions);
     const navigate = useNavigate();
 

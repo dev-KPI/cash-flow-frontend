@@ -17,15 +17,20 @@ import { UserSliceActions } from "@store/UserSlice/UserSlice";
 import { auth, googleAuthProvider } from "@services/Auth/firebaseInitialization";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const Login: FC = () => {
 
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     //userActions
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
     const UserDispatch = useActionCreators(UserSliceActions);
 
+    const [user, loading] = useAuthState(auth)
     const navigate = useNavigate();
+    if(user){
+        navigate('/dashboard', {replace: true})
+    }
 
     const GoogleLogin = async () => {
         try {
@@ -38,7 +43,7 @@ const Login: FC = () => {
                 photo: result.user.photoURL || '',
             }
             UserDispatch.setUserCredentials(userDTO)
-            navigate('/dashboard')
+            navigate('/dashboard', {replace: true})
         } catch (err) { 
             console.log(err)
         }

@@ -26,7 +26,7 @@ interface IPropsMenuBurger {
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
     const UserDispatch = useActionCreators(UserSliceActions);
     const navigate = useNavigate();
 

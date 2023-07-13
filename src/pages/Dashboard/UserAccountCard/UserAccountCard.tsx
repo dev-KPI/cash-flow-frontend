@@ -13,7 +13,7 @@ import UserAccountCardLoader from './UserAccountLoader';
 
 const UserAccountCard: FC = () => {
 
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
 
     const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);

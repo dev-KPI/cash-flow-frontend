@@ -11,7 +11,6 @@ import Header from "@components/Header/Header";
 import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
 
-
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
 export const NOTIFICATIONS_PAGE = '/notifications';
@@ -23,8 +22,8 @@ export const GROUP_MEMBER_PAGE = '/group/:groupId/member/:memberId';
 export const HISTORY_PAGE = '/history';
 export const SETTINGS_PAGE = '/settings';
 export const LOG_IN_PAGE = '/login';
-export const SIGN_UP_PAGE = '/register';
 export const LOG_OUT = '/logout';
+
 
 export const routesNotAuth = [
     {
@@ -60,7 +59,7 @@ export const routesAuth = [
     {
         path: HISTORY_PAGE,
         component: History
-    },
+    }
 ];
 export const routesMobileNavigation = [
     {

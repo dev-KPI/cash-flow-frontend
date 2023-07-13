@@ -15,7 +15,7 @@ import useClickOutsideRef from "@hooks/layoutHooks/useClickOutsideRef";
 
 const MobileHeader: FC = () => {
 
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
+    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
 
     const BurgerNavRef = useRef<HTMLDivElement>(null);
 
