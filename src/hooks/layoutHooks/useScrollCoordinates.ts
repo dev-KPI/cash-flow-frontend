@@ -7,7 +7,7 @@ export interface IScrollCoordinates {
 }
 
 export const useScrollCoordinates = (): IScrollCoordinates => {
-    const [ScrollCoordinates, setScrollCoordinates] = useState<IScrollCoordinates>();
+    const [ScrollCoordinates, setScrollCoordinates] = useState<IScrollCoordinates>({pageXPos: 0, pageYPos: 0});
     
     useEffect(()=>{
         window.addEventListener('scroll', () => setScrollCoordinates({pageXPos: window.scrollX, pageYPos: window.scrollY}), { passive: true });

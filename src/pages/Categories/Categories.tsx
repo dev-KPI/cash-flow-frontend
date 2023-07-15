@@ -68,11 +68,11 @@ const Categories: FC = () => {
 
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
-    const [groups = false, setGroups] = useState<boolean>();
-    const [categories = [], setCategories] = useState<ICategory[]>()
-    const [selectedGroup = 0, setSelectedGroup] = useState<number>();
-    const [isCategoryModal = false, setIsCategoryModal] = useState<boolean>();
-    const [isGroupModal = false, setIsGroupModal] = useState<boolean>();
+    const [groups, setGroups] = useState<boolean>(false);
+    const [categories, setCategories] = useState<ICategory[]>([])
+    const [selectedGroup, setSelectedGroup] = useState<number>(0);
+    const [isCategoryModal, setIsCategoryModal] = useState<boolean>(false);
+    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
     const buttonRef = useRef(null);
     const { categoriesJson } = categoriesObj;
     

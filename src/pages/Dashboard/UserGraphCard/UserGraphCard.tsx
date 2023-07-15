@@ -12,7 +12,7 @@ import Graph from '@components/GraphCard/Graph';
 
 const UserGraphCard = () => {
 
-    const [loading = true, setLoading] = useState<boolean>();
+    const [loading, setLoading] = useState<boolean>(true);
     const { data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     setTimeout(() => {

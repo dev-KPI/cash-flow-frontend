@@ -19,10 +19,10 @@ const HeaderSite: FC = () => {
 
     const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
 
-    const [isNotificationsOpen  = false, setIsNotificationsOpen] = useState<boolean>()
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
     const notificationsButtonRef = useRef(null);
 
-    const [isContextUserOpen = false, setIsContextUserOpen] = useState<boolean>();
+    const [isContextUserOpen, setIsContextUserOpen] = useState<boolean>(false);
     const contextButtonRef = useRef(null);
  
 

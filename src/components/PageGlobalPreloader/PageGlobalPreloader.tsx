@@ -7,7 +7,7 @@ import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 
 const PageGlobalLoader = () => {
 
-    const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
+    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     setTimeout(() => {

@@ -24,16 +24,16 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const [nameValue = '', setNameValue] = useState<string>();
-    const [colorValue = '', setColorValue] = useState<string>();
+    const [nameValue, setNameValue] = useState<string>('');
+    const [colorValue, setColorValue] = useState<string>('');
     const {width} = useWindowSize()
 
     //submit
-    const [isSubmiting = false, setIsSubmiting] = useState<boolean>();
-    const [shouldShowTooltip = false, setShouldShowTooltip] = useState<boolean>();
+    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+    const [shouldShowTooltip, setShouldShowTooltip] = useState<boolean>(false);
 
     //pickers
-    const [pickedColor = '#FF2D55', setPickedColor] = useState<string>();
+    const [pickedColor, setPickedColor] = useState<string>('#FF2D55');
     const changeColor = (e: React.MouseEvent<HTMLDivElement>, color: string) => {setPickedColor(color)};
     const light = <div style={{backgroundColor: pickedColor, boxShadow: '0px 0px 8px ' + pickedColor}} className={classes.colorPicked}></div>
     const colors: string[] = [
@@ -45,7 +45,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
         '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00'
     ];
 
-    const [icon = 'bi bi-people', setIcon] = useState<string>();
+    const [icon, setIcon] = useState<string>('bi bi-people');
     const changeIcon = (e: React.MouseEvent<HTMLDivElement>, icon: string) => {setIcon(icon)};
     const iconDisplayed = <i style={{fontSize: '24px', color: 'var(--main-text)'}} className={icon}></i>
     const icons: string[] = [

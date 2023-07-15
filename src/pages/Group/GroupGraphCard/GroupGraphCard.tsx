@@ -127,8 +127,8 @@ const addColorToUser = (data: IGraphGroupMembers[]) => {
 const updatedData = addColorToUser(combinedData)
 
 const GroupGraphCard: FC = () => {
-    const [loading = true, setLoading] = useState<boolean>();
-    const [isToggled = false, setIsToggled] = useState<boolean>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [isToggled, setIsToggled] = useState<boolean>(false);
     const { data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     setTimeout(() => {

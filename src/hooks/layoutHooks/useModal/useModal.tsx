@@ -30,7 +30,7 @@ const useModal: FC<IModalProps> = ({
     const {width} = useWindowSize()
     const portalPlace = document.getElementById(modalName);
     const body = document.body;
-    const [isAnimation = true, setIsAnimation] = useState<boolean>();
+    const [isAnimation, setIsAnimation] = useState<boolean>(true);
     
     //handlers
     const disablePortal = useCallback(() => {

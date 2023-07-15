@@ -15,7 +15,7 @@ const UserAccountCard: FC = () => {
 
     const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
 
-    const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
+    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     setTimeout(() => {
         setIsPageLoading(false)

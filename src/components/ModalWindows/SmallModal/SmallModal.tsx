@@ -15,8 +15,8 @@ interface ISmallModalProps {
     disableHeader?: boolean
 }
 const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, className, title, buttonRef, disableHeader = false }) => {
-    const [isVisible = active, setIsVisible] = useState<boolean>()
-    const [isFadeOut = false, setIsFadeOut] = useState<boolean>()
+    const [isVisible, setIsVisible] = useState<boolean>(active)
+    const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const ref = useRef(null);
     useClickOutsideRef(ref, () => setActive(false))
     useEffect(() => {

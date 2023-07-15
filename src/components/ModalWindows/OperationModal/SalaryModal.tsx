@@ -30,12 +30,12 @@ const SalaryModal: FC<IOperationModalProps> = ({
     const amountTitle = 'Amount of salary'
     const descriptionTitle = 'Description of salary'
 
-    const [operationValue = 0, setOperationValue] = useState<number>();
-    const [descriptionValue = '', setDescriptionValue] = useState<string>();
+    const [operationValue, setOperationValue] = useState<number>(0);
+    const [descriptionValue, setDescriptionValue] = useState<string>('');
     const {width} = useWindowSize()
 
     //submit
-    const [isSubmiting = false, setIsSubmiting] = useState<boolean>();
+    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
 
     const postObject: IModalState = {
         operation: operationValue,

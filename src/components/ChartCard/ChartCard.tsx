@@ -28,9 +28,9 @@ type IChartCardProps = {
 
 
 const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
-    const [id, setId] = useState<number>();
-    const [isExtended, setIsExtended] = useState<boolean>();
-    const [loading = true, setLoading] = useState<boolean>();
+    const [id, setId] = useState<number>(0);
+    const [isExtended, setIsExtended] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     let itemAmount = 0;
     let itemTitle = '';
     if (data.some(item => item.hasOwnProperty("member"))) {

@@ -35,7 +35,7 @@ const GroupHistoryCard: FC = () => {
         groupId: string,
         memberId: string,
     }>()
-    const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
+    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
     const {width} = useWindowSize();
     setTimeout(() => {
         setIsPageLoading(false)

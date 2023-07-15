@@ -63,7 +63,7 @@ const Groups: FC = () => {
            
     }
 
-    const [isGroupModal = false, setIsGroupModal] = useState<boolean>();
+    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
 
     const openModal = () => {
         setIsGroupModal(!isGroupModal)

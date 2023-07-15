@@ -10,7 +10,7 @@ import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategorie
 
 
 const UserCategoriesCardDot: FC<ICategoryItem> = ({ setIdModalOpen, setIsModalOpen, category, amount = 100 }) => {
-    const [total = amount, setTotal] = useState<number>();
+    const [total, setTotal] = useState<number>(amount);
     
     const openModal = (e: MouseEvent) => {
         e.preventDefault()

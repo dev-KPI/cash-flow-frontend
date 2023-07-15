@@ -17,11 +17,11 @@ export interface ISortedCategoryItem {
 }
 
 const GroupCategoriesCard = () => {
-    const [categories = [], setCategories] = useState<ISortedCategoryItem[]>();
-    const [totalItems = 11, setTotalItems] = useState<number>();
-    const [loading = true, setLoading] = useState<boolean>();
-    const [idModalOpen = -1, setIdModalOpen] = useState<number>();
-    const [isModalOpen = false, setIsModalOpen] = useState<boolean>();
+    const [categories, setCategories] = useState<ISortedCategoryItem[]>([]);
+    const [totalItems, setTotalItems] = useState<number>(11);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [idModalOpen, setIdModalOpen] = useState<number>(-1);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     
     const { categoriesByGroup } = json;

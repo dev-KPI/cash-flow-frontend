@@ -19,7 +19,7 @@ const MobileHeader: FC = () => {
 
     const BurgerNavRef = useRef<HTMLDivElement>(null);
 
-    const [isOpen = false, setIsOpen] = useState<boolean>();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     useClickOutsideRef(BurgerNavRef, () => setIsOpen(false))
 
     const getBurgerNav = useMemo(() => {

@@ -91,8 +91,8 @@ const getMixedHistory = () => {
 }
 
 const History: React.FC = () => {
-    const [data = [...getMixedHistory()], setData] = useState()
-    const [sorting = [], setSorting] = useState<SortingState>() 
+    const [data, setData] = useState([...getMixedHistory()])
+    const [sorting, setSorting] = useState<SortingState>([]) 
     const rerender = React.useReducer(() => ({}), {})[1]
 
     const table = useReactTable({

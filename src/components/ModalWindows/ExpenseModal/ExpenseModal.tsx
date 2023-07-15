@@ -31,13 +31,13 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const amountTitle = 'Amount of expense'
     const descriptionTitle = 'Description of expense'
 
-    const [operationValue = 0, setOperationValue] = useState<number>();
-    const [descriptionValue = '', setDescriptionValue] = useState<string>();
+    const [operationValue, setOperationValue] = useState<number>(0);
+    const [descriptionValue, setDescriptionValue] = useState<string>('');
     const {width} = useWindowSize()
 
     //submit
-    const [isSubmiting = false, setIsSubmiting] = useState<boolean>();
-    const [shouldShowTooltip = false, setShouldShowTooltip] = useState<boolean>();
+    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+    const [shouldShowTooltip, setShouldShowTooltip] = useState<boolean>(false);
 
     const postObject: IModalState = {
         operation: operationValue,
