@@ -3,23 +3,14 @@ import { NavLink } from "react-router-dom";
 
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { GroupObj } from "./GroupObj";
+import { GroupObj } from "@pages/GroupObj";
 //UI
 import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
+import IUser from "@models/IUser";
 
-
-
-
-interface people_props {
-    id: number,
-    login: string,
-    first_name: string,
-    last_name: string,
-    picture: string
-}
 
 type group_props = {
     id: number,
@@ -28,8 +19,8 @@ type group_props = {
     status: string,
     color: string,
     icon: string,
-    admin: people_props,
-    members: people_props[]
+    admin: IUser,
+    members: IUser[]
 }
 export interface IGroup {
     group: group_props,
