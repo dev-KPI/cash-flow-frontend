@@ -41,7 +41,7 @@ export const MembersObj = JSON.parse(JSON.stringify({
                 last_name: "Johnson",
                 picture: "ref.com24"
             },
-            status: "joined",
+            status: "pending",
             date_join: "2023-04-14"
         },
         {
@@ -52,7 +52,7 @@ export const MembersObj = JSON.parse(JSON.stringify({
                 last_name: "Miller",
                 picture: "ref.com25"
             },
-            status: "joined",
+            status: "pending",
             date_join: "2023-04-14"
         }
     ]
