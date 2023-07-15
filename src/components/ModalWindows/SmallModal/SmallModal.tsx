@@ -18,7 +18,7 @@ const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, classNa
     const [isVisible, setIsVisible] = useState<boolean>(active)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const ref = useRef(null);
-    useClickOutsideRef(ref, () => setActive(false))
+    useOnClickOutside(ref, () => setActive(false))
     useEffect(() => {
         if (active) {
             setIsVisible(true);

@@ -24,7 +24,7 @@ ChartJS.register(
 interface ChartProps {
     data: IUserExpenseChartDataItem[] | IMembersExpensesChart[];
     total: number;
-    setId: Dispatch<SetStateAction<number | undefined>>
+    setId: Dispatch<SetStateAction<number>>
 }
 
 const UserExpenseChart: FC<ChartProps> = ({ data, total, setId }) => {

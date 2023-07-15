@@ -37,12 +37,12 @@ const HeaderSite: FC = () => {
                     <div className={classes.header__menu}>
                         <DesktopNotifications
                             isActive={isNotificationsOpen}
-                            setIsActive={() => setIsNotificationsOpen}
+                            setIsActive={setIsNotificationsOpen}
                             buttonRef={notificationsButtonRef}
                         />
                         <ContextUser
                             isActive={isContextUserOpen}
-                            setIsActive={() => setIsContextUserOpen}
+                            setIsActive={setIsContextUserOpen}
                             buttonRef={contextButtonRef} />
                         <ThemeButton />
                         <button 

@@ -10,7 +10,7 @@ import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/Us
 
 interface ChartCardDotProps {
     item: IUserExpenseChartDataItem | IMembersExpensesChart;
-    setId: Dispatch<SetStateAction<number | undefined>>
+    setId: (Dispatch<SetStateAction<number>>)
 }
 
 
