@@ -7,7 +7,6 @@ export interface IUserExpenseChartDataItem {
         color: string
     },
     amount: number
-
 }
 export interface ICategoryExpenseItemADD {
     category: {

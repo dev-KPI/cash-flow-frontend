@@ -12,12 +12,9 @@ import { breadcrumbs } from './breadcrumbs';
 import ContextUser from '@components/ContextUser/ContextUser';
 //store
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { IUserState } from '@store/UserSlice/UserInterfaces';
 
 
 const HeaderSite: FC = () => {
-
-    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
 
     const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
     const notificationsButtonRef = useRef(null);
@@ -57,11 +54,11 @@ const HeaderSite: FC = () => {
                         onClick={e => setIsContextUserOpen(!isContextUserOpen)}
                         ref={contextButtonRef}>
                         <div className={classes.header__profile}>
-                            <img style={{borderRadius: '10px'}} src={UserStore.photo} alt="icon" />
+                            <img style={{borderRadius: '10px'}} src={ProfileIcon} alt="icon" />
                             <div className={classes.profile__inner}>
                                 <div className={classes.profile__main}>
-                                    <h4 className={classes.profile__name}>{UserStore.name} {UserStore.surname}</h4>
-                                    <p className={classes.profile__email}>{UserStore.email}</p>
+                                    <h4 className={classes.profile__name}>{`Adam`} {`Breban`}</h4>
+                                    <p className={classes.profile__email}>{`adambreban@gmail.com`}</p>
                                 </div>
                                 <i className="bi bi-chevron-down"></i>
                             </div>

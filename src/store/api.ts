@@ -1,14 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { ExpenseApiSlice } from './ExpenseApiSlice/ExpenseApiSlice'
-import { UserCategoryExpenseApiSlice } from './UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice'
 
 export const api = createApi({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_BASE_API_URL}` }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_API}` }),
     tagTypes: [
         'api', 
-        'ExpenseApi',
-        'CategoryExpenses'
     ],
     endpoints: () => ({}),
 })

@@ -6,8 +6,6 @@ import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
 import { auth } from "@services/Auth/firebaseInitialization";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { IUserState } from "@store/UserSlice/UserInterfaces";
-import { UserSliceActions } from "@store/UserSlice/UserSlice";
 //UI
 import classes from "./MenuBurger.module.css";
 import userIcon from '@assets/user-icon.svg';
@@ -15,6 +13,7 @@ import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
+import { useLogOutQuery, useLoginQuery } from "@store/Auth/Auth";
 
 
 
@@ -26,24 +25,23 @@ interface IPropsMenuBurger {
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-    const UserStore = useAppSelector<IUserState>(state => state.persistedUserSlice);
-    const UserDispatch = useActionCreators(UserSliceActions);
     const navigate = useNavigate();
+    const { data, error: logOutError, isError: isLogOutError, isLoading: isLogOutLoading } = useLogOutQuery(null);
 
-    const GoogleLogOut = async () => {
-        try {
-            auth.signOut()
-            UserDispatch.setNullCredentials();
-            navigate('/login')
-        } catch (err) { 
-            console.log(err)
-        }
-    }
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.item + ' ' + classes.activeLink : classes.item;
         res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
         return res
+    }
+
+    const LogOut = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        try {
+            const response = data;
+            console.log(data);
+        } catch (err){
+            console.log(err)
+        }
     }
 
     return <>
@@ -56,10 +54,10 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                 </div>
             </div>
             <div className={classes.burgernav__account}>
-                <img alt="Avatar" src={UserStore.photo ? UserStore.photo : userIcon} width="46px" style={{borderRadius: '10px'}}/>
+                <img alt="Avatar" src={userIcon} width="46px" style={{borderRadius: '10px'}}/>
                 <div className={classes.account__info}>
-                    <h2 className={classes.title}>{UserStore.name}</h2>
-                    <h2 className={classes.title}>{UserStore.surname}</h2>
+                    <h2 className={classes.title}>{`Adam`}</h2>
+                    <h2 className={classes.title}>{`Breban`}</h2>
                     <p className={classes.balance}>{numberWithCommas(4124)}$</p>
                 </div>
             </div>
@@ -152,7 +150,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                         </NavLink>
                     </li>
                     <li>
-                        <button onClick={GoogleLogOut} key={'erf2'} className={classes.item}>
+                        <button onClick={LogOut} key={'erf2'} className={classes.item}>
                             <i className="bi bi-box-arrow-left"></i>
                             <h3 className={classes.title}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h3>
                         </button>

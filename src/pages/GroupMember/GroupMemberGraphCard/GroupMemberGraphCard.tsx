@@ -7,7 +7,7 @@ import GraphCardLoader from "@components/GraphCard/GraphCardLoader";
 import StackedGraph from "@components/GraphCard/StackedGraph";
 import Graph from "@components/GraphCard/Graph";
 //store
-import { useGetExpensesPerLastMonthQuery } from "@store/ExpenseApiSlice/ExpenseApiSlice";
+import { expenses } from "@pages/Expenses";
 import { IMonthPickerState } from "@store/UI_store/MonthPickerSlice/MonthPickerInterfaces";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import IUser from "@models/IUser";
@@ -129,7 +129,6 @@ const updatedData = addColorToUser(combinedData)
 const GroupMemberGraphCard: FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [isToggled, setIsToggled] = useState<boolean>(false);
-    const { data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     setTimeout(() => {
         setLoading(false)
