@@ -42,19 +42,18 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
             buttonRef={buttonRef}
             disableHeader={true}
             children={
-                <ul 
-                    className={classes.List}>
-                    <li>
+                <ul className={classes.List}>
+                    <li className={classes.item}>
                         <Link to={'/'}>
                             <h4 className={classes.Link}>Settings</h4>
                         </Link>
                     </li>
-                    <li>
+                    <li className={classes.item}>
                         <Link to={'/'}>
                             <h4 className={classes.Link}>Personal information</h4>
                         </Link>
                     </li>
-                    <li>
+                    <li className={classes.item}>
                         <button style={{cursor: 'pointer'}} onClick={GoogleLogOut}>
                             <h4 className={classes.Link}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h4>
                         </button>
