@@ -1,5 +1,5 @@
 import React, { FC, useState, ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
@@ -35,11 +35,9 @@ const Groups: FC = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
             const memberIcons = el.group.members.map(member => member.picture);
-            return (<NavLink
-                key={`${i}-${el.group.title}-${el.date_join}`}
-                to={`/group/${el.group.id}`}      
-            >
+            return (    
                 <GroupListItem
+                    id={el.group.id}
                     description={el.group.description}
                     title={el.group.title}
                     icon={el.group.admin.picture}
@@ -48,7 +46,6 @@ const Groups: FC = () => {
                     color={el.group.color}
                     memberIcons={memberIcons}
                 />
-            </NavLink>
             )  
         })
            

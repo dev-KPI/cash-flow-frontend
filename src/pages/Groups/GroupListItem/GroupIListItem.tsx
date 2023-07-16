@@ -1,12 +1,15 @@
-import React, { FC } from 'react';
-
+import React, { FC, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import userIcon from '@assets/user-icon.svg';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
+
 //UI
 import classes from './GroupListItem.module.css'
+import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
 
 
 interface IGroupItemProps {
+    id: number;
     title: string,
     description: string,
     icon: string,
@@ -15,9 +18,12 @@ interface IGroupItemProps {
     color: string,
     memberIcons: string[]
 }
-const GroupItem: FC<IGroupItemProps> = ({ title, description, icon, adminName, adminEmail, color, memberIcons }) => {
-    description = description.length > 150 ? description.slice(0, 120) + '...' : description;
+const GroupItem: FC<IGroupItemProps> = ({id, title, description, icon, adminName, adminEmail, color, memberIcons }) => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const buttonRef = useRef(null);
+    const navigate = useNavigate()
 
+    description = description.length > 150 ? description.slice(0, 120) + '...' : description;
     const getMemberIcons = () => {
         return memberIcons.map((icon, i) => 
             <div
@@ -42,42 +48,84 @@ const GroupItem: FC<IGroupItemProps> = ({ title, description, icon, adminName, a
     }
 
     return (
-        <div className={classes.group}>
-            <h4 className={classes.title}>{title}</h4>
-            <div className={classes.content}>
-                <div className={classes.details}>
-                    <div className={classes.icon}
-                        style={{ backgroundColor: color }}
-                    >{getAdminIcon()}</div>
-                    <div className={classes.info}>
-                        <h6 className={classes.ownerName}>{adminName}</h6>
-                        <p className={classes.ownerEmail}>{adminEmail}</p>
-                    </div>
-                </div>
-                <div className={classes.description}>{description}</div>
-                <div className={classes.contentBottom}>
-                    <div className={classes.members}>
-                        {getMemberIcons()}
-                        {memberIcons.length > 3 ? 
-                            <div className={classes.avatar}>
-                                <div className={classes.avatarLeftMembers}
-                                    style={{ backgroundColor: color }}></div>
-                                <p className={classes.leftMembers}
-                                    style={{ color: color }}
-                                >+{memberIcons.length-3}
-                                </p>
+        <Link
+            key={`${title}-${id}-${adminName}`}
+            to={`/group/${id}`}
+        >
+            <div className={classes.group}>
+                <div className={classes.inner}>
+                    <h4 className={classes.title}>{title}</h4>
+                    <div className={classes.content}>
+                        <div className={classes.details}>
+                            <div className={classes.icon}
+                                style={{ backgroundColor: color }}
+                            >{getAdminIcon()}</div>
+                            <div className={classes.info}>
+                                <h6 className={classes.ownerName}>{adminName}</h6>
+                                <p className={classes.ownerEmail}>{adminEmail}</p>
                             </div>
-                            :null
-                        }
+                        </div>
+                        <div className={classes.description}>{description}</div>
+                        <div className={classes.contentBottom}>
+                            <div className={classes.members}>
+                                {getMemberIcons()}
+                                {memberIcons.length > 3 ?
+                                    <div className={classes.avatar}>
+                                        <div className={classes.avatarLeftMembers}
+                                            style={{ backgroundColor: color }}></div>
+                                        <p className={classes.leftMembers}
+                                            style={{ color: color }}
+                                        >+{memberIcons.length - 3}
+                                        </p>
+                                    </div>
+                                    : null
+                                }
+                            </div>
+                            <button className={classes.moreBtn}
+                                ref={buttonRef}
+                                onClick={(e) => { e.preventDefault(); setIsModalOpen(!isModalOpen) }}>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </button>
+                        </div>
                     </div>
-                    <button className={classes.moreBtn}>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </button>
                 </div>
+                <SmallModal
+                    active={isModalOpen}
+                    setActive={setIsModalOpen}
+                    className={classes.modal}
+                    title='User'
+                    buttonRef={buttonRef}
+                    disableHeader={true}
+                    children={
+                        <ul className={classes.List}>
+                            <li className={classes.item}>
+                                <button className={classes.itemWrapper}
+                                    onClick={() => navigate(`/group/${id}`)}>
+                                    <i className="bi bi-eye"></i>
+                                    <h6 className={classes.itemTitle}>View</h6>
+                                </button>
+                            </li>
+                            <li className={classes.item}>
+                                <button className={classes.itemWrapper}
+                                    onClick={(e) => { e.preventDefault(); }}>
+                                    <i className="bi bi-pencil"></i>
+                                    <h6 className={classes.itemTitle}>Edit</h6>
+                                </button>
+                            </li>
+                            <li className={classes.item}>
+                                <button className={classes.itemWrapper}
+                                    style={{ color: 'var(--main-red)' }}
+                                    onClick={(e) => { e.preventDefault(); }}>
+                                    <i className="bi bi-box-arrow-left"></i>
+                                    <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>Leave</h6>
+                                </button>
+                            </li>
+                        </ul>}
+                />
             </div>
-        </div>
+        </Link>
     );
 };
 
