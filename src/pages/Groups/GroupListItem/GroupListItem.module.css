@@ -1,6 +1,9 @@
 .group {
     composes: cardComponent from '@styles/style.css';
     transition: all 0.3s ease;
+    
+}
+.wrapper{
     position: relative;
 }
 
@@ -145,6 +148,7 @@
 .item{
     padding: 10px;
     border-radius: 7px;
+    cursor: pointer;
 }
 .itemWrapper {
     display: flex;

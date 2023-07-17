@@ -8,8 +8,9 @@ import { GroupObj } from "@pages/GroupObj";
 import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
-import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
+import CreateGroupModal from '@components/ModalWindows/GroupModal/CreateGroupModal';
 import IUser from "@models/IUser";
+import uuid from "react-uuid";
 
 
 type group_props = {
@@ -37,6 +38,7 @@ const Groups: FC = () => {
             const memberIcons = el.group.members.map(member => member.picture);
             return (    
                 <GroupListItem
+                    key={uuid()}
                     id={el.group.id}
                     description={el.group.description}
                     title={el.group.title}
@@ -51,21 +53,21 @@ const Groups: FC = () => {
            
     }
 
-    const [isGroupModal = false, setIsGroupModal] = useState<boolean>();
+    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
 
     const openModal = () => {
         setIsGroupModal(!isGroupModal)
     }
 
-    const getCategoriesModal = () => {
-        return <GroupModal
-        setIsGroupModalOpen={setIsGroupModal}
-        isGroupModalOpen={isGroupModal}
+    const getCreateGroupModal = () => {
+        return <CreateGroupModal
+            setIsGroupModalOpen={setIsGroupModal}
+            isGroupModalOpen={isGroupModal}
         />
     }
 
     return (<>
-        {getCategoriesModal()}
+        {getCreateGroupModal()}
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>

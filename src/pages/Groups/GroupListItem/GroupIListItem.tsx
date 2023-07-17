@@ -1,11 +1,14 @@
 import React, { FC, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import userIcon from '@assets/user-icon.svg';
-import { isUrl } from '@services/UsefulMethods/UIMethods';
 
+import { isUrl } from '@services/UsefulMethods/UIMethods';
+import uuid from 'react-uuid';
 //UI
 import classes from './GroupListItem.module.css'
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
+import EditGroupModal from '@components/ModalWindows/GroupModal/EditGroupModal';
+import userIcon from '@assets/user-icon.svg';
+
 
 
 interface IGroupItemProps {
@@ -18,7 +21,8 @@ interface IGroupItemProps {
     color: string,
     memberIcons: string[]
 }
-const GroupItem: FC<IGroupItemProps> = ({id, title, description, icon, adminName, adminEmail, color, memberIcons }) => {
+const GroupItem: FC<IGroupItemProps> = ({ id, title, description, icon, adminName, adminEmail, color, memberIcons }) => {
+    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const buttonRef = useRef(null);
     const navigate = useNavigate()
@@ -48,8 +52,46 @@ const GroupItem: FC<IGroupItemProps> = ({id, title, description, icon, adminName
     }
 
     return (
+        <div className={classes.wrapper}>
+            <SmallModal
+                active={isModalOpen}
+                setActive={setIsModalOpen}
+                className={classes.modal}
+                title='User'
+                buttonRef={buttonRef}
+                disableHeader={true}
+                children={
+                    <ul className={classes.List}>
+                        <li className={classes.item}>
+                            <button className={classes.itemWrapper}
+                                onClick={() => navigate(`/group/${id}`)}>
+                                <i className="bi bi-eye"></i>
+                                <h6 className={classes.itemTitle}>View</h6>
+                            </button>
+                        </li>
+                        <li className={classes.item}>
+                            <button className={classes.itemWrapper}
+                                onClick={(e) => { e.preventDefault(); setIsGroupModal(!isGroupModal) }}>
+                                <i className="bi bi-pencil"></i>
+                                <h6 className={classes.itemTitle}>Edit</h6>
+                            </button>
+                        </li>
+                        <li className={classes.item}>
+                            <button className={classes.itemWrapper}
+                                style={{ color: 'var(--main-red)' }}
+                                onClick={(e) => { e.preventDefault(); }}>
+                                <i className="bi bi-box-arrow-left"></i>
+                                <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>Leave</h6>
+                            </button>
+                        </li>
+                    </ul>}
+            />
+        <EditGroupModal
+                setIsGroupModalOpen={setIsGroupModal}
+                isGroupModalOpen={isGroupModal}
+            />
         <Link
-            key={`${title}-${id}-${adminName}`}
+            key={uuid()}
             to={`/group/${id}`}
         >
             <div className={classes.group}>
@@ -91,41 +133,9 @@ const GroupItem: FC<IGroupItemProps> = ({id, title, description, icon, adminName
                         </div>
                     </div>
                 </div>
-                <SmallModal
-                    active={isModalOpen}
-                    setActive={setIsModalOpen}
-                    className={classes.modal}
-                    title='User'
-                    buttonRef={buttonRef}
-                    disableHeader={true}
-                    children={
-                        <ul className={classes.List}>
-                            <li className={classes.item}>
-                                <button className={classes.itemWrapper}
-                                    onClick={() => navigate(`/group/${id}`)}>
-                                    <i className="bi bi-eye"></i>
-                                    <h6 className={classes.itemTitle}>View</h6>
-                                </button>
-                            </li>
-                            <li className={classes.item}>
-                                <button className={classes.itemWrapper}
-                                    onClick={(e) => { e.preventDefault(); }}>
-                                    <i className="bi bi-pencil"></i>
-                                    <h6 className={classes.itemTitle}>Edit</h6>
-                                </button>
-                            </li>
-                            <li className={classes.item}>
-                                <button className={classes.itemWrapper}
-                                    style={{ color: 'var(--main-red)' }}
-                                    onClick={(e) => { e.preventDefault(); }}>
-                                    <i className="bi bi-box-arrow-left"></i>
-                                    <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>Leave</h6>
-                                </button>
-                            </li>
-                        </ul>}
-                />
             </div>
         </Link>
+    </div>   
     );
 };
 
