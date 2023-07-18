@@ -56,50 +56,50 @@ const GroupItem: FC<IGroupItemProps> = ({ id, title, description, icon, adminNam
         setLoading(false)
     }, 1500);
     return (
-        <div className={classes.wrapper}>
-            <SmallModal
-                active={isModalOpen}
-                setActive={setIsModalOpen}
-                className={classes.modal}
-                title='User'
-                buttonRef={buttonRef}
-                disableHeader={true}
-                children={
-                    <ul className={classes.List}>
-                        <li className={classes.item}>
-                            <button className={classes.itemWrapper}
-                                onClick={() => navigate(`/group/${id}`)}>
-                                <i className="bi bi-eye"></i>
-                                <h6 className={classes.itemTitle}>View</h6>
-                            </button>
-                        </li>
-                        <li className={classes.item}>
-                            <button className={classes.itemWrapper}
-                                onClick={(e) => { e.preventDefault(); setIsGroupModal(!isGroupModal) }}>
-                                <i className="bi bi-pencil"></i>
-                                <h6 className={classes.itemTitle}>Edit</h6>
-                            </button>
-                        </li>
-                        <li className={classes.item}>
-                            <button className={classes.itemWrapper}
-                                style={{ color: 'var(--main-red)' }}
-                                onClick={(e) => { e.preventDefault(); }}>
-                                <i className="bi bi-box-arrow-left"></i>
-                                <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>Leave</h6>
-                            </button>
-                        </li>
-                    </ul>}
-            />
-            <EditGroupModal
-                setIsGroupModalOpen={setIsGroupModal}
-                isGroupModalOpen={isGroupModal}
-            />
-            <Link
-                key={uuid()}
-                to={`/group/${id}`}
-            >
-                <div className={classes.group}>
-                    {loading ? <GroupListItemLoader /> : 
+        <div className={classes.group}>
+            {loading ? <GroupListItemLoader /> : 
+                <>
+                    <SmallModal
+                        active={isModalOpen}
+                        setActive={setIsModalOpen}
+                        className={classes.modal}
+                        title='User'
+                        buttonRef={buttonRef}
+                        disableHeader={true}
+                        children={
+                            <ul className={classes.List}>
+                                <li className={classes.item}>
+                                    <button className={classes.itemWrapper}
+                                        onClick={() => navigate(`/group/${id}`)}>
+                                        <i className="bi bi-eye"></i>
+                                        <h6 className={classes.itemTitle}>View</h6>
+                                    </button>
+                                </li>
+                                <li className={classes.item}>
+                                    <button className={classes.itemWrapper}
+                                        onClick={(e) => { e.preventDefault(); setIsGroupModal(!isGroupModal) }}>
+                                        <i className="bi bi-pencil"></i>
+                                        <h6 className={classes.itemTitle}>Edit</h6>
+                                    </button>
+                                </li>
+                                <li className={classes.item}>
+                                    <button className={classes.itemWrapper}
+                                        style={{ color: 'var(--main-red)' }}
+                                        onClick={(e) => { e.preventDefault(); }}>
+                                        <i className="bi bi-box-arrow-left"></i>
+                                        <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>Leave</h6>
+                                    </button>
+                                </li>
+                            </ul>}
+                    />
+                    <EditGroupModal
+                        setIsGroupModalOpen={setIsGroupModal}
+                        isGroupModalOpen={isGroupModal}
+                    />
+                    <Link
+                        key={uuid()}
+                        to={`/group/${id}`}
+                    >
                         <div className={classes.inner}>
                             <h4 className={classes.title}>{title}</h4>
                             <div className={classes.content}>
@@ -137,9 +137,9 @@ const GroupItem: FC<IGroupItemProps> = ({ id, title, description, icon, adminNam
                                     </button>
                                 </div>
                             </div>
-                        </div>}
-                </div>
-            </Link>
+                        </div>
+                    </Link>
+                </>}
         </div>   
     );
 };

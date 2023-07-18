@@ -1,10 +1,8 @@
 .group {
     composes: cardComponent from '@styles/style.css';
     transition: all 0.3s ease;
-    
-}
-.wrapper{
     position: relative;
+    
 }
 
 .group:hover{
