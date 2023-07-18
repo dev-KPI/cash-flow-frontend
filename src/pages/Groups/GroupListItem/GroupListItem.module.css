@@ -169,13 +169,18 @@
     color: var(--main-text);
 }
 
-
+.loader{
+    height: 250px;
+}
 @media only screen and (max-width: 768px) {
     .title{
         padding: 16px 16px 9px;
     }
     .content{
         padding: 16px;
+    }
+    .loader{
+        height: 232px;
     }
 }
 
