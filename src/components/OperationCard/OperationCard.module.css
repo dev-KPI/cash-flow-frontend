@@ -77,6 +77,9 @@
     line-height: 16px;
     color: var(--text);
 }
+.loader{
+    height: 120px;
+}
 @media only screen and (max-width: 1440px) {
     .operationCard {
         width: 100%;
@@ -92,8 +95,10 @@
     }
 }
 @media only screen and (max-width: 768px) {
-    
     .bottom{
         margin-top: 8px;
+    }
+    .loader{
+        height: 110px;
     }
 }

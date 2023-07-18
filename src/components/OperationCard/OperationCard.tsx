@@ -4,6 +4,7 @@ import React, { useState, FC, useCallback } from 'react';
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
+import OperationCardLoader from './OperationCardLoader';
 
 interface OperactionCardProps {
     operation: string;
@@ -15,6 +16,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
 
     const [amount = 423, setAmount] = useState<number>();
     const [source, setSource] = useState<string>();
+    const [loading, setLoading] = useState<boolean>(true);
 
     const [isOperationModalOpen = false, setIsOperationModalOpen] = useState<boolean>();
 
@@ -26,6 +28,9 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
     }
 
     const cardTitle = title ? title : operation;
+    setTimeout(() => {
+        setLoading(false)
+    }, 1500);
     return (<>
         {operation === 'Income' ?
             <SalaryModal
@@ -36,30 +41,31 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         <div className={`${classes.operationCard} ${className ? className : ''}`}
             onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
-            <div className={classes.inner}>
-                <div className={classes.top}>
-                    <div className={classes.info}>
-                        <h3 className={classes.title}>{cardTitle}</h3>
-                        <p className={classes.amount}>{amount}$</p>
+            {loading ? <OperationCardLoader /> : 
+                <div className={classes.inner}>
+                    <div className={classes.top}>
+                        <div className={classes.info}>
+                            <h3 className={classes.title}>{cardTitle}</h3>
+                            <p className={classes.amount}>{amount}$</p>
+                        </div>
+                        <div
+                            className={classes.icon}
+                            style={{ background: styles.operationColor }}
+                        >
+                            {operation === "Income" ?
+                                <i className="bi bi-credit-card-2-front"></i> : <i className="bi bi-graph-down"></i>}
+                        </div>
                     </div>
-                    <div
-                        className={classes.icon}
-                        style={{ background: styles.operationColor }}
-                    >
-                        {operation === "Income" ?
-                            <i className="bi bi-credit-card-2-front"></i> : <i className="bi bi-graph-down"></i>}
+                    <div className={classes.bottom}>
+                        <div
+                            className={classes.percent}
+                            style={{ background: styles.percentBackground }}
+                        >
+                            <span style={{ color: styles.percentColor }}>13%</span>
+                        </div>
+                        <p className={classes.time}>since last month</p>
                     </div>
-                </div>
-                <div className={classes.bottom}>
-                    <div
-                        className={classes.percent}
-                        style={{ background: styles.percentBackground }}
-                    >
-                        <span style={{ color: styles.percentColor }}>13%</span>
-                    </div>
-                    <p className={classes.time}>since last month</p>
-                </div>
-            </div>
+                </div>}
         </div>
     </>);
 };

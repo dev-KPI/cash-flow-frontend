@@ -1,6 +1,8 @@
 .group {
     composes: cardComponent from '@styles/style.css';
     transition: all 0.3s ease;
+    position: relative;
+    
 }
 
 .group:hover{
@@ -133,12 +135,50 @@
     background-color: var(--main-green);
 }
 
+/* modal */
+.modal {
+    top: unset;
+    bottom: 25px;
+    padding: 4px;
+    width: 120px;
+    border-radius: 10px;
+}
+.item{
+    padding: 10px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+.itemWrapper {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    color: var(--main-text);
+}
+
+.item:hover{
+    background-color: var(--item-hover);
+}
+
+.itemTitle{
+    font-weight: 500;
+    composes: mediumItemTitle from '@styles/style.css';
+    color: var(--main-text);
+}
+
+.loader{
+    height: 250px;
+}
 @media only screen and (max-width: 768px) {
     .title{
         padding: 16px 16px 9px;
     }
     .content{
         padding: 16px;
+    }
+    .loader{
+        height: 232px;
     }
 }
 

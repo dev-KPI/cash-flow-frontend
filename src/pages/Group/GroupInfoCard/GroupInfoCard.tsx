@@ -5,9 +5,10 @@ import classes from './GroupInfoCard.module.css';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import userIcon from '@assets/user-icon.svg';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import GroupInfoCardLoader from './GroupInfoCardLoader';
 
 const GroupInfoCard: FC = () => {
-
+    const [loading, setLoading] = useState(true);
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     const Group = JSON.parse(JSON.stringify(
         {
@@ -47,28 +48,32 @@ const GroupInfoCard: FC = () => {
                 <i className={"bi bi-people"}></i>
             </div>
     }
+    setTimeout(() => {
+        setLoading(false)
+    }, 1500);
 
     return (
         <div className={classes.GroupInfoCard}>
-            <div className={classes.inner}>
-                <div className={classes.group}>
-                    <div className={classes.avatar}>{getAdminIcon()}</div>
-                    <div className={classes.group__info}>
-                        <h4 className={classes.title}>{title}</h4>
-                        <ul className={classes.details}>
-                            <li className={classes.detailItem}>
-                                <p className={classes.detailNumber}>{members}</p>
-                                <p className={classes.detailTitle}>Members</p>
-                            </li>
-                            <li className={classes.detailItem}>
-                                <p className={classes.detailNumber}>{expenses}</p>
-                                <p className={classes.detailTitle}>Expenses</p>
-                            </li>
-                        </ul>
+            {loading ? <GroupInfoCardLoader /> :
+                <div className={classes.inner}>
+                    <div className={classes.group}>
+                        <div className={classes.avatar}>{getAdminIcon()}</div>
+                        <div className={classes.group__info}>
+                            <h4 className={classes.title}>{title}</h4>
+                            <ul className={classes.details}>
+                                <li className={classes.detailItem}>
+                                    <p className={classes.detailNumber}>{members}</p>
+                                    <p className={classes.detailTitle}>Members</p>
+                                </li>
+                                <li className={classes.detailItem}>
+                                    <p className={classes.detailNumber}>{expenses}</p>
+                                    <p className={classes.detailTitle}>Expenses</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className={classes.description}>{description}</div>
                     </div>
-                    <div className={classes.description}>{description}</div>
-                </div>
-            </div>
+                </div>}
         </div>
     )
 }

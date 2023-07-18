@@ -14,12 +14,10 @@
     animation: fadeOut 0.5s forwards;
 }
 
-.modal__content{
-   margin-top: 10px;
-}
 .modalHeader{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 .title{ 
     composes: cardTitle from "@styles/style.css";

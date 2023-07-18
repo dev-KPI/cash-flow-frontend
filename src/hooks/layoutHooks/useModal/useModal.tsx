@@ -43,7 +43,7 @@ const useModal: FC<IModalProps> = ({
 
     //initializing page process
     const initializePortal = useCallback(() => {
-       
+        const yScroll = window.scrollY;
         containerHeight -= width > 768 ? (32 * 2) : 24;
         containerWidth -= width > 768 ? (30 * 2) : 24;
 
@@ -59,16 +59,17 @@ const useModal: FC<IModalProps> = ({
         }
         if (isModalOpen) {
             if (body) {
-                body.style.position = 'fixed';
                 body.style.overflowY = 'scroll';
+                body.style.position = 'fixed';
+                body.style.top = `-${yScroll}px`;
                 body.style.width = '100%';
-                if(width < 768) body.style.paddingRight = '0px';
             };
         } else {
             if (body) {
-                body.style.width = '100%';
-                body.style.position = 'relative';
-                body.style.overflowY = 'scroll';
+                body.style.position = '';
+                const scrollY = document.body.style.top;
+                body.style.top = '';
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
             }
         }
     }, [isModalOpen, width])

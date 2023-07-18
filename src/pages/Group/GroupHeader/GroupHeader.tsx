@@ -1,4 +1,4 @@
-import { GroupObj } from '@pages/Groups/GroupObj';
+import { GroupObj } from '@pages/GroupObj';
 import { IGroup } from '@pages/Groups/GroupsPage';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';

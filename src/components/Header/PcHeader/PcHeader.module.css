@@ -93,6 +93,15 @@
 	        animation: ping 1s ease-in-out infinite both;
 }
 
+.chevron{
+    transition: all 0.3s ease;
+    transform: rotate(0deg)
+}
+
+.chevronTransition{
+    transform: rotate(180deg)
+}
+
 .header__menu {
     display: flex;
     align-items: center;
