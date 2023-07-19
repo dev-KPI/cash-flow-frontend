@@ -31,3 +31,34 @@
         transform: scale(1.1);
     }
 }
+
+@media only screen and (max-width: 768px) {
+    .in{
+        animation: inAnimMobile .2s;
+    }
+    .out{
+        animation: outAnimMobile .2s;
+    }
+}
+
+@keyframes inAnimMobile {
+    0%{
+        visibility: hidden;
+        opacity: 0;
+    }
+    100%{
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+@keyframes outAnimMobile {
+    0%{
+        visibility: visible;
+        opacity: 1;
+    }
+    100%{
+        visibility: hidden;
+        opacity: 0;
+    }
+}
