@@ -62,15 +62,6 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                         <h3 className={classes.title}>Dashboard</h3>
                     </NavLink>
                 </li>
-                <li key={'2treasjdai'}>
-                    <NavLink 
-                    onClick={closeMenu}
-                    className={({ isActive }) => setActiveLinkClasses(isActive)}
-                    to="/analytics" >
-                        <div className={classes.burgerIcon}><i className={"bi bi-bar-chart"}></i></div>
-                        <h3 className={classes.title}>Analytics</h3>
-                    </NavLink>
-                </li>
                 <li key={'3gd'}>
                     <NavLink 
                     onClick={closeMenu}
@@ -132,12 +123,6 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
             </div>
             <div className={classes.burgernav__downside}>
                 <ul className={classes.list}>
-                    <li>
-                        <NavLink to="/" key={'ok09'} className={classes.item}>
-                            <i className="bi bi-gear"></i>
-                            <h3 className={classes.title}>Settings</h3>
-                        </NavLink>
-                    </li>
                     <li>
                         <button key={'erf2'} className={classes.item}>
                             <i className="bi bi-box-arrow-left"></i>

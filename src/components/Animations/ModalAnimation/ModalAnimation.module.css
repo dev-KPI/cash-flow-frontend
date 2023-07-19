@@ -5,6 +5,7 @@
 	animation: outAnim .2s;
 }
 
+
 @keyframes inAnim {
     0%{
         visibility: hidden;

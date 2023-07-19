@@ -9,6 +9,7 @@ import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
+import uuid from "react-uuid";
         
 //logic
 interface IGroupModalProps{

@@ -1,6 +1,5 @@
 //pages
 import Dashboard from "@pages/Dashboard/Dashboard";
-import Analytics from "@pages/Analytics/Analytics";
 import Categories from "@pages/Categories/Categories";
 import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
@@ -13,7 +12,6 @@ import GroupMembers from "@pages/GroupMembers/GroupMembers";
 import GroupHistory from "@pages/GroupHistory/GroupHistory";
 
 export const DASHBOARD_PAGE = '/dashboard';
-export const ANALYTICS_PAGE = '/analytics';
 export const NOTIFICATIONS_PAGE = '/notifications';
 export const CATEGORIES_PAGE = '/categories';
 export const GROUPS_PAGE = '/groups';
@@ -22,7 +20,6 @@ export const GROUP_MEMBERS_PAGE = '/group/:groupId/members';
 export const GROUP_HISTORY_PAGE = '/group/:groupId/history';
 export const GROUP_MEMBER_PAGE = '/group/:groupId/member/:memberId';
 export const HISTORY_PAGE = '/history';
-export const SETTINGS_PAGE = '/settings';
 export const LOG_IN_PAGE = '/login';
 export const LOG_OUT = '/logout';
 
@@ -36,9 +33,6 @@ export const routesNotAuth = [
 export const routesAuth = [
     {
         path: DASHBOARD_PAGE,
-        component: Dashboard
-    }, {
-        path: ANALYTICS_PAGE,
         component: Dashboard
     }, {
         path: NOTIFICATIONS_PAGE,
@@ -66,9 +60,6 @@ export const routesAuth = [
 export const routesMobileNavigation = [
     {
         path: DASHBOARD_PAGE,
-        component: Dashboard
-    }, {
-        path: ANALYTICS_PAGE,
         component: Dashboard
     }, {
         path: NOTIFICATIONS_PAGE,

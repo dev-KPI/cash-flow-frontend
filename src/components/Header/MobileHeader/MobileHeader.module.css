@@ -29,8 +29,8 @@
     top: 0;
     opacity: 0;
     left: -100%;
-    transition: all 0.3s ease-in-out;
     box-shadow: 6px 0px 35px -15px rgba(51, 51, 51, 1);
+    transition: .5s cubic-bezier(.48,.13,.5,.94);
 }
 .menuBurger::-webkit-scrollbar{
     display: none;
@@ -99,7 +99,7 @@
 }
 
 @media only screen and (max-width: 768px) {
-    .header{
-        display: block;
-    }
+  .header{
+      display: block;
+  }
 }
