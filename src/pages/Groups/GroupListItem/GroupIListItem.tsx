@@ -25,7 +25,7 @@ interface IGroupItemProps {
 const GroupItem: FC<IGroupItemProps> = ({ id, title, description, icon, adminName, adminEmail, color, memberIcons }) => {
     const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [loading = true, setLoading] = useState<boolean>();
+    const [loading, setLoading] = useState<boolean>(true);
     const buttonRef = useRef(null);
     const navigate = useNavigate()
 

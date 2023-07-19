@@ -3,7 +3,6 @@ import React, {FC, SetStateAction, Dispatch, useRef, ReactNode, useState, useEff
 import { useOnClickOutside } from 'usehooks-ts'
 //UI
 import classes from './SmallModal.module.css';
-import useClickOutsideRef from '@hooks/layoutHooks/useClickOutsideRef';
 
 interface ISmallModalProps {
     active: boolean;
@@ -18,7 +17,14 @@ const SmallModal: FC<ISmallModalProps> = ({ active, setActive, children, classNa
     const [isVisible, setIsVisible] = useState<boolean>(active)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const ref = useRef(null);
-    useOnClickOutside(ref, () => setActive(false))
+    useOnClickOutside(ref, (event) => {
+        if (buttonRef) {
+            if (buttonRef.current && !buttonRef.current.contains(event.target as Node))
+                setActive(false)
+        } else {
+            setActive(false)
+        }
+    })
     useEffect(() => {
         if (active) {
             setIsVisible(true);
