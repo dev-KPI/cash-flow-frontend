@@ -11,25 +11,13 @@ import PageGlobalLoader from "@components/PageGlobalPreloader/PageGlobalPreloade
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
+import { Link, useNavigate } from "react-router-dom";
 //logic
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useLoginQuery } from "@store/Auth/Auth";
 
 const Login: FC = () => {
 
+    const navigate = useNavigate();
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    //userActions
-    const { data, error: loginError, isError: isLoginError, isLoading: isLoginLoading } = useLoginQuery(null);
-
-    const LoginHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        try{
-            const response = data
-            console.log(response)
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
     return(<>
         {<PageGlobalLoader/>}
@@ -46,10 +34,10 @@ const Login: FC = () => {
             <img className={classes.devices} src={ThemeStore.theme === 'light' ? devicesLight : devicesDark} alt="devices dark" />
             <div className={classes.form}>
                 <h2 className={classes.CashFlow}>Log <span style={{color: 'var(--main-green)'}}>In</span></h2>
-                <button className={classes.SubmitButton} onClick={LoginHandler}>
+                <Link to="https://cash-money.store/login" className={classes.SubmitButton}>
                     <div style={{display: 'flex', gap: '20px', alignItems: 'center'}}>
                     <img src={googleSvg} style={{width: '26px'}} alt='google svg'></img>Log In with Google</div>
-                </button>
+                </Link>
             </div>
         </main>
         <footer></footer>

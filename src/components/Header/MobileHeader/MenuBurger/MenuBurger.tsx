@@ -3,7 +3,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
-import { auth } from "@services/Auth/firebaseInitialization";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 //UI
@@ -13,7 +12,6 @@ import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import { useLogOutQuery, useLoginQuery } from "@store/Auth/Auth";
 
 
 
@@ -26,7 +24,6 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     const navigate = useNavigate();
-    const { data, error: logOutError, isError: isLogOutError, isLoading: isLogOutLoading } = useLogOutQuery(null);
 
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {
@@ -35,14 +32,6 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
         return res
     }
 
-    const LogOut = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        try {
-            const response = data;
-            console.log(data);
-        } catch (err){
-            console.log(err)
-        }
-    }
 
     return <>
         <nav className={classes.burgernav}>
@@ -150,7 +139,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                         </NavLink>
                     </li>
                     <li>
-                        <button onClick={LogOut} key={'erf2'} className={classes.item}>
+                        <button key={'erf2'} className={classes.item}>
                             <i className="bi bi-box-arrow-left"></i>
                             <h3 className={classes.title}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h3>
                         </button>

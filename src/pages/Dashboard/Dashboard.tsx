@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //logic
-
+import {useCookies} from 'react-cookie'
 //UI
 import classes from './Dashboard.module.css'                                     
 import MonthPicker from '@components/MonthPicker/MonthPicker';
@@ -15,9 +15,7 @@ import UserCategoriesCard from '@pages/Dashboard/UserCategoriesCard/UserCategori
 import UserGroupsCard from '@pages/Dashboard/UserGroupsCard/UserGroupsCard';
 import UserChartCard from './UserChartCard/UserChartCard';
 
-
 const Dashboard = () => {
-    
     return (<>
         <main id='DashboardPage'>
             <div className='dashboard__container'>

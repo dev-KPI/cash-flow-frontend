@@ -1,36 +1,21 @@
-import { api } from '@store/api';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 
-export const AuthApiSlice = api.injectEndpoints({
-    endpoints: (builder) => ({
-        Login: builder.query<string, null>({
-            query: () => ({
-                url: `/login`,
-                body: Response
-            }),
-            transformErrorResponse: (
-                response: { status: string | number },
-                meta,
-                arg
-            ) => response.status
-        }),
-        LogOut: builder.query<string, null>({
-            query: () => ({
-                url: `/logout`,
-                body: Response 
-            }),
-            transformErrorResponse: (
-                response: { status: string | number },
-                meta,
-                arg
-            ) => response.status
-        })
-    }),
-    overrideExisting: false,
+export interface IAuthState {
+    user: string,
+    token: string,
+}
+const initialState: IAuthState = {
+    user: '',
+    token: '',
+}
+
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers: {
+        setCredentials: (state, action) => {
+
+        }
+    }   
 })
-
-export const {
-    useLoginQuery,
-    useLogOutQuery,
-} = AuthApiSlice
-

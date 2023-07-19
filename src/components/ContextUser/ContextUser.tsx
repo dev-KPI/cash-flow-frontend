@@ -4,11 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 //logic
-import { auth } from "@services/Auth/firebaseInitialization";
 //UI
 import classes from './ContextUser.module.css'
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
-import { useLogOutQuery } from "@store/Auth/Auth";
 
 interface IContenxtUserProps {
     isActive: boolean,
@@ -19,17 +17,6 @@ interface IContenxtUserProps {
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
 
     const navigate = useNavigate();
-
-    const { data, error: logOutError, isError: isLogOutError, isLoading: isLogOutLoading } = useLogOutQuery(null);
-
-    const LogOut = async (e: React.MouseEvent<HTMLButtonElement>) => {
-        try {
-            const response = data;
-            console.log(data);
-        } catch (err){
-            console.log(err)
-        }
-    }
 
     return (
         <SmallModal
@@ -53,7 +40,7 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
                         </Link>
                     </li>
                     <li>
-                        <button style={{cursor: 'pointer'}} onClick={LogOut}>
+                        <button style={{cursor: 'pointer'}}>
                             <h4 className={classes.Link}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h4>
                         </button>
                     </li>
