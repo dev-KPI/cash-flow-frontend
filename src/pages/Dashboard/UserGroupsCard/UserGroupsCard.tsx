@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import classes from './UserGroupsCard.module.css'
+
 import { useElementSize } from 'usehooks-ts'
-import UserGroupsCardItem from '@pages/Dashboard/UserGroupsCardItem/UserGroupsCardItem';
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
+
+//UI
+import classes from './UserGroupsCard.module.css'
+import UserGroupsCardItem from '@pages/Dashboard/UserGroupsCardItem/UserGroupsCardItem';
 import UserGroupsCardLoader from '@pages/Dashboard/UserGroupsCard/UserGroupsCardLoader';
+import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
 const json = {
     "groups": [
@@ -51,6 +55,7 @@ export interface Group {
 const UserGroupsCard = () => {
     const [groups, setGroups] = useState<Group[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
+    const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
@@ -71,6 +76,15 @@ const UserGroupsCard = () => {
         }, [groups, total])
         return properGroups;
     }
+    const getViewMoreModal = () => {
+        return <ViewMoreModal
+            isModalOpen={isMoreModalOpen}
+            setIsModalOpen={setIsMoreModalOpen}
+            data={getGroups(groups)}
+            type={'groups'}
+        />
+    }
+
 
     const properGroups = useGroups(groups!, totalItems!)
 
@@ -80,6 +94,7 @@ const UserGroupsCard = () => {
     }, 1500);
     return (
         <div className={classes.groups}>
+            {getViewMoreModal()}
             {loading ? <UserGroupsCardLoader/> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Groups</h3>
@@ -98,7 +113,7 @@ const UserGroupsCard = () => {
                             </div>
                         :
                         groups.length >= 5 ?
-                            <li className={`${classes.item} ${classes.specialItem}`}>
+                            <li className={`${classes.item} ${classes.specialItem}`}onClick={()=>setIsMoreModalOpen(!isMoreModalOpen)}>
                                 <h6 className={classes.itemTitle}>View More</h6>
                                 <div className={classes.dashed}>
                                     <i className="bi bi-chevron-right"></i>

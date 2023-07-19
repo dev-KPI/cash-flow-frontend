@@ -4,12 +4,13 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import ICategory from '@models/ICategory';
+import { json } from './objUserCategories';
 //UI
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
 import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCardLoader';
-import { json } from './objUserCategories';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
+import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
 
 export interface ISortedCategoryItem {
@@ -28,6 +29,7 @@ const UserCategoriesCard = () => {
     const [groupIndex, setGroupIndex] = useState<number>(0);
     const [idModalOpen, setIdModalOpen] = useState<number>(-1);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
     const { categoriesByGroup } = json;
@@ -71,6 +73,14 @@ const UserCategoriesCard = () => {
         setIsExpenseModalOpen={setIsModalOpen}
         />
     }
+    const getViewMoreModal = () => {
+        return <ViewMoreModal
+            isModalOpen={isMoreModalOpen}
+            setIsModalOpen={setIsMoreModalOpen}
+            data={getCategories(categories)}
+            type={'categories'}
+        />
+    }
 
     const properCategories: ISortedCategoryItem[] = useMemo(() => {
         return categories.slice(0, totalItems)
@@ -93,6 +103,7 @@ const UserCategoriesCard = () => {
     return (
         <div className={classes.categories}>
             {getModal()}
+            {getViewMoreModal()}
             {loading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
@@ -132,7 +143,7 @@ const UserCategoriesCard = () => {
                             :
                         categories?.length! >= totalItems ?
                             <li 
-                            className={`${classes.item} ${classes.specialItem}`}>
+                            className={`${classes.item} ${classes.specialItem}`} onClick={()=>setIsMoreModalOpen(!isMoreModalOpen)}>
                                 <div className={classes.dashed}>
                                     <i className="bi bi-chevron-right"></i>
                                 </div>
