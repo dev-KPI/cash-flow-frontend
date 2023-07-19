@@ -7,7 +7,7 @@ import GraphCardLoader from "@components/GraphCard/GraphCardLoader";
 import StackedGraph from "@components/GraphCard/StackedGraph";
 import Graph from "@components/GraphCard/Graph";
 //store
-import { useGetExpensesPerLastMonthQuery } from "@store/ExpenseApiSlice/ExpenseApiSlice";
+import { expenses } from "../../Expenses";
 import { IMonthPickerState } from "@store/UI_store/MonthPickerSlice/MonthPickerInterfaces";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import IUser from "@models/IUser";
@@ -127,9 +127,8 @@ const addColorToUser = (data: IGraphGroupMembers[]) => {
 const updatedData = addColorToUser(combinedData)
 
 const GroupGraphCard: FC = () => {
-    const [loading = true, setLoading] = useState<boolean>();
-    const [isToggled = false, setIsToggled] = useState<boolean>();
-    const { data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [isToggled, setIsToggled] = useState<boolean>(false);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     setTimeout(() => {
         setLoading(false)
@@ -144,7 +143,7 @@ const GroupGraphCard: FC = () => {
 
     return (
         <div className={classes.GroupGraph}>
-            {loading ? <GraphCardLoader /> :
+            {/* {loading ? <GraphCardLoader /> : */}
                 <div className={classes.inner}>
                     <div className={classes.uppernav}>
                         <div className={classes.titleRange}>
@@ -164,7 +163,7 @@ const GroupGraphCard: FC = () => {
                             />
                         }
                     </div>
-                </div>}
+                </div>
        </div>
     )
 }

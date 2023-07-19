@@ -3,10 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { IUserState } from "@store/UserSlice/UserInterfaces";
-import { UserSliceActions } from "@store/UserSlice/UserSlice";
 //logic
-import { auth } from "@services/Auth/firebaseInitialization";
 //UI
 import classes from './ContextUser.module.css'
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
@@ -19,19 +16,7 @@ interface IContenxtUserProps {
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
 
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
-    const UserDispatch = useActionCreators(UserSliceActions);
     const navigate = useNavigate();
-
-    const GoogleLogOut = async () => {
-        try {
-            auth.signOut()
-            UserDispatch.setNullCredentials();
-            navigate('/login')
-        } catch (err) { 
-            console.log(err)
-        }
-    }
 
     return (
         <SmallModal
@@ -54,7 +39,7 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
                         </Link>
                     </li>
                     <li className={classes.item}>
-                        <button style={{cursor: 'pointer'}} onClick={GoogleLogOut}>
+                        <button style={{cursor: 'pointer'}}>
                             <h4 className={classes.Link}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h4>
                         </button>
                     </li>

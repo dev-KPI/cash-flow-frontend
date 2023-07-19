@@ -3,8 +3,7 @@ import { NavLink } from 'react-router-dom';
 import userIcon from '@assets/user-icon.svg';
 
 //logic
-import { useGetCategoryExpensesQuery } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice';
-
+import { categoryExpenses, expenses } from '../../Expenses';
 //UI
 import classes from './GroupChartsCard.module.css';
 import ChartCard, { IMembersExpensesChart } from '@components/ChartCard/ChartCard';
@@ -85,8 +84,6 @@ const GroupChartsCard = () => {
 
     ]
     ))
-    const { data: expenses = [], error: expensesGetError, isError: isExpensesError, isLoading: isExpensesLoading } = useGetCategoryExpensesQuery(null);
-
 
     const members = MembersObj.map((item, index) => {
         const member = item.member;
@@ -98,8 +95,8 @@ const GroupChartsCard = () => {
     });
     return (
         <div className={classes.ChartsCard}>
-                <ChartCard data={expenses} title={'Expenses by categories'} />
-                <ChartCard data={members} title={'Expenses by members'} />
+            <ChartCard data={categoryExpenses} title={'Expenses by categories'} />
+            <ChartCard data={members} title={'Expenses by members'} />
         </div>
     );
 };

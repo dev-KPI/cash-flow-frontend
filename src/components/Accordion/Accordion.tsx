@@ -8,7 +8,7 @@ type AccordionTabProps = {
 };
 
 export const AccordionTab: FC<AccordionTabProps> = ({ title, children, choosedItem }) => {
-    const [isOpen = false, setIsOpen] = useState<boolean>();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const bindClose = useCallback(() => {
         setIsOpen(false);

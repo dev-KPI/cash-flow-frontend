@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 
-import { useGetExpensesPerLastMonthQuery } from '@store/ExpenseApiSlice/ExpenseApiSlice';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
-
+import { expenses } from '@pages/Expenses';
 //UI
 import classes from './UserGraphCard.module.css'
 import GraphCardLoader from '@components/GraphCard/GraphCardLoader';
@@ -12,8 +11,7 @@ import Graph from '@components/GraphCard/Graph';
 
 const UserGraphCard = () => {
 
-    const [loading = true, setLoading] = useState<boolean>();
-    const { data: expenses = [], isError: isExpensesError, isLoading: isExpensesLoading, error: Expenses_GET_error } = useGetExpensesPerLastMonthQuery(null);
+    const [loading, setLoading] = useState<boolean>(true);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     setTimeout(() => {
         setLoading(false)

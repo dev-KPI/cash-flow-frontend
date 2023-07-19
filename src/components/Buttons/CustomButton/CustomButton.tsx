@@ -19,7 +19,7 @@ interface ICustomButtonProps {
 }
 
 const CustomButton: FC<ICustomButtonProps> = ({ icon, btnWidth, btnHeight, callback, isPending, type, background, children, className, disableScale = false}) => {
-    const [isAnimation = false, setIsAnimation] = useState<boolean>();
+    const [isAnimation, setIsAnimation] = useState<boolean>(false);
 
     const setStartHover = () => setIsAnimation(!disableScale)
     const setEndHover = () => setIsAnimation(false)

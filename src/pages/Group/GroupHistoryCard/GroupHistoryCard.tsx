@@ -29,7 +29,7 @@ interface GroupTransaction {
 
 const GroupHistoryCard: FC = () => {
 
-    const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
+    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
 
     setTimeout(() => {
         setIsPageLoading(false)

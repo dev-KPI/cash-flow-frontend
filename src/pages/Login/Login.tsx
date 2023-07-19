@@ -10,39 +10,14 @@ import devicesLight from '@assets/devicesLight.png';
 import PageGlobalLoader from "@components/PageGlobalPreloader/PageGlobalPreloader";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { IUserState } from "@store/UserSlice/UserInterfaces";
 import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
-import { UserSliceActions } from "@store/UserSlice/UserSlice";
+import { Link, useNavigate } from "react-router-dom";
 //logic
-import { auth, googleAuthProvider } from "@services/Auth/firebaseInitialization";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Login: FC = () => {
 
-    const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    //userActions
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
-    const UserDispatch = useActionCreators(UserSliceActions);
-
     const navigate = useNavigate();
-
-    const GoogleLogin = async () => {
-        try {
-            const result = await signInWithPopup(auth, googleAuthProvider)
-            const userDTO: IUserState = {
-                firebaseId: result.user.uid,
-                name: result.user.displayName?.split(' ')[0] || '',
-                surname: result.user.displayName?.split(' ')[1]|| '',
-                email: result.user.email || '',
-                photo: result.user.photoURL || '',
-            }
-            UserDispatch.setUserCredentials(userDTO)
-            navigate('/dashboard')
-        } catch (err) { 
-            console.log(err)
-        }
-    }
+    const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     return(<>
         {<PageGlobalLoader/>}
@@ -59,10 +34,10 @@ const Login: FC = () => {
             <img className={classes.devices} src={ThemeStore.theme === 'light' ? devicesLight : devicesDark} alt="devices dark" />
             <div className={classes.form}>
                 <h2 className={classes.CashFlow}>Log <span style={{color: 'var(--main-green)'}}>In</span></h2>
-                <button className={classes.SubmitButton} onClick={GoogleLogin}>
+                <Link to="https://cash-money.store/login" className={classes.SubmitButton}>
                     <div style={{display: 'flex', gap: '20px', alignItems: 'center'}}>
                     <img src={googleSvg} style={{width: '26px'}} alt='google svg'></img>Log In with Google</div>
-                </button>
+                </Link>
             </div>
         </main>
         <footer></footer>

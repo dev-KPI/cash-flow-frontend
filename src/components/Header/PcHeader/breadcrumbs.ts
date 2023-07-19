@@ -4,10 +4,6 @@ export const breadcrumbs = [
         'link': '/dashboard'
     },
     {
-        'title': 'Analytics',
-        'link': '/analytics'
-    },
-    {
         'title': 'Categories',
         'link': '/categories'
     },
@@ -18,9 +14,5 @@ export const breadcrumbs = [
     {
         'title': 'History',
         'link': '/history'
-    },
-    {
-        'title': 'Settings',
-        'link': '/settings'
     },
 ]

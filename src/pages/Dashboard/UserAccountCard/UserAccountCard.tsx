@@ -3,7 +3,6 @@ import React, { FC, useEffect, useState } from 'react';
 
 //store
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { IUserState } from '@store/UserSlice/UserInterfaces';
 //UI
 import classes from './UserAccountCard.module.css';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
@@ -13,9 +12,7 @@ import UserAccountCardLoader from './UserAccountLoader';
 
 const UserAccountCard: FC = () => {
 
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
-
-    const [isPageLoading = true, setIsPageLoading] = useState<boolean>()
+    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
     setTimeout(() => {
         setIsPageLoading(false)
@@ -38,13 +35,13 @@ const UserAccountCard: FC = () => {
                             <img className={classes.photo}
                                 alt={'user icon'}
                                 style={{borderRadius: '10px'}}
-                                src={isUrl(UserStore.photo) ? UserStore.photo : userIcon}
+                                src={userIcon}
                             />
                         </div>
                         <div className={classes.personal__data}>
                             <div className={classes.user__info}>
-                                <h4 className={classes.name}>{`${UserStore.name} ${UserStore.surname}`}</h4>
-                                <p className={classes.email}>{UserStore.email}</p>
+                                <h4 className={classes.name}>{`Adam Breban`}</h4>
+                                <p className={classes.email}>{`adambreban@gmail.com`}</p>
                             </div>
                             <div className={classes.balance}>
                                 <h5>Current Balance</h5>

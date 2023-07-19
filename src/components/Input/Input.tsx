@@ -19,8 +19,8 @@ const Input: FC<IInputProps> = ({
     isInputMustClear
     }) => {
 
-    const [inputNumberValue = 0, setInputNumberValue] = useState<number>();
-    const [inputStringValue = '', setInputStringValue] = useState<string>();
+    const [inputNumberValue, setInputNumberValue] = useState<number>(0);
+    const [inputStringValue, setInputStringValue] = useState<string>('');
 
     useMemo(() => {
         if(isInputMustClear){

@@ -9,7 +9,10 @@ interface Size {
 }
 
 export const useWindowSize = (): Size => {
-  const [windowSize, setWindowSize] = useState<Size>()
+  const [windowSize, setWindowSize] = useState<Size>({
+    width: 0,
+    height: 0
+  })
 
   const handleSize = () => {
     setWindowSize({
@@ -29,7 +32,10 @@ export const useWindowSize = (): Size => {
   }
 }
 export const useContentSize = (): Size => {
-  const [windowSize, setWindowSize] = useState<Size>()
+  const [windowSize, setWindowSize] = useState<Size>({
+    width: 0,
+    height: 0
+  })
 
   const handleSize = () => {
     setWindowSize({

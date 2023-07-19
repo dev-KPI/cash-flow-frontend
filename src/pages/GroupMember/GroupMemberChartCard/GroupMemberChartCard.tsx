@@ -1,17 +1,16 @@
 
 import React from 'react';
 //store
-import { useGetCategoryExpensesQuery } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseApiSlice';
+import { categoryExpenses } from '@pages/Expenses';
 //UI
 import classes from "./GroupMemberChartCard.module.css"
 import ChartCard from '@components/ChartCard/ChartCard';
 
 const GroupMemberChartCard = () => {
-    const { data: expenses = [], error: expensesGetError, isError: isExpensesError, isLoading: isExpensesLoading } = useGetCategoryExpensesQuery(null);
 
     return (
         <div className={classes.Chart}>
-                <ChartCard data={expenses} title={'Expenses'} />
+                <ChartCard data={categoryExpenses} title={'Expenses'} />
         </div>
     );
 };

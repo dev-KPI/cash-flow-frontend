@@ -60,10 +60,10 @@ const Graph: FC<IGraphProps> = ({data}) => {
         }],
     };
     
-    const [priceTooltip, setPriceTooltip] = useState<number>();
-    const [monthTooltip, setMonthTooltip] = useState<string>();
-    const [dateTooltip, setDateTooltip] = useState<number>();
-    const [yearTooltip, setYearTooltip] = useState<number>();
+    const [priceTooltip, setPriceTooltip] = useState<number>(0);
+    const [monthTooltip, setMonthTooltip] = useState<string>('');
+    const [dateTooltip, setDateTooltip] = useState<number>(0);
+    const [yearTooltip, setYearTooltip] = useState<number>(0);
 
     const titleTooltip = (context: Context): string => {
         setMonthTooltip(DateService.getMonthNameByIdx(new Date(context[0]?.raw.data.time).getMonth()).slice(0,3));

@@ -49,9 +49,9 @@ export interface Group {
 
 
 const UserGroupsCard = () => {
-    const [groups = [], setGroups] = useState<Group[]>();
-    const [totalItems = 11, setTotalItems] = useState<number>();
-    const [loading = true, setLoading] = useState<boolean>();
+    const [groups, setGroups] = useState<Group[]>([]);
+    const [totalItems, setTotalItems] = useState<number>(11);
+    const [loading, setLoading] = useState<boolean>(true);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
     useEffect( () => {

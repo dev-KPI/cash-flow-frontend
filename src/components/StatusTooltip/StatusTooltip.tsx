@@ -9,8 +9,8 @@ interface IStatusTooltipProps {
 
 const StatusTooltip: FC<IStatusTooltipProps> = ({title, type}) => {
 
-    const [showTooltip = true, setShowTooltip] = useState<boolean>();
-    const [showTooltipAnim = classes.slideIn, setShowTooltipAnim] = useState<string>();
+    const [showTooltip, setShowTooltip] = useState<boolean>(true);
+    const [showTooltipAnim, setShowTooltipAnim] = useState<string>(classes.slideIn);
 
     const icon = type === 'success' ? 
     <i className="bi bi-check"></i> : 

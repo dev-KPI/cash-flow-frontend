@@ -5,7 +5,6 @@ import {useMemo, useRef, useState, useEffect} from 'react';
 import { Link } from "react-router-dom";
 //store
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { IUserState } from "@store/UserSlice/UserInterfaces";
 //UI
 import classes from './MobileHeader.module.css'
 import userIcon from '@assets/user-icon.svg';
@@ -15,11 +14,9 @@ import useClickOutsideRef from "@hooks/layoutHooks/useClickOutsideRef";
 
 const MobileHeader: FC = () => {
 
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
-
     const BurgerNavRef = useRef<HTMLDivElement>(null);
 
-    const [isOpen = false, setIsOpen] = useState<boolean>();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     useClickOutsideRef(BurgerNavRef, () => setIsOpen(false))
 
     const getBurgerNav = useMemo(() => {
@@ -42,7 +39,7 @@ const MobileHeader: FC = () => {
                 <Link to="/dashboard">
                     <h1 className={classes.title}>Cash<span>Flow</span></h1>
                 </Link>
-                <img style={{borderRadius: '10px'}} width={46} src={UserStore.photo ? UserStore.photo : userIcon} alt="logo" />
+                <img style={{borderRadius: '10px'}} width={46} src={userIcon} alt="logo" />
             </div>
         </header>
         <div 

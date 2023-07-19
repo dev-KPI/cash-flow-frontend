@@ -9,6 +9,7 @@ import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
+import uuid from "react-uuid";
         
 //logic
 interface IGroupModalProps{
@@ -24,8 +25,8 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const [nameValue = '', setNameValue] = useState<string>();
-    const [colorValue = '', setColorValue] = useState<string>();
+    const [nameValue = '', setNameValue] = useState<string>('');
+    const [colorValue = '', setColorValue] = useState<string>('');
     const {width} = useWindowSize()
 
     //submit
@@ -45,7 +46,7 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
         '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00'
     ];
 
-    const [icon = 'bi bi-people', setIcon] = useState<string>();
+    const [icon = 'bi bi-people', setIcon] = useState<string>('');
     const changeIcon = (e: React.MouseEvent<HTMLDivElement>, icon: string) => {setIcon(icon)};
     const iconDisplayed = <i style={{fontSize: '24px', color: 'var(--main-text)'}} className={icon}></i>
     const icons: string[] = [

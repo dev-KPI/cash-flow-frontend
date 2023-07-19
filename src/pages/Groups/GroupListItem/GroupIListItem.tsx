@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, SetStateAction, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { isUrl } from '@services/UsefulMethods/UIMethods';
@@ -20,12 +20,16 @@ interface IGroupItemProps {
     adminName: string,
     adminEmail: string,
     color: string,
-    memberIcons: string[]
+    memberIcons: string[],
+    isGroupModal: boolean,
+    setIsGroupModal: React.Dispatch<SetStateAction<boolean>>
 }
-const GroupItem: FC<IGroupItemProps> = ({ id, title, description, icon, adminName, adminEmail, color, memberIcons }) => {
-    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
+const GroupItem: FC<IGroupItemProps> = ({ id, 
+    title, description, icon, adminName, 
+    adminEmail, color, memberIcons, setIsGroupModal, isGroupModal
+}) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [loading = true, setLoading] = useState<boolean>();
+    const [loading, setLoading] = useState<boolean>(true);
     const buttonRef = useRef(null);
     const navigate = useNavigate()
 
@@ -91,10 +95,6 @@ const GroupItem: FC<IGroupItemProps> = ({ id, title, description, icon, adminNam
                                     </button>
                                 </li>
                             </ul>}
-                    />
-                    <EditGroupModal
-                        setIsGroupModalOpen={setIsGroupModal}
-                        isGroupModalOpen={isGroupModal}
                     />
                     <Link
                         key={uuid()}

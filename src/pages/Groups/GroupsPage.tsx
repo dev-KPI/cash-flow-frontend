@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import uuid from "react-uuid";
 import { GroupObj } from "@pages/GroupObj";
 //UI
 import classes from './GroupsPage.module.css'
@@ -10,7 +11,7 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import CreateGroupModal from '@components/ModalWindows/GroupModal/CreateGroupModal';
 import IUser from "@models/IUser";
-import uuid from "react-uuid";
+import EditGroupModal from "@components/ModalWindows/GroupModal/EditGroupModal";
 
 
 type group_props = {
@@ -32,6 +33,19 @@ export interface IGroup {
 const Groups: FC = () => {
 
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+
+    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
+
+    const openModal = () => {
+        setIsGroupModal(!isGroupModal)
+    }
+
+    const getCreateGroupModal = () => {
+        return <CreateGroupModal
+            setIsGroupModalOpen={setIsGroupModal}
+            isGroupModalOpen={isGroupModal}
+        />
+    }
     const getGroups = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
@@ -47,26 +61,19 @@ const Groups: FC = () => {
                     adminEmail={el.group.admin.login}
                     color={el.group.color}
                     memberIcons={memberIcons}
+                    isGroupModal={isGroupModal}
+                    setIsGroupModal={setIsGroupModal}
                 />
             )  
         })
            
     }
 
-    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
-
-    const openModal = () => {
-        setIsGroupModal(!isGroupModal)
-    }
-
-    const getCreateGroupModal = () => {
-        return <CreateGroupModal
+    return (<>
+        {<EditGroupModal
             setIsGroupModalOpen={setIsGroupModal}
             isGroupModalOpen={isGroupModal}
-        />
-    }
-
-    return (<>
+        />}
         {getCreateGroupModal()}
         <main id='GroupsPage'>
             <div className={classes.page__container}>

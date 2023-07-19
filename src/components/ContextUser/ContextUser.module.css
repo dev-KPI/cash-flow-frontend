@@ -1,6 +1,7 @@
 .contextModal{
     top: 100px;
     right: 5px;
+    width: 280px;
     border-radius: 10px;
     padding: 8px;
 }

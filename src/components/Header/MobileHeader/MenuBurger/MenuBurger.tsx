@@ -3,11 +3,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
-import { auth } from "@services/Auth/firebaseInitialization";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { IUserState } from "@store/UserSlice/UserInterfaces";
-import { UserSliceActions } from "@store/UserSlice/UserSlice";
 //UI
 import classes from "./MenuBurger.module.css";
 import userIcon from '@assets/user-icon.svg';
@@ -26,25 +23,15 @@ interface IPropsMenuBurger {
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-    const UserStore = useAppSelector<IUserState>(state => state.UserSlice);
-    const UserDispatch = useActionCreators(UserSliceActions);
     const navigate = useNavigate();
 
-    const GoogleLogOut = async () => {
-        try {
-            auth.signOut()
-            UserDispatch.setNullCredentials();
-            navigate('/login')
-        } catch (err) { 
-            console.log(err)
-        }
-    }
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.item + ' ' + classes.activeLink : classes.item;
         res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
         return res
     }
+
 
     return <>
         <nav className={classes.burgernav}>
@@ -56,10 +43,10 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                 </div>
             </div>
             <div className={classes.burgernav__account}>
-                <img alt="Avatar" src={UserStore.photo ? UserStore.photo : userIcon} width="46px" style={{borderRadius: '10px'}}/>
+                <img alt="Avatar" src={userIcon} width="46px" style={{borderRadius: '10px'}}/>
                 <div className={classes.account__info}>
-                    <h2 className={classes.title}>{UserStore.name}</h2>
-                    <h2 className={classes.title}>{UserStore.surname}</h2>
+                    <h2 className={classes.title}>{`Adam`}</h2>
+                    <h2 className={classes.title}>{`Breban`}</h2>
                     <p className={classes.balance}>{numberWithCommas(4124)}$</p>
                 </div>
             </div>
@@ -73,15 +60,6 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                     className={({ isActive }) => setActiveLinkClasses(isActive)}>
                         <div className={classes.burgerIcon}><i className="bi bi-house"></i></div>
                         <h3 className={classes.title}>Dashboard</h3>
-                    </NavLink>
-                </li>
-                <li key={'2treasjdai'}>
-                    <NavLink 
-                    onClick={closeMenu}
-                    className={({ isActive }) => setActiveLinkClasses(isActive)}
-                    to="/analytics" >
-                        <div className={classes.burgerIcon}><i className={"bi bi-bar-chart"}></i></div>
-                        <h3 className={classes.title}>Analytics</h3>
                     </NavLink>
                 </li>
                 <li key={'3gd'}>
@@ -146,13 +124,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
             <div className={classes.burgernav__downside}>
                 <ul className={classes.list}>
                     <li>
-                        <NavLink to="/" key={'ok09'} className={classes.item}>
-                            <i className="bi bi-gear"></i>
-                            <h3 className={classes.title}>Settings</h3>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <button onClick={GoogleLogOut} key={'erf2'} className={classes.item}>
+                        <button key={'erf2'} className={classes.item}>
                             <i className="bi bi-box-arrow-left"></i>
                             <h3 className={classes.title}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h3>
                         </button>

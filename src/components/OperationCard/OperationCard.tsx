@@ -14,11 +14,11 @@ interface OperactionCardProps {
 
 const OperationCard: FC<OperactionCardProps> = ({ operation, title, className }) => {
 
-    const [amount = 423, setAmount] = useState<number>();
-    const [source, setSource] = useState<string>();
+    const [amount, setAmount] = useState<number>(423);
+    const [source, setSource] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
 
-    const [isOperationModalOpen = false, setIsOperationModalOpen] = useState<boolean>();
+    const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",

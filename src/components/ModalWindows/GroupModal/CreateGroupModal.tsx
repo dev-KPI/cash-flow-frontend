@@ -45,7 +45,7 @@ const CreateGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupMo
         '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00'
     ];
 
-    const [icon = 'bi bi-people', setIcon] = useState<string>();
+    const [icon, setIcon] = useState<string>('bi bi-people');
     const changeIcon = (e: React.MouseEvent<HTMLDivElement>, icon: string) => {setIcon(icon)};
     const iconDisplayed = <i style={{fontSize: '24px', color: 'var(--main-text)'}} className={icon}></i>
     const icons: string[] = [
