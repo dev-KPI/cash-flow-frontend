@@ -1,11 +1,13 @@
 import React, {FC, useState} from 'react';
 
 //UI
-import classes from './History.module.css';
+import classes from './GroupHistory.module.css';
+import userIcon from '@assets/user-icon.svg'
 
 //logic
 import ICategory from '@models/ICategory';
-import { HistoryObj } from "@pages/HistoryObj";
+import IUser from '@models/IUser';
+import { GroupHistoryObj } from "@pages/GroupHistoryObj";
 import DateService from '@services/DateService/DateService';
 import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods";
 import {
@@ -18,27 +20,47 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import Light from '@components/Light/Light';
-import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 
 
-interface Transaction {
+
+interface GroupHistory {
     id: number;
     amount: number;
     time: string;
     description: string;
     category_group?: {
-        group?: ICategory
         category?: ICategory
     },
+    user: IUser
     type: string
 }
 
 
-const columnHelper = createColumnHelper<Transaction>()
+
+const columnHelper = createColumnHelper<GroupHistory>()
 const columns = [
-    columnHelper.accessor('description', {
-        header: () =>'Description',
-        cell: info => info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue(),
+    columnHelper.accessor(`user.last_name`, {
+        header: () =>'Member',
+        cell: info => { 
+            const picture = info.row.original.user.picture ?? '' 
+            const full_name = info.row.original.user.first_name + ' ' + info.row.original.user.last_name
+            const email = info.row.original.user.login
+            return info.renderValue() ?
+                <div className={classes.memberWrapper}>
+                    <div className={classes.details}>
+                        <div className={classes.icon}>
+                            <img className={classes.photo}
+                                alt={'user icon'}
+                                src={isUrl(picture) ? picture : userIcon} />
+                        </div>
+                        <div className={classes.memberInfo}>
+                            <h6 className={classes.name}>{full_name}</h6>
+                            <p className={classes.email}>{email}</p>
+                        </div>
+                    </div>
+                </div> : '-'
+            }
     }),
     columnHelper.accessor('category_group.category.title', {
         header: () => 'Category',
@@ -50,18 +72,6 @@ const columns = [
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
         </div> : '-',
-    }),
-    columnHelper.accessor('category_group.group.title', {
-        header: () => 'Group',
-        cell: info => info.renderValue() ? <div className={classes.wrapItem}>
-            <Light
-                className={classes.dotLight}
-                style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
-                color={info.row.original.category_group?.group?.color || 'var(--main-green)'}
-                type='solid' />
-            <p className={classes.itemTitle}>{info.getValue() ?? '-'}</p>
-        </div> :
-            '-'
     }),
     columnHelper.accessor('time', {
         header: () => 'Time',
@@ -76,11 +86,11 @@ const columns = [
             <p className={classes.amount} style={{ color: info.row.original.type === 'expense' ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.type === 'expense' ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
     }),
 ]
-const expensesDTO: Transaction[] = [...HistoryObj.expenses.map((el: Object) =>
+const expensesDTO: GroupHistory[] = [...GroupHistoryObj.expenses.map((el: Object) =>
     Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-const replenishmentsDTO: Transaction[] = [...HistoryObj.replenishments.map((el: Object) =>
+const replenishmentsDTO: GroupHistory[] = [...GroupHistoryObj.replenishments.map((el: Object) =>
     Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
-const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]
+const HistoryArray: GroupHistory[] = [...expensesDTO, ...replenishmentsDTO]
 
 const getMixedHistory = () => {
     return (HistoryArray.sort((b, a) => {
@@ -92,8 +102,7 @@ const getMixedHistory = () => {
 
 const History: React.FC = () => {
     const [data, setData] = useState([...getMixedHistory()])
-    const [sorting, setSorting] = useState<SortingState>([]) 
-    
+    const [sorting , setSorting] = useState<SortingState>([]) 
     const rerender = React.useReducer(() => ({}), {})[1]
 
     const table = useReactTable({
@@ -118,9 +127,8 @@ const History: React.FC = () => {
     const endIndex = pageIndex === pageCount - 1 ? data.length : (pageIndex + 1) * pageSize;
 
     return (
-        <main id='HistoryPage'>
+        <main id='GroupHistoryPage' className="no-padding">
             <div className={classes.page__container}>
-                <h1 className={classes.pageTitle}>History</h1>
                 <table className={classes.recentOperations__table}>
                     <thead className={classes.tableTitle}>
                         {table.getHeaderGroups().map(headerGroup => (

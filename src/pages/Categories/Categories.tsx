@@ -124,7 +124,7 @@ const Categories: FC = () => {
                 key={'qwe'}
                 title={'Groups'}
                 active={isGroupModal}
-                setActive={() => setIsGroupModal}
+                setActive={setIsGroupModal}
                 className={classes.groupsModalNav}
                 children={
                     <div className={classes.groupModalWrapper}>

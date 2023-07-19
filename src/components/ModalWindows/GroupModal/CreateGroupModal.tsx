@@ -20,7 +20,7 @@ interface IModalState {
     color: string
 }
 
-const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroupModalOpen }) => {
+const CreateGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen }) => {
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
@@ -159,7 +159,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
                         </Accordion>
                     </div>
                 </div>
-                <div className={classes.confirmBtnWrapper}>
+                <div style={{display:'flex', justifyContent: 'center', marginTop: '24px'}}>
                     <CustomButton
                         isPending={isSubmiting}
                         children="Confirm"
@@ -174,4 +174,4 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroup
     </UseModal>
 </>};
   
-export default React.memo(GroupModal);
+export default React.memo(CreateGroupModal);

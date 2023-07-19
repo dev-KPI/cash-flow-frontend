@@ -73,16 +73,25 @@
     height: 100px;
     overflow-y: auto;
 }
+.loader{
+    height: 100%;
+}
 @media only screen and (max-width: 1440px) {
     .GroupInfoCard{
         margin-left: 0;
         order: 1;
         grid-row-start: span 1;
     }
+    .loader{
+        height: 450px;
+    }
 }
 
 @media only screen and (max-width: 768px) {
     .inner{
         padding: 16px;
+    }
+    .loader {
+        height: 430px;
     }
 }

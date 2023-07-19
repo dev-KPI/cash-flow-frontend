@@ -1,4 +1,4 @@
-import React, {FC, useCallback, MouseEvent, useState, useRef, ReactNode} from 'react';
+import React, {FC, useCallback, MouseEvent, useState, useRef, ReactNode, useMemo} from 'react';
 
 //UI
 import classes from './PcHeader.module.css'
@@ -22,7 +22,12 @@ const HeaderSite: FC = () => {
     const [isContextUserOpen, setIsContextUserOpen] = useState<boolean>(false);
     const contextButtonRef = useRef(null);
  
-
+    const getChevronClass = useMemo(() => {
+        if (isContextUserOpen) {
+            return classes.chevronTransition
+        }
+        return ''
+    }, [isContextUserOpen])
     return (<>
         <header className={classes.header}>
             <div className={classes.header__container}>
@@ -60,7 +65,7 @@ const HeaderSite: FC = () => {
                                     <h4 className={classes.profile__name}>{`Adam`} {`Breban`}</h4>
                                     <p className={classes.profile__email}>{`adambreban@gmail.com`}</p>
                                 </div>
-                                <i className="bi bi-chevron-down"></i>
+                                <i className={`bi bi-chevron-down ${classes.chevron} ${getChevronClass}`}></i>
                             </div>
                         </div>
                     </button>

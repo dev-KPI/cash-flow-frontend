@@ -10,6 +10,7 @@ import MobileNotifications from "@components/Header/Notifications/MobileNotifica
 import Header from "@components/Header/Header";
 import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
+import GroupHistory from "@pages/GroupHistory/GroupHistory";
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const ANALYTICS_PAGE = '/analytics';
@@ -18,6 +19,7 @@ export const CATEGORIES_PAGE = '/categories';
 export const GROUPS_PAGE = '/groups';
 export const GROUP_PAGE = '/group/:groupId';
 export const GROUP_MEMBERS_PAGE = '/group/:groupId/members';
+export const GROUP_HISTORY_PAGE = '/group/:groupId/history';
 export const GROUP_MEMBER_PAGE = '/group/:groupId/member/:memberId';
 export const HISTORY_PAGE = '/history';
 export const SETTINGS_PAGE = '/settings';
@@ -96,11 +98,15 @@ export const groupRoutes = [
         path: GROUP_MEMBERS_PAGE,
         component: GroupMembers
     },
+    {
+        path: GROUP_HISTORY_PAGE,
+        component: GroupHistory
+    },
 ]
 
 export const components = [
     {
         path: "/components/Header",
-        component: Header
+        component: Headers
     }
 ];

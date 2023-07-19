@@ -1,25 +1,17 @@
 import React, { FC, useState, ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //logic
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { GroupObj } from "./GroupObj";
+import { GroupObj } from "@pages/GroupObj";
 //UI
 import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
-import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
+import CreateGroupModal from '@components/ModalWindows/GroupModal/CreateGroupModal';
+import IUser from "@models/IUser";
+import uuid from "react-uuid";
 
-
-
-
-interface people_props {
-    id: number,
-    login: string,
-    first_name: string,
-    last_name: string,
-    picture: string
-}
 
 type group_props = {
     id: number,
@@ -28,8 +20,8 @@ type group_props = {
     status: string,
     color: string,
     icon: string,
-    admin: people_props,
-    members: people_props[]
+    admin: IUser,
+    members: IUser[]
 }
 export interface IGroup {
     group: group_props,
@@ -44,11 +36,10 @@ const Groups: FC = () => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
             const memberIcons = el.group.members.map(member => member.picture);
-            return (<NavLink
-                key={`${i}-${el.group.title}-${el.date_join}`}
-                to={`/group/${el.group.id}`}      
-            >
+            return (    
                 <GroupListItem
+                    key={uuid()}
+                    id={el.group.id}
                     description={el.group.description}
                     title={el.group.title}
                     icon={el.group.admin.picture}
@@ -57,7 +48,6 @@ const Groups: FC = () => {
                     color={el.group.color}
                     memberIcons={memberIcons}
                 />
-            </NavLink>
             )  
         })
            
@@ -69,15 +59,15 @@ const Groups: FC = () => {
         setIsGroupModal(!isGroupModal)
     }
 
-    const getCategoriesModal = () => {
-        return <GroupModal
-        setIsGroupModalOpen={setIsGroupModal}
-        isGroupModalOpen={isGroupModal}
+    const getCreateGroupModal = () => {
+        return <CreateGroupModal
+            setIsGroupModalOpen={setIsGroupModal}
+            isGroupModalOpen={isGroupModal}
         />
     }
 
     return (<>
-        {getCategoriesModal()}
+        {getCreateGroupModal()}
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
