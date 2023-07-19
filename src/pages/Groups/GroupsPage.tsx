@@ -1,4 +1,4 @@
-import React, { FC, useState, ReactNode } from "react";
+import React, { FC, useState, ReactNode, useMemo } from "react";
 import { Link } from "react-router-dom";
 
 //logic
@@ -46,11 +46,11 @@ const Groups: FC = () => {
             isGroupModalOpen={isGroupModal}
         />
     }
-    const getGroups = () => {
+    const getGroups = useMemo(() => {
         let groups: IGroup[] = GroupObj;
         return groups.map((el, i) => {
             const memberIcons = el.group.members.map(member => member.picture);
-            return (    
+            return (
                 <GroupListItem
                     key={uuid()}
                     id={el.group.id}
@@ -64,10 +64,9 @@ const Groups: FC = () => {
                     isGroupModal={isGroupModal}
                     setIsGroupModal={setIsGroupModal}
                 />
-            )  
+            )
         })
-           
-    }
+    },[GroupObj])
 
     return (<>
         {<EditGroupModal
@@ -92,7 +91,7 @@ const Groups: FC = () => {
 
                 </div>
                 <section className={classes.groups}>
-                    {getGroups()}
+                    {getGroups}
                 </section>
             </div>
         </main>
