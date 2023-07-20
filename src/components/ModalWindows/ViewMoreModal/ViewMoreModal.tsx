@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, useCallback, useSyncExternalStore } from "react";
+import React, { FC, Dispatch, SetStateAction, ReactNode, useState, useCallback, useSyncExternalStore } from "react";
 //logic
 import { useElementSize, useWindowSize } from "usehooks-ts";
 import { handleWrap } from "@services/UsefulMethods/UIMethods";
@@ -12,9 +12,11 @@ import CloseButton from "@components/Buttons/CloseButton/CloseButton";
         
 //logic
 
-interface ICategoryModalProps{
+interface IViewMoreModalProps{
     isModalOpen: boolean
-    setIsModalOpen: (value: boolean) => void
+    setIsModalOpen: Dispatch<SetStateAction<boolean>>
+    isAddModalOpen: boolean
+    setIsAddModalOpen: Dispatch<SetStateAction<boolean>>
     data: any,
     type: 'categories' | 'groups'
 }
@@ -23,10 +25,12 @@ interface IModalState {
     color: string
 }
 
-const ViewMoreModal: FC<ICategoryModalProps> = ({ isModalOpen = false, setIsModalOpen, data, type }) => {
+const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModalOpen, isAddModalOpen,setIsAddModalOpen, data, type }) => {
+    // const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false)
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let title = ''
     let modalName = ''
+    
     if (type === 'categories') {
         title = 'Categories'
         modalName = 'ViewMoreCategoriesModal'
@@ -60,7 +64,9 @@ const ViewMoreModal: FC<ICategoryModalProps> = ({ isModalOpen = false, setIsModa
         <div className={classes.modal__wrapper}>
             <ul className={classes.list} ref={squareRef}>
                 {data}
-                <li className={`${classes.item} ${classes.specialItem}`}>
+                <li className={`${classes.item} ${classes.specialItem}`}
+                onClick={() => setIsAddModalOpen(!isAddModalOpen)}
+                >
                     <div className={classes.dashed}>
                         <i className="bi bi-plus-lg"></i>
                     </div>

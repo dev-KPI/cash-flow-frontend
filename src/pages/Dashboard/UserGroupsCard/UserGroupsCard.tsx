@@ -8,7 +8,7 @@ import classes from './UserGroupsCard.module.css'
 import UserGroupsCardItem from '@pages/Dashboard/UserGroupsCardItem/UserGroupsCardItem';
 import UserGroupsCardLoader from '@pages/Dashboard/UserGroupsCard/UserGroupsCardLoader';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
-
+import GroupModal from '@components/ModalWindows/GroupModal/CreateGroupModal';
 const json = {
     "groups": [
         {
@@ -56,6 +56,7 @@ const UserGroupsCard = () => {
     const [groups, setGroups] = useState<Group[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
+    const [isGroupModalOpen, setIsGroupModalOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
@@ -76,10 +77,18 @@ const UserGroupsCard = () => {
         }, [groups, total])
         return properGroups;
     }
+    const getGroupModal = () => {
+        return <GroupModal
+            isGroupModalOpen={isGroupModalOpen}
+            setIsGroupModalOpen={setIsGroupModalOpen}
+        />
+    }
     const getViewMoreModal = () => {
         return <ViewMoreModal
             isModalOpen={isMoreModalOpen}
             setIsModalOpen={setIsMoreModalOpen}
+            isAddModalOpen={isGroupModalOpen}
+            setIsAddModalOpen={setIsGroupModalOpen}          
             data={getGroups(groups)}
             type={'groups'}
         />
@@ -94,7 +103,9 @@ const UserGroupsCard = () => {
     }, 1500);
     return (
         <div className={classes.groups}>
+
             {getViewMoreModal()}
+            {getGroupModal()}
             {loading ? <UserGroupsCardLoader/> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Groups</h3>
@@ -104,7 +115,8 @@ const UserGroupsCard = () => {
                         groups.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
-                                <li className={`${classes.item} ${classes.specialItem}`}>
+                                <li className={`${classes.item} ${classes.specialItem}`}
+                                onClick={()=>setIsGroupModalOpen(!isGroupModalOpen)}>
                                     <div className={classes.dashed}>
                                         <i className="bi bi-plus-lg"></i>
                                     </div>
@@ -120,7 +132,7 @@ const UserGroupsCard = () => {
                                 </div>
                             </li>
                             :
-                            <li className={`${classes.item} ${classes.specialItem}`}>
+                            <li className={`${classes.item} ${classes.specialItem}`}onClick={()=>setIsGroupModalOpen(!isGroupModalOpen)}>
                                 <h6 className={classes.itemTitle}>Add More</h6>
                                 <div className={classes.dashed}>
                                     <i className="bi bi-plus-lg"></i>

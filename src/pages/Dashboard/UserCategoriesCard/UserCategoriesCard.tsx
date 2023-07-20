@@ -11,6 +11,7 @@ import classes from './UserCategoriesCard.module.css'
 import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCardLoader';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
+import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 
 
 export interface ISortedCategoryItem {
@@ -27,8 +28,9 @@ const UserCategoriesCard = () => {
     const [totalItems, setTotalItems] = useState<number>(11);
     const [loading, setLoading] = useState<boolean>(true);
     const [groupIndex, setGroupIndex] = useState<number>(0);
-    const [idModalOpen, setIdModalOpen] = useState<number>(-1);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [idExpenseModalOpen, setIdExpenseModalOpen] = useState<number>(-1);
+    const [isExpenseModalOpen, setIsExpenseModalOpen] = useState<boolean>(false);
+    const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
@@ -46,8 +48,8 @@ const UserCategoriesCard = () => {
     }, [height, width, categories])
 
     const autoHandleCloseModal = useCallback(() => {
-        if(!isModalOpen) setIdModalOpen(-1) 
-    }, [isModalOpen])
+        if(!isExpenseModalOpen) setIdExpenseModalOpen(-1) 
+    }, [isExpenseModalOpen])
 
     useEffect(()=>{
         initializeCategories()
@@ -61,24 +63,32 @@ const UserCategoriesCard = () => {
         return categories.map((item, i) => 
             <CategoriesCardItem 
             key={i} 
-            setIdModalOpen={setIdModalOpen}
-            setIsModalOpen={setIsModalOpen}
+            setIdModalOpen={setIdExpenseModalOpen}
+            setIsModalOpen={setIsExpenseModalOpen}
             category={item.category} 
             amount={item.amount}/>
         )
     }
-    const getModal = () => {
+    const getExpenseModal = () => {
         return <ExpenseModal
-        isExpenseModalOpen={isModalOpen}
-        setIsExpenseModalOpen={setIsModalOpen}
+        isExpenseModalOpen={isExpenseModalOpen}
+        setIsExpenseModalOpen={setIsExpenseModalOpen}
         />
     }
     const getViewMoreModal = () => {
         return <ViewMoreModal
             isModalOpen={isMoreModalOpen}
             setIsModalOpen={setIsMoreModalOpen}
+            isAddModalOpen={isCategoryModalOpen}
+            setIsAddModalOpen={setIsCategoryModalOpen}
             data={getCategories(categories)}
             type={'categories'}
+        />
+    }
+    const getCategoryModal = () => {
+        return <CategoryModal
+            isCategoryModalOpen={isCategoryModalOpen}
+            setIsCategoryModalOpen={setIsCategoryModalOpen}
         />
     }
 
@@ -102,8 +112,9 @@ const UserCategoriesCard = () => {
 
     return (
         <div className={classes.categories}>
-            {getModal()}
+            {getExpenseModal()}
             {getViewMoreModal()}
+            {getCategoryModal()}
             {loading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
@@ -133,7 +144,8 @@ const UserCategoriesCard = () => {
                         categories?.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
-                                <li className={`${classes.item} ${classes.specialItem}`}>
+                                <li className={`${classes.item} ${classes.specialItem}`}
+                                onClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}>
                                     <div className={classes.dashed}>
                                         <i className="bi bi-plus-lg"></i>
                                     </div>
@@ -150,7 +162,7 @@ const UserCategoriesCard = () => {
                                 <h6 className={classes.itemTitle}>View More</h6>
                             </li>
                             :
-                            <li className={`${classes.item} ${classes.specialItem}`}>
+                            <li className={`${classes.item} ${classes.specialItem}`}onClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}>
                                 <div className={classes.dashed}>
                                     <i className="bi bi-plus-lg"></i>
                                 </div>
