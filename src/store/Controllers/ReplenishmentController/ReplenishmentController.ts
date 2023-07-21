@@ -36,7 +36,7 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
         }),
         createReplenishment: builder.mutation<ICreateReplenishmentResponse[], ICreateReplenishmentBody>({
             query: (body) => ({
-                url: `/replenishment/`,
+                url: `/replenishments/`,
                 method: 'POST',
                 credentials: 'include',
                 body
@@ -44,30 +44,30 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'GroupsController', id: 'CREATE_REPLENISHMENT' }],
+            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'CREATE_REPLENISHMENT' }],
         }),
         updateReplenishmentById: builder.mutation<IUpdateReplenishmentResponse, IUpdateReplenishmentBody>({
             query: (body) => ({
-                url: `/replenishment/${body.id}`,
-                method: 'POST',
+                url: `/replenishments/${body.id}`,
+                method: 'PUT',
                 credentials: 'include',
                 body: Omiter(['id'], body)
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'GroupsController', id: 'UPDATE_REPLENISHMENT' }],
+            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' }],
         }),
         deleteReplenishmentById: builder.mutation<null, IDeleteReplenishmentBody>({
             query: ({id}) => ({
-                url: `/replenishment/${id}`,
-                method: 'POST',
+                url: `/replenishments/${id}`,
+                method: 'DELETE',
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'GroupsController', id: 'DELETE_REPLENISHMENT' }],
+            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' }],
         })
     }),
     overrideExisting: false,
