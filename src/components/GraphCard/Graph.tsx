@@ -15,11 +15,20 @@ import { Context } from 'vm';
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import { IExpenseItem } from '@store/ExpenseApiSlice/ExpenseApiInterfaces';
 
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+export interface IExpenseItem { 
+    id: number, 
+    description: string,
+    amount: number,
+    time: string,
+    user_id: number,
+    group_id: number,
+    category_id: number
+}
 
 interface IGraphProps {
     data: IExpenseItem[]

@@ -4,7 +4,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartEvent } from 'chart
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import type { ChartData, ChartOptions } from 'chart.js';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
-import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseInterfaces';
+import { IUserExpenseChartDataItem } from '@store/Tmp/TemporaryInterfaces';
 import { AnyObject, EmptyObject } from 'chart.js/dist/types/basic';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { IMembersExpensesChart } from './ChartCard';
