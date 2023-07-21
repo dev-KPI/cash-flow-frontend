@@ -129,5 +129,9 @@ export const GroupsApiSlice = api.injectEndpoints({
 
 export const {
     useGetCurrentUserGroupsQuery,
+    useGetUsersByGroupQuery,
+    useGetCategoriesByGroupQuery,
+    useRemoveUserMutation,
+    useUpdateGroupMutation,
     useCreateGroupMutation
 } = GroupsApiSlice

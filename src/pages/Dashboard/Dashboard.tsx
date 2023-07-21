@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //logic
-import { useGetCurrentUserGroupsQuery } from '@store/GroupsController/GroupsController';
+import { useCreateGroupMutation, useGetCurrentUserGroupsQuery } from '@store/GroupsController/GroupsController';
 //UI
 import classes from './Dashboard.module.css'                                     
 import MonthPicker from '@components/MonthPicker/MonthPicker';
@@ -16,11 +16,7 @@ import UserChartCard from './UserChartCard/UserChartCard';
 
 const Dashboard = () => {
     
-    const { data: groups, isFetching, isLoading } = useGetCurrentUserGroupsQuery(null)
-    
-    console.log(groups)
-    console.log(isFetching)
-    console.log(isLoading)
+    const [createGroup, response] = useCreateGroupMutation()
     return (<>
         <main id='DashboardPage'>
             <div className='dashboard__container'>
