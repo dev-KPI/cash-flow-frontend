@@ -3,7 +3,8 @@ import { api } from '@store/api';
 //types
 import IGroup from '@models/IGroup';
 import { 
-    IExpenseByGroupBody,
+    ICreateExpenseByGroupBody,
+    IUpdateExpenseByGroupBody,
     IExpenseByGroupResponse
 } from './ExpensesControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
@@ -52,19 +53,19 @@ export const ExpensesApiSlice = api.injectEndpoints({
             { type: 'ExpensesController', id: 'UPDATE_EXPENSE_BY_GROUP' },
             { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
         }),
-        createExpenseByGroup: builder.mutation<IExpenseByGroupResponse, IExpenseByGroupBody>({
+        createExpenseByGroup: builder.mutation<IExpenseByGroupResponse, ICreateExpenseByGroupBody>({
             query: (body) => ({
                 url: `expenses/group/${body.group_id}`,
                 method: 'POST',
                 credentials: 'include',
-                body: Omiter(['id', 'group_id'], body)
+                body: Omiter(['group_id'], body)
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
             invalidatesTags: [{ type: 'ExpensesController', id: 'CREATE_EXPENSE_BY_GROUP' }],
         }),
-        updateExpenseByGroup: builder.mutation<IExpenseByGroupResponse, IExpenseByGroupBody>({
+        updateExpenseByGroup: builder.mutation<IExpenseByGroupResponse, IUpdateExpenseByGroupBody>({
             query: (body) => ({
                 url: `expenses/group/${body.group_id}/${body.id}`,
                 method: 'PUT',

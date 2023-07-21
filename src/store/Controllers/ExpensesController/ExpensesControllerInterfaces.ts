@@ -8,10 +8,12 @@ import IUser from "@models/IUser"
 export interface IExpenseByGroupResponse extends IExpense {
     user: Omit<Omit<Omit<IUser, 'first_name'>, 'last_name'>, 'picture'> 
 }
-export interface IExpenseByGroupBody {
+export interface IUpdateExpenseByGroupBody {
     id:number
     descriptions: string; 
     amount: number
     category_id: number
     group_id: number
 }
+
+export interface ICreateExpenseByGroupBody extends Omit<IUpdateExpenseByGroupBody, "id"> {}
