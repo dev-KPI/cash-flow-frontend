@@ -1,12 +1,11 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //logic
-import {useCookies} from 'react-cookie'
+import { useGetCurrentUserGroupsQuery } from '@store/GroupsController/GroupsController';
 //UI
 import classes from './Dashboard.module.css'                                     
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 import OperationCard from '@components/OperationCard/OperationCard';
-
 //local components
 import UserGraphCard from '@pages/Dashboard/UserGraphCard/UserGraphCard';
 import UserAccountCard from '@pages/Dashboard/UserAccountCard/UserAccountCard';
@@ -16,24 +15,16 @@ import UserGroupsCard from '@pages/Dashboard/UserGroupsCard/UserGroupsCard';
 import UserChartCard from './UserChartCard/UserChartCard';
 
 const Dashboard = () => {
-
-    const sdfijsf = async() => {
-        try{
-            const resp = await fetch('https://api.cash-money.store/users/groups', {
-                credentials: 'include'
-            })
-            console.log(resp)
-            console.log(resp.json())
-        } catch (err){
-            throw err
-        }
-    }
-
+    
+    const { data: groups, isFetching, isLoading } = useGetCurrentUserGroupsQuery(null)
+    
+    console.log(groups)
+    console.log(isFetching)
+    console.log(isLoading)
     return (<>
         <main id='DashboardPage'>
             <div className='dashboard__container'>
                 <div className={classes.header}>
-                    <button onClick={sdfijsf}>ofosdfksdf</button>
                     <h1 className={`${classes.title} pageTitle`}>Dashboard</h1>
                     <MonthPicker />
                 </div>

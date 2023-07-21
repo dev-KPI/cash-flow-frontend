@@ -2,33 +2,83 @@ import { api } from '@store/api';
 
 //types
 import IGroup from '@models/IGroup';
-import { IUserGroup_CREATE, IUserGroup_UPDATE, IUserGroups_GET, TGroup_id } from './GroupsControllerInterfaces';
+import { 
+    IGetCurrentUserGroups, 
+    ICreateGroupBody,
+    ICreateGroupResponse,
+    IUpdateGroupBody,
+    IUpdateGroupResponse,
+    IGetUsersFromGroupResponse,
+    IRemoveUserResponse,
+    IGetCategoriesByGroupResponse
+} from './GroupsControllerInterfaces';
+import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
 
 export const GroupsApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        getCurrentUserGroups: builder.query<IUserGroups_GET[], null>({
+        getCurrentUserGroups: builder.query<IGetCurrentUserGroups, null>({
             query: () => ({
-                url: `/users/groups`,
+                url: `users/groups/`,
+                credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
-                meta,
-                arg
             ) => response.status,
-            providesTags: (result) => result ? [...result.map(item => ({ type: 'GroupsController' as const, id: item.user_groups[0].id})),
+            providesTags: (result) => result ? [...result.user_groups.map(item => ({ type: 'GroupsController' as const, id: item.id})),
             { type: 'GroupsController', id: 'CREATE_GROUP' },
+            { type: 'GroupsController', id: 'REMOVE_USER' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }]
                 :
             [{ type: 'GroupsController', id: 'CREATE_GROUP' },
+            { type: 'GroupsController', id: 'REMOVE_USER' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }],
         }),
-        createGroup: builder.mutation({
-            query: (body: IUserGroup_CREATE) => ({
+        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, {group_id: number}>({
+            query: (group_id) => ({
+                url: `/groups/${group_id}/users`,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result) => result ? [...result.users_group.map(item => ({ type: 'GroupsController' as const, id: item.user.id })),
+            { type: 'GroupsController', id: 'CREATE_GROUP' },
+            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
+            { type: 'GroupsController', id: 'UPDATE_GROUP' }]
+                :
+            [{ type: 'GroupsController', id: 'CREATE_GROUP' },
+            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
+            { type: 'GroupsController', id: 'UPDATE_GROUP' }],
+        }),
+        getCategoriesByGroup: builder.query<IGetCategoriesByGroupResponse, {group_id: number}>({
+            query: (group_id) => ({
+                url: `/groups/${group_id}/categories`,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result) => result ? [...result.categories_group.map(item => ({ type: 'GroupsController' as const, id: item.category.id })),
+            { type: 'GroupsController', id: 'CREATE_GROUP' },
+            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
+            { type: 'GroupsController', id: 'UPDATE_GROUP' }]
+                :
+            [{ type: 'GroupsController', id: 'CREATE_GROUP' },
+            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
+            { type: 'GroupsController', id: 'UPDATE_GROUP' }],
+        }),
+        createGroup: builder.mutation<ICreateGroupResponse, ICreateGroupBody>({
+            query: (body) => ({
                 url: `/groups/`,
                 method: 'POST',
+                credentials: 'include',
                 body
             }),
             transformResponse: (response: { data: IGroup }, meta, arg) => response.data,
@@ -37,11 +87,12 @@ export const GroupsApiSlice = api.injectEndpoints({
             ) => response.status,
             invalidatesTags: [{ type: 'GroupsController', id: 'CREATE_GROUP' }],
         }),
-        updateGroup: builder.mutation<IUserGroup_UPDATE, Partial<IGroup> & Pick<IGroup, 'id'>>({
-            query: (body: IUserGroup_UPDATE) => ({
+        updateGroup: builder.mutation<IUpdateGroupResponse, IUpdateGroupBody>({
+            query: (body) => ({
                 url: `/groups/${body.id}`,
                 method: 'POST',
-                body
+                credentials: 'include',
+                body: Omiter(['id'], body)
             }),
             transformResponse: (response: { data: IGroup }) => response.data,
             transformErrorResponse: (
@@ -49,11 +100,23 @@ export const GroupsApiSlice = api.injectEndpoints({
             ) => response.status,
             invalidatesTags: [{ type: 'GroupsController', id: 'UPDATE_GROUP' }],
         }),
-        leaveGroup: builder.mutation({
-            query: (body: IUserGroup_CREATE) => ({
-                url: `/groups/`,
+        removeUser: builder.mutation<IRemoveUserResponse, {group_id: number, user_id: number}>({
+            query: ({group_id, user_id}) => ({
+                url: `/groups/${group_id}/remove/${user_id}/`,
                 method: 'POST',
-                body
+                credentials: 'include',
+            }),
+            transformResponse: (response: { data: IRemoveUserResponse }) => response.data,
+            transformErrorResponse: (
+                response: { status: string | number }
+            ) => response.status,
+            invalidatesTags: [{ type: 'GroupsController', id: 'REMOVE_USER' }],
+        }),
+        leaveGroup: builder.mutation<null, number>({
+            query: (group_id) => ({
+                url: `/groups/${group_id}/users`,
+                method: 'POST',
+                credentials: 'include'
             }),
             transformErrorResponse: (
                 response,
