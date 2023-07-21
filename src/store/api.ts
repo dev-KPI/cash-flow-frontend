@@ -5,6 +5,8 @@ export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: `${process.env.REACT_APP_API}` }),
     tagTypes: [
         'api', 
+        'GroupsController',
+        'CategoryExpenses'
     ],
     endpoints: () => ({}),
 })

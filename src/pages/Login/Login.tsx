@@ -34,7 +34,7 @@ const Login: FC = () => {
             <img className={classes.devices} src={ThemeStore.theme === 'light' ? devicesLight : devicesDark} alt="devices dark" />
             <div className={classes.form}>
                 <h2 className={classes.CashFlow}>Log <span style={{color: 'var(--main-green)'}}>In</span></h2>
-                <Link to="https://cash-money.store/login" className={classes.SubmitButton}>
+                <Link to="https://api.cash-money.store/login" className={classes.SubmitButton}>
                     <div style={{display: 'flex', gap: '20px', alignItems: 'center'}}>
                     <img src={googleSvg} style={{width: '26px'}} alt='google svg'></img>Log In with Google</div>
                 </Link>

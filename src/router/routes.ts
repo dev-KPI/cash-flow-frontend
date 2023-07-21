@@ -11,6 +11,7 @@ import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
 import GroupHistory from "@pages/GroupHistory/GroupHistory";
 
+
 export const DASHBOARD_PAGE = '/dashboard';
 export const NOTIFICATIONS_PAGE = '/notifications';
 export const CATEGORIES_PAGE = '/categories';
@@ -31,6 +32,10 @@ export const routesNotAuth = [
     }
 ];
 export const routesAuth = [
+    {
+        path: '/',
+        component: Dashboard
+    },
     {
         path: DASHBOARD_PAGE,
         component: Dashboard
@@ -59,6 +64,9 @@ export const routesAuth = [
 ];
 export const routesMobileNavigation = [
     {
+        path: '/',
+        component: Dashboard
+    }, {
         path: DASHBOARD_PAGE,
         component: Dashboard
     }, {

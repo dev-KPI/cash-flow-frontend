@@ -16,10 +16,24 @@ import UserGroupsCard from '@pages/Dashboard/UserGroupsCard/UserGroupsCard';
 import UserChartCard from './UserChartCard/UserChartCard';
 
 const Dashboard = () => {
+
+    const sdfijsf = async() => {
+        try{
+            const resp = await fetch('https://api.cash-money.store/users/groups', {
+                credentials: 'include'
+            })
+            console.log(resp)
+            console.log(resp.json())
+        } catch (err){
+            throw err
+        }
+    }
+
     return (<>
         <main id='DashboardPage'>
             <div className='dashboard__container'>
                 <div className={classes.header}>
+                    <button onClick={sdfijsf}>ofosdfksdf</button>
                     <h1 className={`${classes.title} pageTitle`}>Dashboard</h1>
                     <MonthPicker />
                 </div>
