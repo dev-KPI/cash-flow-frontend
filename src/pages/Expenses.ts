@@ -1,4 +1,3 @@
-import { IExpenseItem } from "@store/ExpenseApiSlice/ExpenseApiInterfaces"
 
 export const expenses = [
     {

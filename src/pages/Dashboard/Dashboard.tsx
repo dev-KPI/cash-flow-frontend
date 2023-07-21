@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //logic
-import { useCreateGroupMutation, useGetCurrentUserGroupsQuery } from '@store/GroupsController/GroupsController';
+import { useCreateGroupMutation, useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import classes from './Dashboard.module.css'                                     
 import MonthPicker from '@components/MonthPicker/MonthPicker';
@@ -16,7 +16,6 @@ import UserChartCard from './UserChartCard/UserChartCard';
 
 const Dashboard = () => {
     
-    const [createGroup, response] = useCreateGroupMutation()
     return (<>
         <main id='DashboardPage'>
             <div className='dashboard__container'>
