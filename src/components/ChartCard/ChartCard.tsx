@@ -6,7 +6,7 @@ import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import ChartCardLoader from '@components/ChartCard/ChartCardLoader';
 import Chart from '@components/ChartCard/Chart';
 import ChartCardDot from '@components/ChartCard/ChartCardDot/ChartCardDot';
-import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseInterfaces';
+import { IUserExpenseChartDataItem } from '@store/TemporaryInterfaces';
 
 
 export interface IMembersExpensesChart {

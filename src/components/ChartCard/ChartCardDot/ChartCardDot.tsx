@@ -5,7 +5,7 @@ import { IMembersExpensesChart } from '../ChartCard';
 import classes from './ChartCardDot.module.css'
 import Light from '@components/Light/Light';
 //store
-import { IUserExpenseChartDataItem } from '@store/UserCategoryExpenseApiSlice/UserCategoryExpenseInterfaces';
+import { IUserExpenseChartDataItem } from '@store/TemporaryInterfaces';
 
 
 interface ChartCardDotProps {

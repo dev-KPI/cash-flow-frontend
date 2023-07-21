@@ -1,4 +1,4 @@
-import { ICategoryExpenseItemUPDATE, IUserExpenseChartDataItem } from './UserCategoryExpenseApiSlice/UserCategoryExpenseInterfaces';
+import { ICategoryExpenseItemUPDATE, IUserExpenseChartDataItem } from './TemporaryInterfaces';
 import { api } from '@store/api';
 
 

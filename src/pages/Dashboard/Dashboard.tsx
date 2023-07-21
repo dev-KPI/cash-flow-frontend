@@ -16,7 +16,6 @@ import UserChartCard from './UserChartCard/UserChartCard';
 
 const Dashboard = () => {
     
-    const [createGroup, response] = useCreateGroupMutation()
     return (<>
         <main id='DashboardPage'>
             <div className='dashboard__container'>
