@@ -27,12 +27,12 @@ export const GroupsApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: (result) => result ? [...result.user_groups.map(item => ({ type: 'GroupsController' as const, id: item.id})),
             { type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }]
                 :
             [{ type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }],
         }),
@@ -46,12 +46,12 @@ export const GroupsApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: (result) => result ? [...result.users_group.map(item => ({ type: 'GroupsController' as const, id: item.user.id })),
             { type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }]
                 :
             [{ type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }],
         }),
@@ -65,12 +65,12 @@ export const GroupsApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: (result) => result ? [...result.categories_group.map(item => ({ type: 'GroupsController' as const, id: item.category.id })),
             { type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }]
                 :
             [{ type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER' },
+            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }],
         }),
@@ -81,7 +81,6 @@ export const GroupsApiSlice = api.injectEndpoints({
                 credentials: 'include',
                 body
             }),
-            transformResponse: (response: { data: IGroup }, meta, arg) => response.data,
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
@@ -94,7 +93,6 @@ export const GroupsApiSlice = api.injectEndpoints({
                 credentials: 'include',
                 body: Omiter(['id'], body)
             }),
-            transformResponse: (response: { data: IGroup }) => response.data,
             transformErrorResponse: (
                 response: { status: string | number }
             ) => response.status,
@@ -106,7 +104,6 @@ export const GroupsApiSlice = api.injectEndpoints({
                 method: 'POST',
                 credentials: 'include',
             }),
-            transformResponse: (response: { data: IRemoveUserResponse }) => response.data,
             transformErrorResponse: (
                 response: { status: string | number }
             ) => response.status,
