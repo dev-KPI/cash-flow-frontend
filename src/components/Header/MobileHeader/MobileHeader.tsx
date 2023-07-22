@@ -50,7 +50,7 @@ const MobileHeader: FC = () => {
         </div>
         <div 
             id='active-bg' 
-            className={isOpen ? classes.bgDrop + ' ' + classes.bgDropTransition : classes.bcDrop}>
+            className={isOpen ? classes.bgDrop : ''}>
         </div>
     </>)
 }
