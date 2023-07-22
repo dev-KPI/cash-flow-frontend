@@ -1,8 +1,6 @@
 import { api } from '@store/api';
 
 //types
-import IReplenishment from '@models/IReplenishment';
-// import { } from './ReplenishmentControllerInterfaces'
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import { ICreateReplenishmentBody, 
     ICreateReplenishmentResponse, 
