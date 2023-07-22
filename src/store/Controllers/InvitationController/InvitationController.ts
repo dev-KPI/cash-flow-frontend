@@ -1,36 +1,31 @@
 import { api } from '@store/api';
 
 //types
-import IInvitation from '@models/IInvitation';
-// import { } from './ReplenishmentControllerInterfaces'
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
-// import { 
-// } from './InvitationControllerInterfaces';
+import { IAcceptInvitationBody, IAcceptInvitationResponse, ICreateInvitaionBody, ICreateInvitaionResponse, IGetInvitaionResponse,
+ } from './InvitationControllerInterfaces';
 
 
-export const ReplenishmentsApiSlice = api.injectEndpoints({
+export const InvitationApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        getReplenishmentsByUser: builder.query<IGetReplenishmentsByUserResponse[], IGetReplenishmentsByUserBody>({
-            query: (body) => ({
-                url: `/replenishments/`,
+        getInvitationsByCurrentUser: builder.query<IGetInvitaionResponse[], null>({
+            query: () => ({
+                url: `/invitations/list/`,
                 credentials: 'include',
-                body
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result) => result ? [...result.map(item => ({ type: 'ReplenishmentsController' as const, id: item.amount})),
-            { type: 'ReplenishmentsController', id: 'CREATE_REPLENISHMENT' },
-            { type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' },
-            { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' }]
+            providesTags: (result) => result ? [...result.map(item => ({ type: 'InvitationController' as const, id: item.id})),
+            { type: 'InvitationController', id: 'CREATE_INVITATION' },
+            { type: 'InvitationController', id: 'ACCEPT_INVITATION' },]
                 :
-            [{ type: 'ReplenishmentsController', id: 'CREATE_REPLENISHMENT' },
-            { type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' },
-            { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' }],
+            [{ type: 'InvitationController', id: 'CREATE_INVITATION' },
+            { type: 'InvitationController', id: 'ACCEPT_INVITATION' },],
         }),
-        createReplenishment: builder.mutation<ICreateReplenishmentResponse[], ICreateReplenishmentBody>({
+        createInvitation: builder.mutation<ICreateInvitaionResponse, ICreateInvitaionBody>({
             query: (body) => ({
-                url: `/replenishments/`,
+                url: `/invitations/`,
                 method: 'POST',
                 credentials: 'include',
                 body
@@ -38,34 +33,26 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'CREATE_REPLENISHMENT' }],
+            invalidatesTags: [{ type: 'InvitationController', id: 'CREATE_INVITATION' }],
         }),
-        updateReplenishmentById: builder.mutation<IUpdateReplenishmentResponse, IUpdateReplenishmentBody>({
+        acceptInvitationById: builder.mutation<IAcceptInvitationResponse, IAcceptInvitationBody>({
             query: (body) => ({
-                url: `/replenishments/${body.id}`,
-                method: 'PUT',
+                url: `/invitations/response/${body.invitation_id}`,
+                method: 'POST',
                 credentials: 'include',
-                body: Omiter(['id'], body)
+                body: body.response
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' }],
-        }),
-        deleteReplenishmentById: builder.mutation<null, IDeleteReplenishmentBody>({
-            query: ({id}) => ({
-                url: `/replenishments/${id}`,
-                method: 'DELETE',
-                credentials: 'include',
-            }),
-            transformErrorResponse: (
-                response: { status: string | number },
-            ) => response.status,
-            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' }],
+            invalidatesTags: [{ type: 'InvitationController', id: 'ACCEPT_INVITATION' }],
         })
     }),
     overrideExisting: false,
 })
 
 export const {
-} = ReplenishmentsApiSlice
+    useGetInvitationsByCurrentUserQuery,
+    useAcceptInvitationByIdMutation,
+    useCreateInvitationMutation
+} = InvitationApiSlice
