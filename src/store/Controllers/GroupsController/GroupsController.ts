@@ -89,7 +89,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         updateGroup: builder.mutation<IUpdateGroupResponse, IUpdateGroupBody>({
             query: (body) => ({
                 url: `/groups/${body.id}`,
-                method: 'POST',
+                method: 'PUT',
                 credentials: 'include',
                 body: Omiter(['id'], body)
             }),

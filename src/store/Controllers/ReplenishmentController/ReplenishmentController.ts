@@ -49,7 +49,7 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
         updateReplenishmentById: builder.mutation<IUpdateReplenishmentResponse, IUpdateReplenishmentBody>({
             query: (body) => ({
                 url: `/replenishment/${body.id}`,
-                method: 'POST',
+                method: 'PUT',
                 credentials: 'include',
                 body: Omiter(['id'], body)
             }),
@@ -61,7 +61,7 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
         deleteReplenishmentById: builder.mutation<null, IDeleteReplenishmentBody>({
             query: ({id}) => ({
                 url: `/replenishment/${id}`,
-                method: 'POST',
+                method: 'DELETE',
                 credentials: 'include',
             }),
             transformErrorResponse: (
