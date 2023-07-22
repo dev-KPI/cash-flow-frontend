@@ -1,17 +1,11 @@
 import { api } from '@store/api';
 
 //types
-import IReplenishment from '@models/IReplenishment';
+import IInvitation from '@models/IInvitation';
 // import { } from './ReplenishmentControllerInterfaces'
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
-import { ICreateReplenishmentBody, 
-    ICreateReplenishmentResponse, 
-    IDeleteReplenishmentBody, 
-    IGetReplenishmentsByUserBody,
-    IGetReplenishmentsByUserResponse,
-    IUpdateReplenishmentBody,
-    IUpdateReplenishmentResponse
-} from './ReplenishmentControllerInterfaces';
+// import { 
+// } from './InvitationControllerInterfaces';
 
 
 export const ReplenishmentsApiSlice = api.injectEndpoints({
@@ -74,8 +68,4 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
 })
 
 export const {
-    useGetReplenishmentsByUserQuery,
-    useCreateReplenishmentMutation,
-    useDeleteReplenishmentByIdMutation,
-    useUpdateReplenishmentByIdMutation,
 } = ReplenishmentsApiSlice
