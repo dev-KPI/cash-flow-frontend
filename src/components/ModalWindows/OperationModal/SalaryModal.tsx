@@ -1,18 +1,15 @@
-import React, {FC, ReactNode, useState} from "react";
-import ReactDOM from 'react-dom';
+import React, { FC, ReactNode, useState, Dispatch, SetStateAction } from "react";
 
 //UI
 import classes from './SalaryModal.module.css';
 import Input from "@components/Input/Input";
-import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 //logic
-import { useWindowSize } from "usehooks-ts";
+import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 
 interface IOperationModalProps{
     isSalaryModalOpen: boolean
-    setIsSalaryModalOpen: (value: boolean) => void
+    setIsSalaryModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
 interface IModalState {
@@ -32,7 +29,6 @@ const SalaryModal: FC<IOperationModalProps> = ({
 
     const [operationValue, setOperationValue] = useState<number>(0);
     const [descriptionValue, setDescriptionValue] = useState<string>('');
-    const {width} = useWindowSize()
 
     //submit
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
@@ -51,33 +47,15 @@ const SalaryModal: FC<IOperationModalProps> = ({
         }, 3000);
     }
 
-    return <UseModal
-        modalName="salaryModal"
-        containerWidth={600}
-        containerHeight={416}
+    return <UsePortal
         setIsModalOpen={setIsSalaryModalOpen}
         isModalOpen={isSalaryModalOpen}
+        headerIcon={headerIcon}
+        title={titleModal}
         >
             <form
             onSubmit={handleSubmit}>
-                <div 
-                style={{
-                    paddingTop: width > 768 ? '' : '32px',
-                }}
-                className={classes.Header}>
-                    <div className={classes.Icon}>
-                        {headerIcon}
-                    </div>
-                    <h3>{titleModal}</h3>
-                    <div className={classes.closeBtn}>
-                        <CloseButton closeHandler={() => setIsSalaryModalOpen(false)}/>
-                    </div>
-                </div>
-                <div className={classes.line}></div>
-                <ul 
-                style={{
-                    marginTop: width > 768 ? '' : '10%',
-                }}
+                <ul
                 className={classes.OperationBody}>
                     <li className={classes.AmountInput}>
                         <label className={classes.title} htmlFor="salary">{amountTitle}</label>
@@ -112,7 +90,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
                     className={`btn-primary`} />
                 </div>
             </form>
-        </UseModal>
+        </UsePortal>
 };
   
 export default React.memo(SalaryModal);

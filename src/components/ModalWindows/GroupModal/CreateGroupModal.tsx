@@ -1,19 +1,18 @@
-import React, {FC, ReactNode, useState, useCallback} from "react";
-import { useWindowSize } from "usehooks-ts";
+import React, { FC, Dispatch, SetStateAction, ReactNode, useState, useCallback} from "react";
 
 //UI
 import classes from './GroupModal.module.css';
-import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import Input from "@components/Input/Input";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-        
+
 //logic
+import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+
 interface IGroupModalProps{
     isGroupModalOpen: boolean
-    setIsGroupModalOpen: (value: boolean) => void
+    setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 interface IModalState {
     name: string
@@ -26,7 +25,6 @@ const CreateGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupMo
     const titleModal = 'Group'
     const [nameValue, setNameValue] = useState<string>('');
     const [colorValue, setColorValue] = useState<string>('');
-    const {width} = useWindowSize()
 
     //submit
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
@@ -81,62 +79,48 @@ const CreateGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupMo
 
     return <>
     {showToolTip()}
-    <UseModal
-        modalName="addGroupModal"
-        containerWidth={500}
-        containerHeight={660}
-        setIsModalOpen={setIsGroupModalOpen}
-        isModalOpen={isGroupModalOpen}
+        <UsePortal
+            isModalOpen={isGroupModalOpen}
+            setIsModalOpen={setIsGroupModalOpen}
+            headerIcon={headerIcon}
+            title={titleModal}
         >
             <form
-            onSubmit={handleSubmit}>
-                <div 
-                style={{
-                    paddingTop: width > 768 ? '' : '32px',
-                }}
-                className={classes.Header}>
-                    <div className={classes.Icon}>
-                        {headerIcon}
-                    </div>
-                    <h3>{titleModal}</h3>
-                    <div className={classes.closeBtn}>
-                        <CloseButton closeHandler={() => setIsGroupModalOpen(false)}/>
-                    </div>
-                </div>
-                <div className={classes.line}></div>
+                onSubmit={handleSubmit}>
                 <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameGroup}>
                         <label className={classes.title} htmlFor="groupName">Please сreate new group:</label>
                         <div className={classes.inputWrapper}>
-                            <Input 
-                            setFormValue={{type: 'name', callback: setNameValue}}
-                            isInputMustClear={!isGroupModalOpen} 
-                            inputType="name" id="groupName" 
-                            name="groupName" placeholder="Name"/>
+                            <Input
+                                setFormValue={{ type: 'name', callback: setNameValue }}
+                                isInputMustClear={!isGroupModalOpen}
+                                inputType="name" id="groupName"
+                                name="groupName" placeholder="Name" />
                         </div>
                     </div>
                     <div className={classes.textAreaGroup}>
                         <label className={classes.title} htmlFor="groupDesc">Description:</label>
                         <div className={classes.textAreaWrapper}>
                             <Input
-                            setFormValue={{type: 'area', callback: setNameValue}}
-                            isInputMustClear={!isGroupModalOpen} 
-                            inputType="area" id="groupDesc" 
-                            name="groupDesc" placeholder="Description"/>
+                                setFormValue={{ type: 'area', callback: setNameValue }}
+                                isInputMustClear={!isGroupModalOpen}
+                                inputType="area" id="groupDesc"
+                                name="groupDesc" placeholder="Description" />
                         </div>
                     </div>
-                    <div style={{marginTop: '16px'}}>
+                    <div style={{ marginTop: '16px' }}>
                         <Accordion>
                             <AccordionTab title="Select color" choosedItem={light}>
                                 <div className={classes.pickBody}>
                                     {
-                                        colors.map( (el, i) => 
-                                            <div 
+                                        colors.map((el, i) =>
+                                            <div
                                                 key={i}
                                                 onClick={(e) => changeColor(e, el)}
-                                                style={{width: '24px', height: '24px', 
-                                                borderRadius: '100%', backgroundColor: el, 
-                                                cursor: 'pointer'
+                                                style={{
+                                                    width: '24px', height: '24px',
+                                                    borderRadius: '100%', backgroundColor: el,
+                                                    cursor: 'pointer'
                                                 }}>
                                             </div>)
                                     }
@@ -145,13 +129,15 @@ const CreateGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupMo
                             <AccordionTab title="Select icon" choosedItem={iconDisplayed}>
                                 <div className={classes.pickBody}>
                                     {
-                                        icons.map((el,i) => 
-                                            <div 
+                                        icons.map((el, i) =>
+                                            <div
                                                 key={i}
                                                 onClick={(e) => changeIcon(e, el)}
-                                                style={{fontSize: '24px', 
-                                                cursor: 'pointer'}}>
-                                                <i style={{color: 'var(--main-text)'}} className={el}></i>
+                                                style={{
+                                                    fontSize: '24px',
+                                                    cursor: 'pointer'
+                                                }}>
+                                                <i style={{ color: 'var(--main-text)' }} className={el}></i>
                                             </div>)
                                     }
                                 </div>
@@ -159,7 +145,7 @@ const CreateGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupMo
                         </Accordion>
                     </div>
                 </div>
-                <div style={{display:'flex', justifyContent: 'center', marginTop: '24px'}}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
                     <CustomButton
                         isPending={isSubmiting}
                         children="Confirm"
@@ -171,7 +157,7 @@ const CreateGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupMo
                         className={`btn-primary`} />
                 </div>
             </form>
-    </UseModal>
+        </UsePortal>
 </>};
   
 export default React.memo(CreateGroupModal);

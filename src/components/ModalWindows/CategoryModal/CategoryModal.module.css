@@ -33,15 +33,14 @@
     margin-top: 10px;
 }
 .pickBody{
-    height: 120px;
-    padding: 16px 0px;
-    display: flex;
-    flex-wrap: wrap;
+    padding: 14px;
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(12, minmax(24px, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
     background-color: var(--color-picker);
 }
-.pickBody > div {
-    margin-left: 12px;
-}
+
 .colorPicked{
     width: 24px;
     height: 24px; 
@@ -69,4 +68,13 @@
         margin: 0 auto;
         padding: 0 15px;
     }
+    .pickBody{
+        gap: 4px;
+    }
 }
+@media only screen and (max-width: 400px) {
+    .pickBody{
+        grid-template-columns: repeat(auto-fit, minmax(24px, 1fr));
+    }
+}
+

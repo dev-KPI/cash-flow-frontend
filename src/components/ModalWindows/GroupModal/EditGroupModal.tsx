@@ -1,20 +1,18 @@
-import React, {FC, ReactNode, useState, useCallback} from "react";
-import { useWindowSize } from "usehooks-ts";
+import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction } from "react";
 
 //UI
 import classes from './GroupModal.module.css';
-import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import Input from "@components/Input/Input";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import uuid from "react-uuid";
         
 //logic
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+
 interface IGroupModalProps{
     isGroupModalOpen: boolean
-    setIsGroupModalOpen: (value: boolean) => void
+    setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>
 }
 interface IModalState {
     name: string
@@ -27,7 +25,6 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
     const titleModal = 'Group'
     const [nameValue = '', setNameValue] = useState<string>('');
     const [colorValue = '', setColorValue] = useState<string>('');
-    const {width} = useWindowSize()
 
     //submit
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
@@ -82,29 +79,15 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
 
     return <>
     {showToolTip()}
-    <UseModal
-        modalName="editGroupModal"
+    <UsePortal
         containerWidth={500}
-        containerHeight={660}
         setIsModalOpen={setIsGroupModalOpen}
         isModalOpen={isGroupModalOpen}
+        headerIcon={headerIcon}
+        title={titleModal}
         >
             <form
             onSubmit={handleSubmit}>
-                <div 
-                style={{
-                    paddingTop: width > 768 ? '' : '32px',
-                }}
-                className={classes.Header}>
-                    <div className={classes.Icon}>
-                        {headerIcon}
-                    </div>
-                    <h3>{titleModal}</h3>
-                    <div className={classes.closeBtn}>
-                        <CloseButton closeHandler={() => setIsGroupModalOpen(false)}/>
-                    </div>
-                </div>
-                <div className={classes.line}></div>
                 <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameGroup}>
                         <label className={classes.title} htmlFor="groupName">Please enter the name of the group:</label>
@@ -183,7 +166,7 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
                     </div>
                 </div>
             </form>
-    </UseModal>
+    </UsePortal>
 </>};
   
 export default React.memo(EditGroupModal);

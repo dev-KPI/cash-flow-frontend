@@ -64,6 +64,12 @@
 .itemTitle {
     composes: smallItemTitle from "@styles/style.css";
 }
+.wrapped {
+    display: none;
+    visibility: hidden;
+    width: 0;
+    flex: 0 0;
+}
 
 .dashed i {
     -webkit-text-stroke: 1.5px;
