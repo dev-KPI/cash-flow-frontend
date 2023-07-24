@@ -1,6 +1,4 @@
-import IGroup from "@models/IGroup";
 import IInvitation from "@models/IInvitation";
-import IUser from "@models/IUser";
 
 export interface IGetInvitaionResponse extends Omit<IInvitation, 'recipient'> {}
 

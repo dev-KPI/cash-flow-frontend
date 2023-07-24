@@ -141,15 +141,6 @@ const Categories: FC = () => {
                     <div></div>
                     <div></div>
             </button>)
-            // res.push( <CustomButton
-            //     isPending={false}
-            //     callback={() => setIsGroupModal(true)}
-            //     icon="none"
-            //     type="primary"
-            //     children="View More"
-            //     // disableScale={true}
-            //     className={classes.groupMoreButton}
-            // />)
         }
         return res;
     }

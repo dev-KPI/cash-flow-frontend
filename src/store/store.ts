@@ -5,8 +5,8 @@ import storage from 'redux-persist/lib/storage';
 //slices
 import MonthPickerSlice from '@UI_store/MonthPickerSlice/MonthPickerSlice';
 import ThemeSlice from '@UI_store/ThemeSlice/ThemeSlice';
+
 import { api } from './api';
-import { setupListeners } from '@reduxjs/toolkit/dist/query';
 
 export const persistConfig = {
     key: 'root',

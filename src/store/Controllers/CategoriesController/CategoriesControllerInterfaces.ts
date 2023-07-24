@@ -17,3 +17,12 @@ export interface IUpdateCategoryBody {
     color_code: string
 }
 export interface IUpdateCategoryResponse extends Omit<Omit<ICategory, 'icon_url'>, 'color_code'> {}
+
+
+export interface IGetCategoriesByGroupResponse {
+    categories_group: [
+        {
+            category: ICategory
+        }
+    ]
+}

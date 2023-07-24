@@ -124,10 +124,10 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
             <div className={classes.burgernav__downside}>
                 <ul className={classes.list}>
                     <li>
-                        <button key={'erf2'} className={classes.item}>
+                        <Link to={"https://api.cash-money.store/logout"} key={'erf2'} className={classes.item}>
                             <i className="bi bi-box-arrow-left"></i>
                             <h3 className={classes.title}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h3>
-                        </button>
+                        </Link>
                     </li>
                 </ul>
             </div>

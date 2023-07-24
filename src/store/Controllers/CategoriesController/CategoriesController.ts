@@ -4,6 +4,7 @@ import { api } from '@store/api';
 import { 
     ICreateCategoryBody,
     ICreateCategoryResponse,
+    IGetCategoriesByGroupResponse,
     IUpdateCategoryBody,
     IUpdateCategoryResponse,
 } from './CategoriesControllerInterfaces';
@@ -12,6 +13,21 @@ import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
 export const CategoryApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
+        getCategoriesByGroup: builder.query<IGetCategoriesByGroupResponse, {group_id: number}>({
+            query: (group_id) => ({
+                url: `/groups/${group_id}/categories`,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result) => result ? [...result.categories_group.map(item => ({ type: 'CategoryController' as const, id: item.category.id })),
+            { type: 'CategoryController', id: 'CREATE_CATEGORY_BY_GROUP' },
+            { type: 'CategoryController', id: 'UPDATE_CATEGORY_BY_GROUP' }]
+                :
+            [{ type: 'CategoryController', id: 'CREATE_CATEGORY_BY_GROUP' },
+            { type: 'CategoryController', id: 'UPDATE_CATEGORY_BY_GROUP' }],
+        }),
         createCategoryByGroup: builder.mutation<ICreateCategoryResponse, ICreateCategoryBody>({
             query: (body) => ({
                 url: `categories/${body.group_id}`,
@@ -34,13 +50,14 @@ export const CategoryApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'CategoryController', id: 'UPDATE_EXPENSE_BY_GROUP' }],
+            invalidatesTags: [{ type: 'CategoryController', id: 'UPDATE_CATEGORY_BY_GROUP' }],
         })
     }),
     overrideExisting: false,
 })
 
 export const {
+    useGetCategoriesByGroupQuery,
     useCreateCategoryByGroupMutation,
     useUpdateCategoryByGroupMutation
 } = CategoryApiSlice
