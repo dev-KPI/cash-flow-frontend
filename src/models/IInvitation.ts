@@ -1,5 +1,11 @@
+import IGroup from "./IGroup";
+import IUser from "./IUser";
+
 export default interface IInvitation{
-    recipient_id: number,
-    group_id: Number
+    id: number,
+    status: string,
+    group: IGroup,
+    creation_time: string,
+    recipient: IUser
 }
   

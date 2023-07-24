@@ -16,7 +16,6 @@ interface IContenxtUserProps {
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
 
-    const navigate = useNavigate();
 
     return (
         <SmallModal
@@ -39,9 +38,9 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
                         </Link>
                     </li>
                     <li className={classes.item}>
-                        <button style={{cursor: 'pointer'}}>
+                        <Link to={"https://api.cash-money.store/logout"} style={{cursor: 'pointer'}}>
                             <h4 className={classes.Link}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h4>
-                        </button>
+                        </Link>
                     </li>
                 </ul>}
         />

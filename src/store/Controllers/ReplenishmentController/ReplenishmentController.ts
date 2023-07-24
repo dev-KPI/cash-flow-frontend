@@ -1,8 +1,6 @@
 import { api } from '@store/api';
 
 //types
-import IReplenishment from '@models/IReplenishment';
-// import { } from './ReplenishmentControllerInterfaces'
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import { ICreateReplenishmentBody, 
     ICreateReplenishmentResponse, 
@@ -20,7 +18,11 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             query: (body) => ({
                 url: `/replenishments/`,
                 credentials: 'include',
-                body
+                params: {
+                    year_month: body.year_month,
+                    start_date: body.start_date,
+                    end_date: body.end_date
+                }
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -75,4 +77,7 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
 
 export const {
     useGetReplenishmentsByUserQuery,
+    useCreateReplenishmentMutation,
+    useDeleteReplenishmentByIdMutation,
+    useUpdateReplenishmentByIdMutation,
 } = ReplenishmentsApiSlice
