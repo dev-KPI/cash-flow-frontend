@@ -13,13 +13,14 @@ import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 interface ICategoryModalProps{
     isCategoryModalOpen: boolean
     setIsCategoryModalOpen: Dispatch<SetStateAction<boolean>>;
+    mode: 'create' | 'edit'
 }
 interface IModalState {
     name: string
     color: string
 }
 
-const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen = false, setIsCategoryModalOpen }) => {
+const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode }) => {
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Category'
@@ -76,7 +77,12 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen = false, s
             title="Category successfully added"/>
         }
     }, [shouldShowTooltip])
-
+    let labelText = '';
+    if (mode === 'create') {
+        labelText = 'Please сreate new category:'
+    } else if (mode === 'edit') {
+        labelText = 'Please enter the name of the category:'
+    }
     return <>
     {showToolTip()}
     <UsePortal
@@ -90,7 +96,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen = false, s
             onSubmit={handleSubmit}>
                 <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameCategory}>
-                        <label className={classes.title} htmlFor="categoryName">Please сreate new category:</label>
+                        <label className={classes.title} htmlFor="categoryName">{labelText}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
                             setFormValue={{type: 'name', callback: setNameValue}}
