@@ -45,3 +45,8 @@
 .accordionContent.open {
     max-height: 120px; 
 }
+@media only screen and (max-width: 400px) {
+    .accordionContent.open {
+        max-height: 190px;
+    }
+}
