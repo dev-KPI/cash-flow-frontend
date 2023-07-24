@@ -1,10 +1,11 @@
 import React, { FC, useEffect, useState, useCallback } from 'react';
 
-import {createBrowserRouter,RouterProvider, Outlet, Navigate, useNavigate, useLocation, useParams } from 'react-router-dom';
+import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import { routesAuth, groupRoutes, routesNotAuth } from './routes'
 //store
-import { useActionCreators } from "@hooks/storeHooks/useAppStore";
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
+import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import Header from '@components/Header/Header';
 import Footer from '@components/Footer/Footer';
@@ -16,10 +17,11 @@ import NotFound from '@pages/NotFound/NotFound';
 const Router: FC = () => {
 
     const ThemeDispatch = useActionCreators(ThemeActions);
-
+    const {data: AuthStatus, isError, isFetching} = useGetUserAuthStatusQuery(null);
+    
     useEffect(() => {
         ThemeDispatch.initializeTheme()
-    },[]);
+    },[ThemeDispatch]);
 
 
     const BrowserRoutesForNotAuth = createBrowserRouter([
@@ -32,8 +34,8 @@ const Router: FC = () => {
                 })
                 ),{
                     path: '*',
-                    element: < Login />
-                }
+                    element: <Navigate to="/login" />,
+                },
             ]
         }
     ])
@@ -48,23 +50,13 @@ const Router: FC = () => {
                         element: < Component />
                     })
                 ),{
+                    path: '/login',
+                    element: <Navigate to="/dashboard" />,
+                },{
                     path: '*',
                     element: < NotFound />
                 }
             ]    
-        },
-        {
-            element: <Outlet />,
-            children: [...routesNotAuth.map(({ path, component: Component }) =>
-                ({
-                    path: path,
-                    element: < Component />
-                })
-                ),{
-                    path: '*',
-                    element: < Login />
-                }
-            ]
         },
         {
             // path: "/group",
@@ -80,7 +72,7 @@ const Router: FC = () => {
         },
     ])
     
-    return <RouterProvider router={BrowserRoutesForAuth}/>
+    return <RouterProvider router={AuthStatus?.status ? BrowserRoutesForAuth : BrowserRoutesForNotAuth}/>
 }
 
 export default Router;

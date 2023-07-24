@@ -9,8 +9,7 @@ import {
     IUpdateGroupBody,
     IUpdateGroupResponse,
     IGetUsersFromGroupResponse,
-    IRemoveUserResponse,
-    IGetCategoriesByGroupResponse
+    IRemoveUserResponse
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
@@ -19,13 +18,13 @@ export const GroupsApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getCurrentUserGroups: builder.query<IGetCurrentUserGroups, null>({
             query: () => ({
-                url: `users/groups/`,
+                url: `groups/`,
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result) => result ? [...result.user_groups.map(item => ({ type: 'GroupsController' as const, id: item.id})),
+            providesTags: (result) => result ? [...result.user_groups.map(item => ({ type: 'GroupsController' as const, id: item.group.id})),
             { type: 'GroupsController', id: 'CREATE_GROUP' },
             { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
@@ -54,26 +53,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
             { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
             { type: 'GroupsController', id: 'UPDATE_GROUP' }],
-        }),
-        getCategoriesByGroup: builder.query<IGetCategoriesByGroupResponse, {group_id: number}>({
-            query: (group_id) => ({
-                url: `/groups/${group_id}/categories`,
-                credentials: 'include',
-            }),
-            transformErrorResponse: (
-                response: { status: string | number },
-            ) => response.status,
-            providesTags: (result) => result ? [...result.categories_group.map(item => ({ type: 'GroupsController' as const, id: item.category.id })),
-            { type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
-            { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
-            { type: 'GroupsController', id: 'UPDATE_GROUP' }]
-                :
-            [{ type: 'GroupsController', id: 'CREATE_GROUP' },
-            { type: 'GroupsController', id: 'REMOVE_USER_FROM_GROUP' },
-            { type: 'GroupsController', id: 'LEAVE_FROM_GROUP' },
-            { type: 'GroupsController', id: 'UPDATE_GROUP' }],
-        }),
+        }),    
         createGroup: builder.mutation<ICreateGroupResponse, ICreateGroupBody>({
             query: (body) => ({
                 url: `/groups/`,
@@ -89,7 +69,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         updateGroup: builder.mutation<IUpdateGroupResponse, IUpdateGroupBody>({
             query: (body) => ({
                 url: `/groups/${body.id}`,
-                method: 'POST',
+                method: 'PUT',
                 credentials: 'include',
                 body: Omiter(['id'], body)
             }),
@@ -127,7 +107,6 @@ export const GroupsApiSlice = api.injectEndpoints({
 export const {
     useGetCurrentUserGroupsQuery,
     useGetUsersByGroupQuery,
-    useGetCategoriesByGroupQuery,
     useRemoveUserMutation,
     useUpdateGroupMutation,
     useCreateGroupMutation

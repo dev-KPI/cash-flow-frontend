@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC } from "react";
 
 //UI
 import classes from'./Login.module.css';
@@ -9,14 +9,13 @@ import devicesDark from '@assets/devicesDark.png';
 import devicesLight from '@assets/devicesLight.png';
 import PageGlobalLoader from "@components/PageGlobalPreloader/PageGlobalPreloader";
 //store
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 import { Link, useNavigate } from "react-router-dom";
 //logic
 
 const Login: FC = () => {
 
-    const navigate = useNavigate();
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     return(<>
