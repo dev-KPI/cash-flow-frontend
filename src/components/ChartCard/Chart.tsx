@@ -1,8 +1,8 @@
 import React, { useRef, FC, Dispatch, SetStateAction } from 'react';
 //logic
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartEvent } from 'chart.js'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartEvent } from 'chart.js/auto'
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import type { ChartData, ChartOptions } from 'chart.js';
+import type { ChartData, ChartOptions } from 'chart.js/auto';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
 import { IUserExpenseChartDataItem } from '@store/Tmp/TemporaryInterfaces';
 import { AnyObject, EmptyObject } from 'chart.js/dist/types/basic';

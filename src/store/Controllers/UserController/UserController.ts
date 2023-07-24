@@ -10,7 +10,7 @@ export const UserApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getUserAuthStatus: builder.query<IGetAuthStatus, null>({
             query: () => ({
-                url: `groups/1/users`,
+                url: `users/user-balance`,
                 credentials: 'include',
             }),
             transformErrorResponse: (

@@ -41,7 +41,6 @@ const Router: FC = () => {
     ])
     const BrowserRoutesForAuth = createBrowserRouter([
         {
-            // path: "*",
             element: <MainLayout/>,
             children: [
                 ...routesAuth.map(({ path, component: Component }) =>
