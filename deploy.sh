@@ -1,6 +1,6 @@
 source .env
 
-echo "Switching to branch master"
+echo "Switching to branch dev"
 git checkout dev
 
 echo "Building app..."
