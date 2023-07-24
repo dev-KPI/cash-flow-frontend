@@ -18,7 +18,6 @@ const Router: FC = () => {
 
     const ThemeDispatch = useActionCreators(ThemeActions);
     const {data: AuthStatus, isError, isFetching} = useGetUserAuthStatusQuery(null);
-    console.log(AuthStatus)
     
     useEffect(() => {
         ThemeDispatch.initializeTheme()
