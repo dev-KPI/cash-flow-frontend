@@ -53,10 +53,10 @@
     border-radius: 100%;
 }
 
-.confirmBtnWrapper{
+.btnWrapper{
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-top: 24px;
 }

@@ -8,7 +8,7 @@ import classes from './UserGroupsCard.module.css'
 import UserGroupsCardItem from '@pages/Dashboard/UserGroupsCardItem/UserGroupsCardItem';
 import UserGroupsCardLoader from '@pages/Dashboard/UserGroupsCard/UserGroupsCardLoader';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
-import GroupModal from '@components/ModalWindows/GroupModal/CreateGroupModal';
+import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
 const json = {
     "groups": [
         {
@@ -81,6 +81,7 @@ const UserGroupsCard = () => {
         return <GroupModal
             isGroupModalOpen={isGroupModalOpen}
             setIsGroupModalOpen={setIsGroupModalOpen}
+            mode='create'
         />
     }
     const getViewMoreModal = () => {
