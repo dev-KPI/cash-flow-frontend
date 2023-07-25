@@ -1,6 +1,7 @@
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import { FC, useEffect, Dispatch, useRef, SetStateAction, memo, ReactNode, useState, useMemo } from "react";
 import { createPortal } from "react-dom";
+import useEscapeKey from "../useEscapeKey";
 
 import classes from './usePortal.module.css';
 interface IPortalProps {
@@ -31,7 +32,7 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, heade
                 mount.removeChild(current);
             }
         };
-    }, []); // no dependencies to avoid rerenders
+    }, []);
     useEffect(() => {
         const body = document.body;
         const yScroll = window.scrollY;
@@ -54,7 +55,8 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, heade
             }
         }
     }, [isModalOpen])
-
+    const closeModal = () => setIsModalOpen(false)
+    useEscapeKey(closeModal);
     const handleAnimationEnd = (e: React.AnimationEvent<HTMLDivElement>) => {
         if (e.animationName.includes('outAnim')) {
             setIsVisible(false)
@@ -66,8 +68,12 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, heade
             <div className={`${classes.usePortal} ${isFadeOut ? `${classes.fadeOut} ` : `${classes.fadeIn}`}`}
                 onClick={(e) => e.stopPropagation()}
                 onAnimationEnd={handleAnimationEnd}>
-                <div className={classes.usePortal__backdrop}>
-                    <div className={classes.usePortal__wrapper} style={{ width: containerWidth ? containerWidth : ''}}>
+                <div className={classes.usePortal__backdrop} onClick={closeModal}>
+                    <div
+                        className={classes.usePortal__wrapper}
+                        style={{ width: containerWidth ? containerWidth : '' }}
+                        onClick={(e: React.MouseEvent<HTMLDivElement>) => { e.preventDefault(); e.stopPropagation() }}
+                    >
                         <div className={classes.Header}>
                             <div className={classes.Icon}>{headerIcon}</div>
                             <h3 className={classes.Header__title}>{title}</h3>
