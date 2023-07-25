@@ -49,14 +49,6 @@ export const routesAuth = [
         path: GROUPS_PAGE,
         component: Groups
     },
-    // {
-    //     path: GROUP_PAGE,
-    //     component: Group
-    // },
-    // {
-    //     path: GROUP_MEMBER_PAGE,
-    //     component: GroupMember
-    // },
     {
         path: HISTORY_PAGE,
         component: History

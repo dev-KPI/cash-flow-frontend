@@ -13,6 +13,9 @@ export const api = createApi({
         'GroupsController',
         'ReplenishmentsController',
         'ExpensesController',
+        'InvitationController',
+        'CategoryController',
+        'UserController',
         'CategoryExpenses'
     ],
     endpoints: () => ({}),
