@@ -71,8 +71,9 @@ const Categories: FC = () => {
     const [groups, setGroups] = useState<boolean>(false);
     const [categories, setCategories] = useState<ICategory[]>([])
     const [selectedGroup, setSelectedGroup] = useState<number>(0);
-    const [isCategoryModal, setIsCategoryModal] = useState<boolean>(false);
-    const [isGroupModal, setIsGroupModal] = useState<boolean>(false);
+    const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
+    const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
+    const [isGroupMenuModal, setIsGroupMenuModal] = useState<boolean>(false);
     const buttonRef = useRef(null);
     const { categoriesJson } = categoriesObj;
     
@@ -87,14 +88,11 @@ const Categories: FC = () => {
         initializeCategories()
     }, [initializeCategories])
     
-    const openModal = () => {
-        setIsCategoryModal(!isCategoryModal)
-    }
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
         setSelectedGroup(+event.target.value)
     }
     const handleGroupModalOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setIsGroupModal(!isGroupModal)
+        setIsGroupMenuModal(!isGroupMenuModal)
     }
 
     const getGroups = () => {
@@ -123,8 +121,8 @@ const Categories: FC = () => {
             res.push(<SmallModal
                 key={'qwe'}
                 title={'Groups'}
-                active={isGroupModal}
-                setActive={setIsGroupModal}
+                active={isGroupMenuModal}
+                setActive={setIsGroupMenuModal}
                 className={classes.groupsModalNav}
                 children={
                     <div className={classes.groupModalWrapper}>
@@ -148,23 +146,28 @@ const Categories: FC = () => {
     const getCategories = useMemo<JSX.Element[]>(() => {
         return categories.map((item, i) =>
             <CategoriesCard
-                key={uuid()} 
+                key={uuid()}
                 id={i}
                 color={item.color}
                 title={item.title}
-                icon={item.icon} />
+                icon={item.icon}
+                isEditCategoryModal={isEditCategoryModal}
+                setIsEditCategoryModal={setIsEditCategoryModal}
+            />
         )
     }, [categories])
 
-    const getCategoriesModal = () => {
-        return <CategoryModal
-            setIsCategoryModalOpen={setIsCategoryModal}
-            isCategoryModalOpen={isCategoryModal}
-        />
-    }
-
     return (<>
-        {getCategoriesModal()}
+        <CategoryModal
+            setIsCategoryModalOpen={setIsCreateCategoryModal}
+            isCategoryModalOpen={isCreateCategoryModal}
+            mode='create'
+        />
+        <CategoryModal
+            setIsCategoryModalOpen={setIsEditCategoryModal}
+            isCategoryModalOpen={isEditCategoryModal}
+            mode='edit'
+        />
         <main id='CategoriesPage'>
             <div className={classes.CategoriesPage__container}>
                 <h3 className={classes.pageTitle}>Categories</h3>
@@ -176,7 +179,7 @@ const Categories: FC = () => {
                         <h5 className={classes.CategoryTitle}>Category</h5>
                         <CustomButton
                             isPending={false}
-                            callback={openModal}
+                            callback={()=>setIsCreateCategoryModal(!isCreateCategoryModal)}
                             icon="add"
                             type="primary"
                             children="Create new category"

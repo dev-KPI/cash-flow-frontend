@@ -1,19 +1,16 @@
-import React, {FC, ReactNode, useState, useCallback} from "react";
-import ReactDOM from 'react-dom';
+import { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction  } from "react";
 
 //UI
 import classes from './ExpenseModal.module.css';
 import Input from "@components/Input/Input";
-import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 //logic
-import { useWindowSize } from "usehooks-ts";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 
 interface IExpenseModalProps{
     isExpenseModalOpen: boolean
-    setIsExpenseModalOpen: (value: boolean) => void
+    setIsExpenseModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 interface IModalState {
@@ -33,7 +30,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
 
     const [operationValue, setOperationValue] = useState<number>(0);
     const [descriptionValue, setDescriptionValue] = useState<string>('');
-    const {width} = useWindowSize()
 
     //submit
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
@@ -63,33 +59,15 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
 
     return <>
     {showToolTip()}
-    <UseModal
-        modalName="expenseModal"
-        containerWidth={600}
-        containerHeight={416}
+    <UsePortal
         setIsModalOpen={setIsExpenseModalOpen}
         isModalOpen={isExpenseModalOpen}
+        headerIcon={headerIcon}
+        title={titleModal}
         >
             <form
             onSubmit={handleSubmit}>
-                <div 
-                style={{
-                    paddingTop: width > 768 ? '' : '32px',
-                }}
-                className={classes.Header}>
-                    <div className={classes.Icon}>
-                        {headerIcon}
-                    </div>
-                    <h3>{titleModal}</h3>
-                    <div className={classes.closeBtn}>
-                        <CloseButton closeHandler={() => setIsExpenseModalOpen(false)}/>
-                    </div>
-                </div>
-                <div className={classes.line}></div>
                 <ul 
-                style={{
-                    marginTop: width > 768 ? '' : '10%',
-                }}
                 className={classes.OperationBody}>
                     <li className={classes.AmountInput}>
                         <label className={classes.title} htmlFor="salary">{amountTitle}</label>
@@ -124,7 +102,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         />
                 </div>
             </form>
-        </UseModal>
+        </UsePortal>
     </>
 };
   

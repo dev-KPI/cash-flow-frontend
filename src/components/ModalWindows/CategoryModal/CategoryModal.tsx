@@ -1,34 +1,31 @@
-import React, {FC, ReactNode, useState, useCallback, useSyncExternalStore} from "react";
-import ReactDOM from 'react-dom';
-import { useWindowSize } from "usehooks-ts";
+import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction } from "react";
 
 //UI
 import classes from './CategoryModal.module.css';
-import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import Input from "@components/Input/Input";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
         
 //logic
+import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 
 interface ICategoryModalProps{
     isCategoryModalOpen: boolean
-    setIsCategoryModalOpen: (value: boolean) => void
+    setIsCategoryModalOpen: Dispatch<SetStateAction<boolean>>;
+    mode: 'create' | 'edit'
 }
 interface IModalState {
     name: string
     color: string
 }
 
-const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen = false, setIsCategoryModalOpen }) => {
+const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode }) => {
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Category'
     const [nameValue, setNameValue] = useState<string>('');
     const [colorValue, setColorValue] = useState<string>('');
-    const {width} = useWindowSize()
 
     //submit
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
@@ -80,35 +77,26 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen = false, s
             title="Category successfully added"/>
         }
     }, [shouldShowTooltip])
-
+    let labelText = '';
+    if (mode === 'create') {
+        labelText = 'Please сreate new category:'
+    } else if (mode === 'edit') {
+        labelText = 'Please enter the name of the category:'
+    }
     return <>
     {showToolTip()}
-    <UseModal
-        modalName="addCategoryModal"
-        containerWidth={500}
-        containerHeight={660}
+    <UsePortal
         setIsModalOpen={setIsCategoryModalOpen}
         isModalOpen={isCategoryModalOpen}
+        headerIcon={headerIcon}
+        title={titleModal}
+        containerWidth={500}
         >
             <form
             onSubmit={handleSubmit}>
-                <div 
-                style={{
-                    paddingTop: width > 768 ? '' : '32px',
-                }}
-                className={classes.Header}>
-                    <div className={classes.Icon}>
-                        {headerIcon}
-                    </div>
-                    <h3>{titleModal}</h3>
-                    <div className={classes.closeBtn}>
-                        <CloseButton closeHandler={() => setIsCategoryModalOpen(false)}/>
-                    </div>
-                </div>
-                <div className={classes.line}></div>
                 <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameCategory}>
-                        <label className={classes.title} htmlFor="categoryName">Please сreate new category:</label>
+                        <label className={classes.title} htmlFor="categoryName">{labelText}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
                             setFormValue={{type: 'name', callback: setNameValue}}
@@ -164,7 +152,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen = false, s
                         className={`btn-primary`} />
                 </div>
             </form>
-    </UseModal>
+    </UsePortal>
 </>};
   
 export default React.memo(CategoryModal);

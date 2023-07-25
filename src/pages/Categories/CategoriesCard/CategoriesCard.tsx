@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, { FC, Dispatch, SetStateAction } from "react";
 
 //UI
 import classes from './CategoriesCard.module.css'
@@ -9,12 +9,15 @@ interface ICategoriesCard {
     title: string,
     color: string,
     icon: string,
+    isEditCategoryModal: boolean,
+    setIsEditCategoryModal: Dispatch<SetStateAction<boolean>>
 }
 
-const CategoriesCard: FC<ICategoriesCard> = ({id = 1, title = 'Text', color = '#333333', icon = 'bi bi-joystick'}) => {
+const CategoriesCard: FC<ICategoriesCard> = ({ id = 1, title = 'Text', color = '#333333', icon = 'bi bi-joystick', setIsEditCategoryModal, isEditCategoryModal }) => {
     
     
-    return(<li className={classes.item}>
+    return (<li className={classes.item}
+        onClick={() => setIsEditCategoryModal(!isEditCategoryModal)}>
         <NavLink to={'/categories'} className={classes.CategoriesCard}>
             <div 
             style={{backgroundColor: color}}

@@ -1,0 +1,35 @@
+.modal__wrapper {
+    margin: 0 30px;
+}
+
+.text{
+    font-size: 24px;
+    line-height: 26px;
+    color: var(--text);
+    font-weight: 400px;
+    text-align: center;
+}
+
+.text span{
+    color: var(--main-text);
+    font-weight: 700;
+}
+
+.confirmBtnWrapper{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    gap: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+    .modal__wrapper {
+        max-width: 510px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+}
+
