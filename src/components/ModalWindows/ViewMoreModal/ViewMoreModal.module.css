@@ -1,32 +1,7 @@
-/* modal */
-.Header{
-    display: flex;
-    flex-direction: row;
-    overflow: visible;
-    margin: 0px 30px;
-}
-.ModalTitle{
-    margin-left: 30px;
-    composes: pageTitle from "@styles/style.css";
-    font-weight: 500;
-}
 .modal__wrapper {
     margin: 0 30px;
 }
-.Icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    color: var(--main-text);
-}
-.closeBtn{
-    margin-left: auto;
-}
-.line{
-    margin: 25px 0px 24px;
-    border-bottom: 1px solid var(--text);
-}
+
 /* list content */
 .list {
     display: flex;
