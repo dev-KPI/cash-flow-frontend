@@ -31,7 +31,7 @@ const GroupCategoriesCard = () => {
     }, [height, width, categories])
     useEffect(() => {
         setCategories(categoriesByGroup[0].categories)
-    })
+    },[])
     const autoHandleCloseModal = useCallback(() => {
         if (!isModalOpen) setIdModalOpen(-1)
     }, [isModalOpen])
