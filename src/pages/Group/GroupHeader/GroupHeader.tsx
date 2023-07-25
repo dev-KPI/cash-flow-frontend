@@ -10,7 +10,7 @@ import classes from './GroupHeader.module.css'
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
-import ConfirmationModal from '@components/ModalWindows/ConfitmationModal/ConfirmationModal';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 
 
 const GroupHeader = () => {
