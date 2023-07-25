@@ -2,9 +2,10 @@ import React, { FC, Dispatch, SetStateAction, ReactNode, useCallback, useEffect 
 
 //UI
 import classes from './ViewMoreModal.module.css';
-
+import SpecialButton from "@components/Buttons/SpeciaButton/SpecialButton";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+
 interface IViewMoreModalProps{
     isModalOpen: boolean
     setIsModalOpen: Dispatch<SetStateAction<boolean>>
@@ -40,17 +41,14 @@ const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModa
         <div className={classes.modal__wrapper}>
             <ul className={classes.list}>
                 {data}
-                <li className={`${classes.item} ${classes.specialItem}`}
-                    onClick={() => {
+                <SpecialButton
+                    handleClick={() => {
                         setIsModalOpen(!isModalOpen)
                         setIsAddModalOpen(!isAddModalOpen)
                     }}
-                >
-                    <div className={classes.dashed}>
-                        <i className="bi bi-plus-lg"></i>
-                    </div>
-                    <h6 className={classes.itemTitle}>Add More</h6>
-                </li>
+                    className={classes.specialItem}
+                    type='add'
+                />
             </ul>
             
         </div>

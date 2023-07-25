@@ -1,8 +1,19 @@
 .item {
-    composes: item from "@pages/Dashboard/UserCategoriesCard/UserCategoriesCard.module.css";
+    width: 65px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0 auto;
+    gap: 5px;
+
     background: linear-gradient(var(--item-hover) 0 0) no-repeat;
     background-size: 0%;
     border-radius: 7px;
+}
+
+.item:hover {
+    background-size: 100%;
+    cursor: pointer;
 }
 
 .expenseName {

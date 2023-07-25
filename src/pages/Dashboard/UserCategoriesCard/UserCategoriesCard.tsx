@@ -12,8 +12,7 @@ import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCa
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
-import AddMoreButton from '@components/Buttons/AddMoreButton/AddMoreButton';
-import ViewMoreButton from '@components/Buttons/ViewMoreButton/ViewMoreButton';
+import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 
 
 export interface ISortedCategoryItem {
@@ -147,21 +146,24 @@ const UserCategoriesCard = () => {
                         categories?.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
-                                    <AddMoreButton
+                                    <SpecialButton
                                         handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
                                         className={classes.specialItem}
+                                        type='add'
                                     />
                             </div> 
                             :
                         categories?.length! >= totalItems ?
-                            <ViewMoreButton 
+                            <SpecialButton 
                                 handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
                                 className={classes.specialItem}
+                                type='view'
                             />
                             :
-                            <AddMoreButton
+                            <SpecialButton
                                 handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
                                 className={classes.specialItem}
+                                type='add'
                             />
                         }
                     </ul>    

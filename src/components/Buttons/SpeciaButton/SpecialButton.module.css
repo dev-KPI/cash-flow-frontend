@@ -6,6 +6,7 @@
     flex: 1 0 auto;
     gap: 5px;
 }
+
 .item:hover {
     background-size: 100%;
     cursor: pointer;
@@ -14,6 +15,7 @@
     composes: smallItemTitle from "@styles/style.css";
     margin-top: 4px;
 }
+
 .item:hover>* {
     color: var(--main-text);
     border-color: var(--main-text);
@@ -25,8 +27,8 @@
     justify-content: center;
     align-items: center;
 
-    width: 43px;
-    height: 43px;
+    width: 46px;
+    height: 46px;
     border: 3px dashed var(--text);
     border-radius: 50%;
     background-color: transparent;
@@ -36,10 +38,18 @@
 .dashed i {
     -webkit-text-stroke: 1.5px;
 }
-
+@media only screen and (max-width: 1028px) {
+    .itemTitle {
+        margin-bottom: 5px;
+    }
+}
+        
 @media only screen and (max-width: 768px) {
     .dashed {
-        width: 39px;
-        height: 39px;
+        width: 42px;
+        height: 42px;
+    }
+    .itemTitle {
+        margin-bottom: 0;
     }
 }
