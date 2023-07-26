@@ -7,6 +7,6 @@ echo "Building app..."
 npm run build
 
 echo "Deploying files to server"
-scp -r build/* $SHELL_ROOT:/var/www/cash-money-front
+scp -r build/* $SHELL_ROOT:/var/www/cash-money-frontend/
 
 echo "Done!"

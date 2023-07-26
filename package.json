@@ -52,9 +52,7 @@
     "webpack-cli": "^5.0.1"
   },
   "scripts": {
-    "hostStart": "PORT=3000 HOST=46.101.150.9 craco start",
     "start": "craco start",
-    "hostBuild": "PORT=3000 HOST=46.101.150.9 craco build",
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",

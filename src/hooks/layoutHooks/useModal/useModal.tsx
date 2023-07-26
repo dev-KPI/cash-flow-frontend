@@ -57,7 +57,6 @@ const useModal: FC<IModalProps> = ({
             if (modalName === 'addCategoryModal' ||
                 modalName === 'addGroupModal') {
                 portalPlace.style.zIndex = '9999';
-                console.log(modalName);
             }
             portalPlace.style.top = '0';
             portalPlace.style.left = '0';
