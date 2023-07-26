@@ -146,17 +146,14 @@
 .item{
     padding: 10px;
     border-radius: 7px;
-    cursor: pointer;
-}
-.itemWrapper {
     display: flex;
     text-align: center;
     align-items: center;
     gap: 4px;
-    width: 100%;
     color: var(--main-text);
-}
 
+    cursor: pointer;
+}
 .item:hover{
     background-color: var(--item-hover);
 }

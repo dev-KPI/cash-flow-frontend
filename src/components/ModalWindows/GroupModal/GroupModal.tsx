@@ -1,37 +1,34 @@
-import React, {FC, ReactNode, useState, useCallback} from "react";
-import { useWindowSize } from "usehooks-ts";
+import React, { FC, Dispatch, SetStateAction, ReactNode, useState, useCallback} from "react";
 
 //UI
 import classes from './GroupModal.module.css';
-import UseModal from "@hooks/layoutHooks/useModal/useModal";
 import Input from "@components/Input/Input";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import uuid from "react-uuid";
-        
+
 //logic
+import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+
 interface IGroupModalProps{
     isGroupModalOpen: boolean
-    setIsGroupModalOpen: (value: boolean) => void
+    setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
+    mode: 'create' | 'edit'
 }
 interface IModalState {
     name: string
     color: string
 }
 
-const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsGroupModalOpen }) => {
-
+const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode }) => {
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const [nameValue = '', setNameValue] = useState<string>('');
-    const [colorValue = '', setColorValue] = useState<string>('');
-    const {width} = useWindowSize()
+    const [nameValue, setNameValue] = useState<string>('');
+    const [colorValue, setColorValue] = useState<string>('');
 
     //submit
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-    const [shouldShowTooltip , setShouldShowTooltip] = useState<boolean>(false);
+    const [shouldShowTooltip, setShouldShowTooltip] = useState<boolean>(false);
 
     //pickers
     const [pickedColor, setPickedColor] = useState<string>('#FF2D55');
@@ -46,7 +43,7 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
         '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00'
     ];
 
-    const [icon = 'bi bi-people', setIcon] = useState<string>('');
+    const [icon, setIcon] = useState<string>('bi bi-people');
     const changeIcon = (e: React.MouseEvent<HTMLDivElement>, icon: string) => {setIcon(icon)};
     const iconDisplayed = <i style={{fontSize: '24px', color: 'var(--main-text)'}} className={icon}></i>
     const icons: string[] = [
@@ -79,65 +76,56 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
             title="Group successfully added"/>
         }
     }, [shouldShowTooltip])
-
+    let labelText = '';
+    if (mode === 'create') {
+        labelText = 'Please сreate new group:'
+    } else if (mode === 'edit') {
+        labelText = 'Please enter the name of the group:'
+    }
     return <>
     {showToolTip()}
-    <UseModal
-        modalName="editGroupModal"
-        containerWidth={500}
-        containerHeight={660}
-        setIsModalOpen={setIsGroupModalOpen}
-        isModalOpen={isGroupModalOpen}
+        <UsePortal
+            isModalOpen={isGroupModalOpen}
+            setIsModalOpen={setIsGroupModalOpen}
+            headerIcon={headerIcon}
+            title={titleModal}
         >
             <form
-            onSubmit={handleSubmit}>
-                <div 
-                style={{
-                    paddingTop: width > 768 ? '' : '32px',
-                }}
-                className={classes.Header}>
-                    <div className={classes.Icon}>
-                        {headerIcon}
-                    </div>
-                    <h3>{titleModal}</h3>
-                    <div className={classes.closeBtn}>
-                        <CloseButton closeHandler={() => setIsGroupModalOpen(false)}/>
-                    </div>
-                </div>
-                <div className={classes.line}></div>
+                onSubmit={handleSubmit}>
                 <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameGroup}>
-                        <label className={classes.title} htmlFor="groupName">Please enter the name of the group:</label>
+                        <label className={classes.title} htmlFor="groupName">{labelText}</label>
                         <div className={classes.inputWrapper}>
-                            <Input 
-                            setFormValue={{type: 'name', callback: setNameValue}}
-                            isInputMustClear={!isGroupModalOpen} 
-                            inputType="name" id="groupName" 
-                            name="groupName" placeholder="Name"/>
+                            <Input
+                                setFormValue={{ type: 'name', callback: setNameValue }}
+                                isInputMustClear={!isGroupModalOpen}
+                                inputType="name" id="groupName"
+                                name="groupName" placeholder="Name" />
                         </div>
                     </div>
                     <div className={classes.textAreaGroup}>
                         <label className={classes.title} htmlFor="groupDesc">Description:</label>
                         <div className={classes.textAreaWrapper}>
                             <Input
-                            setFormValue={{type: 'area', callback: setNameValue}}
-                            isInputMustClear={!isGroupModalOpen} 
-                            inputType="area" id="groupDesc" 
-                            name="groupDesc" placeholder="Description"/>
+                                setFormValue={{ type: 'area', callback: setNameValue }}
+                                isInputMustClear={!isGroupModalOpen}
+                                inputType="area" id="groupDesc"
+                                name="groupDesc" placeholder="Description" />
                         </div>
                     </div>
-                    <div style={{marginTop: '16px'}}>
+                    <div style={{ marginTop: '16px' }}>
                         <Accordion>
                             <AccordionTab title="Select color" choosedItem={light}>
                                 <div className={classes.pickBody}>
                                     {
-                                        colors.map( (el, i) => 
-                                            <div 
+                                        colors.map((el, i) =>
+                                            <div
                                                 key={i}
                                                 onClick={(e) => changeColor(e, el)}
-                                                style={{width: '24px', height: '24px', 
-                                                borderRadius: '100%', backgroundColor: el, 
-                                                cursor: 'pointer'
+                                                style={{
+                                                    width: '24px', height: '24px',
+                                                    borderRadius: '100%', backgroundColor: el,
+                                                    cursor: 'pointer'
                                                 }}>
                                             </div>)
                                     }
@@ -146,21 +134,24 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
                             <AccordionTab title="Select icon" choosedItem={iconDisplayed}>
                                 <div className={classes.pickBody}>
                                     {
-                                        icons.map((el,i) => 
-                                            <div 
+                                        icons.map((el, i) =>
+                                            <div
                                                 key={i}
                                                 onClick={(e) => changeIcon(e, el)}
-                                                style={{fontSize: '24px', 
-                                                cursor: 'pointer'}}>
-                                                <i style={{color: 'var(--main-text)'}} className={el}></i>
+                                                style={{
+                                                    fontSize: '24px',
+                                                    cursor: 'pointer'
+                                                }}>
+                                                <i style={{ color: 'var(--main-text)' }} className={el}></i>
                                             </div>)
                                     }
                                 </div>
                             </AccordionTab>
                         </Accordion>
                     </div>
-                    <div className={classes.confirmBtnWrapper}>
-                        <CustomButton
+                    <div className={classes.btnWrapper}
+                        style={{ justifyContent: mode === 'edit' ? 'space-between' : 'center' }}>
+                        {mode === 'edit' && <CustomButton
                             isPending={false}
                             children="Disband"
                             btnWidth={170}
@@ -170,7 +161,7 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
                             background="outline"
                             disableScale={true}
                             callback={() => { }}
-                        />
+                        />}
                         <CustomButton
                             isPending={isSubmiting}
                             children="Confirm"
@@ -183,7 +174,7 @@ const EditGroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen = false, setIsG
                     </div>
                 </div>
             </form>
-    </UseModal>
+        </UsePortal>
 </>};
   
-export default React.memo(EditGroupModal);
+export default React.memo(GroupModal);

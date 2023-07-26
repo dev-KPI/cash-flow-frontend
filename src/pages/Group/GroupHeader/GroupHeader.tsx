@@ -1,3 +1,5 @@
+import { useState } from 'react';
+//logic
 import { GroupObj } from '@pages/GroupObj';
 import { IGroup } from '@pages/Groups/GroupsPage';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
@@ -8,11 +10,12 @@ import classes from './GroupHeader.module.css'
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 
 
 const GroupHeader = () => {
     const { groupId } = useParams<{ groupId: string }>();
-
+    const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
     const breadcrumbs = [
         {
             'title': 'Dashboard',
@@ -27,9 +30,10 @@ const GroupHeader = () => {
             'link': `/group/${groupId}/history`
         },
     ]
-    const handleSubmit = () => {
-        console.log(1);
+    const handleLeave = () => {
+        setIsLeaveModalOpen(!isLeaveModalOpen);
     }
+
     let groups: IGroup[] = GroupObj;
     let groupTitle = 'Not found'
     let memberIcons: string[] = [];
@@ -52,40 +56,48 @@ const GroupHeader = () => {
     }
     
     return (
-        <div className={classes.header}>
-            <div className={classes.header__container}>
-                <h1 className={`${classes.title} pageTitle`}>{groupTitle}</h1>
-                <nav className={classes.breadcrumbs}>
-                    <Breadcrumbs breadcrumbs={breadcrumbs} />
-                </nav>
-                <div className={classes.header__right}>
-                    <div className={classes.members}>
-                        {getMemberIcons()}
-                        {memberIcons.length > 3 ?
-                            <div className={classes.avatar}>
-                                <div className={classes.avatarLeftMembers}
-                                    style={{ backgroundColor: 'var(--main-green)' }}></div>
-                                <p className={classes.leftMembers}
-                                    style={{ color: 'var(--main-green)' }}
-                                >+{memberIcons.length - 3}
-                                </p>
-                            </div>
-                            : null
-                        }
+        <>
+            {<ConfirmationModal
+                isConfirmationModalOpen={isLeaveModalOpen}
+                setIsConfirmationModalOpen={setIsLeaveModalOpen}
+                mode='leave'
+                groupName='Monkey'
+            />}
+            <div className={classes.header}>
+                <div className={classes.header__container}>
+                    <h1 className={`${classes.title} pageTitle`}>{groupTitle}</h1>
+                    <nav className={classes.breadcrumbs}>
+                        <Breadcrumbs breadcrumbs={breadcrumbs} />
+                    </nav>
+                    <div className={classes.header__right}>
+                        <div className={classes.members}>
+                            {getMemberIcons()}
+                            {memberIcons.length > 3 ?
+                                <div className={classes.avatar}>
+                                    <div className={classes.avatarLeftMembers}
+                                        style={{ backgroundColor: 'var(--main-green)' }}></div>
+                                    <p className={classes.leftMembers}
+                                        style={{ color: 'var(--main-green)' }}
+                                    >+{memberIcons.length - 3}
+                                    </p>
+                                </div>
+                                : null
+                            }
+                        </div>
+                        <CustomButton
+                            isPending={false}
+                            children="Leave group"
+                            btnWidth={120}
+                            btnHeight={30}
+                            icon={'none'}
+                            type="danger"
+                            background={'outline'}
+                            callback={handleLeave}
+                            className={`${classes.leaveButton} btn-danger outline`} />
                     </div>
-                    <CustomButton
-                        isPending={false}
-                        children="Leave group"
-                        btnWidth={120}
-                        btnHeight={30}
-                        icon={'none'}
-                        type="danger"
-                        background={'outline'}
-                        callback={handleSubmit}
-                        className={`${classes.leaveButton} btn-danger outline`} />
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

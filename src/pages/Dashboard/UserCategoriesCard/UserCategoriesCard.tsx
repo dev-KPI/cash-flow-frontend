@@ -12,6 +12,7 @@ import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCa
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
+import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 
 
 export interface ISortedCategoryItem {
@@ -89,6 +90,7 @@ const UserCategoriesCard = () => {
         return <CategoryModal
             isCategoryModalOpen={isCategoryModalOpen}
             setIsCategoryModalOpen={setIsCategoryModalOpen}
+            mode='create'
         />
     }
 
@@ -144,30 +146,25 @@ const UserCategoriesCard = () => {
                         categories?.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
-                                <li className={`${classes.item} ${classes.specialItem}`}
-                                onClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}>
-                                    <div className={classes.dashed}>
-                                        <i className="bi bi-plus-lg"></i>
-                                    </div>
-                                    <h6 className={classes.itemTitle}>Add More</h6>
-                                </li>
+                                    <SpecialButton
+                                        handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+                                        className={classes.specialItem}
+                                        type='add'
+                                    />
                             </div> 
                             :
                         categories?.length! >= totalItems ?
-                            <li 
-                            className={`${classes.item} ${classes.specialItem}`} onClick={()=>setIsMoreModalOpen(!isMoreModalOpen)}>
-                                <div className={classes.dashed}>
-                                    <i className="bi bi-chevron-right"></i>
-                                </div>
-                                <h6 className={classes.itemTitle}>View More</h6>
-                            </li>
+                            <SpecialButton 
+                                handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+                                className={classes.specialItem}
+                                type='view'
+                            />
                             :
-                            <li className={`${classes.item} ${classes.specialItem}`}onClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}>
-                                <div className={classes.dashed}>
-                                    <i className="bi bi-plus-lg"></i>
-                                </div>
-                                <h6 className={classes.itemTitle}>Add More</h6>
-                            </li>
+                            <SpecialButton
+                                handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+                                className={classes.specialItem}
+                                type='add'
+                            />
                         }
                     </ul>    
                 </div>

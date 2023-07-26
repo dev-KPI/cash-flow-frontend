@@ -8,7 +8,8 @@ import classes from './UserGroupsCard.module.css'
 import UserGroupsCardItem from '@pages/Dashboard/UserGroupsCardItem/UserGroupsCardItem';
 import UserGroupsCardLoader from '@pages/Dashboard/UserGroupsCard/UserGroupsCardLoader';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
-import GroupModal from '@components/ModalWindows/GroupModal/CreateGroupModal';
+import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
+import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 const json = {
     "groups": [
         {
@@ -81,6 +82,7 @@ const UserGroupsCard = () => {
         return <GroupModal
             isGroupModalOpen={isGroupModalOpen}
             setIsGroupModalOpen={setIsGroupModalOpen}
+            mode='create'
         />
     }
     const getViewMoreModal = () => {
@@ -115,29 +117,25 @@ const UserGroupsCard = () => {
                         groups.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
-                                <li className={`${classes.item} ${classes.specialItem}`}
-                                onClick={()=>setIsGroupModalOpen(!isGroupModalOpen)}>
-                                    <div className={classes.dashed}>
-                                        <i className="bi bi-plus-lg"></i>
-                                    </div>
-                                    <h6 className={classes.itemTitle}>Add More</h6>
-                                </li>
+                                <SpecialButton
+                                    handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
+                                    className={classes.specialItem}
+                                    type='add'
+                                />
                             </div>
                         :
                         groups.length >= 5 ?
-                            <li className={`${classes.item} ${classes.specialItem}`}onClick={()=>setIsMoreModalOpen(!isMoreModalOpen)}>
-                                <h6 className={classes.itemTitle}>View More</h6>
-                                <div className={classes.dashed}>
-                                    <i className="bi bi-chevron-right"></i>
-                                </div>
-                            </li>
+                            <SpecialButton
+                                    handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+                                    className={classes.specialItem}
+                                    type='view'
+                                />
                             :
-                            <li className={`${classes.item} ${classes.specialItem}`}onClick={()=>setIsGroupModalOpen(!isGroupModalOpen)}>
-                                <h6 className={classes.itemTitle}>Add More</h6>
-                                <div className={classes.dashed}>
-                                    <i className="bi bi-plus-lg"></i>
-                                </div>
-                            </li>
+                            <SpecialButton
+                                handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
+                                className={classes.specialItem}
+                                type='add'
+                            />
                         }
                     </ul>
                 </div>

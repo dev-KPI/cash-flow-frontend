@@ -10,7 +10,11 @@ interface ICloseButtonProps {
 
 const CloseButton: FC<ICloseButtonProps> = ({closeHandler, size = 42}) => {
     return(<>
-        <button className={classes.closeModalBtn} onClick={() => closeHandler()}>
+        <button className={classes.closeModalBtn}
+            onClick={(e) => {
+            e.preventDefault();
+            closeHandler();
+        }}>
             <i style={{fontSize: size + 'px'}} className="bi bi-x-lg"></i>
         </button>
     </>)
