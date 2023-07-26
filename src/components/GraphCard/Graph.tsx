@@ -8,7 +8,7 @@ import classes from './GraphCard.module.css'
 import { Bar, Chart } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale,
     BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction,
-    ChartType, TooltipModel, Element } from "chart.js";
+    ChartType, TooltipModel, Element } from "chart.js/auto";
 import { Context } from 'vm';
 
 //store
