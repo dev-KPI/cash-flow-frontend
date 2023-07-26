@@ -33,10 +33,6 @@ export const routesNotAuth = [
 ];
 export const routesAuth = [
     {
-        path: '/',
-        component: Dashboard
-    },
-    {
         path: DASHBOARD_PAGE,
         component: Dashboard
     }, {

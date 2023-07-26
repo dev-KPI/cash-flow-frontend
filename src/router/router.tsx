@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState, useCallback } from 'react';
 
 import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import { routesAuth, groupRoutes, routesNotAuth } from './routes'
+import { Router as RemixRouter, To, LazyRouteFunction } from "@remix-run/router";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
@@ -49,6 +50,9 @@ const Router: FC = () => {
                         element: < Component />
                     })
                 ),{
+                    path: '/',
+                    element: <Navigate to="/dashboard" />,
+                },{
                     path: '/login',
                     element: <Navigate to="/dashboard" />,
                 },{
@@ -71,7 +75,10 @@ const Router: FC = () => {
         },
     ])
     
-    return <RouterProvider router={AuthStatus?.status ? BrowserRoutesForAuth : BrowserRoutesForNotAuth}/>
+    const getRouter: RemixRouter = (isFetching) ? BrowserRoutesForAuth :
+        !!AuthStatus?.status ? BrowserRoutesForAuth : BrowserRoutesForNotAuth
+    
+    return <RouterProvider router={getRouter}/>
 }
 
 export default Router;
