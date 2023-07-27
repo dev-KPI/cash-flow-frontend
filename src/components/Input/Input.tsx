@@ -72,7 +72,7 @@ const Input: FC<IInputProps> = ({
     //----------------------------------------------{NAME INPUT}-----------------------------------------------------
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
-            const regExp = /[ ]/ig
+            const regExp = /[^a-zA-Zа-яА-Я,^і^І, ]+/g
             if (setFormValue.type === 'name') { 
                 setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
             }
@@ -94,12 +94,13 @@ const Input: FC<IInputProps> = ({
     const areaInput = <InputTextarea
     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setInputStringValue(e.currentTarget.value)
-        if (setFormValue.type === 'area') { 
+        if (setFormValue.type === 'area') {
             setFormValue.callback(e.currentTarget.value)
         }
     }} 
     maxLength={200}
     style={{
+        fontFamily: 'inter',
         height: '100px',
         resize: 'none', 
         border: 'none',
