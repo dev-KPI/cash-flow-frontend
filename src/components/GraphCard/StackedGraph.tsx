@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 
 //logic
 import DateService from '@services/DateService/DateService';
-import { customColors, numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { shaffledColors, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 //UI
 import classes from './GraphCard.module.css'
 import {  Chart } from "react-chartjs-2";
@@ -122,7 +122,7 @@ const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
                 label: user,
                 key: data.map((el) => new Date(el.date).toISOString().split('T')[0]),
                 data: getAmountsByUserId(data, id),
-                backgroundColor: customColors[i]
+                backgroundColor: shaffledColors[i]
             };
         });
     }, [data]);

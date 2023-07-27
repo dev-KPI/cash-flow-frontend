@@ -3,7 +3,7 @@ import { categoryExpenses } from '../../Expenses';
 //UI
 import classes from './GroupChartsCard.module.css';
 import ChartCard, { IMembersExpensesChart } from '@components/ChartCard/ChartCard';
-import { customColors } from '@services/UsefulMethods/UIMethods';
+import { shaffledColors } from '@services/UsefulMethods/UIMethods';
 
 
 
@@ -67,7 +67,7 @@ const GroupChartsCard = () => {
     const members = MembersObj.map((item, index) => {
         const member = item.member;
         return {
-            member: { ...member, color: customColors[MembersObj.length%(index+1)] },
+            member: { ...member, color: shaffledColors[MembersObj.length%(index+1)] },
             amount: item.amount,
         };
     });
