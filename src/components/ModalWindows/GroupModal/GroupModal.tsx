@@ -9,28 +9,23 @@ import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import { useCreateGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 
 interface IGroupModalProps{
+    groupId?: number,
+    setGroupId: Dispatch<SetStateAction<number>>,
     isGroupModalOpen: boolean
     setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
     mode: 'create' | 'edit'
 }
-interface IModalState {
-    name: string
-    color: string
-}
 
-const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode }) => {
+const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId }) => {
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const [nameValue, setNameValue] = useState<string>('');
-    const [colorValue, setColorValue] = useState<string>('');
-
-    //submit
-    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-    const [shouldShowTooltip, setShouldShowTooltip] = useState<boolean>(false);
 
     //pickers
+    const [nameValue, setNameValue] = useState<string>('');
+    const [descValue, setDescValue] = useState<string>('');
     const [pickedColor, setPickedColor] = useState<string>('#FF2D55');
     const changeColor = (e: React.MouseEvent<HTMLDivElement>, color: string) => {setPickedColor(color)};
     const light = <div style={{backgroundColor: pickedColor, boxShadow: '0px 0px 8px ' + pickedColor}} className={classes.colorPicked}></div>
@@ -39,27 +34,62 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     const changeIcon = (e: React.MouseEvent<HTMLDivElement>, icon: string) => {setIcon(icon)};
     const iconDisplayed = <i style={{fontSize: '24px', color: 'var(--main-text)'}} className={icon}></i>
 
-    const postObject: IModalState = {
-        name: nameValue,
-        color: colorValue
-    };
+    const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
+    const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
 
-    const handleSubmit = async() => {
-        setIsSubmiting(true)
-        await setTimeout(() => {
-            setShouldShowTooltip(true)
-            setIsSubmiting(false);
-            alert(JSON.stringify(postObject, null, 2));
-            setIsGroupModalOpen(false);
-        }, 3000);
+    const closeModalHandler = () => {
+        setIsGroupModalOpen(false);
+        setGroupId(0);
     }
-    const showToolTip = useCallback(() => {
-        if (shouldShowTooltip) {
-            return <StatusTooltip
-            type="success" 
-            title="Group successfully added"/>
+
+    const handleSubmit = () => {
+        if(mode === 'create'){
+            createGroup({
+                title: nameValue,
+                description: descValue,
+                icon_url: icon,
+                color_code: pickedColor,
+            })
+            closeModalHandler();
+        } else if(mode === 'edit'){
+            if(groupId){
+                updateGroup({
+                    id: groupId,
+                    title: nameValue,
+                    description: descValue,
+                    icon_url: icon,
+                    color_code: pickedColor,
+                })
+                closeModalHandler();
+            }
         }
-    }, [shouldShowTooltip])
+    }
+
+    const showToolTip = useCallback(() => {
+        if(mode === 'create'){
+            if (isGroupCreated) {
+                return <StatusTooltip
+                type="success" 
+                title={`Group ${nameValue} successfully added`}/>
+            } else if(isGroupCreatingError) {
+                return <StatusTooltip
+                type="error" 
+                title={`Group ${nameValue} not added`}/>
+            }
+        } else {
+            if (isGroupUpdated) {
+                return <StatusTooltip
+                type="success" 
+                title={`Group ${nameValue} successfully updated`}/>
+            } else if(isGroupUpdatingError) {
+                return <StatusTooltip
+                type="error" 
+                title={`Group ${nameValue} not updated`}/>
+            }
+        }
+    }, [createGroup, isGroupCreating, isGroupCreated, isGroupCreatingError, 
+        updateGroup, isGroupUpdating, isGroupUpdated, isGroupUpdatingError])
+
     let labelText = '';
     if (mode === 'create') {
         labelText = 'Please сreate new group:'
@@ -91,7 +121,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                         <label className={classes.title} htmlFor="groupDesc">Description:</label>
                         <div className={classes.textAreaWrapper}>
                             <Input
-                                setFormValue={{ type: 'area', callback: setNameValue }}
+                                setFormValue={{ type: 'area', callback: setDescValue }}
                                 isInputMustClear={!isGroupModalOpen}
                                 inputType="area" id="groupDesc"
                                 name="groupDesc" placeholder="Description" />
@@ -147,7 +177,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             callback={() => { }}
                         />}
                         <CustomButton
-                            isPending={isSubmiting}
+                            isPending={isGroupCreating}
                             children="Confirm"
                             btnWidth={170}
                             btnHeight={36}

@@ -55,6 +55,7 @@ export interface Group {
 
 const UserGroupsCard = () => {
     const [groups, setGroups] = useState<Group[]>([]);
+    const [groupId, setGroupId] = useState<number>(0);
     const [totalItems, setTotalItems] = useState<number>(11);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [isGroupModalOpen, setIsGroupModalOpen] = useState<boolean>(false);
@@ -80,6 +81,7 @@ const UserGroupsCard = () => {
     }
     const getGroupModal = () => {
         return <GroupModal
+            setGroupId={setGroupId}
             isGroupModalOpen={isGroupModalOpen}
             setIsGroupModalOpen={setIsGroupModalOpen}
             mode='create'
