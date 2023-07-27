@@ -2,7 +2,8 @@ import React, { FC, MouseEvent, ReactNode, useState, SetStateAction, Dispatch } 
 import { Link, useNavigate } from 'react-router-dom';
 
 //store
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { useActionCreators, useAppDispatch, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { UserSliceActions } from "@store/User/UserSlice";
 //logic
 //UI
 import classes from './ContextUser.module.css'
@@ -16,6 +17,11 @@ interface IContenxtUserProps {
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
 
+    const UserSliceDispatch = useActionCreators(UserSliceActions);
+    
+    const LogOut = () => {
+        UserSliceDispatch.setIsAuth(false)
+    }
 
     return (
         <SmallModal
@@ -38,9 +44,11 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
                         </Link>
                     </li>
                     <li className={classes.item}>
-                        <Link to={"https://api.cash-money.store/logout"} style={{cursor: 'pointer'}}>
-                            <h4 className={classes.Link}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h4>
-                        </Link>
+                        <button onClick={LogOut}>
+                            <Link to={"https://api.cash-money.store/logout"} style={{cursor: 'pointer'}}>
+                                <h4 className={classes.Link}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h4>
+                            </Link>
+                        </button>
                     </li>
                 </ul>}
         />

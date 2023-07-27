@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
 //logic
-import { useCreateGroupMutation, useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './Dashboard.module.css'                                     
 import MonthPicker from '@components/MonthPicker/MonthPicker';
@@ -35,7 +35,7 @@ const Dashboard = () => {
                         <UserChartCard/>
                         <UserGroupsCard />
                     </div>
-                    <UserAccountCard />
+                    <UserAccountCard/>
                     <UserGraphCard />
                     <UserHistoryCard />
                 </div>

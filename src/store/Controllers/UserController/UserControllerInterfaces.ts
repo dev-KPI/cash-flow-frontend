@@ -1,5 +1,7 @@
 import IUser from "@models/IUser";
 
-export interface IGetAuthStatus {
-    status: boolean
+export interface IGetCurrentUserInfo extends IUser{}
+
+export interface IGetCurrentUserBalance {
+    balance: number
 }

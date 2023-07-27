@@ -10,7 +10,7 @@ import {
     Chart as ChartJS, CategoryScale, LinearScale,
     BarElement, Title, Tooltip, Legend, ChartData, Tick, TooltipPositionerFunction,
     ChartType, TooltipModel, Element, TooltipItem
-} from "chart.js";
+} from "chart.js/auto";
 import { Context } from 'vm';
 
 //store

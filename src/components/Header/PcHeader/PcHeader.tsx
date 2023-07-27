@@ -10,11 +10,11 @@ import DesktopNotifications from '@components/Header/Notifications/DesktopNotifi
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import { breadcrumbs } from './breadcrumbs';
 import ContextUser from '@components/ContextUser/ContextUser';
-//store
-import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+//logic
+import IHeaderProps from '../HeaderInterfaces';
 
 
-const HeaderSite: FC = () => {
+const HeaderSite: FC<IHeaderProps> = ({User}) => {
 
     const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
     const notificationsButtonRef = useRef(null);
@@ -33,7 +33,9 @@ const HeaderSite: FC = () => {
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
                     <div className={classes.header__logo}>
-                        <img src={Logo} alt="logo" />
+                        <div className={classes.logo__wrapper}>
+                            <img src={Logo} alt="logo" />
+                        </div>
                         <h1 className={classes.title}>Cash<span>Flow</span></h1>
                     </div>
                     <div className={classes.header__menu}>
@@ -59,11 +61,11 @@ const HeaderSite: FC = () => {
                         onClick={e => setIsContextUserOpen(!isContextUserOpen)}
                         ref={contextButtonRef}>
                         <div className={classes.header__profile}>
-                            <img style={{borderRadius: '10px'}} src={ProfileIcon} alt="icon" />
+                            <img style={{borderRadius: '50%'}} src={User.picture} alt="icon" />
                             <div className={classes.profile__inner}>
                                 <div className={classes.profile__main}>
-                                    <h4 className={classes.profile__name}>{`Adam`} {`Breban`}</h4>
-                                    <p className={classes.profile__email}>{`adambreban@gmail.com`}</p>
+                                    <h4 className={classes.profile__name}>{User.first_name} {User.last_name}</h4>
+                                    <p className={classes.profile__email}>{User.login}</p>
                                 </div>
                                 <i className={`bi bi-chevron-down ${classes.chevron} ${getChevronClass}`}></i>
                             </div>
