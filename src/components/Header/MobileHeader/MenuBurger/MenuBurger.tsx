@@ -3,6 +3,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
+import IHeaderProps from "@components/Header/HeaderInterfaces";
+import { IGetCurrentUserInfo } from "@store/Controllers/UserController/UserControllerInterfaces";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 //UI
@@ -12,15 +14,17 @@ import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
+import { UserSliceActions } from "@store/User/UserSlice";
 
 
 
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
-    isMenuActive: boolean
+    isMenuActive: boolean,
+    User: IGetCurrentUserInfo
 }
 
-const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
+const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
@@ -31,6 +35,11 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
         return res
     }
 
+    const UserSliceDispatch = useActionCreators(UserSliceActions);
+    
+    const LogOut = () => {
+        UserSliceDispatch.setIsAuth(false)
+    }
 
     return <>
         <nav className={classes.burgernav}>
@@ -42,10 +51,10 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
                 </div>
             </div>
             <div className={classes.burgernav__account}>
-                <img alt="Avatar" src={userIcon} width="46px" style={{borderRadius: '10px'}}/>
+                <img alt="Avatar" src={User.picture} width="46px" style={{borderRadius: '50%'}}/>
                 <div className={classes.account__info}>
-                    <h2 className={classes.title}>{`Adam`}</h2>
-                    <h2 className={classes.title}>{`Breban`}</h2>
+                    <h2 className={classes.title}>{User.first_name}</h2>
+                    <h2 className={classes.title}>{User.last_name}</h2>
                     <p className={classes.balance}>{numberWithCommas(4124)}$</p>
                 </div>
             </div>
@@ -123,10 +132,12 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
             <div className={classes.burgernav__downside}>
                 <ul className={classes.list}>
                     <li>
-                        <Link to={"https://api.cash-money.store/logout"} key={'erf2'} className={classes.item}>
-                            <i className="bi bi-box-arrow-left"></i>
-                            <h3 className={classes.title}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h3>
-                        </Link>
+                        <button onClick={LogOut}>
+                            <Link to={"https://api.cash-money.store/logout"} key={'erf2'} className={classes.item}>
+                                <i className="bi bi-box-arrow-left"></i>
+                                <h3 className={classes.title}>Log <span style={{ color: 'var(--main-green)' }}>Out</span></h3>
+                            </Link>
+                        </button>
                     </li>
                 </ul>
             </div>

@@ -19,7 +19,6 @@ import NotFound from '@pages/NotFound/NotFound';
 const Router: FC = () => {
 
     const UserSliceStore = useAppSelector<IUserState>(state => state.persistedUserSlice)
-    const UserSliceDispatch = useActionCreators(UserSliceActions);
 
     const BrowserRoutesForNotAuth = createBrowserRouter([
         {

@@ -1,7 +1,7 @@
 import { api } from '@store/api';
 
 //types
-import { IGetCurrentUserInfo } from './UserControllerInterfaces';
+import { IGetCurrentUserBalance, IGetCurrentUserInfo } from './UserControllerInterfaces';
 
 
 export const UserApiSlice = api.injectEndpoints({
@@ -32,11 +32,22 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [{ type: 'UserController' as const, id: 0 }],
         }),
+        getCurrentUserBalance: builder.query<IGetCurrentUserBalance, null>({
+            query: () => ({
+                url: `users/user-balance`,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: [{ type: 'UserController' as const, id: 0 }],
+        }),
     }),
     overrideExisting: false,
 })
 
 export const {
     useGetUserAuthStatusQuery,
-    useGetCurrentUserInfoQuery
+    useGetCurrentUserInfoQuery,
+    useGetCurrentUserBalanceQuery
 } = UserApiSlice

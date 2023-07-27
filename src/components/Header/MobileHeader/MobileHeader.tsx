@@ -3,8 +3,7 @@ import React, { FC } from "react";
 //logic
 import {useMemo, useRef, useState, useEffect} from 'react';
 import { Link } from "react-router-dom";
-//store
-import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import IHeaderProps from "../HeaderInterfaces";
 //UI
 import classes from './MobileHeader.module.css'
 import userIcon from '@assets/user-icon.svg';
@@ -12,7 +11,7 @@ import MenuBurger from "./MenuBurger/MenuBurger";
 import useClickOutsideRef from "@hooks/layoutHooks/useClickOutsideRef";
 
 
-const MobileHeader: FC = () => {
+const MobileHeader: FC<IHeaderProps> = ({User}) => {
 
     const BurgerNavRef = useRef<HTMLDivElement>(null);
 
@@ -39,14 +38,14 @@ const MobileHeader: FC = () => {
                 <Link to="/dashboard">
                     <h1 className={classes.title}>Cash<span>Flow</span></h1>
                 </Link>
-                <img style={{borderRadius: '10px'}} width={46} src={userIcon} alt="logo" />
+                <img style={{borderRadius: '50%'}} width={46} src={User.picture} alt="logo" />
             </div>
         </header>
         <div 
             ref={BurgerNavRef}
             id='burger-nav'
             className={classes.menuBurger  + ' ' + getBurgerNav}>
-            <MenuBurger isMenuActive={isOpen} setMenuActive={setIsOpen}/>
+            <MenuBurger User={User} isMenuActive={isOpen} setMenuActive={setIsOpen}/>
         </div>
         <div 
             id='active-bg' 
