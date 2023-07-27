@@ -53,6 +53,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
 
+    const closeModalHandler = () => {
+        setIsGroupModalOpen(false);
+        setGroupId(0);
+    }
+
     const handleSubmit = () => {
         if(mode === 'create'){
             createGroup({
@@ -61,6 +66,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 icon_url: icon,
                 color_code: pickedColor,
             })
+            closeModalHandler();
         } else if(mode === 'edit'){
             if(groupId){
                 updateGroup({
@@ -70,36 +76,28 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     icon_url: icon,
                     color_code: pickedColor,
                 })
+                closeModalHandler();
             }
         }
-    }
-
-    const closeModalHandler = () => {
-        setIsGroupModalOpen(false);
-        setGroupId(0);
     }
 
     const showToolTip = useCallback(() => {
         if(mode === 'create'){
             if (isGroupCreated) {
-                closeModalHandler();
                 return <StatusTooltip
                 type="success" 
                 title={`Group ${nameValue} successfully added`}/>
             } else if(isGroupCreatingError) {
-                closeModalHandler();
                 return <StatusTooltip
                 type="error" 
                 title={`Group ${nameValue} not added`}/>
             }
         } else {
             if (isGroupUpdated) {
-                closeModalHandler();
                 return <StatusTooltip
                 type="success" 
                 title={`Group ${nameValue} successfully updated`}/>
             } else if(isGroupUpdatingError) {
-                closeModalHandler();
                 return <StatusTooltip
                 type="error" 
                 title={`Group ${nameValue} not updated`}/>
