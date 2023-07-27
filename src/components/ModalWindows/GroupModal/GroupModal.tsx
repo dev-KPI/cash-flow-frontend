@@ -97,9 +97,9 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                         <label className={classes.title} htmlFor="groupName">{labelText}</label>
                         <div className={classes.inputWrapper}>
                             <Input
-                                setFormValue={{ type: 'text', callback: setNameValue }}
+                                setFormValue={{ type: 'name', callback: setNameValue }}
                                 isInputMustClear={!isGroupModalOpen}
-                                inputType="text" id="groupName"
+                                inputType="name" id="groupName"
                                 name="groupName" placeholder="Name" />
                         </div>
                     </div>

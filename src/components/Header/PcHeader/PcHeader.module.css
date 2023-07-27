@@ -8,6 +8,10 @@
     padding-top: 30px;
     position: relative;
 }
+.logo__wrapper{
+    width: 72px;
+    height: 72px;
+}
 .header__top{
     display: flex;
     justify-content: space-between;

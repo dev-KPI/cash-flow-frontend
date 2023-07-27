@@ -33,7 +33,9 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
                     <div className={classes.header__logo}>
-                        <img src={Logo} alt="logo" />
+                        <div className={classes.logo__wrapper}>
+                            <img src={Logo} alt="logo" />
+                        </div>
                         <h1 className={classes.title}>Cash<span>Flow</span></h1>
                     </div>
                     <div className={classes.header__menu}>
