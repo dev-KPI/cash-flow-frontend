@@ -6,19 +6,31 @@ import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 
 
 const PageGlobalLoader = () => {
-
-    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
+    
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
-    setTimeout(() => {
-        setIsPageLoading(false)
-    }, 1500)
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
 
-    return isPageLoading ? <div style={{position:'absolute', zIndex: 9999, 
-    width: '100%', height: '100%', backgroundColor: ThemeStore.backgroundColor,
-    display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, []);
+
+    return <div style={{
+        position: 'fixed',
+        zIndex: 9999,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: ThemeStore.backgroundColor,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    }}>
         <PreLoader preLoaderSize={50} type='auto'/> 
-    </div> : null
+    </div> 
 }
 
 export default PageGlobalLoader;
