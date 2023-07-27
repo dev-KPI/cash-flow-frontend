@@ -1,32 +1,11 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import userIcon from '@assets/user-icon.svg';
-
 //logic
-import { categoryExpenses, expenses } from '../../Expenses';
+import { categoryExpenses } from '../../Expenses';
 //UI
 import classes from './GroupChartsCard.module.css';
 import ChartCard, { IMembersExpensesChart } from '@components/ChartCard/ChartCard';
+import { customColors } from '@services/UsefulMethods/UIMethods';
 
 
-type Colors = {
-    [key: string]: string;
-};
-
-const colors: Colors = {
-    blue: "#4C6FFF",
-    orange: "#FF6E01",
-    red: "#FF2D55",
-    green: "#28CD41",
-    purple: "#D96FF8"
-};
-
-function getRandomColor() {
-    const colorKeys = Object.keys(colors);
-    const randomIndex = Math.floor(Math.random() * colorKeys.length);
-    const randomColorKey = colorKeys[randomIndex];
-    return colors[randomColorKey];
-}
 
 const GroupChartsCard = () => {
     const MembersObj: IMembersExpensesChart[] = JSON.parse(JSON.stringify([
@@ -87,9 +66,8 @@ const GroupChartsCard = () => {
 
     const members = MembersObj.map((item, index) => {
         const member = item.member;
-        const color = getRandomColor()
         return {
-            member: { ...member, color },
+            member: { ...member, color: customColors[MembersObj.length%(index+1)] },
             amount: item.amount,
         };
     });

@@ -21,6 +21,13 @@ export const parseColors = (hex: string) => {
             return hex
     }
 }
+export const customColors: string[] = [
+    '#c90076', '#f6ffb2', '#1794bb', '#6312bf', '#FFFF00', '#FFCC00',
+    '#00FF66', '#00FFCC', '#00FF99', '#00FFFF', '#0099FF', '#00CCFF',
+    '#CCFF00', '#66FF00', '#99FF00', '#33FF00', '#00FF33', '#00FF00',
+    '#CC00FF', '#FF00CC', '#FF00FF', '#FF0099', '#FF0033', '#FF0066',
+    '#0066FF', '#0000FF', '#0033FF', '#3300FF', '#9900FF', '#6600FF',
+];
 
 export function handleWrap(
     containerClass: string, 
