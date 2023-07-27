@@ -72,14 +72,14 @@ const Input: FC<IInputProps> = ({
     //----------------------------------------------{NAME INPUT}-----------------------------------------------------
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
-            const regExp = /[^А-ЯЁA-Z]/ig
+            const regExp = /[ ]/ig
             if (setFormValue.type === 'name') { 
                 setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
             }
             setInputStringValue(e.currentTarget.value.replace(regExp, ''))
         }} 
         min={0}
-        maxLength={46}
+        maxLength={24}
         style={{
             height: '50px',
             backgroundColor: 'var(--cardBg)',
@@ -93,11 +93,10 @@ const Input: FC<IInputProps> = ({
     //----------------------------------------------{AREA INPUT}-----------------------------------------------------
     const areaInput = <InputTextarea
     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const regExp = /[^А-ЯЁA-Z]/ig
-        if (setFormValue.type === 'name') { 
-            setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
+        setInputStringValue(e.currentTarget.value)
+        if (setFormValue.type === 'area') { 
+            setFormValue.callback(e.currentTarget.value)
         }
-        setInputStringValue(e.currentTarget.value.replace(regExp, ''));
     }} 
     maxLength={200}
     style={{
