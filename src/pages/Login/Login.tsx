@@ -1,4 +1,4 @@
-import React, {FC } from "react";
+import React, {FC, useState } from "react";
 
 //UI
 import classes from'./Login.module.css';
@@ -17,9 +17,12 @@ import { Link, useNavigate } from "react-router-dom";
 const Login: FC = () => {
 
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-
-    return(<>
-        {<PageGlobalLoader/>}
+    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
+    setTimeout(() => {
+        setIsPageLoading(false)
+    }, 1500);
+    return(
+        isPageLoading ? <PageGlobalLoader/> :
         <div className="Login__container">
         <header className={classes.Header}>
             <div className={classes.leftSide}>
@@ -40,7 +43,7 @@ const Login: FC = () => {
             </div>
         </main>
         <footer></footer>
-    </div></>)
+    </div>)
 }
 
 export default Login
