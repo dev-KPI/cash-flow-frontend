@@ -37,7 +37,7 @@ const Input: FC<IInputProps> = ({
                 setFormValue.callback(+(e.value!))
             }
         }} 
-        min={0}
+        min={1}
         maxLength={22}
         minFractionDigits={2} 
         maxFractionDigits={2}
@@ -57,7 +57,7 @@ const Input: FC<IInputProps> = ({
                 setFormValue.callback(e.currentTarget.value)
             }
         }} 
-        min={0}
+        min={3}
         maxLength={46}
         style={{
             height: '50px',
@@ -78,7 +78,7 @@ const Input: FC<IInputProps> = ({
             }
             setInputStringValue(e.currentTarget.value.replace(regExp, ''))
         }} 
-        min={0}
+        min={3}
         maxLength={24}
         style={{
             height: '50px',
@@ -98,6 +98,7 @@ const Input: FC<IInputProps> = ({
             setFormValue.callback(e.currentTarget.value)
         }
     }} 
+    minLength={3}
     maxLength={200}
     style={{
         fontFamily: 'inter',

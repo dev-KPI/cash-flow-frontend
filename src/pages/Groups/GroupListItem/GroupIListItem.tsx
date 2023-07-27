@@ -1,7 +1,8 @@
-import React, { FC, SetStateAction, useRef, useState } from 'react';
+import React, { FC, SetStateAction, useCallback, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 //logic
+import { useGetUsersByGroupQuery, useLeaveGroupMutation } from '@store/Controllers/GroupsController/GroupsController';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
@@ -9,6 +10,7 @@ import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
 import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';
 import GroupListItemLoader from './GroupListItemLoader';
+import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 
 interface IGroupItemProps {
     id: number;
@@ -18,32 +20,45 @@ interface IGroupItemProps {
     adminName: string,
     adminEmail: string,
     color: string,
-    memberIcons: string[],
     isEditGroupModal: boolean,
-    setIsEditGroupModal: React.Dispatch<SetStateAction<boolean>>
+    setIsEditGroupModal: React.Dispatch<SetStateAction<boolean>>,
+    isGroupLoading: boolean,
+    setGroupId: React.Dispatch<SetStateAction<number>>
 }
 const GroupItem: FC<IGroupItemProps> = ({ id, 
     title, description, icon, adminName, 
-    adminEmail, color, memberIcons, isEditGroupModal, setIsEditGroupModal
+    adminEmail, color, isEditGroupModal, setIsEditGroupModal, setGroupId
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
     const buttonRef = useRef(null);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+
+    const [leaveGroup, { isLoading: isLeavingGroup, isSuccess: isLeavedGroup, isError: isLeavingGroupError},] = useLeaveGroupMutation();
+    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetUsersByGroupQuery({group_id: id});
 
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
+    const memberIcons = (): string[] => {
+        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup?.users_group[0]?.user) {
+            return UsersInGroup.users_group.map(el => el.user.picture);
+        } else {
+            return ['']
+        } 
+    }
     const getMemberIcons = () => {
-        return memberIcons.map((icon, i) => 
-            <div
-                className={classes.avatar}
-                key={i}
-            >
-                <img className={classes.photo}
-                    alt={'user icon'}
-                    src={isUrl(icon) ? icon : userIcon}
-                />
-            </div>
-        ).slice(0,3)
+        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup?.users_group[0]?.user){
+            return memberIcons().map((icon, i) => 
+                <div
+                    className={classes.avatar}
+                    key={i}
+                >
+                    <img className={classes.photo}
+                        alt={'user icon'}
+                        src={isUrl(icon) ? icon : userIcon}
+                    />
+                </div>
+            ).slice(0,3)
+        }
     }
 
     const getAdminIcon = () => {
@@ -54,12 +69,23 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             :
             <i className={"bi bi-people"}></i>
     }
-    setTimeout(() => {
-        setLoading(false)
-    }, 1500);
+    
+    const showToolTip = useCallback(() => {
+        if (isLeavedGroup) {
+            return <StatusTooltip
+            type="success" 
+            title={`You leaved from ${title} group`}/>
+        } else if(isLeavingGroupError) {
+            return <StatusTooltip
+            type="error" 
+            title={`You not leaved from ${title} group`}/>
+        }
+    }, [leaveGroup, isLeavedGroup, isLeavingGroup, isLeavingGroupError])
+
     return (
         <div className={classes.group}>
-            {loading ? <GroupListItemLoader /> : 
+            {showToolTip()}
+            {UsersInGroup?.users_group[0] && !isUsersInGroupFetching ? 
                 <>
                     <SmallModal
                         active={isMenuOpen}
@@ -77,14 +103,14 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                     <h6 className={classes.itemTitle}>View</h6>
                                 </li>
                                 <li className={classes.item}
-                                    onClick={(e) => { e.preventDefault(); setIsEditGroupModal(!isEditGroupModal) }}
+                                    onClick={(e) => { e.preventDefault(); setGroupId(id); setIsEditGroupModal(!isEditGroupModal) }}
                                 >
                                     <i className="bi bi-pencil"></i>
                                     <h6 className={classes.itemTitle}>Edit</h6>
                                 </li>
                                 <li className={classes.item}
                                     style={{ color: 'var(--main-red)' }}
-                                    onClick={(e) => { e.preventDefault(); }}
+                                    onClick={(e) => { e.preventDefault(); leaveGroup(id)}}
                                 >
                                     <i className="bi bi-box-arrow-left"></i>
                                     <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>Leave</h6>
@@ -111,7 +137,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                 <div className={classes.contentBottom}>
                                     <div className={classes.members}>
                                         {getMemberIcons()}
-                                        {memberIcons.length > 3 ?
+                                        {memberIcons().length > 3 ?
                                             <div className={classes.avatar}>
                                                 <div className={classes.avatarLeftMembers}
                                                     style={{ backgroundColor: color }}></div>
@@ -134,7 +160,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                             </div>
                         </div>
                     </Link>
-                </>}
+                </> : <GroupListItemLoader/>}
         </div>   
     );
 };
