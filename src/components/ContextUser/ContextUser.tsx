@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { UserSliceActions } from "@store/User/UserSlice";
 //logic
 //UI
 import classes from './ContextUser.module.css'
@@ -15,7 +16,6 @@ interface IContenxtUserProps {
 }
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
-
 
     return (
         <SmallModal

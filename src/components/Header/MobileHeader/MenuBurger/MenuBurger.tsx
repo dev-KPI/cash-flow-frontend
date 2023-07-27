@@ -23,7 +23,6 @@ interface IPropsMenuBurger {
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive}) => {
     
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-    const navigate = useNavigate();
 
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {

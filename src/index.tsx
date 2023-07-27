@@ -3,14 +3,10 @@ import React from 'react';
 import './styles/style.css';
 import ReactDOM from 'react-dom/client';
 
-//router
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { BrowserRouter } from 'react-router-dom'; 
-import Router from './router/router';
-//store
-import { persistedStore, store } from '@store/store'; 
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
+import App from './App';
+import store, { persistedStore } from '@store/store';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -19,9 +15,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistedStore}>
-        <Router />
-      </PersistGate>
+        <PersistGate loading={null} persistor={persistedStore}>
+          <App/>
+        </PersistGate>
     </Provider>
   </React.StrictMode>
 );

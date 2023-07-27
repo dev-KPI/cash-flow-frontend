@@ -1,29 +1,25 @@
-import React, { FC, useEffect, useState, useCallback } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import { routesAuth, groupRoutes, routesNotAuth } from './routes'
-import { Router as RemixRouter, To, LazyRouteFunction } from "@remix-run/router";
+import { Router as RemixRouter } from "@remix-run/router";
 //store
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
-import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/UserController';
+import { UserSliceActions } from '@store/User/UserSlice';
+import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import IUserState from '@store/User/UserInterfaces';
 //UI
 import Header from '@components/Header/Header';
 import Footer from '@components/Footer/Footer';
 import GroupHeader from '@pages/Group/GroupHeader/GroupHeader';
-import Login from '@pages/Login/Login';
 import NotFound from '@pages/NotFound/NotFound';
+
 
 
 const Router: FC = () => {
 
-    const ThemeDispatch = useActionCreators(ThemeActions);
-    const {data: AuthStatus, isError, isFetching} = useGetUserAuthStatusQuery(null);
-    
-    useEffect(() => {
-        ThemeDispatch.initializeTheme()
-    },[ThemeDispatch]);
-
+    const UserSliceStore = useAppSelector<IUserState>(state => state.persistedUserSlice)
+    const UserSliceDispatch = useActionCreators(UserSliceActions);
 
     const BrowserRoutesForNotAuth = createBrowserRouter([
         {
@@ -75,10 +71,7 @@ const Router: FC = () => {
         },
     ])
     
-    const getRouter: RemixRouter = (isFetching) ? BrowserRoutesForAuth :
-        !!AuthStatus?.status ? BrowserRoutesForAuth : BrowserRoutesForNotAuth
-    
-    return <RouterProvider router={getRouter}/>
+    return <RouterProvider router={UserSliceStore.isAuth ? BrowserRoutesForAuth : BrowserRoutesForNotAuth}/>
 }
 
 export default Router;
