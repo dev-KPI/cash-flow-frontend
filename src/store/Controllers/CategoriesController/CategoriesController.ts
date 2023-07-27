@@ -13,7 +13,7 @@ import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
 export const CategoryApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        getCategoriesByGroup: builder.query<IGetCategoriesByGroupResponse, {group_id: number}>({
+        getCategoriesByGroup: builder.query<IGetCategoriesByGroupResponse,  number>({
             query: (group_id) => ({
                 url: `/groups/${group_id}/categories`,
                 credentials: 'include',
@@ -30,7 +30,7 @@ export const CategoryApiSlice = api.injectEndpoints({
         }),
         createCategoryByGroup: builder.mutation<ICreateCategoryResponse, ICreateCategoryBody>({
             query: (body) => ({
-                url: `categories/${body.group_id}`,
+                url: `groups/${body.group_id}/categories`,
                 method: 'POST',
                 credentials: 'include',
                 body: Omiter(['group_id'], body)
@@ -42,7 +42,7 @@ export const CategoryApiSlice = api.injectEndpoints({
         }),
         updateCategoryByGroup: builder.mutation<IUpdateCategoryResponse, IUpdateCategoryBody>({
             query: (body) => ({
-                url: `categories/${body.group_id}/${body.category_id}`,
+                url: `categories/${body.group_id}/categories/${body.category_id}`,
                 method: 'PUT',
                 credentials: 'include',
                 body: Omiter(['category_id','group_id'], body)

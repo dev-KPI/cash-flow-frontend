@@ -1,10 +1,11 @@
-import React, { FC, useState, ReactNode, Fragment, useCallback, useEffect, useMemo, useRef } from "react";
-import { categoriesObj } from './categoriesObj';
+import React, { FC, useState, ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
 
 import uuid from 'react-uuid';
 //logic
-import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-import ICategory from "@models/ICategory";
+import { newICategory } from "@models/ICategory";
+import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
+import { useGetCategoriesByGroupQuery } from "@store/Controllers/CategoriesController/CategoriesController";
+
 //UI
 import classes from './Categories.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
@@ -13,98 +14,38 @@ import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal"
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 
 
-
-const Groups = [
-    {
-        "id": 0,
-        "title": "Its title",
-        "groups": {
-            "color_code": "#FF0000",
-            "icon_url": "bi bi-bank"
-        }
-    },
-    {
-        "id": 1,
-        "title": "Its group",
-        "groups": {
-            "color_code": "#99FF00",
-            "icon_url": "bi bi-camera"
-        }
-    },
-    {
-        "id": 2,
-        "title": "group",
-        "groups": {
-            "color_code": "#FF6600",
-            "icon_url": "bi bi-badge-vr"
-        }
-    },
-    {
-        "id": 3,
-        "title": "-_-qwe qweqw eqweq",
-        "groups": {
-            "color_code": "#FF6600",
-            "icon_url": "bi bi-badge-vr"
-        }
-    },
-    {
-        "id": 4,
-        "title": "hahha",
-        "groups": {
-            "color_code": "#FF6600",
-            "icon_url": "bi bi-badge-vr"
-        }
-    },
-    {
-        "id": 5,
-        "title": "very long title",
-        "groups": {
-            "color_code": "#FF6600",
-            "icon_url": "bi bi-badge-vr"
-        }
-    },
-]
 const Categories: FC = () => {
-
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-
     const [groups, setGroups] = useState<boolean>(false);
-    const [categories, setCategories] = useState<ICategory[]>([])
-    const [selectedGroup, setSelectedGroup] = useState<number>(0);
+    const [categories, setCategories] = useState<newICategory[]>()
+    const [selectedGroup, setSelectedGroup] = useState<number>(3);
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
     const [isGroupMenuModal, setIsGroupMenuModal] = useState<boolean>(false);
     const buttonRef = useRef(null);
-    const { categoriesJson } = categoriesObj;
-    
-    const initializeCategories = useCallback(() => {
-        const newCategories = categoriesJson.find(item => item.id === selectedGroup)?.categories
-        if (newCategories) {
-            setCategories(newCategories);
-        }
-    }, [selectedGroup, categoriesJson])
+    const { data: groupsData, isFetching: isGroupsFetching, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
+    const { data: categoriesData, isFetching: isCategoriesFetching, isError: isCategoriesError } = useGetCategoriesByGroupQuery(selectedGroup)
 
     useEffect(() => {
-        initializeCategories()
-    }, [initializeCategories])
-    
+        setCategories(categoriesData?.categories_group)
+    }, [categoriesData])
+    console.log(categories);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
         setSelectedGroup(+event.target.value)
     }
     const handleGroupModalOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsGroupMenuModal(!isGroupMenuModal)
     }
-
+    console.log(groupsData);
     const getGroups = () => {
         let res: ReactNode[] = [];
         let groupsItems: ReactNode[] = [];
-        Groups.map((el, i) => {
+        groupsData?.user_groups?.map((el, i) => {
             return groupsItems.push(
                 <div key={'12sf3' + i} className={classes.groupNavItem}>
                     <input
                         type='radio'
-                        value={el.id}
-                        checked={selectedGroup === el.id}
+                        value={el.group.id}
+                        checked={selectedGroup === el.group.id}
                         id={`group-item-${i}`}
                         name='group'
                         onChange={handleChange}
@@ -112,12 +53,12 @@ const Categories: FC = () => {
                     <label
                         htmlFor={`group-item-${i}`}
                         className={classes.groupTitle}
-                    >{el.title}</label>
+                    >{el.group.title}</label>
                 </div>
             )}
         )
-        res.push(groupsItems.slice(0,4))
-        if (Groups.length > 4) {
+        res.push(groupsItems.slice(0, 4))
+        if (groupsData?.user_groups && groupsData?.user_groups?.length > 4) {
             res.push(<SmallModal
                 key={'qwe'}
                 title={'Groups'}
@@ -143,18 +84,18 @@ const Categories: FC = () => {
         return res;
     }
 
-    const getCategories = useMemo<JSX.Element[]>(() => {
-        return categories.map((item, i) =>
+    const getCategories = useMemo<JSX.Element[] | null>(() => {
+        return categories ? categories.map((item, i) =>
             <CategoriesCard
                 key={uuid()}
                 id={i}
-                color={item.color}
-                title={item.title}
-                icon={item.icon}
+                color={item.color_code}
+                title={item.category.title}
+                icon={item.icon_url}
                 isEditCategoryModal={isEditCategoryModal}
                 setIsEditCategoryModal={setIsEditCategoryModal}
             />
-        )
+        ) : null
     }, [categories])
 
     return (<>
