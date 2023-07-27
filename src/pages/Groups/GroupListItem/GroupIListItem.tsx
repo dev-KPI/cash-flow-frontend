@@ -2,6 +2,7 @@ import React, { FC, SetStateAction, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 //logic
+import { useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
@@ -18,32 +19,43 @@ interface IGroupItemProps {
     adminName: string,
     adminEmail: string,
     color: string,
-    memberIcons: string[],
     isEditGroupModal: boolean,
-    setIsEditGroupModal: React.Dispatch<SetStateAction<boolean>>
+    setIsEditGroupModal: React.Dispatch<SetStateAction<boolean>>,
+    isGroupLoading: boolean
 }
 const GroupItem: FC<IGroupItemProps> = ({ id, 
     title, description, icon, adminName, 
-    adminEmail, color, memberIcons, isEditGroupModal, setIsEditGroupModal
+    adminEmail, color, isEditGroupModal, setIsEditGroupModal
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
     const buttonRef = useRef(null);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetUsersByGroupQuery({group_id: id});
+    
 
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
+    const memberIcons = (): string[] => {
+        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup) {
+            return UsersInGroup.users_group.map(el => el.user.picture);
+        } else {
+            return ['']
+        } 
+    }
     const getMemberIcons = () => {
-        return memberIcons.map((icon, i) => 
-            <div
-                className={classes.avatar}
-                key={i}
-            >
-                <img className={classes.photo}
-                    alt={'user icon'}
-                    src={isUrl(icon) ? icon : userIcon}
-                />
-            </div>
-        ).slice(0,3)
+        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup){
+            return memberIcons().map((icon, i) => 
+                <div
+                    className={classes.avatar}
+                    key={i}
+                >
+                    <img className={classes.photo}
+                        alt={'user icon'}
+                        src={isUrl(icon) ? icon : userIcon}
+                    />
+                </div>
+            ).slice(0,3)
+        }
     }
 
     const getAdminIcon = () => {
@@ -54,12 +66,10 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             :
             <i className={"bi bi-people"}></i>
     }
-    setTimeout(() => {
-        setLoading(false)
-    }, 1500);
+    
     return (
         <div className={classes.group}>
-            {loading ? <GroupListItemLoader /> : 
+            {isUsersInGroupFetching ? <GroupListItemLoader /> : 
                 <>
                     <SmallModal
                         active={isMenuOpen}
@@ -111,7 +121,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                 <div className={classes.contentBottom}>
                                     <div className={classes.members}>
                                         {getMemberIcons()}
-                                        {memberIcons.length > 3 ?
+                                        {memberIcons().length > 3 ?
                                             <div className={classes.avatar}>
                                                 <div className={classes.avatarLeftMembers}
                                                     style={{ backgroundColor: color }}></div>
