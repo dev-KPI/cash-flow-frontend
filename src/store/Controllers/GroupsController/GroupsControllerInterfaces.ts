@@ -8,7 +8,12 @@ export interface IGetCurrentUserGroups {
 }
 
 
-export interface ICreateGroupBody extends Omit<Omit<Omit<Omit<IGroup, 'id'>, 'admin'>, 'status'>, 'date_join'>  {}
+export interface ICreateGroupBody {
+    title: string,
+    description: string,
+    icon_url: string,
+    color_code: string,
+}
 export interface ICreateGroupResponse extends Omit<Omit<IGroup, 'color_code'>, 'date_join'> { }
 
 

@@ -36,7 +36,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             { type: 'GroupsController', id: 'UPDATE_GROUP' }],
         }),
         getUsersByGroup: builder.query<IGetUsersFromGroupResponse, {group_id: number}>({
-            query: (group_id) => ({
+            query: ({group_id}) => ({
                 url: `/groups/${group_id}/users`,
                 credentials: 'include',
             }),
@@ -91,7 +91,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         }),
         leaveGroup: builder.mutation<null, number>({
             query: (group_id) => ({
-                url: `/groups/${group_id}/users`,
+                url: `/groups/${group_id}/leave`,
                 method: 'POST',
                 credentials: 'include'
             }),
@@ -109,5 +109,6 @@ export const {
     useGetUsersByGroupQuery,
     useRemoveUserMutation,
     useUpdateGroupMutation,
-    useCreateGroupMutation
+    useCreateGroupMutation,
+    useLeaveGroupMutation
 } = GroupsApiSlice
