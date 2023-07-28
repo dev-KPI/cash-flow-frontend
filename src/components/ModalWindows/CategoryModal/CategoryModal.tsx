@@ -10,29 +10,27 @@ import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import { useCreateCategoryByGroupMutation, useUpdateCategoryByGroupMutation } from "@store/Controllers/CategoriesController/CategoriesController";
 
 interface ICategoryModalProps{
     isCategoryModalOpen: boolean
     setIsCategoryModalOpen: Dispatch<SetStateAction<boolean>>;
-    mode: 'create' | 'edit'
+    mode: 'create' | 'edit',
+    groupId: number,
+    categoryId: number
 }
 interface IModalState {
     name: string
     color: string
 }
 
-const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode }) => {
+const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode, groupId, categoryId }) => {
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Category'
-    const [nameValue, setNameValue] = useState<string>('');
-    const [colorValue, setColorValue] = useState<string>('');
-
-    //submit
-    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-    const [shouldShowTooltip, setShouldShowTooltip] = useState<boolean>(false);
 
     //pickers
+    const [nameValue, setNameValue] = useState<string>('');
     const [pickedColor, setPickedColor] = useState<string>('#FF2D55');
     const changeColor = (e: React.MouseEvent<HTMLDivElement>, color: string) => {setPickedColor(color)};
     const light = <div style={{backgroundColor: pickedColor, boxShadow: '0px 0px 8px ' + pickedColor}} className={classes.colorPicked}></div>
@@ -40,28 +38,60 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     const [icon, setIcon] = useState<string>('bi bi-people');
     const changeIcon = (e: React.MouseEvent<HTMLDivElement>, icon: string) => {setIcon(icon)};
     const iconDisplayed = <i style={{fontSize: '24px', color: 'var(--main-text)'}} className={icon}></i>
-    
-    const postObject: IModalState = {
-        name: nameValue,
-        color: colorValue
-    };
 
-    const handleSubmit = async() => {
-        setIsSubmiting(true)
-        await setTimeout(() => {
-            setShouldShowTooltip(true)
-            setIsSubmiting(false);
-            alert(JSON.stringify(postObject, null, 2));
-            setIsCategoryModalOpen(false);
-        }, 3000);
-    }
-    const showToolTip = useCallback(() => {
-        if (shouldShowTooltip) {
-            return <StatusTooltip
-            type="success" 
-            title="Category successfully added"/>
+    const [createCategory, {isLoading: isCategoryCreating, isError: isCategoryCreatingError, isSuccess: isCategoryCreated}] = useCreateCategoryByGroupMutation();
+    const [updateCategory, {isLoading: isCategoryUpdating, isError: isCategoryUpdatingError, isSuccess: isCategoryUpdated}] = useUpdateCategoryByGroupMutation();
+
+    const handleSubmit = () => {
+        if(mode === 'create'){
+            createCategory({
+                group_id: groupId,
+                title: nameValue,
+                icon_url: icon,
+                color_code: pickedColor,
+            })
+            closeModalHandler();
+        } else if(mode === 'edit'){
+            updateCategory({
+                group_id: groupId,
+                category_id: categoryId,
+                title: nameValue,
+                icon_url: icon,
+                color_code: pickedColor,
+            })
+            closeModalHandler();
         }
-    }, [shouldShowTooltip])
+    }
+
+    const closeModalHandler = () => {
+        setIsCategoryModalOpen(false);
+    }
+
+    const showToolTip = useCallback(() => {
+        if(mode === 'create'){
+            if (isCategoryCreated) {
+                return <StatusTooltip
+                type="success" 
+                title={`Category ${nameValue} successfully added`}/>
+            } else if(isCategoryCreatingError) {
+                return <StatusTooltip
+                type="error" 
+                title={`Category ${nameValue} not added`}/>
+            }
+        } else {
+            if (isCategoryUpdated) {
+                return <StatusTooltip
+                type="success" 
+                title={`Category ${nameValue} successfully updated`}/>
+            } else if(isCategoryUpdatingError) {
+                return <StatusTooltip
+                type="error" 
+                title={`Category ${nameValue} not updated`}/>
+            }
+        }
+    }, [createCategory, isCategoryCreating, isCategoryCreatingError, isCategoryCreated,
+        updateCategory, isCategoryUpdating, isCategoryUpdatingError, isCategoryUpdated])
+
     let labelText = '';
     if (mode === 'create') {
         labelText = 'Please сreate new category:'
@@ -127,7 +157,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
                 </div>
                 <div className={classes.confirmBtnWrapper}>
                     <CustomButton
-                        isPending={isSubmiting}
+                        isPending={isCategoryCreating || isCategoryUpdating}
                         children="Confirm"
                         btnWidth={170}
                         btnHeight={36}

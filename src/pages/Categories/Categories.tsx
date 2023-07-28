@@ -2,7 +2,6 @@ import React, { FC, useState, ReactNode, useCallback, useEffect, useMemo, useRef
 
 import uuid from 'react-uuid';
 //logic
-import { newICategory } from "@models/ICategory";
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
 import { useGetCategoriesByGroupQuery } from "@store/Controllers/CategoriesController/CategoriesController";
 
@@ -15,46 +14,31 @@ import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 
 
 const Categories: FC = () => {
-    const [groups, setGroups] = useState<boolean>(false);
-    const [categories, setCategories] = useState<newICategory[]>([{
-        category: {
-            id: 0,
-            title: '',
-        },
-        icon_url: '',
-        color_code: ''
-    }])
-    const [selectedGroup, setSelectedGroup] = useState<number>(3);
+
+    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
+    
+    const [selectedGroup, setSelectedGroup] = useState<number>(0);
+    const [selectedCategory, setSelectedCategory] = useState<number>(0);
+
+    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError } = useGetCategoriesByGroupQuery(selectedGroup)
+
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
     const [isGroupMenuModal, setIsGroupMenuModal] = useState<boolean>(false);
+
     const buttonRef = useRef(null);
-    const { data: groupsData, isFetching: isGroupsFetching, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
-    const { data: categoriesData, isFetching: isCategoriesFetching, isError: isCategoriesError } = useGetCategoriesByGroupQuery(selectedGroup)
-
-    const initializeCategories = useCallback(() => {
-        if(categoriesData && !isCategoriesFetching && !isCategoriesError){
-            setCategories(categoriesData?.categories_group)
-        }
-    }, [categoriesData, isCategoriesFetching, isCategoriesError])
-
-    useEffect(() => {
-        initializeCategories()
-    }, [categoriesData, initializeCategories])
-
-    console.log(categories);
-    
+ 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
         setSelectedGroup(+event.target.value)
     }
     const handleGroupModalOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsGroupMenuModal(!isGroupMenuModal)
     }
-    console.log(groupsData);
+
     const getGroups = () => {
         let res: ReactNode[] = [];
         let groupsItems: ReactNode[] = [];
-        groupsData?.user_groups?.map((el, i) => {
+        UserGroups?.user_groups?.map((el, i) => {
             return groupsItems.push(
                 <div key={'12sf3' + i} className={classes.groupNavItem}>
                     <input
@@ -72,58 +56,66 @@ const Categories: FC = () => {
                 </div>
             )}
         )
-        res.push(groupsItems.slice(0, 4))
-        if (groupsData?.user_groups && groupsData?.user_groups?.length > 4) {
-            res.push(<SmallModal
-                key={'qwe'}
-                title={'Groups'}
-                active={isGroupMenuModal}
-                setActive={setIsGroupMenuModal}
-                className={classes.groupsModalNav}
-                children={
-                    <div className={classes.groupModalWrapper}>
-                        {groupsItems.slice(4)}
-                    </div>
-                }
-                buttonRef={buttonRef}
-            />)
-            res.push(
-                <button key={'werww1'} className={classes.moreBtn}
-                    ref={buttonRef}
-                    onClick={handleGroupModalOpen}>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-            </button>)
+        res.push(groupsItems.slice(0, 3))
+        res.push(<SmallModal
+            key={'qwe'}
+            title={'Groups'}
+            active={isGroupMenuModal}
+            setActive={setIsGroupMenuModal}
+            className={classes.groupsModalNav}
+            children={
+                <div className={classes.groupModalWrapper}>
+                    {groupsItems.slice(3)}
+                </div>
+            }
+            buttonRef={buttonRef}
+        />)
+        if(UserGroups?.user_groups){
+            if(UserGroups.user_groups.length > 3){
+                res.push(
+                    <button key={'werww1'} className={classes.moreBtn}
+                        ref={buttonRef}
+                        onClick={handleGroupModalOpen}>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                </button>)
+            }
         }
         return res;
     }
 
-    const getCategories = useMemo<JSX.Element[] | null>(() => {
-        return categories ? categories.map((item, i) =>
+    const getCategories = useCallback((): ReactNode => {
+        return CategoriesByGroup?.categories_group.map((item, i) =>
             <CategoriesCard
                 key={uuid()}
-                id={i}
+                id={item.category.id}
                 color={item.color_code}
                 title={item.category.title}
                 icon={item.icon_url}
+                isCategoriesLoading={isCategoriesLoading}
+                setSelectedCategory={setSelectedCategory}
                 isEditCategoryModal={isEditCategoryModal}
                 setIsEditCategoryModal={setIsEditCategoryModal}
             />
-        ) : null
-    }, [categories])
+        )
+    }, [CategoriesByGroup])
 
     return (<>
-        <CategoryModal
+        {<CategoryModal
+            groupId={selectedGroup}
+            categoryId={selectedCategory}
             setIsCategoryModalOpen={setIsCreateCategoryModal}
             isCategoryModalOpen={isCreateCategoryModal}
             mode='create'
-        />
-        <CategoryModal
+        />}
+        {<CategoryModal
+            groupId={selectedGroup}
+            categoryId={selectedCategory}
             setIsCategoryModalOpen={setIsEditCategoryModal}
             isCategoryModalOpen={isEditCategoryModal}
             mode='edit'
-        />
+        />}
         <main id='CategoriesPage'>
             <div className={classes.CategoriesPage__container}>
                 <h3 className={classes.pageTitle}>Categories</h3>
@@ -135,7 +127,7 @@ const Categories: FC = () => {
                         <h5 className={classes.CategoryTitle}>Category</h5>
                         <CustomButton
                             isPending={false}
-                            callback={()=>setIsCreateCategoryModal(!isCreateCategoryModal)}
+                            callback={() => setIsCreateCategoryModal(!isCreateCategoryModal)}
                             icon="add"
                             type="primary"
                             children="Create new category"
@@ -144,7 +136,7 @@ const Categories: FC = () => {
                     <div className={classes.line}></div>
                 </div>
                 <ul className={classes.CategoriesBox}>
-                    {getCategories}
+                    {getCategories()}
                 </ul>
             </div>
         </main>

@@ -88,6 +88,8 @@ const UserCategoriesCard = () => {
     }
     const getCategoryModal = () => {
         return <CategoryModal
+            groupId={0}
+            categoryId={0}
             isCategoryModalOpen={isCategoryModalOpen}
             setIsCategoryModalOpen={setIsCategoryModalOpen}
             mode='create'
