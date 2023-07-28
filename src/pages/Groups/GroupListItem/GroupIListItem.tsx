@@ -38,27 +38,22 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
     const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetUsersByGroupQuery({group_id: id});
 
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
+
     const memberIcons = (): string[] => {
-        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup?.users_group[0]?.user) {
-            return UsersInGroup.users_group.map(el => el.user.picture);
-        } else {
-            return ['']
-        } 
+        return UsersInGroup?.users_group.map(el => el.user.picture) || [''];
     }
     const getMemberIcons = () => {
-        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup?.users_group[0]?.user){
-            return memberIcons().map((icon, i) => 
-                <div
-                    className={classes.avatar}
-                    key={i}
-                >
-                    <img className={classes.photo}
-                        alt={'user icon'}
-                        src={isUrl(icon) ? icon : userIcon}
-                    />
-                </div>
-            ).slice(0,3)
-        }
+        return memberIcons().map((icon, i) => 
+            <div
+                className={classes.avatar}
+                key={i}
+            >
+                <img className={classes.photo}
+                    alt={'user icon'}
+                    src={isUrl(icon) ? icon : userIcon}
+                />
+            </div>
+        ).slice(0,3)
     }
 
     const getAdminIcon = () => {
