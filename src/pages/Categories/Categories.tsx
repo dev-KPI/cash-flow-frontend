@@ -85,7 +85,7 @@ const Categories: FC = () => {
         return res;
     }
 
-    const getCategories = useCallback((): ReactNode => {
+    const getCategories = useMemo((): ReactNode => {
         return CategoriesByGroup?.categories_group.map((item, i) =>
             <CategoriesCard
                 key={uuid()}
@@ -136,11 +136,11 @@ const Categories: FC = () => {
                     <div className={classes.line}></div>
                 </div>
                 <ul className={classes.CategoriesBox}>
-                    {getCategories()}
+                    {getCategories}
                 </ul>
             </div>
         </main>
     </>)
 }
 
-export default Categories
+export default React.memo(Categories)

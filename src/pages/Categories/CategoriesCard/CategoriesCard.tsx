@@ -42,4 +42,4 @@ setIsEditCategoryModal, isEditCategoryModal }) => {
         </button>
     </li>)
 }
-export default CategoriesCard
+export default React.memo(CategoriesCard)
