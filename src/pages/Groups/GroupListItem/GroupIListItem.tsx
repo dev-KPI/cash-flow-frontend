@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useCallback, useRef, useState } from 'react';
+import React, { FC, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 //logic
@@ -70,6 +70,11 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             <i className={"bi bi-people"}></i>
     }
     
+
+    const showLoader = useCallback (() => {
+        return  <></>
+    }, [UsersInGroup?.users_group[0]])
+
     const showToolTip = useCallback(() => {
         if (isLeavedGroup) {
             return <StatusTooltip
@@ -85,7 +90,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
     return (
         <div className={classes.group}>
             {showToolTip()}
-            {UsersInGroup?.users_group[0] && !isUsersInGroupFetching ? 
+            {!UsersInGroup?.users_group[0] ? <GroupListItemLoader/> :
                 <>
                     <SmallModal
                         active={isMenuOpen}
@@ -160,7 +165,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                             </div>
                         </div>
                     </Link>
-                </> : <GroupListItemLoader/>}
+                </>}
         </div>   
     );
 };

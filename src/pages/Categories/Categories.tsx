@@ -16,7 +16,14 @@ import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 
 const Categories: FC = () => {
     const [groups, setGroups] = useState<boolean>(false);
-    const [categories, setCategories] = useState<newICategory[]>()
+    const [categories, setCategories] = useState<newICategory[]>([{
+        category: {
+            id: 0,
+            title: '',
+        },
+        icon_url: '',
+        color_code: ''
+    }])
     const [selectedGroup, setSelectedGroup] = useState<number>(3);
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
@@ -25,10 +32,18 @@ const Categories: FC = () => {
     const { data: groupsData, isFetching: isGroupsFetching, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
     const { data: categoriesData, isFetching: isCategoriesFetching, isError: isCategoriesError } = useGetCategoriesByGroupQuery(selectedGroup)
 
+    const initializeCategories = useCallback(() => {
+        if(categoriesData && !isCategoriesFetching && !isCategoriesError){
+            setCategories(categoriesData?.categories_group)
+        }
+    }, [categoriesData, isCategoriesFetching, isCategoriesError])
+
     useEffect(() => {
-        setCategories(categoriesData?.categories_group)
-    }, [categoriesData])
+        initializeCategories()
+    }, [categoriesData, initializeCategories])
+
     console.log(categories);
+    
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => { 
         setSelectedGroup(+event.target.value)
     }
