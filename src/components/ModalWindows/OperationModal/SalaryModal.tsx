@@ -6,6 +6,7 @@ import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+import { useCreateReplenishmentMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
 
 interface IOperationModalProps{
     isSalaryModalOpen: boolean
@@ -30,21 +31,18 @@ const SalaryModal: FC<IOperationModalProps> = ({
     const [operationValue, setOperationValue] = useState<number>(0);
     const [descriptionValue, setDescriptionValue] = useState<string>('');
 
-    //submit
-    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-
+    const [createReplenishment, {isLoading: isReplenishmentLoading, isError: isReplenishmentError, isSuccess: isReplenishmentCreated}] = useCreateReplenishmentMutation()
     const postObject: IModalState = {
         operation: operationValue,
         description: descriptionValue
     };
 
-    const handleSubmit = async() => {
-        setIsSubmiting(true)
-        await setTimeout(() => {
-            setIsSubmiting(false);
-            alert(JSON.stringify(postObject, null, 2));
-            setIsSalaryModalOpen(false);
-        }, 3000);
+    const handleSubmit = async () => {
+        createReplenishment({
+            amount: operationValue,
+            descriptions: descriptionValue
+        })
+        setIsSalaryModalOpen(false);
     }
 
     return <UsePortal
@@ -80,7 +78,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
                 </ul>
                 <div className={classes.confirmBtnWrapper}>
                 <CustomButton
-                    isPending={isSubmiting}
+                    isPending={isReplenishmentLoading}
                     children="Confirm"
                     btnWidth={170}
                     btnHeight={36}

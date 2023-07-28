@@ -20,8 +20,8 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
                 credentials: 'include',
                 params: {
                     year_month: body.year_month,
-                    start_date: body.start_date,
-                    end_date: body.end_date
+                    // start_date: body.start_date,
+                    // end_date: body.end_date
                 }
             }),
             transformErrorResponse: (
@@ -36,7 +36,7 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             { type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' },
             { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' }],
         }),
-        createReplenishment: builder.mutation<ICreateReplenishmentResponse[], ICreateReplenishmentBody>({
+        createReplenishment: builder.mutation<ICreateReplenishmentResponse, ICreateReplenishmentBody>({
             query: (body) => ({
                 url: `/replenishments/`,
                 method: 'POST',
@@ -58,7 +58,8 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' }],
+            invalidatesTags: (result, arg, body) => result ? [{ type: 'ReplenishmentsController', id: body.id }] :
+            [{ type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' }],
         }),
         deleteReplenishmentById: builder.mutation<null, IDeleteReplenishmentBody>({
             query: ({id}) => ({

@@ -4,8 +4,8 @@ import IUser from "@models/IUser";
 
 export interface IGetReplenishmentsByUserBody {
     year_month: string, 
-    start_date: string,
-    end_date: string
+    // start_date: string,
+    // end_date: string
 }
 export interface IGetReplenishmentsByUserResponse {
     amount: number,
