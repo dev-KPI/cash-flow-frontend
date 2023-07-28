@@ -1,24 +1,25 @@
-import React, { useState, FC, useCallback } from 'react';
+import React, { useState, FC, useCallback, useEffect } from 'react';
 
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 import OperationCardLoader from './OperationCardLoader';
+import { useGetReplenishmentsByUserQuery } from '@store/Controllers/ReplenishmentController/ReplenishmentController';
 
 interface OperactionCardProps {
-    operation: string;
+    operation: "Income" | 'Expenses';
     title?: string;
     className?: string;
 }
 
 const OperationCard: FC<OperactionCardProps> = ({ operation, title, className }) => {
-
-    const [amount, setAmount] = useState<number>(423);
+    const [amount, setAmount] = useState<number>(0);
     const [source, setSource] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
-
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
+
+    const { data: replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError } = useGetReplenishmentsByUserQuery({year_month:'2023-07'})
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
@@ -26,7 +27,14 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         percentBackground: operation === "Income" ? "rgba(128, 214, 103, 0.20)" : "rgba(255, 45, 85, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
-
+    useEffect(() => {
+        let totalAmount = 0
+        if (operation === "Income")
+            totalAmount = replenishments?.reduce((acc, item) => acc + item.amount, 0) || 0;
+        else if (operation === 'Expenses')
+            totalAmount = 0;
+        setAmount(Number(totalAmount.toFixed(2)));
+    }, [replenishments]);
     const cardTitle = title ? title : operation;
     setTimeout(() => {
         setLoading(false)

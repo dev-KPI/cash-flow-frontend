@@ -1,10 +1,11 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 //logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
-import ICategory from '@models/ICategory';
-import { json } from './objUserCategories';
+import IExpense from '@models/IExpense';
+import { useGetExpensesByGroupQuery } from '@store/Controllers/ExpensesController/ExpensesController';
+import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
@@ -15,59 +16,50 @@ import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal'
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 
 
-export interface ISortedCategoryItem {
-    category: ICategory,
-    amount: number,
-}
-export interface ICategoryItem extends ISortedCategoryItem{
-    setIdModalOpen: (value: number) => void,
-    setIsModalOpen: (value: boolean) => void
-}
 
 const UserCategoriesCard = () => {
-    const [categories, setCategories] = useState<ISortedCategoryItem[]>([]);
+    // const [categories, setCategories] = useState<ISortedCategoryItem[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
     const [loading, setLoading] = useState<boolean>(true);
-    const [groupIndex, setGroupIndex] = useState<number>(0);
+    const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [idExpenseModalOpen, setIdExpenseModalOpen] = useState<number>(-1);
     const [isExpenseModalOpen, setIsExpenseModalOpen] = useState<boolean>(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
-    const { categoriesByGroup } = json;
-    let groups = categoriesByGroup.map(a => a.title);
+    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
+    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError } = useGetExpensesByGroupQuery({group_id: selectedGroup, year_month: '2023-07'})
+    // const { categoriesByGroup } = json;
+    // let groups = categoriesByGroup.map(a => a.title);
     
-    const initializeCategories = useCallback(() => {
-        const newCategories = categoriesByGroup.find(item => item.title === groups[groupIndex])?.categories
-        if (newCategories)
-            setCategories(newCategories);
-    }, [groupIndex])
+    // const initializeCategories = useCallback(() => {
+    //     const newCategories = categoriesByGroup.find(item => item.title === groups[groupIndex])?.categories
+    //     if (newCategories)
+    //         setCategories(newCategories);
+    // }, [groupIndex])
 
     const initializeHandleWrapper = useCallback(()=> {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
-    }, [height, width, categories])
+    }, [height, width, ExpensesByGroup])
 
     const autoHandleCloseModal = useCallback(() => {
         if(!isExpenseModalOpen) setIdExpenseModalOpen(-1) 
     }, [isExpenseModalOpen])
 
     useEffect(()=>{
-        initializeCategories()
         initializeHandleWrapper()
         autoHandleCloseModal()
-    }, [initializeCategories, 
-        initializeHandleWrapper, 
+    }, [ initializeHandleWrapper, 
         autoHandleCloseModal])
 
-    const getCategories = (categories: ISortedCategoryItem[]) => {
+    const getCategories = (categories: IExpense[]) => {
         return categories.map((item, i) => 
             <CategoriesCardItem 
             key={i} 
             setIdModalOpen={setIdExpenseModalOpen}
             setIsModalOpen={setIsExpenseModalOpen}
-            category={item.category} 
-            amount={item.amount}/>
+            expense={item}/>
         )
     }
     const getExpenseModal = () => {
@@ -82,7 +74,7 @@ const UserCategoriesCard = () => {
             setIsModalOpen={setIsMoreModalOpen}
             isAddModalOpen={isCategoryModalOpen}
             setIsAddModalOpen={setIsCategoryModalOpen}
-            data={getCategories(categories)}
+            data={ExpensesByGroup ? getCategories(ExpensesByGroup) : []}
             type={'categories'}
         />
     }
@@ -96,18 +88,21 @@ const UserCategoriesCard = () => {
         />
     }
 
-    const properCategories: ISortedCategoryItem[] = useMemo(() => {
-        return categories.slice(0, totalItems)
-    }, [categories, totalItems])
+    const properCategories: IExpense[] = useMemo(() => {
+        if (ExpensesByGroup)
+            return ExpensesByGroup?.slice(0, totalItems)
+        else
+            return []
+    }, [ExpensesByGroup, totalItems])
 
     const handleNextGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (!groups[groupIndex + 1]) return;
-        setGroupIndex(groupIndex + 1); 
+        if (UserGroups && !UserGroups.user_groups[selectedGroup + 1].group) return;
+        setSelectedGroup(selectedGroup + 1); 
     }
 
     const handlePrevGroup =(e: React.MouseEvent<HTMLButtonElement>) => {
-        if (!groups[groupIndex - 1]) return;
-        setGroupIndex(groupIndex - 1); 
+        if (UserGroups && !UserGroups.user_groups[selectedGroup - 1].group) return;
+        setSelectedGroup(selectedGroup - 1); 
     }
     
     setTimeout(() => {
@@ -122,12 +117,16 @@ const UserCategoriesCard = () => {
             {loading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
-                        <h3 className={classes.title}>Categories <span className={classes.categoryName}>({groups[groupIndex]})</span></h3>
+                        <h3 className={classes.title}>Categories
+                            <span className={classes.categoryName}>
+                                ({UserGroups?.user_groups[selectedGroup].group.title})
+                            </span>
+                        </h3>
                         <div className={classes.nav}>
                             <button
                                 type="submit"
                                 onClick={handlePrevGroup}
-                                disabled={!groups[groupIndex - 1]}
+                                disabled={!UserGroups?.user_groups[selectedGroup - 1]}
                                 className={classes.btn + ' ' + classes.previous}
                                 >
                                 <i id='chevron' className="bi bi-chevron-left"></i>
@@ -135,7 +134,7 @@ const UserCategoriesCard = () => {
                             <button
                                 type="submit"
                                 onClick={handleNextGroup}
-                                disabled={!groups[groupIndex + 1]}
+                                disabled={!UserGroups?.user_groups[selectedGroup + 1]}
                                 className={classes.btn + ' ' + classes.next}
                                 >
                                 <i id='chevron' className="bi bi-chevron-right"></i>
@@ -145,7 +144,7 @@ const UserCategoriesCard = () => {
                     <ul className={classes.list} ref={squareRef}>
                         {getCategories(properCategories)}
                         {
-                        categories?.length === 0 ?
+                        ExpensesByGroup?.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
                                     <SpecialButton
@@ -155,7 +154,7 @@ const UserCategoriesCard = () => {
                                     />
                             </div> 
                             :
-                        categories?.length! >= totalItems ?
+                        ExpensesByGroup?.length! >= totalItems ?
                             <SpecialButton 
                                 handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
                                 className={classes.specialItem}

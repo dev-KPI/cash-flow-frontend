@@ -11,6 +11,8 @@ export default interface IExpense {
         category: {
             id: number
             title: string
-        }
+        },
+        color_code: string,
+        icon_url: string
     }
 }

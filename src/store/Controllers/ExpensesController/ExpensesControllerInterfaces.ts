@@ -1,6 +1,4 @@
-import ICategory from "@models/ICategory"
 import IExpense from "@models/IExpense"
-import IGroup from "@models/IGroup"
 import IUser from "@models/IUser"
 
 
@@ -8,12 +6,15 @@ import IUser from "@models/IUser"
 export interface IExpenseByGroupResponse extends IExpense {
     user: Omit<Omit<Omit<IUser, 'first_name'>, 'last_name'>, 'picture'> 
 }
+
 export interface IUpdateExpenseByGroupBody {
     id:number
     descriptions: string; 
     amount: number
     category_id: number
-    group_id: number
+    group_id: number,
+    icon_url: string,
+    color_code: string
 }
 
 export interface ICreateExpenseByGroupBody extends Omit<IUpdateExpenseByGroupBody, "id"> {}
