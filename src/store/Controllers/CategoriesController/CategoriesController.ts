@@ -48,7 +48,7 @@ export const CategoryApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: (result, arg, body) => result ? [{ type: 'CategoryController' as const, id: result.category.id}]
+            invalidatesTags: (result, arg, body) => result ? [{ type: 'CategoryController' as const, id: body.category_id}]
             : [{ type: 'CategoryController' as const, id: 'CATEGORIES' }],
         })
     }),

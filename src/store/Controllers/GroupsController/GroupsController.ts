@@ -43,7 +43,7 @@ export const GroupsApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             providesTags: (result, err, body) => result ? 
-            [...result.users_group.map(item => ({ type: 'GroupsController' as const, id: item.user.id + 'USERS' })),
+            [...result.users_group.map(item => ({ type: 'GroupsController' as const, id: item.user.id })),
             { type: 'GroupsController' as const, id: 'GROUP_USERS' }]
                 :
             [],
