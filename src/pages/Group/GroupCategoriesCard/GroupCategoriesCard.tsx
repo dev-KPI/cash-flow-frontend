@@ -42,16 +42,16 @@ const GroupCategoriesCard = () => {
     }, [initializeHandleWrapper,
         autoHandleCloseModal])
     
-    const getCategories = (categories: ISortedCategoryItem[]) => {
-        return categories.map((item, i) =>
-            <CategoriesCardItem
-                key={i}
-                setIdModalOpen={setIdModalOpen}
-                setIsModalOpen={setIsModalOpen}
-                category={item.category}
-                amount={item.amount} />
-        )
-    }
+    // const getCategories = (categories: ISortedCategoryItem[]) => {
+    //     return categories.map((item, i) =>
+    //         <CategoriesCardItem
+    //             key={i}
+    //             setIdModalOpen={setIdModalOpen}
+    //             setIsModalOpen={setIsModalOpen}
+    //             category={item.category}
+    //             amount={item.amount} />
+    //     )
+    // }
 
     const properCategories: ISortedCategoryItem[] = useMemo(() => {
         return categories.slice(0, totalItems)
@@ -69,7 +69,7 @@ const GroupCategoriesCard = () => {
             <div className={classes.inner}>
                 <h3 className={classes.title}>Categories</h3>
                 <ul className={classes.list} ref={squareRef}>
-                    {getCategories(properCategories)}
+                    {/* {getCategories(properCategories)} */}
                     {
                     categories?.length === 0 ?
                         <div className={classes.emptyList}>

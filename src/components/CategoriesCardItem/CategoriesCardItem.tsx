@@ -2,14 +2,23 @@ import React, { FC, Dispatch, MouseEvent, useCallback, useEffect, useState } fro
 
 //logic
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
-
+import IExpense from '@models/IExpense';
 //UI
 import classes from './CategoriesCardItem.module.css';
-import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
 
 
+// import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
 
-const UserCategoriesCardDot: FC<ICategoryItem> = ({ setIdModalOpen, setIsModalOpen, category, amount = 100 }) => {
+interface IUserCategoriesCardProps{
+    expense: IExpense,
+    setIdModalOpen: (value: number) => void,
+    setIsModalOpen: (value: boolean) => void
+}
+
+const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ expense, setIdModalOpen, setIsModalOpen }) => {
+    const amount: number = expense.amount;
+    const category = expense.category_group.category;
+    const color = expense.category_group.color_code
     const [total, setTotal] = useState<number>(amount);
     
     const openModal = (e: MouseEvent) => {
@@ -25,10 +34,10 @@ const UserCategoriesCardDot: FC<ICategoryItem> = ({ setIdModalOpen, setIsModalOp
             onClick={openModal}
         >
             <h6 className={classes.expenseName}>{categoryTitle}</h6>
-            <div className={classes.icon} style={{background: category.color}}>
+            <div className={classes.icon} style={{ background: color}}>
                 <i className="bi bi-credit-card-2-front"></i>
             </div>
-            <p className={classes.expenseAmount} style={{ color: category.color }}>{`${numberWithCommas(total)}$`}</p>
+            <p className={classes.expenseAmount} style={{ color: color }}>{`${numberWithCommas(total)}$`}</p>
         </li>
     );
 };
