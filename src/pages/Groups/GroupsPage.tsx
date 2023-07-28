@@ -75,7 +75,7 @@ const Groups: FC = () => {
                 <div className={classes.pageTop}>
                     <h1 className={classes.pageTitle}>Groups
                         <span> | </span>
-                        {Groups && <span className={classes.groupAmount}>{Groups.user_groups.length}</span>}
+                        <span className={classes.groupAmount}>{Groups?.user_groups.length}</span>
                     </h1>
                     <CustomButton
                         isPending={false}
