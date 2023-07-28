@@ -1,4 +1,4 @@
-import  { FC, useState, useMemo, ReactNode } from "react";
+import  { FC, useState, useMemo, ReactNode, useCallback, useEffect } from "react";
 
 //logic
 import uuid from "react-uuid";
@@ -9,6 +9,7 @@ import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
+import { IGetCurrentUserGroups } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 
 type group_props = {
     id: number,
@@ -35,28 +36,24 @@ const Groups: FC = () => {
     const [isEditGroupModal, setIsEditGroupModal] = useState<boolean>(false);
 
     const getGroups = (): ReactNode => {
-        if(Groups?.user_groups[0]?.group?.id && !isGroupsError && !isGroupsFetching){
-            return Groups.user_groups.map((el, i) => {
-                return (
-                    <GroupListItem
-                        key={uuid()}
-                        id={el.group.id}
-                        description={el.group.description}
-                        title={el.group.title}
-                        icon={el.group.admin.picture}
-                        adminName={`${el.group.admin.first_name} ${el.group.admin.last_name}`}
-                        adminEmail={el.group.admin.login}
-                        color={el.group.color_code}
-                        isEditGroupModal={isEditGroupModal}
-                        setIsEditGroupModal={setIsEditGroupModal}
-                        isGroupLoading={isGroupsFetching}
-                        setGroupId={setGroupId}
-                    />
-                )
-            })
-        } else {
-            return <></>
-        }
+        return Groups?.user_groups.map((el, i) => {
+            return (
+                <GroupListItem
+                    key={uuid()}
+                    id={el.group.id}
+                    description={el.group.description}
+                    title={el.group.title}
+                    icon={el.group.admin.picture}
+                    adminName={`${el.group.admin.first_name} ${el.group.admin.last_name}`}
+                    adminEmail={el.group.admin.login}
+                    color={el.group.color_code}
+                    isEditGroupModal={isEditGroupModal}
+                    setIsEditGroupModal={setIsEditGroupModal}
+                    isGroupLoading={isGroupsFetching}
+                    setGroupId={setGroupId}
+                />
+            )
+        })
     }
 
     return (<>
@@ -78,7 +75,7 @@ const Groups: FC = () => {
                 <div className={classes.pageTop}>
                     <h1 className={classes.pageTitle}>Groups
                         <span> | </span>
-                        {Groups && <span className={classes.groupAmount}>{Groups.user_groups.length}</span>}
+                        <span className={classes.groupAmount}>{Groups?.user_groups.length}</span>
                     </h1>
                     <CustomButton
                         isPending={false}

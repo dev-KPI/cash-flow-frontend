@@ -1,4 +1,4 @@
-import { newICategory } from "@models/ICategory";
+import ICategory, { newICategory } from "@models/ICategory";
 
 
 export interface ICreateCategoryBody {
@@ -14,7 +14,8 @@ export interface IUpdateCategoryBody {
     group_id: number,
     category_id: number,
     icon_url: string,
-    color_code: string
+    color_code: string,
+    title: string
 }
 export interface IUpdateCategoryResponse extends Omit<Omit<newICategory, 'icon_url'>, 'color_code'> {}
 

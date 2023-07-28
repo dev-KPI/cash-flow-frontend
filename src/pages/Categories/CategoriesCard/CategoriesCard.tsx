@@ -10,15 +10,24 @@ interface ICategoriesCard {
     color: string,
     icon: string,
     isEditCategoryModal: boolean,
+    isCategoriesLoading: boolean,
+    setSelectedCategory: Dispatch<SetStateAction<number>>,
     setIsEditCategoryModal: Dispatch<SetStateAction<boolean>>
 }
 
-const CategoriesCard: FC<ICategoriesCard> = ({ id = 1, title = 'Text', color = '#333333', icon = 'bi bi-joystick', setIsEditCategoryModal, isEditCategoryModal }) => {
+const CategoriesCard: FC<ICategoriesCard> = ({ id, title, 
+color, icon, setSelectedCategory,
+setIsEditCategoryModal, isEditCategoryModal }) => {
     
-    
-    return (<li className={classes.item}
-        onClick={() => setIsEditCategoryModal(!isEditCategoryModal)}>
-        <NavLink to={'/categories'} className={classes.CategoriesCard}>
+    return (
+        <li className={classes.item}>
+        <button 
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            setSelectedCategory(id)
+            setIsEditCategoryModal(!isEditCategoryModal)
+        }}
+        className={classes.CategoriesCard}>
             <div 
             style={{backgroundColor: color}}
             className={classes.tooltip}></div>
@@ -30,7 +39,7 @@ const CategoriesCard: FC<ICategoriesCard> = ({ id = 1, title = 'Text', color = '
                 </div>
                 <p className={classes.title}>{title}</p>
             </div>
-        </NavLink>
+        </button>
     </li>)
 }
 export default React.memo(CategoriesCard)

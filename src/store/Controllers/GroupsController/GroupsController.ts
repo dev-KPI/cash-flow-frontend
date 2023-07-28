@@ -21,11 +21,18 @@ export const GroupsApiSlice = api.injectEndpoints({
                 url: `groups/`,
                 credentials: 'include',
             }),
+            transformResponse: (response: IGetCurrentUserGroups): IGetCurrentUserGroups => {
+                return {user_groups: response.user_groups.filter(el => el.status !== 'INACTIVE')}
+            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result) => [{type: 'GroupsController', id: 'GROUPS' },
-            { type: 'GroupsController', id: 'CREATE_GROUP' }]
+            providesTags: (result) => result?.user_groups[0] ? 
+            [...result.user_groups.map(el => ({type: 'GroupsController' as const, id: el.group.id })),
+            {type: 'GroupsController' as const, id: 'GROUPS_DELETE'}, 
+            {type: 'GroupsController' as const, id: 'GROUPS' }] :
+            [{type: 'GroupsController' as const, id: 'GROUPS' },
+            {type: 'GroupsController' as const, id: 'GROUPS_DELETE'}]
         }),
         getUsersByGroup: builder.query<IGetUsersFromGroupResponse, {group_id: number}>({
             query: ({group_id}) => ({
@@ -35,7 +42,9 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result, err, body) => result ? [...result.users_group.map(item => ({ type: 'GroupsController' as const, id: body.group_id }))]
+            providesTags: (result, err, body) => result ? 
+            [...result.users_group.map(item => ({ type: 'GroupsController' as const, id: item.user.id })),
+            { type: 'GroupsController' as const, id: 'GROUP_USERS' }]
                 :
             [],
         }),    
@@ -49,7 +58,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'GroupsController', id: 'CREATE_GROUP' }],
+            invalidatesTags: [{ type: 'GroupsController', id: 'GROUPS' }],
         }),
         updateGroup: builder.mutation<IUpdateGroupResponse, IUpdateGroupBody>({
             query: (body) => ({
@@ -72,7 +81,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number }
             ) => response.status,
-            invalidatesTags: [{ type: 'GroupsController', id: 'REMOVE_USER' }],
+            invalidatesTags: [{ type: 'GroupsController', id: 'GROUPS' }],
         }),
         leaveGroup: builder.mutation<null, number>({
             query: (group_id) => ({
@@ -83,7 +92,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response,
             ) => response,
-            invalidatesTags: (result, err, body) => result ? [{ type: 'GroupsController' as const, id: body }] : [],
+            invalidatesTags: (result, err, body) => result ? [{ type: 'GroupsController' as const, id: 'GROUPS_DELETE' }] : [],
         }),
     }),
     overrideExisting: false,

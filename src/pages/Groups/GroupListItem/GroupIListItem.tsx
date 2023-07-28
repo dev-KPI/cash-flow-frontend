@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useCallback, useRef, useState } from 'react';
+import React, { FC, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 //logic
@@ -38,27 +38,22 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
     const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetUsersByGroupQuery({group_id: id});
 
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
+
     const memberIcons = (): string[] => {
-        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup?.users_group[0]?.user) {
-            return UsersInGroup.users_group.map(el => el.user.picture);
-        } else {
-            return ['']
-        } 
+        return UsersInGroup?.users_group.map(el => el.user.picture) || [''];
     }
     const getMemberIcons = () => {
-        if(!isUsersInGroupError && !isUsersInGroupFetching && UsersInGroup?.users_group[0]?.user){
-            return memberIcons().map((icon, i) => 
-                <div
-                    className={classes.avatar}
-                    key={i}
-                >
-                    <img className={classes.photo}
-                        alt={'user icon'}
-                        src={isUrl(icon) ? icon : userIcon}
-                    />
-                </div>
-            ).slice(0,3)
-        }
+        return memberIcons().map((icon, i) => 
+            <div
+                className={classes.avatar}
+                key={i}
+            >
+                <img className={classes.photo}
+                    alt={'user icon'}
+                    src={isUrl(icon) ? icon : userIcon}
+                />
+            </div>
+        ).slice(0,3)
     }
 
     const getAdminIcon = () => {
@@ -70,6 +65,11 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             <i className={"bi bi-people"}></i>
     }
     
+
+    const showLoader = useCallback (() => {
+        return  <></>
+    }, [UsersInGroup?.users_group[0]])
+
     const showToolTip = useCallback(() => {
         if (isLeavedGroup) {
             return <StatusTooltip
@@ -85,7 +85,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
     return (
         <div className={classes.group}>
             {showToolTip()}
-            {UsersInGroup?.users_group[0] && !isUsersInGroupFetching ? 
+            {!UsersInGroup?.users_group[0] ? <GroupListItemLoader/> :
                 <>
                     <SmallModal
                         active={isMenuOpen}
@@ -160,7 +160,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                             </div>
                         </div>
                     </Link>
-                </> : <GroupListItemLoader/>}
+                </>}
         </div>   
     );
 };
