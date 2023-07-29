@@ -45,7 +45,7 @@ const UserCategoriesCard = () => {
 
     const initializeHandleWrapper = useCallback(()=> {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
-    }, [height, width, ExpensesByGroup])
+    }, [height, width, ExpensesByGroup, UserCategoriesByGroup, UserGroups])
 
     const autoHandleCloseModal = useCallback(() => {
         if(!isExpenseModalOpen) setIdExpenseModalOpen(-1) 
@@ -113,8 +113,8 @@ const UserCategoriesCard = () => {
     }
     const getCategoryModal = () => {
         return <CategoryModal
-            groupId={0}
-            categoryId={0}
+            groupId={selectedGroup}
+            categoryId={idExpenseModalOpen}
             isCategoryModalOpen={isCategoryModalOpen}
             setIsCategoryModalOpen={setIsCategoryModalOpen}
             mode='create'
