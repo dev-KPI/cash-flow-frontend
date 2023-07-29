@@ -24,7 +24,7 @@ const Categories: FC = () => {
     const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
-    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError } = useGetCategoriesByGroupQuery(GroupsStore.defaultGroup)
+    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError } = useGetCategoriesByGroupQuery(selectedGroup)
 
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
