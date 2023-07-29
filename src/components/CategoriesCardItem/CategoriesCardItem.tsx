@@ -6,16 +6,14 @@ import IExpense from '@models/IExpense';
 //UI
 import classes from './CategoriesCardItem.module.css';
 
-
-// import { ICategoryItem } from '@pages/Dashboard/UserCategoriesCard/UserCategoriesCard';
-
 interface IUserCategoriesCardProps{
     expense: IExpense,
     setIdModalOpen: (value: number) => void,
-    setIsModalOpen: (value: boolean) => void
+    setIsModalOpen: (value: boolean) => void,
+    categoryId: number
 }
 
-const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ expense, setIdModalOpen, setIsModalOpen }) => {
+const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({categoryId, expense, setIdModalOpen, setIsModalOpen }) => {
     const amount: number = expense.amount;
     const category = expense.category_group.category;
     const color = expense.category_group.color_code
@@ -23,7 +21,7 @@ const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ expense, setIdMod
     
     const openModal = (e: MouseEvent) => {
         e.preventDefault()
-        setIdModalOpen(category.id)
+        setIdModalOpen(categoryId)
         setIsModalOpen(true)
     }    
     const categoryTitle = category.title.length > 8 ? `${category.title.slice(0, 7)}..` : category.title;

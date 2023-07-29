@@ -40,6 +40,9 @@ class DateServiceClass {
         const year = date.getFullYear();
         return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year} ${date.getHours()}:${date.getMinutes()}`
     }
+    getYearMonth(year: number, month: string): string {
+        return `${year}-${this.getMonthIdxByName(month) < 10 ? '0' + this.getMonthIdxByName(month) : this.getMonthIdxByName(month)}`
+    }
 }
 const DateService = new DateServiceClass();
 export default DateService

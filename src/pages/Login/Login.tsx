@@ -17,12 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 const Login: FC = () => {
 
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
-    setTimeout(() => {
-        setIsPageLoading(false)
-    }, 1500);
+
     return(
-        isPageLoading ? <PageGlobalLoader/> :
         <div className="Login__container">
         <header className={classes.Header}>
             <div className={classes.leftSide}>

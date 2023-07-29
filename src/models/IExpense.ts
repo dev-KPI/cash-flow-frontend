@@ -16,3 +16,11 @@ export default interface IExpense {
         icon_url: string
     }
 }
+
+export interface IExpensePeriodYearMonth {
+    year_month: string 
+} 
+export interface IExpensePeriodRangeDates {
+    start_date: string,
+    end_date: string
+}

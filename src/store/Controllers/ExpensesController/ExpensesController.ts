@@ -5,7 +5,9 @@ import IGroup from '@models/IGroup';
 import { 
     ICreateExpenseByGroupBody,
     IUpdateExpenseByGroupBody,
-    IExpenseByGroupResponse
+    IExpenseByGroupResponse,
+    IGetExpensesByGroupBody,
+    IGetExpensesBody
 } from './ExpensesControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import IExpense from '@models/IExpense';
@@ -13,12 +15,10 @@ import IExpense from '@models/IExpense';
 
 export const ExpensesApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        getExpenses: builder.query<IExpense[], string>({
-            query: (year_month: string = '2023-07') => ({
+        getExpenses: builder.query<IExpense[], IGetExpensesBody>({
+            query: (period) => ({
                 url: `groups/expenses`,
-                params: {
-                    year_month: year_month,
-                },
+                params: period,
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -31,18 +31,32 @@ export const ExpensesApiSlice = api.injectEndpoints({
             [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
             { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
         }),
-        getExpensesByGroup: builder.query<IExpense[], {group_id:number, year_month: string}>({
-            query: ({group_id, year_month = '2023-07'}) => ({
+        getExpensesByGroup: builder.query<IExpense[], IGetExpensesByGroupBody>({
+            query: ({group_id, period}) => ({
                 url: `groups/${group_id}/expenses`,
-                params: {
-                    year_month: year_month
-                },
+                params: period,
                 credentials: 'include',
             }),
+            transformResponse: (response: IExpense[]): IExpense[] => {
+                let unifiedCategories: IExpense[] = [];
+                for (let i = 0; i < response.length; i++){
+                    if (unifiedCategories[i]?.category_group.category.id !== response[i].category_group.category.id){
+                        let unifiedCategory = response[i]
+                        unifiedCategory.amount = 0;
+                        unifiedCategories.push(unifiedCategory);
+                    }
+                }
+                for (let i = 0; i < response.length; i++){
+                    let updatingCategory = unifiedCategories[unifiedCategories.findIndex(el => el.category_group.category.id === response[i].category_group.category.id)]
+                    updatingCategory.amount += response[i].amount
+                    unifiedCategories[unifiedCategories.findIndex(el => el.category_group.category.id === response[i].category_group.category.id)] = updatingCategory
+                }
+                return unifiedCategories;
+            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result) => result ? [...result.map(item => ({ type: 'ExpensesController' as const, id: item.id }))]
+            providesTags: (result, arg, body) => result ? [...result.map(item => ({ type: 'ExpensesController' as const, id: item.id }))]
             : []
         }),
         createExpenseByGroup: builder.mutation<IExpenseByGroupResponse, ICreateExpenseByGroupBody>({
