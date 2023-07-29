@@ -15,6 +15,7 @@
 
 .title {
     composes: cardTitle from "@styles/style.css";
+    white-space: nowrap;
 }
 
 .categoryName{
@@ -22,7 +23,8 @@
     font-size: 16px;
     line-height: 19px;
     text-align: center;
-    color: var(--text)
+    color: var(--text);
+    white-space: nowrap;
 }
 
 
@@ -31,6 +33,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 14px;
+    gap: 5px;
 }
 
 .nav {

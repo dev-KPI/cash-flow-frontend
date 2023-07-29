@@ -54,7 +54,7 @@ const UserCategoriesCard = () => {
     useEffect(()=>{
         initializeHandleWrapper()
         autoHandleCloseModal()
-    }, [ initializeHandleWrapper, 
+    }, [initializeHandleWrapper, 
         autoHandleCloseModal])
 
     const getCategories = (categories: IExpense[]) => {
@@ -150,8 +150,7 @@ const UserCategoriesCard = () => {
             {isGroupsLoading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
-                        <h3 className={classes.title}>Categories
-                            <span className={classes.categoryName}>
+                        <h3 className={classes.title}>Categories <span className={classes.categoryName}>
                                 ({UserGroups?.user_groups[pageGroup].group.title})
                             </span>
                         </h3>

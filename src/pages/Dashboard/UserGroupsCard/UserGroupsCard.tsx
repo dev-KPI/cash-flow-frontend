@@ -12,7 +12,6 @@ import UserGroupsCardLoader from '@pages/Dashboard/UserGroupsCard/UserGroupsCard
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
-import uuid from 'react-uuid';
 
 
 const UserGroupsCard = () => {

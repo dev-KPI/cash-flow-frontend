@@ -19,6 +19,7 @@
 
 .expenseName {
     composes: smallItemTitle from "@styles/style.css";
+    height: 16px;
     white-space: nowrap;
 }
 
