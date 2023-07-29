@@ -1,9 +1,10 @@
-import React, { FC, ReactNode, useState, Dispatch, SetStateAction } from "react";
+import React, { FC, ReactNode, useState, Dispatch, SetStateAction, useCallback } from "react";
 
 //UI
 import classes from './SalaryModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateReplenishmentMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
@@ -13,10 +14,6 @@ interface IOperationModalProps{
     setIsSalaryModalOpen: Dispatch<SetStateAction<boolean>>
 }
 
-interface IModalState {
-    operation: number
-    description: string
-}
 
 const SalaryModal: FC<IOperationModalProps> = ({ 
     isSalaryModalOpen = false, 
@@ -32,10 +29,6 @@ const SalaryModal: FC<IOperationModalProps> = ({
     const [descriptionValue, setDescriptionValue] = useState<string>('');
 
     const [createReplenishment, {isLoading: isReplenishmentLoading, isError: isReplenishmentError, isSuccess: isReplenishmentCreated}] = useCreateReplenishmentMutation()
-    const postObject: IModalState = {
-        operation: operationValue,
-        description: descriptionValue
-    };
 
     const handleSubmit = async () => {
         createReplenishment({
@@ -44,51 +37,64 @@ const SalaryModal: FC<IOperationModalProps> = ({
         })
         setIsSalaryModalOpen(false);
     }
-
-    return <UsePortal
-        setIsModalOpen={setIsSalaryModalOpen}
-        isModalOpen={isSalaryModalOpen}
-        headerIcon={headerIcon}
-        title={titleModal}
+    const showToolTip = useCallback(() => {
+        if (isReplenishmentCreated) {
+            return <StatusTooltip
+                type="success"
+                title="Salary successfully added" />
+        } else if (isReplenishmentError) {
+            return <StatusTooltip
+                type="error"
+                title={`Salary not added`} />
+        }
+    }, [createReplenishment, isReplenishmentLoading, isReplenishmentError, isReplenishmentCreated])
+    return <>
+        {showToolTip()}
+        <UsePortal
+            setIsModalOpen={setIsSalaryModalOpen}
+            isModalOpen={isSalaryModalOpen}
+            headerIcon={headerIcon}
+            title={titleModal}
         >
             <form
-            onSubmit={handleSubmit}>
+                onSubmit={handleSubmit}>
                 <ul
-                className={classes.OperationBody}>
+                    className={classes.OperationBody}>
                     <li className={classes.AmountInput}>
                         <label className={classes.title} htmlFor="salary">{amountTitle}</label>
                         <div className={classes.inputWrapper}>
-                            <Input 
-                            setFormValue={{type: 'cash', callback: setOperationValue}}
-                            isInputMustClear={!isSalaryModalOpen} 
-                            Icon={dollarIcon} inputType="cash" id="salary" 
-                            name="salary" placeholder="00.00"/>
+                            <Input
+                                setFormValue={{ type: 'cash', callback: setOperationValue }}
+                                isInputMustClear={!isSalaryModalOpen}
+                                Icon={dollarIcon} inputType="cash" id="salary"
+                                name="salary" placeholder="00.00" />
                         </div>
                     </li>
                     <li className={classes.DescriptionInput}>
                         <label className={classes.title} htmlFor="description">{descriptionTitle}</label>
                         <div className={classes.inputWrapper}>
-                            <Input 
-                            setFormValue={{type: 'text', callback: setDescriptionValue}}
-                            isInputMustClear={!isSalaryModalOpen} 
-                            inputType="text" id="description" 
-                            name="description"/>
+                            <Input
+                                setFormValue={{ type: 'text', callback: setDescriptionValue }}
+                                isInputMustClear={!isSalaryModalOpen}
+                                inputType="text" id="description"
+                                name="description" />
                         </div>
                     </li>
                 </ul>
                 <div className={classes.confirmBtnWrapper}>
-                <CustomButton
-                    isPending={isReplenishmentLoading}
-                    children="Confirm"
-                    btnWidth={170}
-                    btnHeight={36}
-                    icon="submit"
-                    type='primary'
-                    callback={handleSubmit}
-                    className={`btn-primary`} />
+                    <CustomButton
+                        isPending={isReplenishmentLoading}
+                        children="Confirm"
+                        btnWidth={170}
+                        btnHeight={36}
+                        icon="submit"
+                        type='primary'
+                        callback={handleSubmit}
+                        className={`btn-primary`} />
                 </div>
             </form>
         </UsePortal>
+    </>
 };
   
 export default React.memo(SalaryModal);
