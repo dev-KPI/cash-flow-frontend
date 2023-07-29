@@ -7,6 +7,9 @@ export interface IExpenseByGroupResponse extends IExpense {
     user: Omit<Omit<Omit<IUser, 'first_name'>, 'last_name'>, 'picture'> 
 }
 
+export interface IGetExpensesBody {
+    period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
+}
 
 export interface IUpdateExpenseByGroupBody {
     id:number

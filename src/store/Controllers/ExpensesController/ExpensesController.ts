@@ -6,7 +6,8 @@ import {
     ICreateExpenseByGroupBody,
     IUpdateExpenseByGroupBody,
     IExpenseByGroupResponse,
-    IGetExpensesByGroupBody
+    IGetExpensesByGroupBody,
+    IGetExpensesBody
 } from './ExpensesControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import IExpense from '@models/IExpense';
@@ -14,12 +15,10 @@ import IExpense from '@models/IExpense';
 
 export const ExpensesApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        getExpenses: builder.query<IExpense[], string>({
-            query: (year_month: string = '2023-07') => ({
+        getExpenses: builder.query<IExpense[], IGetExpensesBody>({
+            query: (period) => ({
                 url: `groups/expenses`,
-                params: {
-                    year_month: year_month,
-                },
+                params: period,
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -57,7 +56,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result) => result ? [...result.map(item => ({ type: 'ExpensesController' as const, id: item.id }))]
+            providesTags: (result, arg, body) => result ? [...result.map(item => ({ type: 'ExpensesController' as const, id: item.id }))]
             : []
         }),
         createExpenseByGroup: builder.mutation<IExpenseByGroupResponse, ICreateExpenseByGroupBody>({

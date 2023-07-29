@@ -38,9 +38,12 @@ const UserCategoriesCard = () => {
 
     const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
     const { data: UserCategoriesByGroup, isLoading: isCategoriesByGroupLoading, isError: isCategoriesByGroupError } = useGetCategoriesByGroupQuery(selectedGroup);
-    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError } = useGetExpensesByGroupQuery(
-        {group_id: selectedGroup, period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}}
-    )
+    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError } = useGetExpensesByGroupQuery({
+        group_id: selectedGroup, 
+        period: {
+            year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)
+        }
+    })
 
     const initializeHandleWrapper = useCallback(()=> {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
