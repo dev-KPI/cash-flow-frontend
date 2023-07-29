@@ -21,7 +21,7 @@ const Categories: FC = () => {
 
     const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
     
-    const [selectedGroup, setSelectedGroup] = useState<number>(0);
+    const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
     const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError } = useGetCategoriesByGroupQuery(GroupsStore.defaultGroup)
