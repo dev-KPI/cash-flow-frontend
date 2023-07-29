@@ -19,8 +19,6 @@ import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
-
 
 
 const UserCategoriesCard = () => {
@@ -30,7 +28,7 @@ const UserCategoriesCard = () => {
     const [totalItems, setTotalItems] = useState<number>(11);
     const [pageGroup, setGroupPage] = useState<number>(0);
     const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
-    const [idExpenseModalOpen, setIdExpenseModalOpen] = useState<number>(-1);
+    const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [isExpenseModalOpen, setIsExpenseModalOpen] = useState<boolean>(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
@@ -47,25 +45,20 @@ const UserCategoriesCard = () => {
 
     const initializeHandleWrapper = useCallback(()=> {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
-    }, [height, width, ExpensesByGroup])
+    }, [height, width, ExpensesByGroup, UserCategoriesByGroup, UserGroups])
 
-    const autoHandleCloseModal = useCallback(() => {
-        if(!isExpenseModalOpen) setIdExpenseModalOpen(-1) 
-    }, [isExpenseModalOpen])
+  
 
     useEffect(()=>{
         initializeHandleWrapper()
-        autoHandleCloseModal()
-    }, [ initializeHandleWrapper, 
-        autoHandleCloseModal])
+    }, [initializeHandleWrapper])
 
     const getCategories = (categories: IExpense[]) => {
         if(categories.length > 0){
             return categories.map((item, i) => 
                 <CategoriesCardItem 
                 key={i} 
-                categoryId={idExpenseModalOpen}
-                setIdModalOpen={setIdExpenseModalOpen}
+                setIdModalOpen={setSelectedCategory}
                 setIsModalOpen={setIsExpenseModalOpen}
                 expense={item}/>
             )
@@ -73,8 +66,7 @@ const UserCategoriesCard = () => {
             return UserCategoriesByGroup?.categories_group.map((item, i) => 
                 <CategoriesCardItem 
                 key={i} 
-                categoryId={idExpenseModalOpen}
-                setIdModalOpen={setIdExpenseModalOpen}
+                setIdModalOpen={setSelectedCategory}
                 setIsModalOpen={setIsExpenseModalOpen}
                 expense={{
                     id: i,
@@ -99,8 +91,10 @@ const UserCategoriesCard = () => {
     }
     const getExpenseModal = () => {
         return <ExpenseModal
-        isExpenseModalOpen={isExpenseModalOpen}
-        setIsExpenseModalOpen={setIsExpenseModalOpen}
+            isExpenseModalOpen={isExpenseModalOpen}
+            setIsExpenseModalOpen={setIsExpenseModalOpen}
+            groupId={selectedGroup}
+            categoryId={selectedCategory}
         />
     }
     const getViewMoreModal = () => {
@@ -115,8 +109,8 @@ const UserCategoriesCard = () => {
     }
     const getCategoryModal = () => {
         return <CategoryModal
-            groupId={0}
-            categoryId={0}
+            groupId={selectedGroup}
+            categoryId={selectedCategory}
             isCategoryModalOpen={isCategoryModalOpen}
             setIsCategoryModalOpen={setIsCategoryModalOpen}
             mode='create'
@@ -152,8 +146,7 @@ const UserCategoriesCard = () => {
             {isGroupsLoading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
-                        <h3 className={classes.title}>Categories
-                            <span className={classes.categoryName}>
+                        <h3 className={classes.title}>Categories <span className={classes.categoryName}>
                                 ({UserGroups?.user_groups[pageGroup].group.title})
                             </span>
                         </h3>
@@ -179,7 +172,7 @@ const UserCategoriesCard = () => {
                     <ul className={classes.list} ref={squareRef}>
                         {getCategories(properCategories)}
                         {
-                        ExpensesByGroup?.length === 0 ?
+                        UserCategoriesByGroup && UserCategoriesByGroup.categories_group.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
                                     <SpecialButton
@@ -189,7 +182,7 @@ const UserCategoriesCard = () => {
                                     />
                             </div> 
                             :
-                        ExpensesByGroup?.length! >= totalItems ?
+                            UserCategoriesByGroup && UserCategoriesByGroup .categories_group.length! >= totalItems ?
                             <SpecialButton 
                                 handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
                                 className={classes.specialItem}

@@ -8,6 +8,8 @@
 .inner {
     padding: 24px 32px;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .title{
@@ -29,10 +31,14 @@
     margin-top: 15px;
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .personal__data{
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .user__info{
@@ -47,7 +53,7 @@
 }
 
 .balance {
-    margin-top: 35px;
+    margin-top: auto;
     text-align: left;
 }
 .balance h5{

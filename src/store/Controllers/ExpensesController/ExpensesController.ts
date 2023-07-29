@@ -1,7 +1,6 @@
 import { api } from '@store/api';
 
 //types
-import IGroup from '@models/IGroup';
 import { 
     ICreateExpenseByGroupBody,
     IUpdateExpenseByGroupBody,
@@ -61,7 +60,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
         }),
         createExpenseByGroup: builder.mutation<IExpenseByGroupResponse, ICreateExpenseByGroupBody>({
             query: (body) => ({
-                url: `expenses/${body.group_id}/expenses`,
+                url: `groups/${body.group_id}/expenses`,
                 method: 'POST',
                 credentials: 'include',
                 body: Omiter(['group_id'], body)
@@ -85,7 +84,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
         }),
         deleteExpenseByGroup: builder.mutation<null, {group_id:number, expense_id: number}>({
             query: ({ group_id, expense_id}) => ({
-                url: `expenses/${group_id}/expenses/${expense_id}`,
+                url: `groups/${group_id}/expenses/${expense_id}`,
                 method: 'DELETE',
                 credentials: 'include',
             }),
