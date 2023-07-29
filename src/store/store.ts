@@ -6,6 +6,7 @@ import storage from 'redux-persist/lib/storage';
 import MonthPickerSlice from '@UI_store/MonthPickerSlice/MonthPickerSlice';
 import ThemeSlice from '@UI_store/ThemeSlice/ThemeSlice';
 import UserSlice from './User/UserSlice';
+import GroupSlice from './Group/GroupSlice';
 
 import { api } from './api';
 
@@ -24,6 +25,7 @@ export const store = configureStore({
         persistedThemeSlice,
         persistedUserSlice,
         MonthPickerSlice,
+        GroupSlice,
         [api.reducerPath]: api.reducer,
     },
     devTools: devToolsCompose,
