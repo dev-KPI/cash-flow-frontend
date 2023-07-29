@@ -10,18 +10,16 @@ interface IUserCategoriesCardProps{
     expense: IExpense,
     setIdModalOpen: (value: number) => void,
     setIsModalOpen: (value: boolean) => void,
-    categoryId: number
 }
 
-const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({categoryId, expense, setIdModalOpen, setIsModalOpen }) => {
+const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({expense, setIdModalOpen, setIsModalOpen }) => {
     const amount: number = expense.amount;
     const category = expense.category_group.category;
     const color = expense.category_group.color_code
     const [total, setTotal] = useState<number>(amount);
-    
     const openModal = (e: MouseEvent) => {
         e.preventDefault()
-        setIdModalOpen(categoryId)
+        setIdModalOpen(expense.category_group.category.id)
         setIsModalOpen(true)
     }    
     const categoryTitle = category.title.length > 8 ? `${category.title.slice(0, 7)}..` : category.title;

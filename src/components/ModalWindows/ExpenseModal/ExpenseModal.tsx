@@ -7,20 +7,18 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 //logic
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+import { useCreateExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
 
 interface IExpenseModalProps{
     isExpenseModalOpen: boolean
     setIsExpenseModalOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-interface IModalState {
-    operation: number
-    description: string
+    groupId: number,
+    categoryId: number,
 }
 
 const ExpenseModal: FC<IExpenseModalProps> = ({ 
     isExpenseModalOpen = false, 
-    setIsExpenseModalOpen }) => {
+    setIsExpenseModalOpen, groupId, categoryId }) => {
 
     const dollarIcon: ReactNode = <i className="bi bi-currency-dollar"></i>
     const headerIcon: ReactNode = <i className="bi bi-graph-down-arrow"></i>
@@ -28,34 +26,31 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const amountTitle = 'Amount of expense'
     const descriptionTitle = 'Description of expense'
 
-    const [operationValue, setOperationValue] = useState<number>(0);
+    const [amountValue, setAmountValue] = useState<number>(0);
     const [descriptionValue, setDescriptionValue] = useState<string>('');
 
-    //submit
-    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-    const [shouldShowTooltip, setShouldShowTooltip] = useState<boolean>(false);
+    const [createExpense, { isLoading: isExpenseCreating, isError: isExpenseError, isSuccess: isExpenseCreated }] = useCreateExpenseByGroupMutation();
 
-    const postObject: IModalState = {
-        operation: operationValue,
-        description: descriptionValue
-    };
-
-    const handleSubmit = async() => {
-        setIsSubmiting(true)
-        await setTimeout(() => {
-            setShouldShowTooltip(true)
-            setIsSubmiting(false);
-            alert(JSON.stringify(postObject, null, 2));
-            setIsExpenseModalOpen(false);
-        }, 3000);
+    const handleSubmit = () => {
+        createExpense({
+            descriptions: descriptionValue,
+            amount: amountValue,
+            category_id: categoryId,
+            group_id: groupId,
+        })
+        setIsExpenseModalOpen(false)
     }
     const showToolTip = useCallback(() => {
-        if (shouldShowTooltip) {
+        if (isExpenseCreated) {
             return <StatusTooltip
             type="success" 
             title="Expense successfully added"/>
+        } else if (isExpenseError) {
+            return <StatusTooltip
+                type="error"
+                title={`Expense not added`} />
         }
-    }, [shouldShowTooltip])
+    }, [createExpense, isExpenseCreating, isExpenseError, isExpenseCreated])
 
     return <>
     {showToolTip()}
@@ -73,7 +68,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         <label className={classes.title} htmlFor="salary">{amountTitle}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
-                            setFormValue={{type: 'cash', callback: setOperationValue}}
+                            setFormValue={{type: 'cash', callback: setAmountValue}}
                             isInputMustClear={!isExpenseModalOpen} 
                             Icon={dollarIcon} inputType="cash" id="salary" 
                             name="salary" placeholder="00.00"/>
@@ -92,7 +87,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 </ul>
                 <div className={classes.confirmBtnWrapper}>
                     <CustomButton
-                        isPending={isSubmiting}
+                        isPending={isExpenseCreating}
                         children="Confirm"
                         btnWidth={170}
                         btnHeight={36}

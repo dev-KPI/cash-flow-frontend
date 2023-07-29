@@ -28,7 +28,7 @@ const UserCategoriesCard = () => {
     const [totalItems, setTotalItems] = useState<number>(11);
     const [pageGroup, setGroupPage] = useState<number>(0);
     const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
-    const [idExpenseModalOpen, setIdExpenseModalOpen] = useState<number>(-1);
+    const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [isExpenseModalOpen, setIsExpenseModalOpen] = useState<boolean>(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
@@ -47,23 +47,18 @@ const UserCategoriesCard = () => {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
     }, [height, width, ExpensesByGroup, UserCategoriesByGroup, UserGroups])
 
-    const autoHandleCloseModal = useCallback(() => {
-        if(!isExpenseModalOpen) setIdExpenseModalOpen(-1) 
-    }, [isExpenseModalOpen])
+  
 
     useEffect(()=>{
         initializeHandleWrapper()
-        autoHandleCloseModal()
-    }, [initializeHandleWrapper, 
-        autoHandleCloseModal])
+    }, [initializeHandleWrapper])
 
     const getCategories = (categories: IExpense[]) => {
         if(categories.length > 0){
             return categories.map((item, i) => 
                 <CategoriesCardItem 
                 key={i} 
-                categoryId={idExpenseModalOpen}
-                setIdModalOpen={setIdExpenseModalOpen}
+                setIdModalOpen={setSelectedCategory}
                 setIsModalOpen={setIsExpenseModalOpen}
                 expense={item}/>
             )
@@ -71,8 +66,7 @@ const UserCategoriesCard = () => {
             return UserCategoriesByGroup?.categories_group.map((item, i) => 
                 <CategoriesCardItem 
                 key={i} 
-                categoryId={idExpenseModalOpen}
-                setIdModalOpen={setIdExpenseModalOpen}
+                setIdModalOpen={setSelectedCategory}
                 setIsModalOpen={setIsExpenseModalOpen}
                 expense={{
                     id: i,
@@ -97,8 +91,10 @@ const UserCategoriesCard = () => {
     }
     const getExpenseModal = () => {
         return <ExpenseModal
-        isExpenseModalOpen={isExpenseModalOpen}
-        setIsExpenseModalOpen={setIsExpenseModalOpen}
+            isExpenseModalOpen={isExpenseModalOpen}
+            setIsExpenseModalOpen={setIsExpenseModalOpen}
+            groupId={selectedGroup}
+            categoryId={selectedCategory}
         />
     }
     const getViewMoreModal = () => {
@@ -114,7 +110,7 @@ const UserCategoriesCard = () => {
     const getCategoryModal = () => {
         return <CategoryModal
             groupId={selectedGroup}
-            categoryId={idExpenseModalOpen}
+            categoryId={selectedCategory}
             isCategoryModalOpen={isCategoryModalOpen}
             setIsCategoryModalOpen={setIsCategoryModalOpen}
             mode='create'

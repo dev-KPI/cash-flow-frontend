@@ -61,6 +61,8 @@ const GroupCategoriesCard = () => {
         return <ExpenseModal
             isExpenseModalOpen={isModalOpen}
             setIsExpenseModalOpen={setIsModalOpen}
+            categoryId={0}
+            groupId={0}
         />
     }
     return (

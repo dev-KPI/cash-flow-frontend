@@ -40,8 +40,10 @@ export const UserApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: [{ type: 'UserController' as const, id: 0 },
-            { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' }],
+            providesTags: [
+                { type: 'UserController' as const, id: 0 },
+                { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
     }),
     overrideExisting: false,
