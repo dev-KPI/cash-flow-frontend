@@ -4,7 +4,8 @@ import uuid from 'react-uuid';
 //logic
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
 import { useGetCategoriesByGroupQuery } from "@store/Controllers/CategoriesController/CategoriesController";
-
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import IGroupState from "@store/Group/GroupInterfaces";
 //UI
 import classes from './Categories.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
@@ -13,14 +14,17 @@ import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal"
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 
 
+
 const Categories: FC = () => {
+    
+    const GroupsStore = useAppSelector<IGroupState>(store => store.GroupSlice)
 
     const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
     
     const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
-    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError } = useGetCategoriesByGroupQuery(selectedGroup)
+    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError } = useGetCategoriesByGroupQuery(GroupsStore.defaultGroup)
 
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
