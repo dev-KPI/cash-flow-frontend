@@ -19,8 +19,6 @@ import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
-
 
 
 const UserCategoriesCard = () => {
@@ -179,7 +177,7 @@ const UserCategoriesCard = () => {
                     <ul className={classes.list} ref={squareRef}>
                         {getCategories(properCategories)}
                         {
-                        ExpensesByGroup?.length === 0 ?
+                        UserCategoriesByGroup && UserCategoriesByGroup.categories_group.length === 0 ?
                             <div className={classes.emptyList}>
                                 <p>Category list is empty!</p>
                                     <SpecialButton
@@ -189,7 +187,7 @@ const UserCategoriesCard = () => {
                                     />
                             </div> 
                             :
-                        ExpensesByGroup?.length! >= totalItems ?
+                            UserCategoriesByGroup && UserCategoriesByGroup .categories_group.length! >= totalItems ?
                             <SpecialButton 
                                 handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
                                 className={classes.specialItem}
