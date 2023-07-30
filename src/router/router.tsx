@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo } from 'react';
 
 import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
 import { routesAuth, groupRoutes, routesNotAuth } from './routes'
@@ -8,6 +8,8 @@ import { UserSliceActions } from '@store/User/UserSlice';
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import IUserState from '@store/User/UserInterfaces';
+import { GroupSliceActions } from '@store/Group/GroupSlice';
+import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import Header from '@components/Header/Header';
 import Footer from '@components/Footer/Footer';
@@ -16,9 +18,25 @@ import NotFound from '@pages/NotFound/NotFound';
 
 
 
+
 const Router: FC = () => {
 
     const UserSliceStore = useAppSelector<IUserState>(state => state.persistedUserSlice)
+
+    const GroupsSliceDispatch = useActionCreators(GroupSliceActions);
+    const {data: UserGroups, isError: isUserGroupsError, isLoading: isUserGroupsLoading} = useGetCurrentUserGroupsQuery(null);
+
+    const intitializeBaseGroup = useCallback(() => {
+        if (!isUserGroupsLoading && !isUserGroupsError && UserGroups?.user_groups[0]?.group.id){
+            GroupsSliceDispatch.setDefaultGroup(UserGroups.user_groups[0].group.id)
+        } else {
+            GroupsSliceDispatch.setDefaultGroup(0)
+        }
+    }, [UserGroups, isUserGroupsError, isUserGroupsLoading])
+
+    useEffect(() => {
+        intitializeBaseGroup()
+    }, [intitializeBaseGroup])
 
     const BrowserRoutesForNotAuth = createBrowserRouter([
         {

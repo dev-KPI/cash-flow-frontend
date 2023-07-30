@@ -1,15 +1,18 @@
-import React, { FC, Dispatch, SetStateAction, ReactNode, useState, useCallback} from "react";
+import React, { FC, Dispatch, SetStateAction, ReactNode, useState, useCallback, useEffect, useMemo} from "react";
 
 //UI
 import classes from './GroupModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import { useCreateGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
+import IGroupState from "@store/Group/GroupInterfaces";
+import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { GroupSliceActions } from "@store/Group/GroupSlice";
 
 interface IGroupModalProps{
     groupId?: number,
@@ -20,6 +23,10 @@ interface IGroupModalProps{
 }
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId }) => {
+    
+    const GroupsStore = useAppSelector<IGroupState>(state => state.persistedGroupSlice)
+    const GroupsSliceDispatch = useActionCreators(GroupSliceActions);
+    
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
 
@@ -37,10 +44,19 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
 
-    const closeModalHandler = () => {
-        setIsGroupModalOpen(false);
-        setGroupId(0);
-    }
+    const closeModalHandler = useCallback(() => {
+        if(!isGroupCreating || !isGroupUpdating){
+            setGroupId(0);
+            setIsGroupModalOpen(false);
+        }
+    }, [isGroupUpdatingError, isGroupUpdating, isGroupUpdated,
+        isGroupCreatingError, isGroupCreating, isGroupCreated])
+
+    const intitializeBaseGroup = useCallback(() => {
+        if (GroupsStore.defaultGroup === 0 && !isGroupCreating && isGroupCreated && !isGroupCreatingError){
+            GroupsSliceDispatch.setDefaultGroup(groupId)
+        } 
+    }, [createGroup, isGroupCreating, isGroupCreated, isGroupCreatingError])
 
     const handleSubmit = () => {
         if(mode === 'create'){
@@ -50,6 +66,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 icon_url: icon,
                 color_code: pickedColor,
             })
+            intitializeBaseGroup();
             closeModalHandler();
         } else if(mode === 'edit'){
             if(groupId){
@@ -60,12 +77,13 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     icon_url: icon,
                     color_code: pickedColor,
                 })
+                intitializeBaseGroup();
                 closeModalHandler();
             }
         }
     }
 
-    const showToolTip = useCallback(() => {
+    const showToolTip = useMemo(() => {
         if(mode === 'create'){
             if (isGroupCreated) {
                 return <StatusTooltip
@@ -96,8 +114,14 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     } else if (mode === 'edit') {
         labelText = 'Please enter the name of the group:'
     }
+
+    useEffect(() => {
+        intitializeBaseGroup()
+        closeModalHandler()
+    }, [intitializeBaseGroup, closeModalHandler])
+
     return <>
-    {showToolTip()}
+    {showToolTip}
         <UsePortal
             isModalOpen={isGroupModalOpen}
             setIsModalOpen={setIsGroupModalOpen}

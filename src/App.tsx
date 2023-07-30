@@ -18,29 +18,23 @@ import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloade
 const App: React.FC = () => {
 
     const {data: AuthStatus, isError: isAuthError, isLoading: isAuthLoading} = useGetUserAuthStatusQuery(null);
-    const {data: UserGroups, isError: isUserGroupsError, isLoading: isUserGroupsLoading} = useGetCurrentUserGroupsQuery(null);
 
     const ThemeDispatch = useActionCreators(ThemeActions);
     const UserSliceDispatch = useActionCreators(UserSliceActions);
-    const GroupsSliceDispatch = useActionCreators(GroupSliceActions);
-
-    const initializeApp = useCallback(() => {
-        ThemeDispatch.initializeTheme()
-        if (!isUserGroupsLoading && !isUserGroupsError){
-            GroupsSliceDispatch.setDefaultGroup(UserGroups?.user_groups[0].group.id)
-        }
+    
+    const initializeAuth = useCallback(() => {
         if (!isAuthLoading){
             UserSliceDispatch.setIsAuth(AuthStatus);
         } 
-    }, [AuthStatus, isAuthError, isAuthLoading, 
-        UserGroups, isUserGroupsError, isUserGroupsLoading])
+    }, [AuthStatus, isAuthError, isAuthLoading])
 
     useEffect(() => {
-        initializeApp()
-    },[initializeApp]);
+        ThemeDispatch.initializeTheme()
+        initializeAuth()
+    },[initializeAuth]);
 
     return (<>
-        {(!isAuthLoading && !isUserGroupsLoading) ? <Router /> : <PageGlobalLoader/>}
+        {(!isAuthLoading) ? <Router /> : <PageGlobalLoader/>}
     </>)
 };
 

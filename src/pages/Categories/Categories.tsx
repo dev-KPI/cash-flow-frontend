@@ -17,7 +17,7 @@ import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 
 const Categories: FC = () => {
     
-    const GroupsStore = useAppSelector<IGroupState>(store => store.GroupSlice)
+    const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
 
     const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
     

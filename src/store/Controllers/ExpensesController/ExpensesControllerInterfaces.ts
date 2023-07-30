@@ -17,8 +17,6 @@ export interface IUpdateExpenseByGroupBody {
     amount: number
     category_id: number
     group_id: number,
-    icon_url: string,
-    color_code: string
 }
 
 export interface ICreateExpenseByGroupBody extends Omit<IUpdateExpenseByGroupBody, "id"> {}

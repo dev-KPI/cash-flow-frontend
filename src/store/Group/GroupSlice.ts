@@ -4,7 +4,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import IGroupState from './GroupInterfaces';
 
 const initialState: IGroupState = {
-    defaultGroup: 1
+    defaultGroup: 0
 }
 
 export const GroupSlice = createSlice({
