@@ -11,15 +11,17 @@ export interface IGetExpensesBody {
     period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
 }
 
-export interface IUpdateExpenseByGroupBody {
-    id:number
-    descriptions: string; 
+export interface ICreateExpenseByGroupBody {
+    descriptions: string;
     amount: number
     category_id: number
     group_id: number,
 }
-
-export interface ICreateExpenseByGroupBody extends Omit<IUpdateExpenseByGroupBody, "id"> {}
+export interface IUpdateExpenseByGroupBody extends ICreateExpenseByGroupBody {
+    id: number,
+    icon_url: string,
+    color_code: string
+}
 
 export interface IGetExpensesByGroupBody {
     group_id: number, 

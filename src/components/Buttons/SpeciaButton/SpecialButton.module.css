@@ -1,5 +1,6 @@
 .item {
     width: 65px;
+    height: 92px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,6 +43,9 @@
     .itemTitle {
         margin-bottom: 5px;
     }
+    .item {
+        height: 97px;
+    }
 }
         
 @media only screen and (max-width: 768px) {
@@ -51,5 +55,8 @@
     }
     .itemTitle {
         margin-bottom: 0;
+    }
+    .item {
+        height: 88px;
     }
 }

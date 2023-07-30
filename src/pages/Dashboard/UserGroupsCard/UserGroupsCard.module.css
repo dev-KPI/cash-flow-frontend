@@ -64,10 +64,13 @@
     gap: 20px;
     flex-wrap: wrap;
 }
-
+.specialItem {
+    height: unset !important;
+}
 .specialItem h6{
     order: -1;
     margin-top: unset;
+    margin: 0px !important;
 }
 .specialItem div {
     margin-top: unset;
