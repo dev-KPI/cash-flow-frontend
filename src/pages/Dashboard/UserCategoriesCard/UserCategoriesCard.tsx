@@ -24,7 +24,7 @@ import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 const UserCategoriesCard = () => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
-    const GroupsStore = useAppSelector<IGroupState>(store => store.GroupSlice)
+    const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
     const [totalItems, setTotalItems] = useState<number>(11);
     const [pageGroup, setGroupPage] = useState<number>(0);
     const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
@@ -147,7 +147,7 @@ const UserCategoriesCard = () => {
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <h3 className={classes.title}>Categories <span className={classes.categoryName}>
-                                ({UserGroups?.user_groups[pageGroup].group.title})
+                                ({UserGroups?.user_groups[pageGroup]?.group.title || 'You haven`t groups'})
                             </span>
                         </h3>
                         <div className={classes.nav}>
