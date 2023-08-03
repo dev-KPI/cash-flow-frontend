@@ -11,6 +11,7 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
 import IGroupState from '@store/Group/GroupInterfaces';
+import ICategory from '@models/ICategory';
 //UI
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
@@ -53,39 +54,23 @@ const UserCategoriesCard = () => {
         initializeHandleWrapper()
     }, [initializeHandleWrapper])
 
-    const getCategories = (categories: IExpense[]) => {
+    const getCategories = (categories: ICategory[]) => {
         if(categories.length > 0){
             return categories.map((item, i) => 
                 <CategoriesCardItem 
                 key={i} 
+                category={item}
                 setIdModalOpen={setSelectedCategory}
                 setIsModalOpen={setIsExpenseModalOpen}
-                expense={item}/>
+                />
             )
         } else {
-            return UserCategoriesByGroup?.categories_group.map((item, i) => 
+            return categories.map((item, i) => 
                 <CategoriesCardItem 
+                category={item}
                 key={i} 
                 setIdModalOpen={setSelectedCategory}
-                setIsModalOpen={setIsExpenseModalOpen}
-                expense={{
-                    id: i,
-                    descriptions: 'none',
-                    amount: 0,
-                    time: 'none',
-                    category_group: {
-                        group: {
-                            id: 0,
-                            title: 'none'
-                        },
-                        category: {
-                            id: item.category.id,
-                            title: item.category.title
-                        },
-                        color_code: item.color_code,
-                        icon_url: item.icon_url
-                    }
-                }}/>
+                setIsModalOpen={setIsExpenseModalOpen}/>
             )
         }
     }
@@ -103,7 +88,7 @@ const UserCategoriesCard = () => {
             setIsModalOpen={setIsMoreModalOpen}
             isAddModalOpen={isCategoryModalOpen}
             setIsAddModalOpen={setIsCategoryModalOpen}
-            data={ExpensesByGroup ? getCategories(ExpensesByGroup) : []}
+            data={UserCategoriesByGroup ? getCategories(UserCategoriesByGroup.categories_group) : []}
             type={'categories'}
         />
     }
@@ -117,12 +102,12 @@ const UserCategoriesCard = () => {
         />
     }
 
-    const properCategories: IExpense[] = useMemo(() => {
-        if (ExpensesByGroup)
-            return ExpensesByGroup?.slice(0, totalItems)
+    const properCategories: ICategory[] = useMemo(() => {
+        if (UserCategoriesByGroup)
+            return UserCategoriesByGroup.categories_group?.slice(0, totalItems)
         else
             return []
-    }, [ExpensesByGroup, totalItems])
+    }, [UserCategoriesByGroup, totalItems])
 
     const handleNextGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (UserGroups && UserGroups.user_groups[pageGroup + 1]) {
@@ -170,7 +155,7 @@ const UserCategoriesCard = () => {
                         </div>
                     </div>
                     <ul className={classes.list} ref={squareRef}>
-                        {getCategories(properCategories)}
+                        {properCategories ? getCategories(properCategories) : ''}
                         {
                         UserCategoriesByGroup && UserCategoriesByGroup.categories_group.length === 0 ?
                             <div className={classes.emptyList}>
@@ -182,7 +167,7 @@ const UserCategoriesCard = () => {
                                     />
                             </div> 
                             :
-                            UserCategoriesByGroup && UserCategoriesByGroup .categories_group.length! >= totalItems ?
+                            UserCategoriesByGroup && UserCategoriesByGroup.categories_group.length! >= totalItems ?
                             <SpecialButton 
                                 handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
                                 className={classes.specialItem}
