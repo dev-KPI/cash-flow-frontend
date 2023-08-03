@@ -35,10 +35,11 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
         return foundGroup ? foundGroup.title : '';
     }
     const handleSubmit = async () => {
-        createInvitation({
-            recipient_id: userId,
-            group_id: selectedGroup.id,
-        })
+        if(selectedGroup.id !== -1)
+            createInvitation({
+                recipient_id: userId,
+                group_id: selectedGroup.id,
+            })
         setIsInvitationModalOpen(false)
     }
     const showToolTip = useCallback(() => {
