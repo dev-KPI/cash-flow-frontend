@@ -15,4 +15,8 @@ export const breadcrumbs = [
         'title': 'History',
         'link': '/history'
     },
+    {
+        'title': 'Users',
+        'link': '/users'
+    }
 ]

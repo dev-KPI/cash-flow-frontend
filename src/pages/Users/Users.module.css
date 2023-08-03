@@ -1,0 +1,327 @@
+.page__container {
+    margin-top: 22px;
+}
+
+.pageTitle {
+    composes: pageTitle from "@styles/style.css";
+}
+
+
+/* table */
+.in {
+    animation: fadeIn 0.5s;
+}
+
+.tableTitle {
+    font-weight: 600;
+    font-size: 21px;
+    line-height: 27px;
+    color: var(--main-text);
+}
+
+.tableText {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    color: var(--main-text);
+}
+
+.recentOperations__table {
+    margin-top: 30px;
+    width: 100%;
+    padding-top: 30px;
+    composes: cardComponent from "@styles/style.css";
+}
+
+.recentOperations__table thead th {
+    height: 50px;
+    vertical-align: middle;
+}
+
+.recentOperations__table tbody {
+    text-align: center;
+}
+
+.recentOperations__table tbody td {
+    height: 60px;
+    border-bottom: 1px solid var(--border-input);
+    vertical-align: middle;
+    padding: 0px 30px;
+    text-align: center;
+
+    width: 600px
+}
+
+.recentOperations__table tbody td:last-child {
+    width: 90px;
+}
+
+.recentOperations__table tbody tr:last-child td {
+    border: none;
+}
+
+.headerHover {
+    cursor: pointer;
+    user-select: none;
+}
+
+.counter {
+    width: 160px;
+}
+
+#sortBtn {
+    padding-left: 5px;
+}
+
+/* member */
+.memberWrapper {
+    display: flex;
+}
+
+.memberInfo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+}
+
+.details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex: 1;
+    min-width: 0;
+}
+
+.icon {
+    display: flex;
+    height: 46px;
+    width: 46px;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon i {
+    display: flex;
+    color: #fff;
+    font-size: 18px;
+}
+
+.photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.name {
+    composes: mediumItemTitle from '@styles/style.css';
+    font-weight: 600;
+    color: var(--main-text);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.email {
+    composes: mediumItemTitle from "@styles/style.css";
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* btn */
+.addToGroupBtn{
+    margin: 0 auto;
+}
+
+/* pagination */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    justify-content: flex-end;
+    padding: 30px;
+
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 30px;
+    color: var(--text);
+}
+
+.nav {
+    display: flex;
+    gap: 25px;
+}
+
+.btn {
+    cursor: pointer;
+    display: flex;
+}
+
+.btn:hover:not(:disabled) i {
+    color: var(--main-green)
+}
+
+.btn i {
+    font-size: 20px;
+    -webkit-text-stroke: 1.5px;
+    color: var(--text)
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.select {
+    background: transparent;
+    border: transparent;
+    color: inherit;
+    font-size: 24px;
+}
+
+.select:focus {
+    border: none;
+    outline: none
+}
+
+/* media */
+
+@media only screen and (max-width: 1028px) {
+    .recentOperations__table tbody td {
+        padding: 0 15px;
+    }
+
+    .tableText {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .tableTitle {
+        font-size: 22px;
+        line-height: 27px;
+    }
+
+    .pagination {
+        padding: 35px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .page__container {
+        margin-top: 14px;
+    }
+
+    .recentOperations__table tbody td {
+        width: 150px;
+        padding: 0 7px;
+    }
+
+    .recentOperations__table tbody td:last-child {
+        width: 50px;
+    }
+
+    .recentOperations__table {
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+
+    .tableTitle {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .tableText {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .counter {
+        width: 120px;
+    }
+
+    #sortBtn {
+        padding-left: 0px;
+    }
+
+    .recentOperations__table thead :nth-child(3) {
+        display: none;
+    }
+
+    .recentOperations__table tbody td:nth-child(3) {
+        display: none;
+    }
+    /* member */
+    .icon {
+        width: 40px;
+        height: 40px;
+    }
+    .addToGroupBtn{
+        padding: 3px 7px;
+    }
+    /* pagination */
+    .pagination {
+        font-size: 18px;
+        line-height: 22px;
+        padding: 10px;
+        gap: 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav {
+        gap: 15px;
+    }
+
+    .btn i {
+        font-size: 16px;
+    }
+
+    .select {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .recentOperations__table {
+        overflow-x: auto;
+        display: block;
+    }
+
+    .recentOperations__table thead :nth-child(3) {
+        display: none;
+    }
+
+    .recentOperations__table tbody td:nth-child(3) {
+        display: none;
+    }
+
+    .pagination {
+        padding: 10px;
+    }
+
+    .memberWrapper {
+        width: unset;
+    }
+
+    /* pagination */
+    .counter {
+        display: none;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

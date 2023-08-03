@@ -1,3 +1,4 @@
+import IUser from '@models/IUser';
 import { api } from '@store/api';
 
 //types
@@ -32,6 +33,16 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [{ type: 'UserController' as const, id: 0 }],
         }),
+        getUsers: builder.query<IUser[], null>({
+            query: () => ({
+                url: `users`,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: [{ type: 'UserController' as const }],
+        }),
         getCurrentUserBalance: builder.query<IGetCurrentUserBalance, null>({
             query: () => ({
                 url: `users/user-balance`,
@@ -52,5 +63,6 @@ export const UserApiSlice = api.injectEndpoints({
 export const {
     useGetUserAuthStatusQuery,
     useGetCurrentUserInfoQuery,
-    useGetCurrentUserBalanceQuery
+    useGetCurrentUserBalanceQuery,
+    useGetUsersQuery
 } = UserApiSlice
