@@ -36,8 +36,8 @@ const columnHelper = createColumnHelper<GroupMember>()
 const History: React.FC = () => {
     const { groupId } = useParams<{ groupId: string }>();
     const [data, setData] = useState([...MembersObj.members])
-    // let groups: IGroup[] = GroupObj;
-    // const adminId = groups.find((group) => group.id === groupId)?.group.admin.id;
+
+    
     const columns = [
         columnHelper.accessor(`user.last_name`, {
             header: () => 'Member',

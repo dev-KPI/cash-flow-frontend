@@ -62,13 +62,13 @@ const columns = [
                 </div> : '-'
             }
     }),
-    columnHelper.accessor('category_group.category.title', {
+    columnHelper.accessor('category_group.category.category.title', {
         header: () => 'Category',
         cell: info => info.renderValue() ? <div className={classes.wrapItem}>
             <Light
                 className={classes.dotLight}
                 style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
-                color={info.row.original.category_group?.category?.color || 'var(--main-green)'}
+                color={info.row.original.category_group?.category?.color_code || 'var(--main-green)'}
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
         </div> : '-',

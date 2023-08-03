@@ -2,10 +2,11 @@ import React, { FC, SetStateAction, useCallback, useEffect, useRef, useState } f
 import { Link, useNavigate } from 'react-router-dom';
 
 //logic
-import { useGetUsersByGroupQuery, useLeaveGroupMutation } from '@store/Controllers/GroupsController/GroupsController';
+import { useLeaveGroupMutation } from '@store/Controllers/GroupsController/GroupsController';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
+import { useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';

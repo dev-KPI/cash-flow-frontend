@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction } from "react";
+import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect } from "react";
 
 //UI
 import classes from './ConfirmationModal.module.css';
@@ -8,57 +8,71 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import IGroup from "@models/IGroup";
+import { useLeaveGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
+import { useNavigate } from "react-router-dom";
 
 interface IContfirmationModalProps {
+    title?: string
+    kickedUserName?: string
+    groupId: number
     isConfirmationModalOpen: boolean
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
     mode: 'leave' | 'kick' | 'disband'
-    kickedUserName?: string
-    groupName?: string
-}
-interface IModalState {
-    name: string
-    color: string
 }
 
-const ConfirmationModal: FC<IContfirmationModalProps> = ({ isConfirmationModalOpen, setIsConfirmationModalOpen, mode, kickedUserName = 'Unknown Unkown', groupName = ''}) => {
+const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConfirmationModalOpen, setIsConfirmationModalOpen, mode, kickedUserName = 'Unknown Unkown'}) => {
+
+    const [leaveGroup, {isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
+    const navigate = useNavigate();
+    
     let headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let titleModal: string = ''
     let modalText: ReactNode = '';
-    const [nameValue, setNameValue] = useState<string>('');
-    const [colorValue, setColorValue] = useState<string>('');
 
-    //submit
-    const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-    const [shouldShowTooltip, setShouldShowTooltip] = useState<boolean>(false);
-
-
-    const postObject: IModalState = {
-        name: nameValue,
-        color: colorValue
-    };
-
-    const handleSubmit = async () => {
-        setIsSubmiting(true)
-        await setTimeout(() => {
-            setShouldShowTooltip(true)
-            setIsSubmiting(false);
-            alert(JSON.stringify(postObject, null, 2));
-            setIsConfirmationModalOpen(false);
-        }, 3000);
-    }
-    const showToolTip = useCallback(() => {
-        if (shouldShowTooltip) {
-            return <StatusTooltip
-                type="success"
-                title="You have successfully left the group" />
+    const handleSubmit = () => {
+        if(mode === 'kick'){
+        }else if (mode === 'leave' || mode === 'disband') {
+            leaveGroup(groupId)
         }
-    }, [shouldShowTooltip])
+    }
     
+    const showToolTip = useCallback(() => {
+        if(mode === 'leave'){
+            if (!isLeavingGroupLoading && isLeavingGroupSuccess) {
+                setIsConfirmationModalOpen(false)
+                navigate('/groups')
+                return <StatusTooltip
+                    type="success"
+                    title="You have successfully left the group" />
+            } else if(!isLeavingGroupLoading && isLeavingGroupError) {
+                setIsConfirmationModalOpen(false)
+                navigate('/groups')
+                return <StatusTooltip
+                    type="error"
+                    title={"You haven`t left the group"} />
+            }
+        } else if(mode === 'disband'){
+            if (!isLeavingGroupLoading && isLeavingGroupSuccess) {
+                setIsConfirmationModalOpen(false)
+                navigate('/groups')
+                return <StatusTooltip
+                    type="success"
+                    title="You have successfully left the group" />
+            } else if(!isLeavingGroupLoading && isLeavingGroupError) {
+                setIsConfirmationModalOpen(false)
+                navigate('/groups')
+                return <StatusTooltip
+                    type="error"
+                    title={"You haven`t left the group"} />
+            }
+        }
+    }, [leaveGroup, isLeavingGroupLoading, isLeavingGroupError, isLeavingGroupSuccess])
+
     if (mode === 'leave') {
         headerIcon = <i className= "bi bi-box-arrow-right" ></i>
         titleModal = 'Leave group'
-        modalText = <p>Are you sure you want to leave the <span>{groupName}</span> group?</p>
+        modalText = <p>Are you sure you want to leave the <span>{title}</span> group?</p>
     } else if (mode === 'kick') {
         headerIcon = <i className="bi bi-person-dash"></i>
         titleModal = 'Remove user'
@@ -66,8 +80,9 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({ isConfirmationModalOp
     } else if (mode === 'disband') {
         headerIcon = <i className="bi bi-people"></i>
         titleModal = 'Disband group'
-        modalText = <p>Are you sure you want to disband your <span>{groupName}</span> group?</p>
+        modalText = <p>Are you sure you want to disband your <span>{title}</span> group?</p>
     }
+
     return <>
         {showToolTip()}
         <UsePortal
@@ -84,7 +99,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({ isConfirmationModalOp
                 </div>
                 <div className={classes.confirmBtnWrapper}>
                     <CustomButton
-                        isPending={isSubmiting}
+                        isPending={isLeavingGroupLoading}
                         children="Confirm"
                         btnWidth={170}
                         btnHeight={36}
@@ -99,7 +114,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({ isConfirmationModalOp
                         btnHeight={36}
                         icon="refuse"
                         type='danger'
-                        callback={() => { }}
+                        callback={() => { setIsConfirmationModalOpen(false) }}
                     />
                 </div>
             </form>

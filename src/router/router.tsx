@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
-import {createBrowserRouter,RouterProvider, Outlet, Navigate } from 'react-router-dom';
+import {createBrowserRouter,RouterProvider, Outlet, Navigate, useParams } from 'react-router-dom';
 import { routesAuth, groupRoutes, routesNotAuth } from './routes'
 import { Router as RemixRouter } from "@remix-run/router";
 //store
@@ -9,13 +9,13 @@ import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import IUserState from '@store/User/UserInterfaces';
 import { GroupSliceActions } from '@store/Group/GroupSlice';
-import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useGetCurrentUserGroupsQuery, useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import Header from '@components/Header/Header';
 import Footer from '@components/Footer/Footer';
 import GroupHeader from '@pages/Group/GroupHeader/GroupHeader';
 import NotFound from '@pages/NotFound/NotFound';
-
+import GroupLayout from './GroupRouter';
 
 
 
@@ -23,6 +23,7 @@ const Router: FC = () => {
 
     const UserSliceStore = useAppSelector<IUserState>(state => state.persistedUserSlice)
 
+    const { groupId } = useParams<{ groupId: string }>();
     const GroupsSliceDispatch = useActionCreators(GroupSliceActions);
     const {data: UserGroups, isError: isUserGroupsError, isLoading: isUserGroupsLoading} = useGetCurrentUserGroupsQuery(null);
 
@@ -95,15 +96,6 @@ export default Router;
 
 
 
-export const GroupLayout = () => {
-    return (<>
-        <Header />
-        <GroupHeader />
-        <Outlet/>
-        <Footer />
-    </>
-    );
-}
 export const MainLayout = () => {
     return (<>
         <Header />

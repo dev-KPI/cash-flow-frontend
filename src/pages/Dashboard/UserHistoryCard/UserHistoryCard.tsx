@@ -53,8 +53,8 @@ const UserHistoryCard: FC = () => {
             <RecentOperationDashboardCard
                 key={i}
                 type={el.type === 'expense' ? 'expense' : 'replenishment'}
-                ColorBtn={el.category_group?.category?.color || '#80D667'}
-                title={el.category_group?.category?.title || 'Salary'}
+                ColorBtn={el.category_group?.category?.color_code || '#80D667'}
+                title={el.category_group?.category?.category?.title || 'Salary'}
                 amount={el.amount}
                 time={el.time}></RecentOperationDashboardCard>
         )

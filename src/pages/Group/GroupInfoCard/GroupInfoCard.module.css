@@ -12,6 +12,20 @@
     height: 100%;
 }
 
+.adminEditButton{
+    position: absolute;
+    cursor: pointer;
+    top: 1;
+    left: 1;
+    font-size: 30px;
+    line-height: 30px;
+    color: var(--main-text);
+    fill: var(--main-text);
+}
+.adminEditButton:active{
+    color: var(--main-red);
+    fill: var(--main-red);
+}
 .title {
     composes: cardTitle from "@styles/style.css";
     text-align: center;

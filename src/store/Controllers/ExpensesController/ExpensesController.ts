@@ -36,22 +36,6 @@ export const ExpensesApiSlice = api.injectEndpoints({
                 params: period,
                 credentials: 'include',
             }),
-            transformResponse: (response: IExpense[]): IExpense[] => {
-                let unifiedCategories: IExpense[] = [];
-                for (let i = 0; i < response.length; i++){
-                    if (unifiedCategories[i]?.category_group.category.id !== response[i].category_group.category.id){
-                        let unifiedCategory = response[i]
-                        unifiedCategory.amount = 0;
-                        unifiedCategories.push(unifiedCategory);
-                    }
-                }
-                for (let i = 0; i < response.length; i++){
-                    let updatingCategory = unifiedCategories[unifiedCategories.findIndex(el => el.category_group.category.id === response[i].category_group.category.id)]
-                    updatingCategory.amount += response[i].amount
-                    unifiedCategories[unifiedCategories.findIndex(el => el.category_group.category.id === response[i].category_group.category.id)] = updatingCategory
-                }
-                return unifiedCategories;
-            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,

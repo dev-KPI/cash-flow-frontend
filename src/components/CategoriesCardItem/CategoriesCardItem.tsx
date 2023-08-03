@@ -2,30 +2,31 @@ import React, { FC, Dispatch, MouseEvent, useCallback, useEffect, useState } fro
 
 //logic
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
+//logic
 import IExpense from '@models/IExpense';
+import ICategory from '@models/ICategory';
 //UI
 import classes from './CategoriesCardItem.module.css';
 
 interface IUserCategoriesCardProps{
-    expense: IExpense,
+    category: ICategory,
     setIdModalOpen: (value: number) => void,
     setIsModalOpen: (value: boolean) => void,
 }
 
-const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({expense, setIdModalOpen, setIsModalOpen }) => {
-    const amount: number = expense.amount;
-    const category = expense.category_group.category;
-    const color = expense.category_group.color_code
+const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({category, setIdModalOpen, setIsModalOpen }) => {
+    const amount: number = 0;
+    const color = category.color_code
     const [total, setTotal] = useState<number>(amount);
     const openModal = (e: MouseEvent) => {
         e.preventDefault()
-        setIdModalOpen(expense.category_group.category.id)
+        setIdModalOpen(category.category.id)
         setIsModalOpen(true)
     }    
-    const categoryTitle = category.title.length > 8 ? `${category.title.slice(0, 7)}..` : category.title;
+    const categoryTitle = category.category.title.length > 8 ? `${category.category.title.slice(0, 7)}..` : category.category.title;
     return (
         <li 
-        key={'123dsad' + amount + category.title}
+        key={'123dsad' + amount + category.category.title}
         className={classes.item}
             onClick={openModal}
         >

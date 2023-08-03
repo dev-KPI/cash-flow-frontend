@@ -38,7 +38,7 @@ const UserAccountCard: FC = () => {
                             </div>
                             <div className={classes.balance}>
                                 <h5>Current Balance</h5>
-                                <p className={classes.value}>${numberWithCommas(UserBalance.balance)}</p>
+                                <p className={classes.value + ' ' + (UserBalance.balance < 0 ? classes.red : classes.green)}>${numberWithCommas(UserBalance.balance)}</p>
                             </div>
                         </div>
                     </div>

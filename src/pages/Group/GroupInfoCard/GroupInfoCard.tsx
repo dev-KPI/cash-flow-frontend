@@ -6,37 +6,24 @@ import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import userIcon from '@assets/user-icon.svg';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import GroupInfoCardLoader from './GroupInfoCardLoader';
+import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
+import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
 
-const GroupInfoCard: FC = () => {
-    const [loading, setLoading] = useState(true);
+interface IGroupInfoCard {
+    isAdmin: boolean
+    groupInfo: IGetInfoFromGroupResponse
+    isInfoLoading: boolean
+}
+
+const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) => {
+
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-    const Group = JSON.parse(JSON.stringify(
-        {
-            "group": {
-                "id": 1,
-                "title": "Family",
-                "descriptions": "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis reiciendis sit facere nesciunt illo esse molestiae nam, sunt debitis nulla quis eveniet non? Odit quo neque, adipisci explicabo cum non voluptatum magnam doloribus velit blanditiis enim alias nemo natus harum et maiores, assumenda nostrum quam ipsa aliquam soluta exercitationem numquam! In numquam id voluptatem commodi delectus dignissimos impedit deleniti nulla, laboriosam porro minima libero dolorem maxime labore, architecto iste hic cum quisquam quos mollitia alias ea incidunt repudiandae. Officiis nobis quod neque accusamus, vero at eos consequatur provident, autem corporis id sed doloremque praesentium aut velit fugiat molestias. Atque, pariatur..",
-                "status": "ACTIVE",
-                "admin": {
-                    "id": 1,
-                    "login": "johndoe@gmail.com",
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "picture": "resd3f.3com"
-                },
-                "color_code": "#4C6FFF",
-                "icon_url": "https://lh3.googleusercontent.com/drive-viewer/AFGJ81rEWXFEZp7U0wBui-1pSqWj0HjweJaJQ6O5tW77mK86lr8lVruUdpB7DLE9wbit73fmcbDptSF6bXVhr99mDiasN4Zexg=w1920-h937"
-            },
-            "details": {
-                "members": 4,
-                "expenses": 142
-            }
 
-        }
-    ))
-    const { id, title, descriptions, color_code, icon_url } = Group.group;
-    const { members, expenses  } = Group.details;
-    const description  = descriptions.length > 150 ? descriptions.slice(0, 180) + '...' : descriptions;
+    const [isEditGroupModal, setIsEditGroupModal] = useState<boolean>(false);
+
+    const { id, title, description, color_code, icon_url } = groupInfo;
+    const { members, expenses  } = groupInfo;
+    const descriptionModded  = description.length > 150 ? description.slice(0, 180) + '...' : description;
     const getAdminIcon = () => {
         return isUrl(icon_url) ?
             <img className={classes.photo}
@@ -48,15 +35,29 @@ const GroupInfoCard: FC = () => {
                 <i className={"bi bi-people"}></i>
             </div>
     }
-    setTimeout(() => {
-        setLoading(false)
-    }, 1500);
+
 
     return (
         <div className={classes.GroupInfoCard}>
-            {loading ? <GroupInfoCardLoader /> :
+            {
+                <GroupModal
+                groupId={groupInfo.id}
+                setGroupId={() => {}}
+                isGroupModalOpen={isEditGroupModal}
+                setIsGroupModalOpen={setIsEditGroupModal}
+                mode='edit'
+                />
+            }
+            {isInfoLoading ? <GroupInfoCardLoader /> :
                 <div className={classes.inner}>
                     <div className={classes.group}>
+                        {
+                            isAdmin ? <button 
+                            onClick={() => setIsEditGroupModal(true)}
+                            className={classes.adminEditButton}>
+                                <i className={"bi bi-pencil"}></i>
+                            </button> : null
+                        }
                         <div className={classes.avatar}>{getAdminIcon()}</div>
                         <div className={classes.group__info}>
                             <h4 className={classes.title}>{title}</h4>
@@ -71,7 +72,7 @@ const GroupInfoCard: FC = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div className={classes.description}>{description}</div>
+                        <div className={classes.description}>{descriptionModded}</div>
                     </div>
                 </div>}
         </div>
