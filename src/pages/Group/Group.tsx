@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-
+import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './Group.module.css';
 import OperationCard from '@components/OperationCard/OperationCard';
@@ -15,9 +17,14 @@ import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
 
 
 const Group = () => {
+
     const { groupId } = useParams();
 
+    const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError} = useGetInfoByGroupQuery({group_id: Number(groupId)})
+    const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)
+
     return (<>
+        {GroupInfo && CurrentUser &&
         <main id='GroupPage' className={'no-padding'}>
             <div className={classes.page__container}>
                 <div className={classes.grid}>
@@ -41,13 +48,17 @@ const Group = () => {
                         <OperationCard operation={'Expenses'} />
                     </div>
                     <GroupSpendersCard />
-                    <GroupInfoCard />
+                    <GroupInfoCard 
+                        isAdmin={GroupInfo.admin.id === CurrentUser.id}
+                        isInfoLoading={isGroupInfoLoading} 
+                        groupInfo={GroupInfo}
+                    />
                     <GroupChartsCard />
                     <GroupGraphCard />
                     <GroupHistoryCard/>
                 </div>
             </div>
-        </main>
+        </main>}
         </>);
 };
 
