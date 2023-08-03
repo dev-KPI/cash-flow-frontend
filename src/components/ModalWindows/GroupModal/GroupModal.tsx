@@ -8,7 +8,7 @@ import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import { useCreateGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
+import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import IGroupState from "@store/Group/GroupInterfaces";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
@@ -43,6 +43,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
 
     const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
+    const [disbandGroup, { isLoading: isGroupDisbanding, isSuccess: isGroupDisbanded, isError: isGroupDisbandingError},] = useLeaveGroupMutation();
 
     const closeModalHandler = useCallback(() => {
         if(!isGroupCreating || !isGroupUpdating){
@@ -189,8 +190,8 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     </div>
                     <div className={classes.btnWrapper}
                         style={{ justifyContent: mode === 'edit' ? 'space-between' : 'center' }}>
-                        {mode === 'edit' && <CustomButton
-                            isPending={false}
+                        {mode === 'edit' && groupId && <CustomButton
+                            isPending={isGroupDisbanding}
                             children="Disband"
                             btnWidth={170}
                             btnHeight={36}
@@ -198,7 +199,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             type='danger'
                             background="outline"
                             disableScale={true}
-                            callback={() => { }}
+                            callback={() => {disbandGroup(groupId)}}
                         />}
                         <CustomButton
                             isPending={isGroupCreating}
