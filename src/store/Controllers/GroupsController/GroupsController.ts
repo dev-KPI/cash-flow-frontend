@@ -8,8 +8,8 @@ import {
     ICreateGroupResponse,
     IUpdateGroupBody,
     IUpdateGroupResponse,
-    IGetUsersFromGroupResponse,
-    IRemoveUserResponse
+    IRemoveUserResponse,
+    IGetInfoFromGroupResponse
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
@@ -34,20 +34,19 @@ export const GroupsApiSlice = api.injectEndpoints({
             [{type: 'GroupsController' as const, id: 'GROUPS' },
             {type: 'GroupsController' as const, id: 'GROUPS_DELETE'}]
         }),
-        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, {group_id: number}>({
+        getInfoByGroup: builder.query<IGetInfoFromGroupResponse, {group_id: number}>({
             query: ({group_id}) => ({
-                url: `/groups/${group_id}/users`,
+                url: `/groups/${group_id}/info`,
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result, err, body) => result ? 
-            [...result.users_group.map(item => ({ type: 'GroupsController' as const, id: item.user.id })),
-            { type: 'GroupsController' as const, id: 'GROUP_USERS' }]
-                :
-            [],
-        }),    
+            providesTags: (result, err, body) => 
+            result ? [{ type: 'GroupsController' as const, id: body.group_id },
+            { type: 'GroupsController', id: 'GROUPS' }] : 
+            [{ type: 'GroupsController', id: 'GROUPS' }]
+        }),
         createGroup: builder.mutation<ICreateGroupResponse, ICreateGroupBody>({
             query: (body) => ({
                 url: `/groups/`,
@@ -90,9 +89,9 @@ export const GroupsApiSlice = api.injectEndpoints({
                 credentials: 'include'
             }),
             transformErrorResponse: (
-                response,
+                response: { status: string | number },
             ) => response,
-            invalidatesTags: (result, err, body) => result ? [{ type: 'GroupsController' as const, id: 'GROUPS_DELETE' }] : [],
+            invalidatesTags: [{ type: 'GroupsController' as const, id: 'GROUPS_DELETE' }],
         }),
     }),
     overrideExisting: false,
@@ -100,9 +99,9 @@ export const GroupsApiSlice = api.injectEndpoints({
 
 export const {
     useGetCurrentUserGroupsQuery,
-    useGetUsersByGroupQuery,
     useRemoveUserMutation,
     useUpdateGroupMutation,
     useCreateGroupMutation,
-    useLeaveGroupMutation
+    useLeaveGroupMutation,
+    useGetInfoByGroupQuery
 } = GroupsApiSlice

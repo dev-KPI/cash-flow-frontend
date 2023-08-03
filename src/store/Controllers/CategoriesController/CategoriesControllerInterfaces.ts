@@ -1,4 +1,4 @@
-import ICategory, { newICategory } from "@models/ICategory";
+import ICategory from "@models/ICategory";
 
 
 export interface ICreateCategoryBody {
@@ -7,7 +7,7 @@ export interface ICreateCategoryBody {
     color_code: string,
     title: string
 }
-export interface ICreateCategoryResponse extends Omit<Omit<newICategory, 'icon_url'>, 'color_code'> {}
+export interface ICreateCategoryResponse extends Omit<Omit<ICategory, 'icon_url'>, 'color_code'> {}
 
 
 export interface IUpdateCategoryBody {
@@ -17,9 +17,9 @@ export interface IUpdateCategoryBody {
     color_code: string,
     title: string
 }
-export interface IUpdateCategoryResponse extends Omit<Omit<newICategory, 'icon_url'>, 'color_code'> {}
+export interface IUpdateCategoryResponse extends Omit<Omit<ICategory, 'icon_url'>, 'color_code'> {}
 
 
 export interface IGetCategoriesByGroupResponse {
-    categories_group: newICategory[]
+    categories_group: ICategory[]
 }

@@ -27,14 +27,22 @@ export interface IUpdateGroupBody {
 export interface IUpdateGroupResponse extends Omit<Omit<IGroup, 'icon_url'>, 'date_join'>  {}
 
 
-export interface IGetUsersFromGroupResponse {
-    users_group: [
-        {
-            user: IUser
-            status: string,
-            date_join: string
-        }
-    ]
+export interface IGetInfoFromGroupResponse {
+    id: number,
+    title: string,
+    description: string,
+    status: string,
+    icon_url: string,
+    color_code: string,
+    admin: {
+        id: number,
+        login: string,
+        first_name: string,
+        last_name: string,
+        picture: string
+    },
+    members: number,
+    expenses: number
 }
 
 export interface IRemoveUserResponse {
