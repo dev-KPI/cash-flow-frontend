@@ -2,7 +2,6 @@
     top: 100px;
     right: 260px;
     width: 456px;
-    height: 460px;
 }
 .inviteList{
     overflow-y: scroll;
@@ -21,6 +20,9 @@
     gap: 15px;
     justify-content: space-between;
 }
+.inviteForm img{
+    border-radius: 50%;
+}
 .InviteGroupRef{
     font-weight: 600;
     color: rgba(78, 125, 150, 1);
@@ -38,6 +40,19 @@
     font-weight: 400;
     font-size: 16px;
     color: var(--text);
+}
+.noNotifications {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.noNotifications__title {
+    composes: mediumText from "@styles/style.css";
+    margin: 10px 0 5px;
+}
+
+.noNotifications__text {
+    composes: largeItemTitle from "@styles/style.css";
 }
 .ViewMore {
     margin-top: 10px;
