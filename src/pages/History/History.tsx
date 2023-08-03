@@ -19,6 +19,7 @@ import {
 } from '@tanstack/react-table'
 import Light from '@components/Light/Light';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import IGroup from '@models/IGroup';
 
 
 interface Transaction {
@@ -27,7 +28,7 @@ interface Transaction {
     time: string;
     description: string;
     category_group?: {
-        group?: ICategory
+        group?: IGroup
         category?: ICategory
     },
     type: string
@@ -40,24 +41,24 @@ const columns = [
         header: () =>'Description',
         cell: info => info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue(),
     }),
-    columnHelper.accessor('category_group.category.title', {
+    columnHelper.accessor('category_group.category.category.title', {
         header: () => 'Category',
         cell: info => info.renderValue() ? <div className={classes.wrapItem}>
             <Light
                 className={classes.dotLight}
                 style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
-                color={info.row.original.category_group?.category?.color || 'var(--main-green)'}
+                color={info.row.original.category_group?.category?.color_code || 'var(--main-green)'}
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
         </div> : '-',
     }),
-    columnHelper.accessor('category_group.group.title', {
+    columnHelper.accessor('category_group.group.group.title', {
         header: () => 'Group',
         cell: info => info.renderValue() ? <div className={classes.wrapItem}>
             <Light
                 className={classes.dotLight}
                 style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
-                color={info.row.original.category_group?.group?.color || 'var(--main-green)'}
+                color={info.row.original.category_group?.group?.group.color_code || 'var(--main-green)'}
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue() ?? '-'}</p>
         </div> :

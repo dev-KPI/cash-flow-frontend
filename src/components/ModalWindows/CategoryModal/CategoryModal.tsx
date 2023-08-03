@@ -17,7 +17,7 @@ interface ICategoryModalProps{
     setIsCategoryModalOpen: Dispatch<SetStateAction<boolean>>;
     mode: 'create' | 'edit',
     groupId: number,
-    categoryId: number
+    categoryId?: number
 }
 interface IModalState {
     name: string
@@ -51,7 +51,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
                 color_code: pickedColor,
             })
             closeModalHandler();
-        } else if(mode === 'edit'){
+        } else if(mode === 'edit' && categoryId){
             updateCategory({
                 group_id: groupId,
                 category_id: categoryId,

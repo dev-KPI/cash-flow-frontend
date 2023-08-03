@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 //logic
 import { GroupObj } from '@pages/GroupObj';
 import { IGroup } from '@pages/Groups/GroupsPage';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';
-
+import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
+import { useGetInfoByGroupQuery, useLeaveGroupMutation } from '@store/Controllers/GroupsController/GroupsController';
+import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './GroupHeader.module.css'
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
@@ -12,10 +14,18 @@ import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 
+export interface IPropsGroupHeader{
+    groupInfo: IGetInfoFromGroupResponse
+}
 
-const GroupHeader = () => {
+const GroupHeader: FC<IPropsGroupHeader> = ({groupInfo}) => {
+
     const { groupId } = useParams<{ groupId: string }>();
     const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
+
+    const {data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError} = useGetUsersByGroupQuery({group_id: Number(groupId)});
+    const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUseError} = useGetCurrentUserInfoQuery(null)
+
     const breadcrumbs = [
         {
             'title': 'Dashboard',
@@ -32,53 +42,66 @@ const GroupHeader = () => {
     ]
     const handleLeave = () => {
         setIsLeaveModalOpen(!isLeaveModalOpen);
-    }
-
-    let groups: IGroup[] = GroupObj;
-    let groupTitle = 'Not found'
-    let memberIcons: string[] = [];
-    if (groupId) {
-        const group = groups.find(item => item.group.id === +groupId)
-        groupTitle = group?.group.title ?? 'Not found'
-        memberIcons = group?.group.members.map(member => member.picture) ?? [];
-    }
-    
+    }  
     
     const getMemberIcons = () => {
-        return memberIcons.map((icon, i) =>
-            <div key={i} className={classes.avatar}>
-                <img className={classes.photo}
-                    alt={'user icon'}
-                    src={isUrl(icon) ? icon : userIcon}
-                />
-            </div>
-        ).slice(0, 3)
+        if(UsersByGroup){
+            return UsersByGroup.users_group.map((el, i) =>
+                <div key={i} className={classes.avatar}>
+                    <img className={classes.photo}
+                        alt={'user icon'}
+                        src={isUrl(el.user.picture) ? el.user.picture : userIcon}
+                    />
+                </div>
+            ).slice(0, 3)
+        } else {
+            return []
+        }
     }
+    const [leaveMode, setLeaveMode] = useState<'leave' | 'disband' | 'kick'>('leave');
+    const [buttonName, setButtonName] = useState<string>('Leave group')
     
-    return (
+    const getLeaveButton = useCallback(() => {
+        if(CurrentUser?.id === groupInfo.admin.id) {
+            setButtonName('Disband group')
+            setLeaveMode('disband')
+        } else {
+            setButtonName('Leave group')
+            setLeaveMode('leave')
+        }
+        
+    }, [CurrentUser, isCurrentUserLoading, isCurrentUseError,
+        UsersByGroup, isUsersByGroupLoading, isUsersByGroupError])
+
+    useEffect(() => {
+        getLeaveButton()
+    }, [getLeaveButton])
+
+    return ( 
         <>
             {<ConfirmationModal
                 isConfirmationModalOpen={isLeaveModalOpen}
                 setIsConfirmationModalOpen={setIsLeaveModalOpen}
-                mode='leave'
-                groupName='Monkey'
+                mode={leaveMode}
+                groupId={groupInfo.id}
+                title={groupInfo.title}
             />}
             <div className={classes.header}>
                 <div className={classes.header__container}>
-                    <h1 className={`${classes.title} pageTitle`}>{groupTitle}</h1>
+                    <h2 className={`${classes.title} pageTitle`}>{groupInfo.title}</h2>
                     <nav className={classes.breadcrumbs}>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
                     </nav>
                     <div className={classes.header__right}>
                         <div className={classes.members}>
                             {getMemberIcons()}
-                            {memberIcons.length > 3 ?
+                            {getMemberIcons().length > 3 ?
                                 <div className={classes.avatar}>
                                     <div className={classes.avatarLeftMembers}
                                         style={{ backgroundColor: 'var(--main-green)' }}></div>
                                     <p className={classes.leftMembers}
                                         style={{ color: 'var(--main-green)' }}
-                                    >+{memberIcons.length - 3}
+                                    >+{getMemberIcons().length - 3}
                                     </p>
                                 </div>
                                 : null
@@ -86,7 +109,7 @@ const GroupHeader = () => {
                         </div>
                         <CustomButton
                             isPending={false}
-                            children="Leave group"
+                            children={buttonName}
                             btnWidth={120}
                             btnHeight={30}
                             icon={'none'}

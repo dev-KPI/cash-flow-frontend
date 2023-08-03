@@ -142,7 +142,6 @@ const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
             bar: {
                 barThickness: 24,
                 backgroundColor: "#80D667",
-                hoverBackgroundColor: "#80EE67",
                 borderRadius: 20,
             }
         },

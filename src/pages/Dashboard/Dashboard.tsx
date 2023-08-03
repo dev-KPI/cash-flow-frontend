@@ -1,7 +1,5 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 
-//logic
-import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './Dashboard.module.css'                                     
 import MonthPicker from '@components/MonthPicker/MonthPicker';

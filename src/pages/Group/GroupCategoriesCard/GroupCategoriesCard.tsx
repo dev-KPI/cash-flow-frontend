@@ -9,32 +9,29 @@ import classes from './GroupCategoriesCard.module.css';
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import { useGetCategoriesByGroupQuery } from '@store/Controllers/CategoriesController/CategoriesController';
+import { useParams } from 'react-router-dom';
+import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
+import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
-
-
-export interface ISortedCategoryItem {
-    category: ICategory,
-    amount: number,
-}
 
 const GroupCategoriesCard = () => {
-    const [categories, setCategories] = useState<ISortedCategoryItem[]>([]);
+    const {groupId} = useParams<{groupId: string}>();
+
     const [totalItems, setTotalItems] = useState<number>(11);
-    const [loading, setLoading] = useState<boolean>(true);
     const [idModalOpen, setIdModalOpen] = useState<number>(-1);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] = useState<boolean>(false);
+    const [isExpenseModalOpen, setIsExpenseModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     
-    const { categoriesByGroup } = json;
+    const { data: categoriesByGroup, isLoading: isCategoriesByGroupLoading, isError: isCategoriesByGroupError } = useGetCategoriesByGroupQuery(Number(groupId));
     const initializeHandleWrapper = useCallback(() => {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 1);
-    }, [height, width, categories])
-    useEffect(() => {
-        setCategories(categoriesByGroup[0].categories)
-    },[])
+    }, [height, width, categoriesByGroup])
+
     const autoHandleCloseModal = useCallback(() => {
-        if (!isModalOpen) setIdModalOpen(-1)
-    }, [isModalOpen])
+        if (!isExpenseModalOpen) setIdModalOpen(-1)
+    }, [isExpenseModalOpen])
 
     useEffect(() => {
         initializeHandleWrapper()
@@ -42,56 +39,73 @@ const GroupCategoriesCard = () => {
     }, [initializeHandleWrapper,
         autoHandleCloseModal])
     
-    // const getCategories = (categories: ISortedCategoryItem[]) => {
-    //     return categories.map((item, i) =>
-    //         <CategoriesCardItem
-    //             key={i}
-    //             setIdModalOpen={setIdModalOpen}
-    //             setIsModalOpen={setIsModalOpen}
-    //             category={item.category}
-    //             amount={item.amount} />
-    //     )
-    // }
+    const getCategories = (categoriesByGroup: ICategory[]) => {
+        return categoriesByGroup.map((item, i) =>
+            <CategoriesCardItem
+                key={i}
+                setIdModalOpen={setIdModalOpen}
+                setIsModalOpen={setIsExpenseModalOpen}
+                category={item} />
+        )
+    }
 
-    const properCategories: ISortedCategoryItem[] = useMemo(() => {
-        return categories.slice(0, totalItems)
-    }, [categories, totalItems])
+    const properCategories = useMemo(() => {
+        return categoriesByGroup?.categories_group.slice(0, totalItems)
+    }, [categoriesByGroup, totalItems])
     
-    const getModal = () => {
-        return <ExpenseModal
-            isExpenseModalOpen={isModalOpen}
-            setIsExpenseModalOpen={setIsModalOpen}
-            categoryId={0}
-            groupId={0}
+    const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
+    const getViewMoreModal = () => {
+        return <ViewMoreModal
+            isModalOpen={isMoreModalOpen}
+            setIsModalOpen={setIsMoreModalOpen}
+            isAddModalOpen={isCreateCategoryModalOpen}
+            setIsAddModalOpen={setIsCreateCategoryModalOpen}
+            data={categoriesByGroup ? getCategories(categoriesByGroup.categories_group) : []}
+            type={'categories'}
         />
     }
+
     return (
         <div className={classes.CategoriesCard}>
-            {getModal()}
+            {getViewMoreModal()}
+            {
+                <ExpenseModal
+                isExpenseModalOpen={isExpenseModalOpen}
+                setIsExpenseModalOpen={setIsExpenseModalOpen}
+                categoryId={idModalOpen}
+                groupId={Number(groupId)}/>
+            }
+            {
+                <CategoryModal
+                isCategoryModalOpen={isCreateCategoryModalOpen}
+                setIsCategoryModalOpen={setIsCreateCategoryModalOpen}
+                mode='create'
+                groupId={Number(groupId)}/>
+            }
             <div className={classes.inner}>
                 <h3 className={classes.title}>Categories</h3>
                 <ul className={classes.list} ref={squareRef}>
-                    {/* {getCategories(properCategories)} */}
+                    {properCategories? getCategories(properCategories) : ''}
                     {
-                    categories?.length === 0 ?
+                    categoriesByGroup?.categories_group?.length === 0 ?
                         <div className={classes.emptyList}>
                             <p>Category list is empty!</p>
                             <SpecialButton
-                                handleClick={() => {}}
+                                handleClick={() => {setIsCreateCategoryModalOpen(true)}}
                                 className={classes.specialItem}
                                 type='add'
                             />
                         </div>
                         :
-                        categories?.length! >= totalItems ?
+                        categoriesByGroup?.categories_group?.length! >= totalItems ?
                          <SpecialButton 
-                            handleClick={() => {}}
+                            handleClick={() => {setIsMoreModalOpen(true)}}
                             className={classes.specialItem}
                             type='view'
                         />
                         :
                         <SpecialButton
-                            handleClick={() => { }}
+                            handleClick={() => {setIsCreateCategoryModalOpen(true)}}
                             className={classes.specialItem}
                             type='add'
                         />

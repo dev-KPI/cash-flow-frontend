@@ -67,6 +67,11 @@
     font-weight: 600;
     font-size: 32px;
     line-height: 37px;
+}
+.red {
+    color: var(--main-red);
+}
+.green {
     color: var(--main-green);
 }
 
