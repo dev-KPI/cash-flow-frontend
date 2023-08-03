@@ -28,6 +28,9 @@
     color: var(--main-text);
     composes: mediumItemTitle from "@styles/style.css"
 }
+.text span{
+    font-weight: 700;
+}
 .timerLine{
     width: 100%;
     height: 4px;
