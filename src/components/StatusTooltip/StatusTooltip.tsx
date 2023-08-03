@@ -1,9 +1,9 @@
-import React, {FC, useState, useMemo, useCallback} from "react";
+import {FC, useState, ReactNode} from "react";
 
 import classes from './StatusTooltip.module.css'
 
 interface IStatusTooltipProps {
-    title: string
+    title: ReactNode
     type: 'success' | 'error'
 }
 
@@ -30,7 +30,9 @@ const StatusTooltip: FC<IStatusTooltipProps> = ({title, type}) => {
     className={classes.StatusTooltip + ' ' + showTooltipAnim}>
         <div className={classes.upSide}>
             <div style={{color: color}} className={classes.iconTooltip}>{icon}</div>
-            <p className={classes.text}>{title}</p>
+            <div className={classes.text}>
+                {title}
+            </div>
         </div>
         <div style={{color: color}}
         id="timerLine"

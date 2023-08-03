@@ -6,15 +6,16 @@ import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
 import Login from "@pages/Login/Login";
 import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
-import Header from "@components/Header/Header";
 import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
 import GroupHistory from "@pages/GroupHistory/GroupHistory";
+import Users from "@pages/Users/Users";
 
 
 export const DASHBOARD_PAGE = '/dashboard';
 export const NOTIFICATIONS_PAGE = '/notifications';
 export const CATEGORIES_PAGE = '/categories';
+export const USERS_PAGE = '/users';
 export const GROUPS_PAGE = '/groups';
 export const GROUP_PAGE = '/group/:groupId';
 export const GROUP_MEMBERS_PAGE = '/group/:groupId/members';
@@ -48,6 +49,10 @@ export const routesAuth = [
     {
         path: HISTORY_PAGE,
         component: History
+    },
+    {
+        path: USERS_PAGE,
+        component: Users
     }
 ];
 export const routesMobileNavigation = [

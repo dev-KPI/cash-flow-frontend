@@ -76,7 +76,6 @@ const UserGroupsCard = () => {
                         {
                         UserGroups!.user_groups.length === 0 ?
                             <div className={classes.emptyList}>
-                                <p>Category list is empty!</p>
                                 <SpecialButton
                                     handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
                                     className={classes.specialItem}

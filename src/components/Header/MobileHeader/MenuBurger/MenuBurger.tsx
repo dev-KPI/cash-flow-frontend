@@ -1,23 +1,21 @@
-import { FC, Dispatch, SetStateAction, DragEvent } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { FC, useMemo } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
 import IHeaderProps from "@components/Header/HeaderInterfaces";
 import { IGetCurrentUserInfo } from "@store/Controllers/UserController/UserControllerInterfaces";
 //store
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore"; import { UserSliceActions } from "@store/User/UserSlice";
+import { useGetInvitationsByCurrentUserQuery } from "@store/Controllers/InvitationController/InvitationController";
 //UI
 import classes from "./MenuBurger.module.css";
 import userIcon from '@assets/user-icon.svg';
+import usersPeopleIcon from '@assets/users-people-icon.svg';
 import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import { UserSliceActions } from "@store/User/UserSlice";
-
-
-
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
     isMenuActive: boolean,
@@ -25,7 +23,7 @@ interface IPropsMenuBurger {
 }
 
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) => {
-    
+    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
     const closeMenu = () => setMenuActive(false)
@@ -34,7 +32,9 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
         res += (actualTheme === 'dark' && isActive) ?  ' ' + classes.shadowLink : ' ';
         return res
     }
-
+    const amountNotifications = useMemo(() => {
+        return isInvitationsSuccess ? Invitations.length : 0
+    }, [isInvitationsLoading, isInvitationsFetching])
     const UserSliceDispatch = useActionCreators(UserSliceActions);
     
     const LogOut = () => {
@@ -77,7 +77,11 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
                     to="/notifications">
                         <div className={classes.burgerIcon}><i className="bi bi-bell"></i></div>
                         <h3 className={classes.title}>Notifications</h3>
-                        <div className={classes.inc}><p>6</p></div>
+                        {amountNotifications > 0 &&
+                            <div className={classes.inc}>
+                                <p>{amountNotifications}</p>
+                            </div>
+                        }
                     </NavLink>
                 </li>
                 <li key={'5gd'}>
@@ -107,6 +111,15 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
                         <h3 className={classes.title}>History</h3>
                     </NavLink >
                 </li>
+                <li key={'23hr1'}>
+                    <NavLink
+                        onClick={closeMenu}
+                        className={({ isActive }) => setActiveLinkClasses(isActive)}
+                        to="/users">
+                        <img src={usersPeopleIcon} alt="users-people" className={classes.burgerIcon} />
+                        <h3 className={classes.title}>Users</h3>
+                    </NavLink >
+                </li>
             </ul>
             <div className={classes.burgernav__line}></div>
             <div className={classes.burgernav__groups}>
@@ -124,6 +137,12 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
                             <h4 className={classes.title}>Family</h4>
                         </NavLink>
                     </li>
+                    <li>
+                        <NavLink to="/" key={'11jh23'} className={classes.groupItem}>
+                            <Light type={'solid'} color="#FF6E01" />
+                            <h4 className={classes.title}>Family</h4>
+                        </NavLink>
+                    </li>             
                 </ul>
             </div>
             <div className={classes.themeButton}>

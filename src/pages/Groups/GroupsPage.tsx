@@ -9,23 +9,7 @@ import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
-import { IGetCurrentUserGroups } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 
-type group_props = {
-    id: number,
-    title: string,
-    description: string,
-    status: string,
-    color: string,
-    icon: string,
-    admin: IUser,
-    members: IUser[]
-}
-export interface IGroup {
-    group: group_props,
-    status: string,
-    date_join: string
-}
 
 const Groups: FC = () => {
 

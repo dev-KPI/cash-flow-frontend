@@ -83,7 +83,7 @@
     position: relative;
     cursor: pointer;
 }
-.header__notifications i::after{
+.notificationsVisible i::after {
     position: absolute;
     top: -6px;
     right: -6px;
@@ -93,10 +93,9 @@
     height: 6px;
     background: var(--main-green);
     box-shadow: 0px 0px 10px var(--main-green);
-	-webkit-animation: ping 1s ease-in-out infinite both;
-	        animation: ping 1s ease-in-out infinite both;
+    -webkit-animation: ping 1s ease-in-out infinite both;
+    animation: ping 1s ease-in-out infinite both;
 }
-
 .chevron{
     transition: all 0.3s ease;
     transform: rotate(0deg)

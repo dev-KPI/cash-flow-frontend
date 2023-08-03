@@ -1,3 +1,4 @@
+import IUser from '@models/IUser';
 import { api } from '@store/api';
 
 //types
@@ -33,19 +34,29 @@ export const UserApiSlice = api.injectEndpoints({
             providesTags: (res) => res ? [{ type: 'UserController' as const, id: res.id }] :
             [],
         }),
-        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, {group_id: number}>({
-            query: ({group_id}) => ({
+        getUsers: builder.query<IUser[], null>({
+            query: () => ({
+                url: `users`,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: [{ type: 'UserController' as const }],
+        }),
+        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, { group_id: number }>({
+            query: ({ group_id }) => ({
                 url: `/groups/${group_id}/users`,
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result, err, body) => result ? 
-            [...result.users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
-            { type: 'UserController' as const, id: 'Users' }]
+            providesTags: (result, err, body) => result ?
+                [...result.users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
+                { type: 'UserController' as const, id: 'Users' }]
                 :
-            [{ type: 'UserController' as const, id: 'Users' }],
+                [{ type: 'UserController' as const, id: 'Users' }],
         }),    
         getCurrentUserBalance: builder.query<IGetCurrentUserBalance, null>({
             query: () => ({
@@ -67,6 +78,7 @@ export const UserApiSlice = api.injectEndpoints({
 export const {
     useGetUserAuthStatusQuery,
     useGetCurrentUserInfoQuery,
+    useGetUsersQuery,
     useGetUsersByGroupQuery,
     useGetCurrentUserBalanceQuery
 } = UserApiSlice

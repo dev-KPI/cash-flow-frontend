@@ -1,7 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 //logic
-import { GroupObj } from '@pages/GroupObj';
-import { IGroup } from '@pages/Groups/GroupsPage';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';
 import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
@@ -14,17 +12,17 @@ import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 
-export interface IPropsGroupHeader{
+export interface IPropsGroupHeader {
     groupInfo: IGetInfoFromGroupResponse
 }
 
-const GroupHeader: FC<IPropsGroupHeader> = ({groupInfo}) => {
+const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
 
     const { groupId } = useParams<{ groupId: string }>();
     const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
 
-    const {data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError} = useGetUsersByGroupQuery({group_id: Number(groupId)});
-    const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUseError} = useGetCurrentUserInfoQuery(null)
+    const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError } = useGetUsersByGroupQuery({ group_id: Number(groupId) });
+    const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUseError } = useGetCurrentUserInfoQuery(null)
 
     const breadcrumbs = [
         {
@@ -42,10 +40,10 @@ const GroupHeader: FC<IPropsGroupHeader> = ({groupInfo}) => {
     ]
     const handleLeave = () => {
         setIsLeaveModalOpen(!isLeaveModalOpen);
-    }  
-    
+    }
+
     const getMemberIcons = () => {
-        if(UsersByGroup){
+        if (UsersByGroup) {
             return UsersByGroup.users_group.map((el, i) =>
                 <div key={i} className={classes.avatar}>
                     <img className={classes.photo}
@@ -60,16 +58,16 @@ const GroupHeader: FC<IPropsGroupHeader> = ({groupInfo}) => {
     }
     const [leaveMode, setLeaveMode] = useState<'leave' | 'disband' | 'kick'>('leave');
     const [buttonName, setButtonName] = useState<string>('Leave group')
-    
+
     const getLeaveButton = useCallback(() => {
-        if(CurrentUser?.id === groupInfo.admin.id) {
+        if (CurrentUser?.id === groupInfo.admin.id) {
             setButtonName('Disband group')
             setLeaveMode('disband')
         } else {
             setButtonName('Leave group')
             setLeaveMode('leave')
         }
-        
+
     }, [CurrentUser, isCurrentUserLoading, isCurrentUseError,
         UsersByGroup, isUsersByGroupLoading, isUsersByGroupError])
 
@@ -77,7 +75,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({groupInfo}) => {
         getLeaveButton()
     }, [getLeaveButton])
 
-    return ( 
+    return (
         <>
             {<ConfirmationModal
                 isConfirmationModalOpen={isLeaveModalOpen}

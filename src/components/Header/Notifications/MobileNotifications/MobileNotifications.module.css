@@ -20,6 +20,9 @@
     align-items: center;
     justify-content: space-between;
 }
+.inviteForm img{
+    border-radius: 50%;
+}
 .InviteGroupRef{
     font-weight: 600;
     color: rgba(78, 125, 150, 1);
@@ -63,6 +66,17 @@
     font-size: 20px;
 }
 
+.noNotifications{
+    text-align: center;
+    margin-bottom: 10px;
+}
+.noNotifications__title{
+    composes: mediumText from "@styles/style.css";
+    margin: 10px 0 5px;
+}
+.noNotifications__text {
+    composes: largeItemTitle from "@styles/style.css";
+}
 @media only screen and (max-width: 768px) {
     .MobileNotifications__container {
         margin-top: 14px;

@@ -12,6 +12,7 @@ import { breadcrumbs } from './breadcrumbs';
 import ContextUser from '@components/ContextUser/ContextUser';
 //logic
 import IHeaderProps from '../HeaderInterfaces';
+import { useGetInvitationsByCurrentUserQuery } from '@store/Controllers/InvitationController/InvitationController';
 
 
 const HeaderSite: FC<IHeaderProps> = ({User}) => {
@@ -21,6 +22,8 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
 
     const [isContextUserOpen, setIsContextUserOpen] = useState<boolean>(false);
     const contextButtonRef = useRef(null);
+
+    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
  
     const getChevronClass = useMemo(() => {
         if (isContextUserOpen) {
@@ -28,6 +31,10 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
         }
         return ''
     }, [isContextUserOpen])
+
+    const notificationsClass = useMemo(() => {
+       return [classes.header__notifications, isInvitationsSuccess && Invitations.length > 0 ? classes.notificationsVisible : ''].join(' ');
+    }, [isInvitationsLoading, isInvitationsFetching])
     return (<>
         <header className={classes.header}>
             <div className={classes.header__container}>
@@ -51,7 +58,7 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
                         <ThemeButton />
                         <button 
                         onClick={e => setIsNotificationsOpen(!isNotificationsOpen) } 
-                        className={classes.header__notifications}
+                        className={notificationsClass}
                             ref={notificationsButtonRef}
                         >
                             <i className="bi bi-bell"></i>

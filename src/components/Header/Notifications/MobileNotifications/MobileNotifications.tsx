@@ -1,68 +1,96 @@
-import React, {FC, ReactNode} from "react";
+import {FC, ReactNode, useCallback, useState} from "react";
 //logic
 import { Link } from "react-router-dom";
-import { invites } from "../DesktopNotifications/invites";
+import IInvitation from "@models/IInvitation";
+import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 //UI
 import classes from './MobileNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
-import RejectButton from "@components/Buttons/RejectButton/RejectButton";
-import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
-import Header from "@components/Header/Header";
-
-interface IMobileNotifications {
-}
-
-interface IInvite {
-    userName: string,
-    group: string,
-    avatar: string,
-    groupUrl: string
-}
-
-const MobileNotifications: FC = ({}) => {
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 
 
-    const getInvites = (invites: IInvite[]): ReactNode[] => {
-        return invites.map((el, i) => 
-        <li className={classes.inviteLi} 
-        key={el.userName + el.group + el.groupUrl + i}>
-            <form className={classes.inviteForm}>
-                <img width={40} src={el.avatar} alt='Avatar' />
-                <p className={classes.Promo}>
-                    <span style={{fontWeight: 600}}>{el.userName}
-                    </span> has invited you to the group <Link to={el.groupUrl} className={classes.InviteGroupRef}>
-                    {el.group}</Link>
-                </p>
-                <div className={classes.buttonGroup}>
-                    <CustomButton 
-                        btnWidth={60}
-                        btnHeight={25}
-                        isPending={false}
-                        callback={() => { }}
-                        children="Accept"
-                        icon="none"
-                        type='primary'/>
-                    <CustomButton 
-                        btnWidth={60}
-                        btnHeight={25}
-                        icon="none"
-                        type="danger"
-                        background="outline" 
-                        isPending={false}
-                        children="Reject"
-                        disableScale={true}
-                        callback={()=>{console.log(1)}}/>
-                </div>
-            </form>
-        </li>)
+const MobileNotifications: FC = () => {
+    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
+    const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
+    const [buttonClicked, setButtonClicked] = useState<'accept' | 'reject' | 'none'>('none')
+    const handleSumbit = (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
+        makeResponse({
+            invitation_id: invitationId,
+            response: response
+        })
+        setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
     }
+    const showToolTip = useCallback(() => {
+        if (isResponseCreated) {
+            return <StatusTooltip
+                type="success"
+                title={`You have successfully accepted the invitation to ${ResponseData?.group.title}`} />
+        } else if (isResponseError) {
+            return <StatusTooltip
+                type="error"
+                title={`Invitation not accepted`} />
+        }
+    }, [makeResponse, isResponseCreating, isResponseError, isResponseCreated])
 
+    const getInvites = (invites: IInvitation[]): ReactNode[] => {
+        return invites.map((el, i) => {
+            const group = el.group;
+            const admin = el.group.admin;
+            const userName = admin.first_name + ' ' + admin.last_name
+            return <li className={classes.inviteLi}
+                key={admin.id + group.title + i}>
+                <form className={classes.inviteForm}>
+                    <img width={40} src={admin.picture} alt={admin.first_name + 'avatar'} />
+                    <p className={classes.Promo}>
+                        <span style={{ fontWeight: 600 }}>{userName}
+                        </span> has invited you to the group <Link to={`/group/${group.id}`} className={classes.InviteGroupRef}>
+                            {group.title}</Link>
+                    </p>
+                    <div className={classes.buttonGroup}>
+                        <CustomButton
+                            btnWidth={100}
+                            btnHeight={30}
+                            icon="none"
+                            type="primary"
+                            isPending={isResponseCreating && buttonClicked === 'accept' }
+                            children="Accept"
+                            callback={() => { handleSumbit(el.id, 'ACCEPTED') }} />
+                        <CustomButton
+                            btnWidth={100}
+                            btnHeight={30}
+                            icon="none"
+                            type="danger"
+                            background="outline"
+                            isPending={isResponseCreating && buttonClicked === 'reject'}
+                            children="Reject"
+                            disableScale={true}
+                            callback={() => { handleSumbit(el.id, 'DENIED') }} />
+                    </div>
+                </form>
+            </li>
+        })
+    }
+    let notificationsContent;
+    if (isInvitationsLoading || isInvitationsFetching) {
+        notificationsContent = <p>Loading...</p>
+    } else if (isInvitationsSuccess) {
+        if(Invitations.length > 0)
+            notificationsContent = getInvites(Invitations)
+        else 
+            notificationsContent = (<div className={classes.noNotifications}>
+                <i className="bi bi-bell" style={{ fontSize: 60, color: 'var(--main-text)' }}></i>
+                <h5 className={classes.noNotifications__title}>No notifications yet</h5>
+                <p className={classes.noNotifications__text}>When you get notifications, they'll show up here</p>
+            </div>)
+    }
+            
     return(
         <main>
             <div className={classes.MobileNotifications__container}>
                 <h3 className={classes.title}>Notifications</h3>
+                {showToolTip()}
                 <ul>
-                    {getInvites(invites)}
+                    {notificationsContent}
                 </ul> 
             </div>     
     </main>)
