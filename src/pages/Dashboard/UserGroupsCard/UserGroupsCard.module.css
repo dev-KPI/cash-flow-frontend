@@ -66,6 +66,7 @@
 }
 .specialItem {
     height: unset !important;
+    margin-bottom: 5px;
 }
 .specialItem h6{
     order: -1;
@@ -82,12 +83,8 @@
 
 .emptyList{
     display: flex;
-    flex-direction: column;
     width: 100%;
-    justify-content: center;
     align-items: center;
-
-    margin-top: 30px;
 }
 
 .emptyList p{
