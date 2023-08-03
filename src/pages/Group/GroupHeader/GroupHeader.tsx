@@ -1,9 +1,9 @@
 import { useState } from 'react';
 //logic
 import { GroupObj } from '@pages/GroupObj';
-import { IGroup } from '@pages/Groups/GroupsPage';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';
+import IUser from '@models/IUser';
 
 //UI
 import classes from './GroupHeader.module.css'
@@ -12,6 +12,21 @@ import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 
+type group_props = {
+    id: number,
+    title: string,
+    description: string,
+    status: string,
+    color: string,
+    icon: string,
+    admin: IUser,
+    members: IUser[]
+}
+export interface IGroup {
+    group: group_props,
+    status: string,
+    date_join: string
+}
 
 const GroupHeader = () => {
     const { groupId } = useParams<{ groupId: string }>();
