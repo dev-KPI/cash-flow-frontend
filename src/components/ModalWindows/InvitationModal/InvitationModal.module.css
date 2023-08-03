@@ -1,0 +1,83 @@
+.modal__wrapper {
+    margin: 0 30px;
+}
+
+.text{
+    font-size: 24px;
+    line-height: 26px;
+    color: var(--text);
+    font-weight: 400px;
+    text-align: center;
+}
+
+.text span{
+    color: var(--main-text);
+    font-weight: 700;
+}
+.selectorWrapper{
+    display: inline-block;
+    position: relative;
+    min-width: 150px;
+}
+.selectorWrapper::after{
+    position: absolute;
+    content: '';
+    display: block;
+    border-style: solid;
+    border-width: 6px 5px 0px 5px;
+    border-color: var(--main-text) transparent transparent transparent;
+
+    top: 50%;
+    right: 10px;
+    z-index: 1;
+}
+.select{
+    /* Reset */
+    appearance: none;
+    border: 0;
+    outline: 0;
+    font: inherit;
+    /* customize */
+    font-size: 20px;
+    width: 100%;
+    padding: 7px 40px 7px 10px;
+
+    border-radius: 7px;
+    box-shadow: 0px 2px 8px var(--shadow-color);
+    color: var(--text);
+    cursor: pointer;
+}
+
+option {
+    color: inherit;
+    background-color:transparent;
+}
+
+/* Remove focus outline */
+option:focus {
+    outline: none;
+}
+
+/* Remove IE arrow */
+option::-ms-expand {
+    display: none;
+}
+  
+.btnWrapper{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    gap: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+    .modal__wrapper {
+        max-width: 510px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+}
+
