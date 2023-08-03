@@ -13,6 +13,8 @@ import IGroupState from "@store/Group/GroupInterfaces";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { GroupSliceActions } from "@store/Group/GroupSlice";
+import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
+import { useNavigate } from "react-router-dom";
 
 interface IGroupModalProps{
     groupId?: number,
@@ -29,7 +31,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-
+    const navigate = useNavigate();
     //pickers
     const [nameValue, setNameValue] = useState<string>('');
     const [descValue, setDescValue] = useState<string>('');
@@ -116,6 +118,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
         labelText = 'Please enter the name of the group:'
     }
 
+
     useEffect(() => {
         intitializeBaseGroup()
         closeModalHandler()
@@ -199,7 +202,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             type='danger'
                             background="outline"
                             disableScale={true}
-                            callback={() => {disbandGroup(groupId)}}
+                            callback={() => {disbandGroup(groupId); navigate('/groups')}}
                         />}
                         <CustomButton
                             isPending={isGroupCreating}
