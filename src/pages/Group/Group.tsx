@@ -14,6 +14,7 @@ import SearchBar from '@components/SearchBar/SearchBar';
 import GroupChartsCard from '@pages/Group/GroupChartsCard/GroupChartsCard';
 import GroupGraphCard from '@pages/Group/GroupGraphCard/GroupGraphCard';
 import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
+import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
 
 const Group = () => {
@@ -21,7 +22,7 @@ const Group = () => {
     const { groupId } = useParams();
 
     const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError} = useGetInfoByGroupQuery({group_id: Number(groupId)})
-    const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)
+    const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)    
 
     return (<>
         {GroupInfo && CurrentUser &&

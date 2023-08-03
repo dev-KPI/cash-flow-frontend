@@ -12,6 +12,7 @@ import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 import { useGetCategoriesByGroupQuery } from '@store/Controllers/CategoriesController/CategoriesController';
 import { useParams } from 'react-router-dom';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
+import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
 
 const GroupCategoriesCard = () => {
@@ -52,9 +53,21 @@ const GroupCategoriesCard = () => {
         return categoriesByGroup?.categories_group.slice(0, totalItems)
     }, [categoriesByGroup, totalItems])
     
- 
+    const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
+    const getViewMoreModal = () => {
+        return <ViewMoreModal
+            isModalOpen={isMoreModalOpen}
+            setIsModalOpen={setIsMoreModalOpen}
+            isAddModalOpen={isCreateCategoryModalOpen}
+            setIsAddModalOpen={setIsCreateCategoryModalOpen}
+            data={categoriesByGroup ? getCategories(categoriesByGroup.categories_group) : []}
+            type={'categories'}
+        />
+    }
+
     return (
         <div className={classes.CategoriesCard}>
+            {getViewMoreModal()}
             {
                 <ExpenseModal
                 isExpenseModalOpen={isExpenseModalOpen}
@@ -86,7 +99,7 @@ const GroupCategoriesCard = () => {
                         :
                         categoriesByGroup?.categories_group?.length! >= totalItems ?
                          <SpecialButton 
-                            handleClick={() => {}}
+                            handleClick={() => {setIsMoreModalOpen(true)}}
                             className={classes.specialItem}
                             type='view'
                         />

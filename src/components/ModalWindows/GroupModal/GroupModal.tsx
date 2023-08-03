@@ -15,6 +15,7 @@ import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore
 import { GroupSliceActions } from "@store/Group/GroupSlice";
 import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
+import ViewMoreModal from "../ViewMoreModal/ViewMoreModal";
 
 interface IGroupModalProps{
     groupId?: number,
@@ -118,6 +119,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
         labelText = 'Please enter the name of the group:'
     }
 
+    
 
     useEffect(() => {
         intitializeBaseGroup()
