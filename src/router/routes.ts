@@ -90,10 +90,3 @@ export const groupRoutes = [
         component: GroupHistory
     },
 ]
-
-export const components = [
-    {
-        path: "/components/Header",
-        component: Headers
-    }
-];
