@@ -102,7 +102,7 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                         btnHeight={36}
                         icon="refuse"
                         type='danger'
-                        callback={() => { }}
+                        callback={() => { setIsInvitationModalOpen(false) }}
                     />
                 </div>
             </form>
