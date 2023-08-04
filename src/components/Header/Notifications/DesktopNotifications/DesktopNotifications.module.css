@@ -95,7 +95,8 @@
     color: var(--main-text);
     transition: all .3s ease;
 }
-.refresh:hover i:hover{
+.refresh:hover{
+    fill: var(--main-green);
     color: var(--main-green);
 }
 @keyframes fadeIn {

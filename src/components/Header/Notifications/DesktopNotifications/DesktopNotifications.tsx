@@ -114,7 +114,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                 <h5 className={classes.noNotifications__title}>No notifications yet</h5>
                 <p className={classes.noNotifications__text}>When you get notifications, they'll show up here</p>
                 <div className={classes.refresh}>
-                    <i className="bi bi-arrow-clockwise" style={{ fontSize: 24, color: 'var(--main-text)' }}></i>
+                    <i className={"bi bi-arrow-clockwise"}></i>
                     <button onClick={() => refetch()}>Refresh</button>
                 </div>
             </div>)
