@@ -54,6 +54,7 @@ export const InvitationApiSlice = api.injectEndpoints({
 })
 
 export const {
+    useLazyGetInvitationsByCurrentUserQuery,
     useGetInvitationsByCurrentUserQuery,
     useResponseInvitationByIdMutation,
     useCreateInvitationMutation
