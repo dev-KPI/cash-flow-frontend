@@ -5,27 +5,29 @@ import classes from './GroupModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
+import ViewMoreModal from "../ViewMoreModal/ViewMoreModal";
+import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import IGroupState from "@store/Group/GroupInterfaces";
+import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { GroupSliceActions } from "@store/Group/GroupSlice";
-import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
 import { useNavigate } from "react-router-dom";
-import ViewMoreModal from "../ViewMoreModal/ViewMoreModal";
+import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 
 interface IGroupModalProps{
     groupId?: number,
+    group?: IGetInfoFromGroupResponse,
     setGroupId: Dispatch<SetStateAction<number>>,
     isGroupModalOpen: boolean
     setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
-    mode: 'create' | 'edit'
+    mode: 'create' | 'edit',
 }
 
-const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId }) => {
+const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
     
     const GroupsStore = useAppSelector<IGroupState>(state => state.persistedGroupSlice)
     const GroupsSliceDispatch = useActionCreators(GroupSliceActions);
@@ -43,6 +45,8 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     const [icon, setIcon] = useState<string>('bi bi-people');
     const changeIcon = (e: React.MouseEvent<HTMLDivElement>, icon: string) => {setIcon(icon)};
     const iconDisplayed = <i style={{fontSize: '24px', color: 'var(--main-text)'}} className={icon}></i>
+
+    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
 
     const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
@@ -118,15 +122,20 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     } else if (mode === 'edit') {
         labelText = 'Please enter the name of the group:'
     }
-
-    
-
+ 
     useEffect(() => {
         intitializeBaseGroup()
         closeModalHandler()
     }, [intitializeBaseGroup, closeModalHandler])
 
     return <>
+    {isConfirmationModal && 
+        <ConfirmationModal 
+        groupId={groupId ?? 0} 
+        setIsConfirmationModalOpen={setIsConfirmationModal} 
+        isConfirmationModalOpen={isConfirmationModal} 
+        mode="disband"/>
+    }
     {showToolTip}
         <UsePortal
             isModalOpen={isGroupModalOpen}
@@ -141,6 +150,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                         <label className={classes.title} htmlFor="groupName">{labelText}</label>
                         <div className={classes.inputWrapper}>
                             <Input
+                                value={group?.title}
                                 setFormValue={{ type: 'name', callback: setNameValue }}
                                 isInputMustClear={!isGroupModalOpen}
                                 inputType="name" id="groupName"
@@ -151,6 +161,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                         <label className={classes.title} htmlFor="groupDesc">Description:</label>
                         <div className={classes.textAreaWrapper}>
                             <Input
+                                value={group?.description}
                                 setFormValue={{ type: 'area', callback: setDescValue }}
                                 isInputMustClear={!isGroupModalOpen}
                                 inputType="area" id="groupDesc"
@@ -204,7 +215,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             type='danger'
                             background="outline"
                             disableScale={true}
-                            callback={() => {disbandGroup(groupId); navigate('/groups')}}
+                            callback={() => {setIsConfirmationModal(true); setIsGroupModalOpen(false)}}
                         />}
                         <CustomButton
                             isPending={isGroupCreating}

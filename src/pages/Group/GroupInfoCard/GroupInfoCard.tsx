@@ -41,6 +41,7 @@ const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) 
         <div className={classes.GroupInfoCard}>
             {
                 <GroupModal
+                group={groupInfo}
                 groupId={groupInfo.id}
                 setGroupId={() => {}}
                 isGroupModalOpen={isEditGroupModal}
