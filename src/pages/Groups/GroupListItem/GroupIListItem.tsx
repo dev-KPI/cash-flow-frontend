@@ -6,7 +6,7 @@ import { useLeaveGroupMutation } from '@store/Controllers/GroupsController/Group
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import { useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';
@@ -15,6 +15,7 @@ import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 
 interface IGroupItemProps {
     id: number;
+    isAdmin: boolean;
     title: string,
     description: string,
     icon: string,
@@ -27,7 +28,7 @@ interface IGroupItemProps {
     setGroupId: React.Dispatch<SetStateAction<number>>
 }
 const GroupItem: FC<IGroupItemProps> = ({ id, 
-    title, description, icon, adminName, 
+    title, description, icon, adminName, isAdmin,
     adminEmail, color, isEditGroupModal, setIsEditGroupModal, setGroupId
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -103,12 +104,12 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                     <i className="bi bi-eye"></i>
                                     <h6 className={classes.itemTitle}>View</h6>
                                 </li>
-                                <li className={classes.item}
+                                {isAdmin && <li className={classes.item}
                                     onClick={(e) => { e.preventDefault(); setGroupId(id); setIsEditGroupModal(!isEditGroupModal) }}
                                 >
                                     <i className="bi bi-pencil"></i>
                                     <h6 className={classes.itemTitle}>Edit</h6>
-                                </li>
+                                </li>}
                                 <li className={classes.item}
                                     style={{ color: 'var(--main-red)' }}
                                     onClick={(e) => { e.preventDefault(); leaveGroup(id)}}
