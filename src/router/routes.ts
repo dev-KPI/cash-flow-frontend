@@ -47,12 +47,12 @@ export const routesAuth = [
         component: Groups
     },
     {
-        path: HISTORY_PAGE,
-        component: History
-    },
-    {
         path: USERS_PAGE,
         component: Users
+    },
+    {
+        path: HISTORY_PAGE,
+        component: History
     }
 ];
 export const routesMobileNavigation = [

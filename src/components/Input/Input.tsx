@@ -10,6 +10,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
         
 
 const Input: FC<IInputProps> = ({
+    value,
     inputType, 
     setFormValue, 
     placeholder, 
@@ -20,7 +21,15 @@ const Input: FC<IInputProps> = ({
     }) => {
 
     const [inputNumberValue, setInputNumberValue] = useState<number>(0);
-    const [inputStringValue, setInputStringValue] = useState<string>('');
+    const [inputStringValue, setInputStringValue] = useState<string>(value ?? '');
+
+    useEffect(() => {
+        if (setFormValue.type === 'cash') {
+            setFormValue.callback(inputNumberValue)
+        } else {
+            setFormValue.callback(inputStringValue)
+        }
+    }, [])
 
     useMemo(() => {
         if(isInputMustClear){

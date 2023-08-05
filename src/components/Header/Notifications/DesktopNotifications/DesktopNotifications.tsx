@@ -8,8 +8,10 @@ import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 //logic
 import { Link } from "react-router-dom";
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
-import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
+import { useGetInvitationsByCurrentUserQuery, useLazyGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 import IInvitation from "@models/IInvitation";
+import { api } from "@store/api";
+import { useAppDispatch } from "@hooks/storeHooks/useAppStore";
 
 
 interface IDesktopNotifications {
@@ -21,7 +23,7 @@ interface IDesktopNotifications {
 
 
 const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive, buttonRef }) => {
-    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
+    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess, refetch} = useGetInvitationsByCurrentUserQuery(null)
     const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
 
     const handleSumbit = (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
@@ -83,9 +85,11 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
         })
     }
 
+    const [trigger, result, lastPromiseInfo] = useLazyGetInvitationsByCurrentUserQuery()
+
     let notificationsContent;
     if (isInvitationsLoading || isInvitationsFetching) {
-        notificationsContent = <p>Loading...</p>
+        notificationsContent = <p style={{height: '180px'}}>Loading...</p>
     } else if (isInvitationsSuccess) {
         if(Invitations.length > 0) 
             notificationsContent = <>
@@ -109,6 +113,10 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                 <i className="bi bi-bell" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
                 <h5 className={classes.noNotifications__title}>No notifications yet</h5>
                 <p className={classes.noNotifications__text}>When you get notifications, they'll show up here</p>
+                <div className={classes.refresh}>
+                    <i className={"bi bi-arrow-clockwise"}></i>
+                    <button onClick={() => refetch()}>Refresh</button>
+                </div>
             </div>)
     }
 

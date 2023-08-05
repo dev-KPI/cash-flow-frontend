@@ -84,7 +84,21 @@
     animation: fadeIn 0.5s;
     opacity: 1
 }
-  
+
+.refresh{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 32px;
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--main-text);
+    transition: all .3s ease;
+}
+.refresh:hover{
+    fill: var(--main-green);
+    color: var(--main-green);
+}
 @keyframes fadeIn {
     0% {
       opacity: 0;

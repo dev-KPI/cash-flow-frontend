@@ -47,13 +47,14 @@ export const InvitationApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'InvitationController', id: 'RESPONSE_INVITATION' }],
+            invalidatesTags: [{ type: 'InvitationController', id: 'RESPONSE_INVITATION' }, { type: 'GroupsController', id: 'GROUPS' }],
         })
     }),
     overrideExisting: false,
 })
 
 export const {
+    useLazyGetInvitationsByCurrentUserQuery,
     useGetInvitationsByCurrentUserQuery,
     useResponseInvitationByIdMutation,
     useCreateInvitationMutation

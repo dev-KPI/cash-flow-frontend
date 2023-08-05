@@ -12,11 +12,11 @@ export const breadcrumbs = [
         'link': '/groups'
     },
     {
-        'title': 'History',
-        'link': '/history'
-    },
-    {
         'title': 'Users',
         'link': '/users'
+    },
+    {
+        'title': 'History',
+        'link': '/history'
     }
 ]

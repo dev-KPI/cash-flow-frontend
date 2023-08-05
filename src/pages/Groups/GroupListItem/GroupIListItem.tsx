@@ -6,15 +6,17 @@ import { useLeaveGroupMutation } from '@store/Controllers/GroupsController/Group
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import { useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';
 import GroupListItemLoader from './GroupListItemLoader';
 import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 
 interface IGroupItemProps {
     id: number;
+    isAdmin: boolean;
     title: string,
     description: string,
     icon: string,
@@ -27,7 +29,7 @@ interface IGroupItemProps {
     setGroupId: React.Dispatch<SetStateAction<number>>
 }
 const GroupItem: FC<IGroupItemProps> = ({ id, 
-    title, description, icon, adminName, 
+    title, description, icon, adminName, isAdmin,
     adminEmail, color, isEditGroupModal, setIsEditGroupModal, setGroupId
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -38,6 +40,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
     const [leaveGroup, { isLoading: isLeavingGroup, isSuccess: isLeavedGroup, isError: isLeavingGroupError},] = useLeaveGroupMutation();
     const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetUsersByGroupQuery({group_id: id});
 
+    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
 
     const memberIcons = (): string[] => {
@@ -85,6 +88,12 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
 
     return (
         <div className={classes.group}>
+            {isConfirmationModal && 
+            <ConfirmationModal 
+            groupId={id} 
+            isConfirmationModalOpen={isConfirmationModal} 
+            setIsConfirmationModalOpen={setIsConfirmationModal} 
+            mode={isAdmin ? 'disband' : 'leave'}/>}
             {showToolTip()}
             {!UsersInGroup?.users_group[0] ? <GroupListItemLoader/> :
                 <>
@@ -103,18 +112,18 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                     <i className="bi bi-eye"></i>
                                     <h6 className={classes.itemTitle}>View</h6>
                                 </li>
-                                <li className={classes.item}
+                                {isAdmin && <li className={classes.item}
                                     onClick={(e) => { e.preventDefault(); setGroupId(id); setIsEditGroupModal(!isEditGroupModal) }}
                                 >
                                     <i className="bi bi-pencil"></i>
                                     <h6 className={classes.itemTitle}>Edit</h6>
-                                </li>
+                                </li>}
                                 <li className={classes.item}
                                     style={{ color: 'var(--main-red)' }}
-                                    onClick={(e) => { e.preventDefault(); leaveGroup(id)}}
+                                    onClick={() => { setIsConfirmationModal(true)}}
                                 >
                                     <i className="bi bi-box-arrow-left"></i>
-                                    <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>Leave</h6>
+                                    <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>{isAdmin ? 'Disband' : 'Leave'}</h6>
                                 </li>
                             </ul>}
                     />

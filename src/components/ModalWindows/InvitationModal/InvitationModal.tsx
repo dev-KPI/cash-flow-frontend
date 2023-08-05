@@ -75,7 +75,7 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                     <p className={classes.text}>Do you want to invite <span>{userName}
                     </span> to <div className={classes.selectorWrapper}>
                             <select className={classes.select} onChange={handleChange}>
-                                <option key={'none'} value='None'>
+                                <option style={{backgroundColor: 'var(--cardbg)'}} key={'none'} value='None'>
                                     none
                                 </option>
                                 {groupsObject.map((group) => (
@@ -102,7 +102,7 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                         btnHeight={36}
                         icon="refuse"
                         type='danger'
-                        callback={() => { }}
+                        callback={() => { setIsInvitationModalOpen(false) }}
                     />
                 </div>
             </form>
