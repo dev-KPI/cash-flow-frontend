@@ -16,10 +16,15 @@
     color: var(--main-text);
     composes: smallItemText from '@styles/style.css';
 }
-.item{
+.item a{
     padding: 10px;
     border-radius: 7px;
+    display: flex;
 }
-.item:hover{
+.item button{
+    display: block;
+    width: 100%;
+}
+.item a:hover{
     background-color: var(--item-hover);
 }
