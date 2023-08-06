@@ -68,7 +68,6 @@
 
 .noNotifications{
     text-align: center;
-    margin-bottom: 10px;
 }
 .noNotifications__title{
     composes: mediumText from "@styles/style.css";

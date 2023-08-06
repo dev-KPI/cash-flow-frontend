@@ -1,7 +1,7 @@
 .contextModal{
-    top: 100px;
-    right: 5px;
-    width: 280px;
+    top: 65px;
+    right: 0px;
+    width: 100%;
     border-radius: 10px;
     padding: 8px;
 }
@@ -16,10 +16,15 @@
     color: var(--main-text);
     composes: smallItemText from '@styles/style.css';
 }
-.item{
+.item a{
     padding: 10px;
     border-radius: 7px;
+    display: flex;
 }
-.item:hover{
+.item button{
+    display: block;
+    width: 100%;
+}
+.item a:hover{
     background-color: var(--item-hover);
 }

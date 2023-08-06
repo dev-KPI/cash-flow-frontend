@@ -67,6 +67,10 @@
     letter-spacing: -0.4633px
 }
 
+.profile__wrapper{
+    position: relative;
+}
+
 .header__profile i {
     color: var(--text);
     font-size: 8px;

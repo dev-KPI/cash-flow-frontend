@@ -27,6 +27,20 @@
     margin-top: 38px;
 }
 
+.noItems {
+    text-align: center;
+    margin-top: 5%;
+}
+
+.noItems__title {
+    composes: mediumText from "@styles/style.css";
+    margin: 10px 0 5px;
+}
+
+.noItems__text {
+    composes: largeItemTitle from "@styles/style.css";
+}
+
 @media only screen and (max-width: 768px) {
     .page__container {
         margin-top: 14px;
