@@ -12,6 +12,7 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import CategoriesCard from "./CategoriesCard/CategoriesCard";
 import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal";
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
+import PageGlobalLoader from "@components/PageGlobalPreloader/PageGlobalPreloader";
 
 
 
@@ -19,12 +20,12 @@ const Categories: FC = () => {
     
     const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
 
-    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
+    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
     
     const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
 
-    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError } = useGetCategoriesByGroupQuery(selectedGroup)
+    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError, isSuccess: isCategoriesSuccess } = useGetCategoriesByGroupQuery(selectedGroup)
 
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
@@ -103,7 +104,52 @@ const Categories: FC = () => {
                 setIsEditCategoryModal={setIsEditCategoryModal}
             />
         )
-    }, [CategoriesByGroup])
+    }, [CategoriesByGroup, UserGroups])
+
+    let categoriesContent;
+    let groupsContent;
+    if (isCategoriesLoading || isGroupsLoading) {
+        return <PageGlobalLoader />
+    } else if (isCategoriesError) {
+        groupsContent = (<div className={classes.noItems}>
+            <i className="bi bi-person-x" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
+            <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>
+            <p className={classes.noItems__text}>To add more categories, first create groups.</p>
+        </div>)
+        categoriesContent = null
+    }
+    else if (isCategoriesSuccess && isGroupsSuccess) {
+        if (UserGroups.user_groups.length > 0) {
+            groupsContent = <>
+                <nav className={classes.groupsNav}>
+                    {getGroups()}
+                </nav>
+                <div className={classes.addCategory}>
+                    <div className={classes.upSide}>
+                        <h5 className={classes.CategoryTitle}>Category</h5>
+                        <CustomButton
+                            isPending={false}
+                            callback={() => setIsCreateCategoryModal(!isCreateCategoryModal)}
+                            icon="add"
+                            type="primary"
+                            children="Create new category"
+                        />
+                    </div>
+                    <div className={classes.line}></div>
+                </div>
+            </>
+            if (CategoriesByGroup.categories_group.length > 0)
+                categoriesContent = <ul className={classes.CategoriesBox}>
+                    {getCategories}
+                </ul>
+            else
+                categoriesContent = (<div className={classes.noItems}>
+                    <i className="bi bi-ui-checks-grid" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
+                    <h5 className={classes.noItems__title}>Your categories list currently is empty!</h5>
+                    <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
+                </div>)
+        }
+    }
 
     return (<>
         {<CategoryModal
@@ -123,25 +169,8 @@ const Categories: FC = () => {
         <main id='CategoriesPage'>
             <div className={classes.CategoriesPage__container}>
                 <h3 className={classes.pageTitle}>Categories</h3>
-                <nav className={classes.groupsNav}>
-                    {getGroups()}
-                </nav>
-                <div className={classes.addCategory}>
-                    <div className={classes.upSide}>
-                        <h5 className={classes.CategoryTitle}>Category</h5>
-                        <CustomButton
-                            isPending={false}
-                            callback={() => setIsCreateCategoryModal(!isCreateCategoryModal)}
-                            icon="add"
-                            type="primary"
-                            children="Create new category"
-                            />
-                    </div>
-                    <div className={classes.line}></div>
-                </div>
-                <ul className={classes.CategoriesBox}>
-                    {getCategories}
-                </ul>
+                {groupsContent}
+                {categoriesContent}
             </div>
         </main>
     </>)
