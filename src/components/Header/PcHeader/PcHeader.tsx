@@ -51,10 +51,6 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
                             setIsActive={setIsNotificationsOpen}
                             buttonRef={notificationsButtonRef}
                         />
-                        <ContextUser
-                            isActive={isContextUserOpen}
-                            setIsActive={setIsContextUserOpen}
-                            buttonRef={contextButtonRef} />
                         <ThemeButton />
                         <button 
                         onClick={e => setIsNotificationsOpen(!isNotificationsOpen) } 
@@ -65,6 +61,7 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
                         </button>
                     </div>
                     <button
+                        className={classes.profile__wrapper}
                         onClick={e => setIsContextUserOpen(!isContextUserOpen)}
                         ref={contextButtonRef}>
                         <div className={classes.header__profile}>
@@ -77,6 +74,10 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
                                 <i className={`bi bi-chevron-down ${classes.chevron} ${getChevronClass}`}></i>
                             </div>
                         </div>
+                        <ContextUser
+                            isActive={isContextUserOpen}
+                            setIsActive={setIsContextUserOpen}
+                            buttonRef={contextButtonRef} />
                     </button>
                     <nav className={classes.breadcrumbs}>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
