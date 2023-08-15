@@ -4,9 +4,15 @@
 [data-theme="dark"]{
     --btn-color: #333333;
 }
+.monthPickerWrapper{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
 .monthPicker {
     display: flex;
     min-width: 270px;
+    max-width: 320px;
     composes: cardComponent from "@styles/style.css";
 }
 .wrapper{
@@ -17,7 +23,11 @@
     align-items: center;
     justify-content: space-between;
 }
-
+.ToggleSide{
+    color: var(--main-text);
+    display: flex;
+    gap: 10px;
+}
 .btn{
     display: flex;
     background-color: var(--btn-color);
@@ -40,18 +50,34 @@
 }
 
 .title{
-    width: 150px;
+    cursor: pointer;
+    width: 100%;
     font-weight: 700;
     font-size: 18px;
     line-height: 24px;
     color: var(--main-text);
+    align-items: center;
     text-align: center;
     min-width: 128px;
     user-select: none;
 }
-
+.RangeDatePicker{
+    display: flex;
+    width: 100%;
+    border-radius: 10px;
+}
+.RangeDatePicker:hover{
+    transition: all .3s ease;
+    background-color: var(--main-green-50);
+}
 @media only screen and (max-width: 768px) {
+    .monthPickerWrapper{
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
     .monthPicker {
+        max-width: unset;
         min-width: unset;
         width: 100%;
         display: block;
