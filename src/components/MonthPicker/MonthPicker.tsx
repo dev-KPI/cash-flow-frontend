@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState, useMemo } from 'react';
 
 //UI
 import classes from './MonthPicker.module.css';
-import TimeRangePicker from '@components/TimeRangePicker/TimeRangePicker';
+import DateRangePicker from '@components/DateRangePicker/DateRangePicker';
 import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
 import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
 //store
@@ -65,7 +65,7 @@ const MonthPicker: React.FC = () => {
     }, [getEndDateForTitle, getStartDateForTitle, isRangeMode])
 
     return (<div className={classes.monthPickerWrapper}>
-        {<TimeRangePicker
+        {<DateRangePicker
         isTimeRangePicker={isTimeRangePicker}
         setIsTimeRangePicker={setIsTimeRangePicker}/>}
         <div className={classes.monthPicker}>

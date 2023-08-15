@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ClassNames, DateRangePicker, Range, RangeFocus, defaultStaticRanges } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import classes from './TimeRangePicker.module.css';
+import classes from './DateRangePicker.module.css';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
 //logic
 import UsePortal from '@hooks/layoutHooks/usePortal/usePortal';
