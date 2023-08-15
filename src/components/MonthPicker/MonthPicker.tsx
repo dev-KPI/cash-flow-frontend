@@ -57,7 +57,7 @@ const MonthPicker: React.FC = () => {
                 className={classes.RangeDatePicker}
                 onClick={() => setIsTimeRangePicker(true)}>
                     <h4 className={classes.title}>{getStartDateForTitle}</h4>
-                    <p style={{alignItems: 'center', textAlign: 'center'}}>-</p>
+                    <p style={{display: 'flex', alignItems: 'center', textAlign: 'center', color:'var(--main-text)'}}>-</p>
                     <h4 className={classes.title}>{getEndDateForTitle}</h4>
                 </button>
             </>)
