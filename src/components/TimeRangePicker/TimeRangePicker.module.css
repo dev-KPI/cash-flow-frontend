@@ -1,0 +1,173 @@
+.wrapperModal{
+  display: flex;
+  justify-content: center;
+}
+.DateRangePickerWrapper input{
+  background-color: var(--cardbg);
+  border-radius: 2px;
+  border: solid 0.03rem var(--text) !important;
+}
+.DateRangePickerWrapper input:hover{
+  transition: all .3s ease;
+  box-shadow: 0px 2px 8px var(--shadow-color);
+}
+
+.DateRangePickerWrapper > div{
+  color: var(--main-text);
+  background-color: var(--cardbg);
+  border-color: #aeaeae00;
+}
+.DateRangePickerWrapper button:not(.Days > button){
+  color: var(--main-text);
+  border-color: #aeaeae3f;
+  background-color: var(--cardbg);
+}
+.DateRangePickerWrapper button:not(.Days > button):hover{
+  color: #333333;
+}
+
+.Day {
+  color: var(--main-text);
+  background-color: var(--background);
+}
+.TodayDay{
+  font-weight: 600;
+  color: var(--main-text);
+}
+.Day > button > span{
+  color: var(--main-text);
+}
+.DayNumber > span {
+  color: var(--main-text);
+}
+.DayDisabled{
+  background-color: var(--cardbg);
+}
+.DateRangePickerWrapper > span{
+  font-family: 'Inter';
+}
+.StaticRange {
+  background-color: var(--cardbg);
+}
+.DefinedRangesWrapper {
+  background-color: var(--cardbg) !important;
+}
+.CalendarWrapper {
+  background-color: var(--cardbg);
+}
+.MonthAndYearPickers{
+  color: var(--main-text);
+}
+.MonthAndYearWrapper{
+}
+.MonthAndYearWrapper > button {
+  background-color: var(--filter-btn) !important;
+}
+.MonthAndYearWrapper > button:hover {
+  background-color: var(--main-green) !important;
+}
+.DateDisplayWrapper{
+  background-color: var(--cardbg);
+}
+.DateDisplay > span{
+  background-color: var(--cardbg);
+} 
+.DateInput > input{
+  color: var(--main-text);
+  border: none !important;
+}
+.DateDisplayItemActive {
+  border-color: var(--main-green);
+}
+.WeekDays {}
+.WeekDay {}
+.MonthName {}
+@media only screen and (max-width: 1024px) {
+  .DateRangePickerWrapper{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .DateRangePickerWrapper > div > div:not(:last-child){
+    display: flex;
+    flex-direction: row;
+    width: 100% !important;
+  }
+  .DateRangePickerWrapper > div{
+    width: 580px;
+  }
+  .DateRangePickerWrapper > div:first-child > div:last-child{
+    display: none;
+  }  
+  .DateRangePickerWrapper > div > div > div > input{
+    display: none;
+    padding: 0;
+  }
+  .DateRangePickerWrapper > div > div > div > span{
+    padding: 0;
+    display: none;
+  }
+  .DateRangePickerWrapper > button:not(button.Day):not(.MonthAndYearWrapper > button){
+    display: none;  
+  }
+  .Months{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row !important;
+  }
+}
+@media only screen and (max-width: 768px){
+  .DateRangePickerWrapper{
+    flex-direction: column;
+  }
+  .DateRangePickerWrapper > div:last-child {
+    align-items: center;
+    justify-content: center;
+  }
+  .DateRangePickerWrapper > div:first-child > div > button > span {
+    padding: 10px;
+  }
+  .DateRangePickerWrapper > div:last-child > div:first-child{
+    display: none;
+  }
+  .DateRangePickerWrapper > div:last-child > div:nth-child(2){
+    max-width: 300px;
+    max-height: 40px;
+    padding: 0;
+  }
+  .Months{
+    flex-direction: column !important;
+  }
+  .Months > div > div:not(:first-child){
+    display: flex;
+  }
+  .Days{
+    width: 100%;
+  }
+  .Day{
+    max-width: 40px;
+  }
+  .Months > div{
+    max-width: 300px;
+  }
+  .Months > div > div > span{
+    max-width: 40px;
+  }
+  .DateRangePickerWrapper > div{
+    width: 100%;
+    max-width: 540px;
+  } 
+  .DateRangePickerWrapper > div:first-child > div:first-child{
+    flex-direction: row;
+    justify-content: center;
+  }     
+  .DateRangePickerWrapper > div:first-child > div:first-child > button:nth-child(2){
+    display: none;
+  }
+  .DateRangePickerWrapper > div:first-child > div:first-child > button:nth-child(4){
+    display: none;
+  }
+}
