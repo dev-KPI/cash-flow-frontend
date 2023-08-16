@@ -190,6 +190,8 @@
     --btn-text: #EAEAEA;
     --confrim-btn: rgba(128, 214, 103, 1);
     --border-input: rgba(122, 122, 157, 0.5);
+    --refetch-btn: #f1f1f1;
+    --refetch-btn-hover: #dddddd;
  }
 
  [data-theme="dark"] {
@@ -198,7 +200,7 @@
     --main-text: #EAEAEA;
     --text: #9BABC5;
     --shadow-color: rgba(29, 8, 8, 0.1);
-    --item-hover: rgba(81, 81, 81, 0.2);
+    --item-hover: rgba(81, 81, 81, 0.3);
     --opacity: 0.5;
     --color-picker: #2b2b2b;
 
@@ -208,6 +210,8 @@
     --confrim-btn: rgba(128, 214, 103, 0.8);
     --btn-text: #EAEAEA;
     --border-input: rgba(155, 171, 197, 0.5);
+    --refetch-btn: #222;
+    --refetch-btn-hover: #1a1a1a;
  }
 
  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
