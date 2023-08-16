@@ -35,10 +35,18 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
     }
 
     const showToolTip = useCallback(() => {
-        if (isResponseCreated) {
-            return <StatusTooltip
-                type="success"
-                title={`You have successfully accepted the invitation to ${ResponseData?.group.title}`} />
+        if (isResponseCreated && ResponseData) {
+            if (ResponseData.status === 'DENIED') {
+                return <StatusTooltip
+                    type="error"
+                    title={<p>You have successfully denied the invitation to <span>{ResponseData.group.title}</span></p>} />
+
+            } else {
+                return <StatusTooltip
+                    type="success"
+                    title={<p>You have successfully accepted the invitation to <span>{ResponseData.group.title}</span></p>} />
+
+            }
         } else if (isResponseError) {
             return <StatusTooltip
                 type="error"
