@@ -89,6 +89,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 MonthPickerDispatch.setStartDate(timeRanges.selection.startDate.toISOString())
                 MonthPickerDispatch.setEndDate(timeRanges.selection.endDate.toISOString())
             }
+            MonthPickerDispatch.setDateTimeByRangePickerEndDate();
             setDateChangeCount(0)
             setIsTimeRangePicker(false);
         } 

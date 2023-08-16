@@ -38,7 +38,9 @@ const MonthPicker: React.FC = () => {
         } else {
             return(`${getStartDateForTitle} - ${getEndDateForTitle}`)
         }
-    }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear, isRangeMode])
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate, 
+        MonthPickerStore.currentMonth, MonthPickerStore.currentYear, 
+        isRangeMode])
 
 
     const monthPickerBody = useMemo(() => {
@@ -46,16 +48,18 @@ const MonthPicker: React.FC = () => {
             <button
             className={classes.RangeDatePicker}
             onClick={() => {
+                setIsRangeMode(true)
+                setIsTimeRangePicker(true)
                 if(!isRangeMode){
-                    setIsRangeMode(true)
                     MonthPickerDispatch.changeTypeFetchingData() 
-                    setIsTimeRangePicker(true)
                 }
             }}>
                 <h4 className={classes.title}>{getMonthPickerTitle}</h4>
             </button>
         </>)
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear, isRangeMode])
+
+    console.log(MonthPickerStore.currentMonth)
 
     return (<div className={classes.monthPickerWrapper}>
         {<DateRangePicker
@@ -70,6 +74,7 @@ const MonthPicker: React.FC = () => {
                         MonthPickerDispatch.changeTypeFetchingData() 
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
+                        setMonth('next')
                     }
                 }}
                 className={classes.btn + ' ' + classes.previous}>
@@ -83,6 +88,7 @@ const MonthPicker: React.FC = () => {
                         MonthPickerDispatch.changeTypeFetchingData() 
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
+                        setMonth('prev')
                     }
                 }}
                 className={classes.btn + ' ' + classes.next}>
