@@ -56,7 +56,13 @@ export const MonthPickerSlice = createSlice({
         setCurrentDateTime: (initialState: IMonthPickerState): void => {
             initialState.currentMonth = DateService.getCurrentMonth();
             initialState.currentYear = new Date().getFullYear();
-        }
+        },
+        setDateTimeByRangePickerEndDate: (initialState: IMonthPickerState): void => {
+            if(new Date(initialState.endDate).getMonth() !== DateService.getMonthIdxByName(initialState.currentMonth)){
+                initialState.currentMonth = DateService.getMonthNameByIdx(new Date(initialState.endDate).getMonth());
+                initialState.currentYear = new Date(initialState.endDate).getFullYear();
+            }
+        },
     },
 })
 
