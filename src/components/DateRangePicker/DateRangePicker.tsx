@@ -135,7 +135,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 setTimeRanges({ ...timeRanges, ...item })
             }}
             maxDate={new Date()}
-            months={2}
+            months={width > 520 ? 2 : 1}
             ranges={[timeRanges.selection]}
             dragSelectionEnabled={true}
             focusedRange={focusedRange}
