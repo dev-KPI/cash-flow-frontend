@@ -5,7 +5,17 @@
 .pageTitle {
     composes: pageTitle from "@styles/style.css";
 }
-
+/* loader */
+.loaderWrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* table */
 .in {
@@ -36,6 +46,10 @@
 .recentOperations__table thead th {
     height: 50px;
     vertical-align: middle;
+}
+
+.recentOperations__table thead th:first-child > div {
+    width: 300px;
 }
 
 .recentOperations__table tbody {
@@ -135,6 +149,10 @@
 /* btn */
 .addToGroupBtn{
     margin: 0 auto;
+}
+.text{
+    composes: smallText from "@styles/style.css";
+    font-weight: 500;
 }
 
 /* pagination */
