@@ -16,6 +16,7 @@ import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
+import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
     isMenuActive: boolean,
@@ -23,6 +24,7 @@ interface IPropsMenuBurger {
 }
 
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) => {
+    const { data: Groups,  isLoading: isGroupsLoading, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null)
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
@@ -40,6 +42,19 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
     const LogOut = () => {
         UserSliceDispatch.setIsAuth(false)
     }
+
+    const groupsList = useMemo(() => {
+        if(Groups?.user_groups){
+            return Groups.user_groups.map(el => (
+                <li>
+                    <NavLink to={`/group/${el.group.id}`} key={'12grt13'} className={classes.groupItem}>
+                        <Light type={'solid'} color={el.group.color_code}/>
+                        <h4 className={classes.title}>{el.group.title}</h4>
+                    </NavLink>
+                </li>
+            ))
+        }
+    }, [])
 
     return <>
         <nav className={classes.burgernav}>
@@ -125,24 +140,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
             <div className={classes.burgernav__groups}>
                 <h3 className={classes.groupTitle}>Groups</h3>
                 <ul className={classes.list}>
-                    <li>
-                        <NavLink to="/" key={'12grt13'} className={classes.groupItem}>
-                            <Light type={'solid'} color="#4C6FFF"/>
-                            <h4 className={classes.title}>Job</h4>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/" key={'11jh23'} className={classes.groupItem}>
-                            <Light type={'solid'} color="#FF6E01"/>
-                            <h4 className={classes.title}>Family</h4>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/" key={'11jh23'} className={classes.groupItem}>
-                            <Light type={'solid'} color="#FF6E01" />
-                            <h4 className={classes.title}>Family</h4>
-                        </NavLink>
-                    </li>             
+                    {groupsList}          
                 </ul>
             </div>
             <div className={classes.themeButton}>
