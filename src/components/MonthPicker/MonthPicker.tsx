@@ -3,12 +3,14 @@ import React, { useEffect, useCallback, useState, useMemo } from 'react';
 //UI
 import classes from './MonthPicker.module.css';
 import DateRangePicker from '@components/DateRangePicker/DateRangePicker';
-import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
-import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import ToggleButton from '@components/Buttons/ToggleButton/ToggleButton';
 //store
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
-import ToggleButton from '@components/Buttons/ToggleButton/ToggleButton';
 import DateService from '@services/DateService/DateService';
+import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
+import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
+//logic
+import { format, isWeekend, isSameDay, lastDayOfMonth } from 'date-fns';
 
 const MonthPicker: React.FC = () => {
 
@@ -36,6 +38,14 @@ const MonthPicker: React.FC = () => {
         if(MonthPickerStore.type === 'year-month'){
             return(`${MonthPickerStore.currentMonth} ${MonthPickerStore.currentYear}`)
         } else {
+            const firstDateOfMonth = format(new Date(MonthPickerStore.startDate), 'yyyy-MM-01')
+            const lastDateOfMonth = format(lastDayOfMonth(new Date(MonthPickerStore.endDate)), 'yyyy-MM-dd')
+            if(((new Date(firstDateOfMonth).getMonth() === new Date(MonthPickerStore.startDate).getMonth()) &&
+            (new Date(firstDateOfMonth).getDate() === new Date(MonthPickerStore.startDate).getDate())) && 
+            ((new Date(lastDateOfMonth).getMonth() === new Date(MonthPickerStore.endDate).getMonth()) &&
+            (new Date(lastDateOfMonth).getDate() === new Date(MonthPickerStore.endDate).getDate()))){
+                return(`${DateService.getMonthNameByIdx(new Date(lastDateOfMonth).getMonth())} ${new Date(lastDateOfMonth).getFullYear()}`)
+            }
             return(`${getStartDateForTitle} - ${getEndDateForTitle}`)
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate, 
@@ -69,10 +79,10 @@ const MonthPicker: React.FC = () => {
                 onClick={()=>{
                     setMonth('prev')
                     if(isRangeMode){
+                        MonthPickerDispatch.setNullDate()
                         MonthPickerDispatch.changeTypeFetchingData() 
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
-                        setMonth('next')
                     }
                 }}
                 className={classes.btn + ' ' + classes.previous}>
@@ -83,10 +93,10 @@ const MonthPicker: React.FC = () => {
                 onClick={() => { 
                     setMonth('next')
                     if(isRangeMode){
+                        MonthPickerDispatch.setNullDate()
                         MonthPickerDispatch.changeTypeFetchingData() 
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
-                        setMonth('prev')
                     }
                 }}
                 className={classes.btn + ' ' + classes.next}>

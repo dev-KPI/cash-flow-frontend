@@ -8,7 +8,7 @@ import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
 //logic
 import UsePortal from '@hooks/layoutHooks/usePortal/usePortal';
 import { useWindowSize } from 'usehooks-ts';
-import { format, isWeekend, isSameDay } from 'date-fns';
+import { format, isWeekend, isSameDay, lastDayOfMonth } from 'date-fns';
 import DateService from '@services/DateService/DateService';
 //store
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
@@ -29,8 +29,8 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
     const [focusedRange, setFocusedRange] = useState<RangeFocus | undefined>(undefined);
     const [timeRanges, setTimeRanges] = useState<{ selection: Range }>({
         selection: {
-            startDate: new Date(),
-            endDate: new Date(),
+            startDate: new Date(MonthPickerStore.startDate),
+            endDate: new Date(MonthPickerStore.endDate),
             key: 'selection',
         },
     });
@@ -90,7 +90,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 MonthPickerDispatch.setEndDate(timeRanges.selection.endDate.toISOString())
             }
             MonthPickerDispatch.setDateTimeByRangePickerEndDate();
-            setDateChangeCount(0)
+            setDateChangeCount(0);
+            setTimeRanges({
+                selection: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    key: 'selection',
+                }
+            });
             setIsTimeRangePicker(false);
         } 
     }, [dateChangeCount, timeRanges]);
