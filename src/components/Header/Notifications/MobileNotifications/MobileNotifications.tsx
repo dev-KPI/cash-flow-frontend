@@ -7,6 +7,7 @@ import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation 
 import classes from './MobileNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import PreLoader from "@components/PreLoader/PreLoader";
 
 
 const MobileNotifications: FC = () => {
@@ -21,10 +22,18 @@ const MobileNotifications: FC = () => {
         setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
     }
     const showToolTip = useCallback(() => {
-        if (isResponseCreated) {
-            return <StatusTooltip
-                type="success"
-                title={`You have successfully accepted the invitation to ${ResponseData?.group.title}`} />
+        if (isResponseCreated && ResponseData) {
+            if (ResponseData.status === 'DENIED') {
+                return <StatusTooltip
+                    type="error"
+                    title={<p>You have successfully denied the invitation to <span>{ResponseData.group.title}</span></p>} />
+
+            } else {
+                return <StatusTooltip
+                    type="success"
+                    title={<p>You have successfully accepted the invitation to <span>{ResponseData.group.title}</span></p>} />
+
+            }
         } else if (isResponseError) {
             return <StatusTooltip
                 type="error"
@@ -40,7 +49,7 @@ const MobileNotifications: FC = () => {
             return <li className={classes.inviteLi}
                 key={admin.id + group.title + i}>
                 <form className={classes.inviteForm}>
-                    <img width={40} src={admin.picture} alt={admin.first_name + 'avatar'} />
+                    <img src={admin.picture} alt={admin.first_name + 'avatar'} />
                     <p className={classes.Promo}>
                         <span style={{ fontWeight: 600 }}>{userName}
                         </span> has invited you to the group <Link to={`/group/${group.id}`} className={classes.InviteGroupRef}>
@@ -72,7 +81,7 @@ const MobileNotifications: FC = () => {
     }
     let notificationsContent;
     if (isInvitationsLoading || isInvitationsFetching) {
-        notificationsContent = <p>Loading...</p>
+        notificationsContent = <div className={classes.loaderWrapper}><PreLoader preLoaderSize={50} type='auto' /></div>
     } else if (isInvitationsSuccess) {
         if(Invitations.length > 0)
             notificationsContent = getInvites(Invitations)
