@@ -11,6 +11,7 @@ import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
+import { useWindowSize } from 'usehooks-ts';
 
 export interface IPropsGroupHeader {
     groupInfo: IGetInfoFromGroupResponse
@@ -56,7 +57,8 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
             return []
         }
     }
-    const [groupTitleCustom, setGroupTitleCustom] = useState<string>(groupInfo.title.length > 12 ? groupInfo.title.slice(0, 12) + '...' : groupInfo.title);
+    const {width, height} = useWindowSize();
+    const [groupTitleCustom, setGroupTitleCustom] = useState<string>(groupInfo.title.length > 12 && width < 520 ? groupInfo.title.slice(0, 12) + '...' : groupInfo.title);
     const [leaveMode, setLeaveMode] = useState<'leave' | 'disband' | 'kick'>('leave');
     const [buttonName, setButtonName] = useState<string>('Leave group')
 
