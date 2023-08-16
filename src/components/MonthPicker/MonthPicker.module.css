@@ -12,13 +12,13 @@
 .monthPicker {
     display: flex;
     min-width: 270px;
-    max-width: 320px;
+    max-width: 400px;
     composes: cardComponent from "@styles/style.css";
 }
 .wrapper{
     min-width: 320px;
     padding: 18px 30px;
-    
+    gap: 6px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -60,6 +60,7 @@
     text-align: center;
     min-width: 128px;
     user-select: none;
+    padding: 0px 4px;
 }
 .RangeDatePicker{
     display: flex;

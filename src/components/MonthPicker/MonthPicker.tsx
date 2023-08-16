@@ -18,7 +18,7 @@ const MonthPicker: React.FC = () => {
     const [isRangeMode, setIsRangeMode] = useState<boolean>(false);
     const [isTimeRangePicker, setIsTimeRangePicker] = useState<boolean>(false);
 
-    const setMonth = useCallback((e: React.MouseEvent<HTMLButtonElement>, type: string) => {
+    const setMonth = useCallback((type: 'prev' | 'next') => {
         if (type === 'prev') {
             MonthPickerDispatch.prevMonth();
         }
@@ -32,37 +32,30 @@ const MonthPicker: React.FC = () => {
         return `${new Date(MonthPickerStore.endDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.endDate).getMonth()).slice(0,3)} ${new Date(MonthPickerStore.endDate).getFullYear()}`
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
-    const monthPickerBody = useMemo(() => {
-        if(!isRangeMode){
-            return (<>
-                <button 
-                onClick={(e)=>{setMonth(e, 'prev')}}
-                className={classes.btn + ' ' + classes.previous}>
-                    <i id='chevron' className="bi bi-chevron-left"></i>
-                </button>
-                <button
-                className={classes.RangeDatePicker}
-                onClick={() => setIsTimeRangePicker(true)}>
-                    <h4 className={classes.title}>{MonthPickerStore.currentMonth} {MonthPickerStore.currentYear}</h4>
-                </button>
-                <button 
-                onClick={(e)=>{setMonth(e, 'next')}}
-                className={classes.btn + ' ' + classes.next}>
-                    <i id='chevron' className="bi bi-chevron-right"></i>
-                </button>
-            </>)
+    const getMonthPickerTitle = useMemo(() => {
+        if(MonthPickerStore.type === 'year-month'){
+            return(`${MonthPickerStore.currentMonth} ${MonthPickerStore.currentYear}`)
         } else {
-            return (<>
-                <button
-                className={classes.RangeDatePicker}
-                onClick={() => setIsTimeRangePicker(true)}>
-                    <h4 className={classes.title}>{getStartDateForTitle}</h4>
-                    <p style={{display: 'flex', alignItems: 'center', textAlign: 'center', color:'var(--main-text)'}}>-</p>
-                    <h4 className={classes.title}>{getEndDateForTitle}</h4>
-                </button>
-            </>)
+            return(`${getStartDateForTitle} - ${getEndDateForTitle}`)
         }
-    }, [getEndDateForTitle, getStartDateForTitle, isRangeMode])
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear, isRangeMode])
+
+
+    const monthPickerBody = useMemo(() => {
+        return (<>
+            <button
+            className={classes.RangeDatePicker}
+            onClick={() => {
+                if(!isRangeMode){
+                    setIsRangeMode(true)
+                    MonthPickerDispatch.changeTypeFetchingData() 
+                    setIsTimeRangePicker(true)
+                }
+            }}>
+                <h4 className={classes.title}>{getMonthPickerTitle}</h4>
+            </button>
+        </>)
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear, isRangeMode])
 
     return (<div className={classes.monthPickerWrapper}>
         {<DateRangePicker
@@ -70,15 +63,32 @@ const MonthPicker: React.FC = () => {
         setIsTimeRangePicker={setIsTimeRangePicker}/>}
         <div className={classes.monthPicker}>
             <div className={classes.wrapper}>
+                <button 
+                onClick={()=>{
+                    setMonth('prev')
+                    if(isRangeMode){
+                        MonthPickerDispatch.changeTypeFetchingData() 
+                        setIsRangeMode(false)
+                        setIsTimeRangePicker(false)
+                    }
+                }}
+                className={classes.btn + ' ' + classes.previous}>
+                    <i id='chevron' className="bi bi-chevron-left"></i>
+                </button>
                 {monthPickerBody}
+                <button 
+                onClick={() => { 
+                    setMonth('next')
+                    if(isRangeMode){
+                        MonthPickerDispatch.changeTypeFetchingData() 
+                        setIsRangeMode(false)
+                        setIsTimeRangePicker(false)
+                    }
+                }}
+                className={classes.btn + ' ' + classes.next}>
+                    <i id='chevron' className="bi bi-chevron-right"></i>
+                </button>
             </div>
-        </div>
-        <div className={classes.ToggleSide}>
-            <p>Want to pick dates?</p>
-            <ToggleButton isToggle={isRangeMode} onToggle={() => {
-                setIsRangeMode(!isRangeMode)
-                MonthPickerDispatch.changeTypeFetchingData() 
-            }}/>
         </div>
     </div>);
 };
