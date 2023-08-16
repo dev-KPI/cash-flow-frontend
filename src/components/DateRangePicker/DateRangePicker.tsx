@@ -14,6 +14,7 @@ import DateService from '@services/DateService/DateService';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPickerSlice';
+import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 
 
 export interface ITimeRangePickerProps {
@@ -63,7 +64,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
     const {width, height} = useWindowSize();
     const [dateChangeCount, setDateChangeCount] = useState<number>(0);
 
-    const closeTimeRangePicker = useCallback(() => {
+    const initTimeRangePicker = useCallback(() => {
         if(isTimeRangePicker && dateChangeCount >= 2){
             if(timeRanges.selection.startDate && timeRanges.selection.endDate){
                 MonthPickerDispatch.setStartDate(timeRanges.selection.startDate.toISOString())
@@ -81,6 +82,19 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
             setIsTimeRangePicker(false);
         } 
     }, [dateChangeCount, timeRanges]);
+
+    const closeTimeRangePicker = useCallback(() => {
+        MonthPickerDispatch.setDateTimeByRangePickerEndDate();
+        setDateChangeCount(0);
+        setTimeRanges({
+            selection: {
+                startDate: new Date(),
+                endDate: new Date(),
+                key: 'selection',
+            }
+        });
+        setIsTimeRangePicker(false);
+    }, []);
     
     const staticRanges = defaultStaticRanges.map((el, i) => {
         if(i === 5) {
@@ -92,7 +106,6 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 }),
                 isSelected(range: Range) {
                     const definedRange = el.range();
-                    setDateChangeCount(1);
                     return (
                         isSameDay(range.startDate || 0, definedRange.startDate || 0) &&
                         isSameDay(range.endDate || 0, definedRange.endDate|| 0)
@@ -105,7 +118,6 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 ...el,
                 isSelected(range: Range) {
                     const definedRange = el.range();
-                    setDateChangeCount(1);
                     return (
                         isSameDay(range.startDate || 0, definedRange.startDate || 0) &&
                         isSameDay(range.endDate || 0, definedRange.endDate|| 0)
@@ -116,8 +128,8 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
     })
 
     useEffect(() => {
-        closeTimeRangePicker()
-    }, [closeTimeRangePicker])
+        initTimeRangePicker()
+    }, [initTimeRangePicker])
 
     return (
     <UsePortal
@@ -131,11 +143,10 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
             classNames={classnamesDateRangePicker} 
             showMonthAndYearPickers={false}
             onChange={(item) => {
-                if(isTimeRangePicker){setDateChangeCount(dateChangeCount + 1)}
                 setTimeRanges({ ...timeRanges, ...item })
             }}
             maxDate={new Date()}
-            months={width > 520 ? 2 : 1}
+            months={width > 768 ? 2 : 1}
             ranges={[timeRanges.selection]}
             dragSelectionEnabled={true}
             focusedRange={focusedRange}
@@ -147,6 +158,18 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
             direction="horizontal"
             rangeColors={['var(--main-green)']}
         />
+        <div className={classes.SubmitBlock}>
+            <CustomButton
+            type='primary'
+            icon='submit'
+            callback={() => setDateChangeCount(2)}
+            isPending={false}>Submit</CustomButton>
+            <CustomButton
+            type='danger'
+            icon='refuse'
+            callback={() => closeTimeRangePicker()}
+            isPending={false}>Cancel</CustomButton>
+        </div>
     </UsePortal>);
 }
 

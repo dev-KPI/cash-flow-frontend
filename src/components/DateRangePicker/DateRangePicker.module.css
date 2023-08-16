@@ -1,6 +1,12 @@
 .wrapperModal{
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.SubmitBlock{
+  display: flex;
+  gap: 12px;
 }
 .DateRangePickerWrapper input{
   background-color: var(--cardbg);
