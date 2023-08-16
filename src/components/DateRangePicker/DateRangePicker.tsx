@@ -60,26 +60,6 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
         monthName: classes.MonthName
     }
 
-    const staticRanges = defaultStaticRanges.map((el, i) => {
-        if(i === 5) {
-            return {
-                label: "All time",
-                range: () => ({
-                  startDate: new Date(2023, 1, 1),
-                  endDate: new Date()
-                }),
-                isSelected(range: Range) {
-                  const definedRange = el.range();
-                  return (
-                    isSameDay(range.startDate || 0, definedRange.startDate || 0) &&
-                    isSameDay(range.endDate || 0, definedRange.endDate|| 0)
-                  );
-                }
-            }
-        }
-        else {return el}
-    })
-
     const {width, height} = useWindowSize();
     const [dateChangeCount, setDateChangeCount] = useState<number>(0);
 
@@ -102,6 +82,39 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
         } 
     }, [dateChangeCount, timeRanges]);
     
+    const staticRanges = defaultStaticRanges.map((el, i) => {
+        if(i === 5) {
+            return {
+                label: "All time",
+                range: () => ({
+                  startDate: new Date(2023, 1, 1),
+                  endDate: new Date()
+                }),
+                isSelected(range: Range) {
+                    const definedRange = el.range();
+                    setDateChangeCount(1);
+                    return (
+                        isSameDay(range.startDate || 0, definedRange.startDate || 0) &&
+                        isSameDay(range.endDate || 0, definedRange.endDate|| 0)
+                    );
+                }
+            }
+        }
+        else {
+            return {
+                ...el,
+                isSelected(range: Range) {
+                    const definedRange = el.range();
+                    setDateChangeCount(1);
+                    return (
+                        isSameDay(range.startDate || 0, definedRange.startDate || 0) &&
+                        isSameDay(range.endDate || 0, definedRange.endDate|| 0)
+                    );
+                }
+            }
+        }
+    })
+
     useEffect(() => {
         closeTimeRangePicker()
     }, [closeTimeRangePicker])

@@ -46,6 +46,11 @@ const MonthPicker: React.FC = () => {
             (new Date(lastDateOfMonth).getDate() === new Date(MonthPickerStore.endDate).getDate()))){
                 return(`${DateService.getMonthNameByIdx(new Date(lastDateOfMonth).getMonth())} ${new Date(lastDateOfMonth).getFullYear()}`)
             }
+            else if((new Date(MonthPickerStore.endDate).getMonth() === new Date(MonthPickerStore.startDate).getMonth()) &&
+            (new Date(MonthPickerStore.endDate).getDate() === new Date(MonthPickerStore.startDate).getDate()) &&
+            (new Date(MonthPickerStore.endDate).getFullYear() === new Date(MonthPickerStore.startDate).getFullYear())){
+                return(`${new Date(MonthPickerStore.endDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.endDate).getMonth())} ${new Date(MonthPickerStore.endDate).getFullYear()}`)
+            }
             return(`${getStartDateForTitle} - ${getEndDateForTitle}`)
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate, 
