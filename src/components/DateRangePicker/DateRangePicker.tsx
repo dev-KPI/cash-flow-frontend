@@ -110,7 +110,6 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
             classNames={classnamesDateRangePicker} 
             showMonthAndYearPickers={false}
             onChange={(item) => {
-                console.log(item)
                 if(isTimeRangePicker){setDateChangeCount(dateChangeCount + 1)}
                 setTimeRanges({ ...timeRanges, ...item })
             }}
