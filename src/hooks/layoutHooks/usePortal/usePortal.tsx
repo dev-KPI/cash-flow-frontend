@@ -11,9 +11,10 @@ interface IPortalProps {
     headerIcon?: ReactNode
     title?: string
     containerWidth?: number
+    className?: string
 }
 
-const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, headerIcon, title = 'Title', containerWidth }) => {
+const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, headerIcon, title = 'Title', containerWidth, className }) => {
     const [isVisible, setIsVisible] = useState<boolean>(isModalOpen)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const el = useRef<HTMLDivElement | null>(null);
@@ -82,7 +83,9 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, heade
                             </div>
                         </div>
                         <div className={classes.line}></div>
-                        {children}
+                        <div className={className ? className + ' ' : '' }>
+                            {children}
+                        </div>
                     </div>
                 </div>
             </div>, el.current)

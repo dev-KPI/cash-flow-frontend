@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { IThemeState } from './ThemeInterfaces';
 
 const initialState: IThemeState = {
-    theme: 'light',
+    theme: new Date().getHours() > 19 ? 'dark' : 'light',
     cardBackgroundColor:'0F0F0F',
     backgroundColor: '#151515',
     mainTextColor:'#333333',
