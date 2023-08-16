@@ -59,8 +59,6 @@ const MonthPicker: React.FC = () => {
         </>)
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear, isRangeMode])
 
-    console.log(MonthPickerStore.currentMonth)
-
     return (<div className={classes.monthPickerWrapper}>
         {<DateRangePicker
         isTimeRangePicker={isTimeRangePicker}
