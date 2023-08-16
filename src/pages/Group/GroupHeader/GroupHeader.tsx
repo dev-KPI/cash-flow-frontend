@@ -56,6 +56,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
             return []
         }
     }
+    const [groupTitleCustom, setGroupTitleCustom] = useState<string>(groupInfo.title.length > 12 ? groupInfo.title.slice(0, 12) + '...' : groupInfo.title);
     const [leaveMode, setLeaveMode] = useState<'leave' | 'disband' | 'kick'>('leave');
     const [buttonName, setButtonName] = useState<string>('Leave group')
 
@@ -86,7 +87,9 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
             />}
             <div className={classes.header}>
                 <div className={classes.header__container}>
-                    <h2 className={`${classes.title} pageTitle`}>{groupInfo.title}</h2>
+                    <h2 
+                    onClick={() => setGroupTitleCustom(groupInfo.title)}
+                    className={`${classes.title} pageTitle`}>{groupTitleCustom}</h2>
                     <nav className={classes.breadcrumbs}>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
                     </nav>

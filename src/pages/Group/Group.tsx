@@ -40,10 +40,8 @@ const Group = () => {
                                 See all
                             </NavLink>
                         </div>
-                        
                         <SearchBar/>
                     </div>
-                    
                     <div className={classes.grid__operation}>
                         <OperationCard operation={'Income'} />
                         <OperationCard operation={'Expenses'} />
