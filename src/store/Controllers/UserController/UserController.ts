@@ -1,3 +1,4 @@
+import IListResponse from '@models/IListResponse';
 import IUser from '@models/IUser';
 import { api } from '@store/api';
 
@@ -34,10 +35,14 @@ export const UserApiSlice = api.injectEndpoints({
             providesTags: (res) => res ? [{ type: 'UserController' as const, id: res.id }] :
             [],
         }),
-        getUsers: builder.query<IUser[], null>({
-            query: () => ({
+        getUsers: builder.query<IListResponse<IUser>, {page: number, size: number}>({
+            query: ({page = 0, size}) => ({
                 url: `users`,
                 credentials: 'include',
+                params: {
+                    page: page + 1,
+                    size
+                }
             }),
             transformErrorResponse: (
                 response: { status: string | number },
