@@ -5,13 +5,13 @@ import classes from './DesktopNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import PreLoader from "@components/PreLoader/PreLoader";
 //logic
 import { Link } from "react-router-dom";
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 import { useGetInvitationsByCurrentUserQuery, useLazyGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 import IInvitation from "@models/IInvitation";
-import { api } from "@store/api";
-import { useAppDispatch } from "@hooks/storeHooks/useAppStore";
+
 
 
 interface IDesktopNotifications {
@@ -54,7 +54,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
             return <li className={classes.inviteLi}
                 key={admin.id + group.title + i}>
                 <form className={classes.inviteForm}>
-                    <img width={40} src={admin.picture} alt={admin.first_name + 'avatar'} />
+                    <img src={admin.picture} alt={admin.first_name + 'avatar'} />
                     <p className={classes.Promo}>
                         <span style={{ fontWeight: 600 }}>{userName}
                         </span> has invited you to the group <Link to={`/group/${group.id}`} className={classes.InviteGroupRef}>
@@ -85,11 +85,9 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
         })
     }
 
-    const [trigger, result, lastPromiseInfo] = useLazyGetInvitationsByCurrentUserQuery()
-
     let notificationsContent;
     if (isInvitationsLoading || isInvitationsFetching) {
-        notificationsContent = <p style={{height: '180px'}}>Loading...</p>
+        notificationsContent = <div className={classes.loaderWrapper}><PreLoader preLoaderSize={25} type='auto'/></div>
     } else if (isInvitationsSuccess) {
         if(Invitations.length > 0) 
             notificationsContent = <>
@@ -110,12 +108,14 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
             </>
         else
             notificationsContent = (<div className={classes.noNotifications}>
-                <i className="bi bi-bell" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
+                <i className="bi bi-bell"></i>
                 <h5 className={classes.noNotifications__title}>No notifications yet</h5>
                 <p className={classes.noNotifications__text}>When you get notifications, they'll show up here</p>
-                <div className={classes.refresh}>
-                    <i className={"bi bi-arrow-clockwise"}></i>
-                    <button onClick={() => refetch()}>Refresh</button>
+                <div className={classes.refreshButtonWrapper}>
+                    <button className={classes.refreshButton} onClick={() => refetch()}>
+                        <i className={"bi bi-arrow-clockwise"}></i>
+                        <p className={classes.btnText}>Refresh</p>
+                    </button>
                 </div>
             </div>)
     }

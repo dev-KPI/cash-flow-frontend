@@ -7,6 +7,7 @@ import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation 
 import classes from './MobileNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import PreLoader from "@components/PreLoader/PreLoader";
 
 
 const MobileNotifications: FC = () => {
@@ -71,8 +72,8 @@ const MobileNotifications: FC = () => {
         })
     }
     let notificationsContent;
-    if (isInvitationsLoading || isInvitationsFetching) {
-        notificationsContent = <p>Loading...</p>
+    if (1) {
+        notificationsContent = <div className={classes.loaderWrapper}><PreLoader preLoaderSize={50} type='auto' /></div>
     } else if (isInvitationsSuccess) {
         if(Invitations.length > 0)
             notificationsContent = getInvites(Invitations)
