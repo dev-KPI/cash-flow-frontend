@@ -6,12 +6,56 @@
 }
 .SubmitBlock{
   display: flex;
+  justify-content: center;
   gap: 12px;
 }
 .DateRangePickerWrapper input{
   background-color: var(--cardbg);
   border-radius: 2px;
   border: solid 0.03rem var(--text) !important;
+}
+.DateRangePickerWrapper > div:first-child {
+  display: none;
+}
+.contentWrapper{
+  display: flex;
+}
+.FastNav {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  color: var(--main-text);
+  border-right: #333333 1px solid;
+}
+.FastNav > li{
+  user-select: none;
+  max-height: 50px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.FastNav__Item >button > h3 {
+  padding: 8px;
+}
+.FastNav > li:not(:last-child){
+  border-bottom: #333333 1px solid;
+}
+.FastNav__Item > h3 {
+  color: var(--main-text);
+}
+.FastNav__Item:hover{
+  cursor: pointer;
+  color: var(--main-green);
+  background-color: var(--background);
+  transition: all .3s ease;
+}
+.FastRangeButton{
+  width: 100%;
+  height: 100%;
 }
 .DateRangePickerWrapper input:hover{
   transition: all .3s ease;
@@ -85,6 +129,7 @@
 .DateDisplayItemActive {
   border-color: var(--main-green);
 }
+
 .WeekDays {}
 .WeekDay {}
 .MonthName {}
@@ -95,6 +140,25 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .FastNav{
+    width: 620px;
+    flex-direction: row;
+    justify-content: center;
+    border: none;
+  }
+  .FastNav > li > button {
+    display: flex;
+    justify-content: center;
+  }
+  .FastNav > li:not(:last-child){
+    border-bottom: none;
+  }
+  .FastNav__Item {
+    border: none;
+  }
+  .contentWrapper{
+    flex-direction: column;
   }
   .DateRangePickerWrapper > div > div:not(:last-child){
     display: flex;
@@ -121,11 +185,38 @@
   .Months{
     display: flex;
     align-items: center;
+    flex-direction: column !important;
     justify-content: space-between;
     flex-direction: row !important;
   }
 }
 @media only screen and (max-width: 768px){
+  .FastNav__Item > button > h3{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .contentWrapper{
+    flex-direction: column;
+  }
+  .FastNav{
+    width: 100%;
+    align-items: center;
+  }
+  .FastNav__Item > button > h3 {
+    align-items: center;
+    justify-content: center;
+  }
+  .FastNav > li:nth-child(2){
+    display: none;
+  }
+  .FastNav > li:nth-child(4){
+    display: none;
+  }
+  .FastNav > li:nth-child(2){
+    display: none;
+  }
   .DateRangePickerWrapper{
     flex-direction: column;
   }
@@ -167,8 +258,7 @@
     max-width: 540px;
   } 
   .DateRangePickerWrapper > div:first-child > div:first-child{
-    flex-direction: row;
-    justify-content: center;
+    display: none;
   }     
   .DateRangePickerWrapper > div:first-child > div:first-child > button:nth-child(2){
     display: none;

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-
+import { addDays } from 'date-fns'
 //types
 import { IMonthPickerState } from './MonthPickerInterfaces'
 import DateService from '@services/DateService/DateService'
@@ -8,7 +8,8 @@ import DateService from '@services/DateService/DateService'
 const initialState: IMonthPickerState = {
     months: DateService.getMonths(),
     startDate: new Date().toISOString(), 
-    endDate: new Date().toISOString(), 
+    endDate: addDays(new Date(), 1).toISOString(), 
+    rangesFromFastNav: false,
     type: 'year-month',
     currentMonth: DateService.getCurrentMonth(),
     currentYear: new Date().getFullYear(),
@@ -42,6 +43,9 @@ export const MonthPickerSlice = createSlice({
             }else{
                 initialState.type = 'date-range'
             }
+        },
+        setRangesFromFastNavStatus: (initialState: IMonthPickerState, action: PayloadAction<boolean>): void => {
+            initialState.rangesFromFastNav = action.payload
         },
         setStartDate: (initialState: IMonthPickerState, action: PayloadAction<string>): void => {
             initialState.startDate = action.payload;
