@@ -44,7 +44,7 @@ const MonthPicker: React.FC = () => {
             isLastDayOfMonth(new Date(subDays(new Date(MonthPickerStore.endDate), 1))) &&
             isFirstDayOfMonth(new Date(MonthPickerStore.startDate)) &&
             (new Date(MonthPickerStore.endDate).getFullYear() === new Date(MonthPickerStore.startDate).getFullYear())){
-                return(`${DateService.getMonthNameByIdx(new Date(lastDateOfMonth).getMonth())} ${new Date(lastDateOfMonth).getFullYear()}`)
+                return(`${DateService.getMonthNameByIdx(new Date(lastDateOfMonth).getMonth() - 1)} ${new Date(lastDateOfMonth).getFullYear()}`)
             }
             else if((new Date(MonthPickerStore.endDate).getMonth() === new Date(MonthPickerStore.startDate).getMonth()) &&
             new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() === new Date(MonthPickerStore.startDate).getDate() &&
