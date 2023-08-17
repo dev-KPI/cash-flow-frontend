@@ -3,7 +3,7 @@ import IUser from '@models/IUser';
 import { api } from '@store/api';
 
 //types
-import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetUsersFromGroupResponse } from './UserControllerInterfaces';
+import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetUsersFromGroupResponse, IGetExpensesBody, IGetTotalExpensesResponse, IGetTotalReplenishmentsResponse } from './UserControllerInterfaces';
 
 
 export const UserApiSlice = api.injectEndpoints({
@@ -76,6 +76,32 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
+        getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetExpensesBody>({
+            query: (period) => ({
+                url: `users/total-expenses`,
+                credentials: 'include',
+                parms: period
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: [
+                { type: 'UserController' as const, id: 0 },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
+        }),
+        getTotalReplenishments: builder.query<IGetTotalReplenishmentsResponse, IGetExpensesBody>({
+            query: (period) => ({
+                url: `users/total-replenishments`,
+                credentials: 'include',
+                parms: period
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: [
+                { type: 'UserController' as const, id: 0 },
+                { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' }]
+        }),
     }),
     overrideExisting: false,
 })
@@ -85,5 +111,7 @@ export const {
     useGetCurrentUserInfoQuery,
     useGetUsersQuery,
     useGetUsersByGroupQuery,
-    useGetCurrentUserBalanceQuery
+    useGetCurrentUserBalanceQuery,
+    useGetTotalExpensesQuery,
+    useGetTotalReplenishmentsQuery
 } = UserApiSlice

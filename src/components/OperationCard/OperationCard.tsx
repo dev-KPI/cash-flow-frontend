@@ -1,11 +1,10 @@
-import React, { useState, FC, useCallback, useEffect } from 'react';
+import { useState, FC, useEffect } from 'react';
 
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
-import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 import OperationCardLoader from './OperationCardLoader';
-import { useGetReplenishmentsByUserQuery } from '@store/Controllers/ReplenishmentController/ReplenishmentController';
+import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 
 interface OperactionCardProps {
     operation: "Income" | 'Expenses';
@@ -15,30 +14,39 @@ interface OperactionCardProps {
 
 const OperationCard: FC<OperactionCardProps> = ({ operation, title, className }) => {
     const [amount, setAmount] = useState<number>(0);
+    const [percents, setPercents] = useState<number>(0);
+    const [sign, setSign] = useState<string>('');
     const [source, setSource] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(true);
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
 
-    const { data: replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError } = useGetReplenishmentsByUserQuery({year_month:'2023-07'})
+    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery({ period: { year_month: '2023-08' } })
+    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery({ period: { year_month: '2023-08' } })
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
         percentColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
-        percentBackground: operation === "Income" ? "rgba(128, 214, 103, 0.20)" : "rgba(255, 45, 85, 0.20)",
+        percentBackground: sign === "-" ? "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
+
+    let totalAmount = 0
+    let totalPercents = 0;
     useEffect(() => {
-        let totalAmount = 0
-        if (operation === "Income")
-            totalAmount = replenishments?.reduce((acc, item) => acc + item.amount, 0) || 0;
-        else if (operation === 'Expenses')
-            totalAmount = 0;
+        if (operation === "Income" && isReplenishmentsSuccess) {
+            totalAmount = Replenishments.amount;
+            totalPercents = Replenishments.percentage_increase
+        } else if (operation === 'Expenses' && isExpensesSuccess) {
+            totalAmount = Expenses.amount;
+            totalPercents = Expenses.percentage_increase
+        }
         setAmount(Number(totalAmount.toFixed(2)));
-    }, [replenishments]);
+        setPercents(totalPercents);
+        setSign(totalPercents === 0 ? '' : totalPercents > 0 ? '+' : '-');
+
+    }, [Replenishments, Expenses])
+    
     const cardTitle = title ? title : operation;
-    setTimeout(() => {
-        setLoading(false)
-    }, 1500);
+
     return (<>
         {operation === 'Income' ?
             <SalaryModal
@@ -49,7 +57,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         <div className={`${classes.operationCard} ${className ? className : ''}`}
             onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
-            {loading ? <OperationCardLoader /> : 
+            {/* <OperationCardLoader /> */}
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <div className={classes.info}>
@@ -69,11 +77,11 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
                             className={classes.percent}
                             style={{ background: styles.percentBackground }}
                         >
-                            <span style={{ color: styles.percentColor }}>13%</span>
+                        <span style={{ color: styles.percentColor }}>{percents}%</span>
                         </div>
                         <p className={classes.time}>since last month</p>
                     </div>
-                </div>}
+                </div>
         </div>
     </>);
 };
