@@ -1,9 +1,12 @@
 export interface IMonthPickerState {
     months: string[] 
     type: 'year-month' | 'date-range',
+    rangeType: TRangeType
+    isPickedWeekMonth: boolean,
     rangesFromFastNav: boolean,
     startDate: string, 
     endDate: string, 
     currentMonth: string
     currentYear: number
 }
+export type TRangeType = 'today' | 'yesterday' | 'week' | 'lastweek' | 'month' | 'alltime' | 'range'

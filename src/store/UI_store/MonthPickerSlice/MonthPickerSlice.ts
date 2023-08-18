@@ -1,13 +1,15 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { addDays } from 'date-fns'
+import { addDays, subMonths } from 'date-fns'
 //types
-import { IMonthPickerState } from './MonthPickerInterfaces'
+import { IMonthPickerState, TRangeType } from './MonthPickerInterfaces'
 import DateService from '@services/DateService/DateService'
 
 
 const initialState: IMonthPickerState = {
     months: DateService.getMonths(),
     startDate: new Date().toISOString(), 
+    rangeType: 'range',
+    isPickedWeekMonth: false,
     endDate: addDays(new Date(), 1).toISOString(), 
     rangesFromFastNav: false,
     type: 'year-month',
@@ -44,8 +46,14 @@ export const MonthPickerSlice = createSlice({
                 initialState.type = 'date-range'
             }
         },
+        setRangeType: (initialState: IMonthPickerState, action: PayloadAction<TRangeType>): void => {
+            initialState.rangeType = action.payload
+        },
         setRangesFromFastNavStatus: (initialState: IMonthPickerState, action: PayloadAction<boolean>): void => {
             initialState.rangesFromFastNav = action.payload
+        },
+        setIsPickedWeekMonth: (initialState: IMonthPickerState, action: PayloadAction<boolean>): void => {
+            initialState.isPickedWeekMonth = action.payload
         },
         setStartDate: (initialState: IMonthPickerState, action: PayloadAction<string>): void => {
             initialState.startDate = action.payload;
@@ -63,7 +71,7 @@ export const MonthPickerSlice = createSlice({
         },
         setDateTimeByRangePickerEndDate: (initialState: IMonthPickerState): void => {
             if(new Date(initialState.endDate).getMonth() !== DateService.getMonthIdxByName(initialState.currentMonth)){
-                initialState.currentMonth = DateService.getMonthNameByIdx(new Date(initialState.endDate).getMonth());
+                initialState.currentMonth = DateService.getMonthNameByIdx(new Date(subMonths(new Date(initialState.endDate), 1)).getMonth());
                 initialState.currentYear = new Date(initialState.endDate).getFullYear();
             }
         },
