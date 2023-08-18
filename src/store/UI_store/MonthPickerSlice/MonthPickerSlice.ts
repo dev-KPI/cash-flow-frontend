@@ -8,9 +8,9 @@ import DateService from '@services/DateService/DateService'
 const initialState: IMonthPickerState = {
     months: DateService.getMonths(),
     startDate: new Date().toISOString(), 
+    endDate: addDays(new Date(), 1).toISOString(), 
     rangeType: 'range',
     isPickedWeekMonth: false,
-    endDate: addDays(new Date(), 1).toISOString(), 
     rangesFromFastNav: false,
     type: 'year-month',
     currentMonth: DateService.getCurrentMonth(),
