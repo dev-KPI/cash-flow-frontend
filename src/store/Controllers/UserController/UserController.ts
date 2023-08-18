@@ -3,7 +3,7 @@ import IUser from '@models/IUser';
 import { api } from '@store/api';
 
 //types
-import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetUsersFromGroupResponse, IGetExpensesBody, IGetTotalExpensesResponse, IGetTotalReplenishmentsResponse } from './UserControllerInterfaces';
+import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetUsersFromGroupResponse, IGetTotalExpensesBody, IGetTotalExpensesResponse, IGetTotalReplenishmentsResponse, IGetTotalReplenishmentsBody, IGetUserExpensesByGroupResponse, IGetUserExpensesByGroupBody } from './UserControllerInterfaces';
 
 
 export const UserApiSlice = api.injectEndpoints({
@@ -62,7 +62,25 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'UserController' as const, id: 'Users' }]
                 :
                 [{ type: 'UserController' as const, id: 'Users' }],
-        }),    
+        }), 
+        getUserExpensesByGroup: builder.query<IGetUserExpensesByGroupResponse, IGetUserExpensesByGroupBody>({
+            query: ({ group_id, period }) => ({
+                url: `/users/${group_id}/expenses`,
+                credentials: 'include',
+                params: period
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result) => result ? [...result.categories.map(item => ({ type: 'CategoryController' as const, id: item.id })),
+                { type: 'CategoryController', id: 'CATEGORIES' },
+                { type: 'UserController' as const, id: 0 },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP'}]
+                :
+            [{ type: 'CategoryController', id: 'CATEGORIES' },
+                { type: 'UserController' as const, id: 0 },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
+        }), 
         getCurrentUserBalance: builder.query<IGetCurrentUserBalance, null>({
             query: () => ({
                 url: `users/user-balance`,
@@ -76,7 +94,7 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
-        getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetExpensesBody>({
+        getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
             query: (period) => ({
                 url: `users/total-expenses`,
                 credentials: 'include',
@@ -89,7 +107,7 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'UserController' as const, id: 0 },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
-        getTotalReplenishments: builder.query<IGetTotalReplenishmentsResponse, IGetExpensesBody>({
+        getTotalReplenishments: builder.query<IGetTotalReplenishmentsResponse, IGetTotalReplenishmentsBody>({
             query: (period) => ({
                 url: `users/total-replenishments`,
                 credentials: 'include',
@@ -111,6 +129,7 @@ export const {
     useGetCurrentUserInfoQuery,
     useGetUsersQuery,
     useGetUsersByGroupQuery,
+    useGetUserExpensesByGroupQuery,
     useGetCurrentUserBalanceQuery,
     useGetTotalExpensesQuery,
     useGetTotalReplenishmentsQuery
