@@ -1,5 +1,5 @@
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import { FC, useEffect, Dispatch, useRef, SetStateAction, memo, ReactNode, useState, useMemo } from "react";
+import { FC, useEffect, Dispatch, useRef, SetStateAction, memo, ReactNode, useState, useMemo, VoidFunctionComponent } from "react";
 import { createPortal } from "react-dom";
 import useEscapeKey from "../useEscapeKey";
 
@@ -7,14 +7,15 @@ import classes from './usePortal.module.css';
 interface IPortalProps {
     isModalOpen: boolean
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-    children: ReactNode
+    children: ReactNode,
+    onClose?: () => void, 
     headerIcon?: ReactNode
     title?: string
     containerWidth?: number
     className?: string
 }
 
-const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, headerIcon, title = 'Title', containerWidth, className }) => {
+const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, onClose = () => {}, headerIcon, title = 'Title', containerWidth, className }) => {
     const [isVisible, setIsVisible] = useState<boolean>(isModalOpen)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const el = useRef<HTMLDivElement | null>(null);
@@ -56,7 +57,10 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, heade
             }
         }
     }, [isModalOpen])
-    const closeModal = () => setIsModalOpen(false)
+    const closeModal = () => {
+        onClose()
+        setIsModalOpen(false)
+    }
     useEscapeKey(closeModal);
     const handleAnimationEnd = (e: React.AnimationEvent<HTMLDivElement>) => {
         if (e.animationName.includes('outAnim')) {
