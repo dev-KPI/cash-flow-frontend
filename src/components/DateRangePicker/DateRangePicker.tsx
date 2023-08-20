@@ -161,8 +161,8 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     </button>
                 </li>
                 <li 
-                style={{color: `${(isSameDay(addDays(startOfWeek(new Date()), 1) || 0, timeRanges.selection.startDate || 0) &&
-                isSameDay(addDays(endOfWeek(new Date()), 1) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(addDays(startOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1) || 0, timeRanges.selection.startDate || 0) &&
+                isSameDay(addDays(endOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                     className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
@@ -170,16 +170,16 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     MonthPickerDispatch.setIsPickedWeekMonth(true);
                     setTimeRanges({selection: {
-                        startDate: addDays(startOfWeek(new Date()), 1),
-                        endDate: addDays(endOfWeek(new Date()), 1),
+                        startDate: addDays(startOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1),
+                        endDate: addDays(endOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1),
                     }})}}
                     className={classes.FastRangeButton}>
                         <h3>This week</h3>
                     </button>
                 </li>
                 <li 
-                style={{color: `${(isSameDay(addDays(startOfWeek(subWeeks(new Date(), 1)), 1) || 0, timeRanges.selection.startDate || 0) &&
-                isSameDay(addDays(endOfWeek(subWeeks(new Date(), 1)), 1) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(addDays(startOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1) || 0, timeRanges.selection.startDate || 0) &&
+                isSameDay(addDays(endOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                     className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
@@ -187,8 +187,8 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     MonthPickerDispatch.setIsPickedWeekMonth(true);
                     setTimeRanges({selection: {
-                        startDate: addDays(startOfWeek(subWeeks(new Date(), 1)), 1),
-                        endDate: addDays(endOfWeek(subWeeks(new Date(), 1)), 1),
+                        startDate: addDays(startOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1),
+                        endDate: addDays(endOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1),
                     }})}}
                     className={classes.FastRangeButton}>
                         <h3>Last week</h3>
