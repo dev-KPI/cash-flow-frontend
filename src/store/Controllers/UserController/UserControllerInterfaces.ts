@@ -1,4 +1,4 @@
-import { ICategoryAmount } from "@models/ICategory";
+import { ICategoryAmount, ISimplifiedCategory } from "@models/ICategory";
 import { IPeriodRangeDates, IPeriodYearMonth } from "@models/IPeriod";
 import IUser from "@models/IUser";
 
@@ -37,3 +37,10 @@ export interface IGetUserExpensesByGroupBody {
     group_id: number,
     period: IPeriodYearMonth | IPeriodRangeDates;
 }
+
+export interface IGetUserExpensesByCategoryResponse extends ISimplifiedCategory {}
+
+export interface IGetUserExpensesByCategoryBody {
+    period: IPeriodYearMonth | IPeriodRangeDates;
+}
+
