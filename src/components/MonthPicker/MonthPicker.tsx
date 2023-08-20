@@ -10,7 +10,7 @@ import DateService from '@services/DateService/DateService';
 import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
 import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
 //logic
-import { format, isWeekend, isSameDay, lastDayOfMonth, subDays, isLastDayOfMonth, isFirstDayOfMonth, subMonths } from 'date-fns';
+import { format, addDays, isSameMonth, lastDayOfMonth, subDays, isLastDayOfMonth, isFirstDayOfMonth, subMonths } from 'date-fns';
 
 const MonthPicker: React.FC = () => {
 
@@ -28,7 +28,7 @@ const MonthPicker: React.FC = () => {
     }, [])
 
     const getStartDateForTitle = useMemo(() => {
-            return `${new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getDate()} ${DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0,3)} ${new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getFullYear()}`
+        return `${new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getDate()} ${DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0,3)} ${new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getFullYear()}`
         }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.rangesFromFastNav, MonthPickerStore.isPickedWeekMonth])
     const getEndDateForTitle = useMemo(() => {
         if(MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
@@ -96,11 +96,16 @@ const MonthPicker: React.FC = () => {
                 onClick={()=>{
                     setMonth('prev')
                     if(isRangeMode){
-                        MonthPickerDispatch.changeTypeFetchingData() 
                         MonthPickerDispatch.setCurrentDateTime()
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
-                        setMonth('prev')
+                        MonthPickerDispatch.setIsChangedRangeFromMount(false)
+                        MonthPickerDispatch.setRangesFromFastNavStatus(false)
+                        MonthPickerDispatch.setRangeType('today')
+                        MonthPickerDispatch.setTypeFetchingData('year-month')
+                        if(isSameMonth(new Date(MonthPickerStore.startDate), new Date())){
+                            setMonth('prev')
+                        }
                     }
                 }}
                 className={classes.btn + ' ' + classes.previous}>
@@ -111,11 +116,17 @@ const MonthPicker: React.FC = () => {
                 onClick={() => { 
                     setMonth('next')
                     if(isRangeMode){
-                        MonthPickerDispatch.changeTypeFetchingData() 
                         MonthPickerDispatch.setCurrentDateTime()
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
-                        setMonth('next')
+                        MonthPickerDispatch.setCurrentDateTime()
+                        MonthPickerDispatch.setIsChangedRangeFromMount(false)
+                        MonthPickerDispatch.setRangesFromFastNavStatus(false)
+                        MonthPickerDispatch.setRangeType('today')
+                        MonthPickerDispatch.setTypeFetchingData('year-month')
+                        if(isSameMonth(new Date(MonthPickerStore.startDate), new Date())){
+                            setMonth('next')
+                        }
                     }
                 }}
                 className={classes.btn + ' ' + classes.next}>

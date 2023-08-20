@@ -101,6 +101,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     return <>
     {showToolTip()}
     <UsePortal
+        callback={() => {}}
         setIsModalOpen={setIsCategoryModalOpen}
         isModalOpen={isCategoryModalOpen}
         headerIcon={headerIcon}

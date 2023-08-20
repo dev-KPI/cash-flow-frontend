@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, ReactNode, useCallback, useState } from "react";
+import React, { FC, MouseEvent, ReactNode, useCallback, useMemo, useState } from "react";
 
 //UI
 import classes from './GroupGraphCard.module.css';
@@ -7,11 +7,14 @@ import GraphCardLoader from "@components/GraphCard/GraphCardLoader";
 import StackedGraph from "@components/GraphCard/StackedGraph";
 import Graph from "@components/GraphCard/Graph";
 //store
+import {addDays} from 'date-fns'
 import { expenses } from "../../Expenses";
 import { IMonthPickerState } from "@store/UI_store/MonthPickerSlice/MonthPickerInterfaces";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import IUser from "@models/IUser";
 import { addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
+import DateService from "@services/DateService/DateService";
+import { useGetCurrentUserExpensesDailyQuery } from "@store/Controllers/ExpensesController/ExpensesController";
 
 
 interface IGraphGroupMembers {
@@ -127,12 +130,26 @@ const addColorToUser = (data: IGraphGroupMembers[]) => {
 const updatedData = addColorToUser(combinedData)
 
 const GroupGraphCard: FC = () => {
-    const [loading, setLoading] = useState<boolean>(true);
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
+    const MonthPickerRange = useMemo(() => {
+        if(MonthPickerStore.type === 'date-range'){
+            return {
+                period: {
+                    start_date: addDays(new Date(MonthPickerStore.startDate), 1).toISOString().slice(0,10),
+                    end_date: addDays(new Date(MonthPickerStore.endDate), 2).toISOString().slice(0,10)
+                }
+            }
+        } else {
+            return {
+                period: {
+                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`} 
+            }
+        }
+    }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
+    const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
+
     const [isToggled, setIsToggled] = useState<boolean>(false);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
-    setTimeout(() => {
-        setLoading(false)
-    }, 1500);
     
     const RangeTitle = (startDate: string, endDate: string) => {
         return (<h3 className={classes.range}>From {
@@ -143,28 +160,28 @@ const GroupGraphCard: FC = () => {
 
     return (
         <div className={classes.GroupGraph}>
-            {/* {loading ? <GraphCardLoader /> : */}
+            {isUserDailyExpensesLoading ? <GraphCardLoader /> :
                 <div className={classes.inner}>
                     <div className={classes.uppernav}>
                         <div className={classes.titleRange}>
                             <h2 className={classes.title}>Statistic</h2>
-                            {RangeTitle(expenses[0].time, expenses[expenses.length - 1].time)}
-                        </div>
+                            {isUserDailyExpensesSuccess && userDailyExpenses && userDailyExpenses[0]?.date  
+                            ? RangeTitle(userDailyExpenses[0].date, userDailyExpenses[userDailyExpenses.length - 1].date) : ''}
+                            </div>
                         <div className={classes.button}>
                             <span className={classes.buttonText}>Members</span>
                             <ToggleButton isToggle={isToggled} onToggle={() => setIsToggled(!isToggled)} />
                         </div>
                     </div>
                     <div className={classes.graph}>
-                        {isToggled ?
-                            <StackedGraph data={updatedData} />
+                        {!isToggled ?
+                            userDailyExpenses && isUserDailyExpensesSuccess ? <Graph data={userDailyExpenses}/> : ''
                             :
-                            <Graph data={expenses}
-                            />
+                            <StackedGraph data={updatedData} />
                         }
                     </div>
-                </div>
-       </div>
+                </div>}
+        </div>
     )
 }
 

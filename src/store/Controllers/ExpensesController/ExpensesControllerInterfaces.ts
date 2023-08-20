@@ -10,6 +10,13 @@ export interface IExpenseByGroupResponse extends IExpense {
 export interface IGetExpensesBody {
     period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
 }
+export interface IGetCurrentUserDailyExpensesResponse {
+    date: string,
+    amount: number
+}
+export interface IGetCurrentUserDailyExpensesBody {
+    period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
+}
 
 export interface ICreateExpenseByGroupBody {
     descriptions: string;

@@ -51,6 +51,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
     return <>
         {showToolTip()}
         <UsePortal
+            callback={() => {}}
             setIsModalOpen={setIsSalaryModalOpen}
             isModalOpen={isSalaryModalOpen}
             headerIcon={headerIcon}

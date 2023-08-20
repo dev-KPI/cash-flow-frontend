@@ -138,6 +138,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }
     {showToolTip}
         <UsePortal
+            callback={() => {}}
             isModalOpen={isGroupModalOpen}
             setIsModalOpen={setIsGroupModalOpen}
             headerIcon={headerIcon}

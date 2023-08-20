@@ -6,16 +6,20 @@ import {
     IUpdateExpenseByGroupBody,
     IExpenseByGroupResponse,
     IGetExpensesByGroupBody,
-    IGetExpensesBody
+    IGetExpensesBody,
+    IGetCurrentUserDailyExpensesResponse,
+    IGetCurrentUserDailyExpensesBody
 } from './ExpensesControllerInterfaces';
+import { getDaysInMonth, addDays } from 'date-fns';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
-import IExpense from '@models/IExpense';
+import IExpense, { IExpensePeriodYearMonth, IExpensePeriods } from '@models/IExpense';
+import DateService from '@services/DateService/DateService';
 
 
 export const ExpensesApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getExpenses: builder.query<IExpense[], IGetExpensesBody>({
-            query: (period) => ({
+            query: ({period}) => ({
                 url: `groups/expenses`,
                 params: period,
                 credentials: 'include',
@@ -29,6 +33,61 @@ export const ExpensesApiSlice = api.injectEndpoints({
                 :
             [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
             { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+        }),
+        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IExpensePeriods>({
+            query: ({period}) => ({
+                url: `users/daily-expenses`,
+                params: period,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: IExpensePeriods): IGetCurrentUserDailyExpensesResponse[] => {
+                if ('start_date' in body.period && 'end_date' in body.period) {
+                    const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
+                    response.forEach(expense => {
+                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
+                    });
+                
+                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
+                    dateRange.shift(); 
+                
+                    return dateRange.map(date => {
+                        const dateISOString = date.toISOString().split('T')[0];
+                        if (expenseMap[dateISOString]) {
+                            return expenseMap[dateISOString];
+                        } else {
+                            return {
+                                date: dateISOString,
+                                amount: 0,
+                            };
+                        }
+                    });
+                } else {
+                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
+                    const startDate = new Date(body.period.year_month + '-01');
+                    
+                    return Array.from({ length: daysInMonth }, (_, i) => {
+                        const currentDate = addDays(startDate, i);
+                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
+                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
+                    
+                        const existingExpense = response.find(expense => expense.date === dateKey);
+                    
+                        return existingExpense || {
+                            date: dateKey,
+                            amount: 0,
+                        };
+                    });
+                }
+            },
+            providesTags: [
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+            { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' },
+            { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
+            ]
         }),
         getExpensesByGroup: builder.query<IExpense[], IGetExpensesByGroupBody>({
             query: ({group_id, period}) => ({
@@ -84,7 +143,8 @@ export const ExpensesApiSlice = api.injectEndpoints({
 export const {
     useGetExpensesQuery,
     useGetExpensesByGroupQuery,
+    useGetCurrentUserExpensesDailyQuery,
     useCreateExpenseByGroupMutation,
     useUpdateExpenseByGroupMutation,
-    useDeleteExpenseByGroupMutation
+    useDeleteExpenseByGroupMutation,
 } = ExpensesApiSlice

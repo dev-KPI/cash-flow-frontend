@@ -10,6 +10,7 @@ import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
 import GroupHistory from "@pages/GroupHistory/GroupHistory";
 import Users from "@pages/Users/Users";
+import MonthPicker from "@components/MonthPicker/MonthPicker";
 
 
 export const DASHBOARD_PAGE = '/dashboard';
@@ -30,6 +31,9 @@ export const routesNotAuth = [
     {
         path: LOG_IN_PAGE,
         component: Login
+    },{
+        path: 'testpage',
+        component: MonthPicker
     }
 ];
 export const routesAuth = [

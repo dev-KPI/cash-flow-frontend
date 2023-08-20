@@ -18,9 +18,16 @@ export default interface IExpense {
 }
 
 export interface IExpensePeriodYearMonth {
-    year_month: string 
+    year_month: string,
 } 
 export interface IExpensePeriodRangeDates {
     start_date: string,
     end_date: string
+}
+export interface IExpensePeriods {
+    period: {
+        year_month?: string,
+        start_date?: string,
+        end_date?: string
+    }
 }

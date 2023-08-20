@@ -4,10 +4,11 @@ export interface IMonthPickerState {
     rangeType: TRangeType
     isPickedWeekMonth: boolean,
     isChangedRange: boolean,
+    isChangedRangeFromMount: boolean,
     rangesFromFastNav: boolean,
     startDate: string, 
     endDate: string, 
     currentMonth: string
     currentYear: number
 }
-export type TRangeType = 'today' | 'yesterday' | 'week' | 'lastweek' | 'month' | 'alltime' | 'range'
+export type TRangeType = 'today' | 'yesterday' | 'week' | 'lastweek' | 'month' | 'alltime' | 'range' | 'default'

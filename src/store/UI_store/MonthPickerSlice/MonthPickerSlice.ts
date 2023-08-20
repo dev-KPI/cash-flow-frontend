@@ -10,7 +10,8 @@ const initialState: IMonthPickerState = {
     startDate: new Date().toISOString(), 
     endDate: addDays(new Date(), 1).toISOString(), 
     isChangedRange: false,
-    rangeType: 'today',
+    isChangedRangeFromMount: false,
+    rangeType: 'default',
     isPickedWeekMonth: false,
     rangesFromFastNav: false,
     type: 'year-month',
@@ -61,6 +62,9 @@ export const MonthPickerSlice = createSlice({
         },
         setIsChangedRange: (initialState: IMonthPickerState, action: PayloadAction<boolean>) => {
             initialState.isChangedRange = action.payload
+        },
+        setIsChangedRangeFromMount: (initialState: IMonthPickerState, action: PayloadAction<boolean>) => {
+            initialState.isChangedRangeFromMount = action.payload
         },
         setStartDate: (initialState: IMonthPickerState, action: PayloadAction<string>): void => {
             initialState.startDate = action.payload;
