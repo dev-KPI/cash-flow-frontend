@@ -1,10 +1,14 @@
 import { useState, FC, useEffect } from 'react';
-
+//store
+import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
+import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+//logic
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import DateService from '@services/DateService/DateService';
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import OperationCardLoader from './OperationCardLoader';
-import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 
 interface OperactionCardProps {
     operation: "Income" | 'Expenses';
@@ -13,14 +17,19 @@ interface OperactionCardProps {
 }
 
 const OperationCard: FC<OperactionCardProps> = ({ operation, title, className }) => {
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const [amount, setAmount] = useState<number>(0);
     const [percents, setPercents] = useState<number>(0);
     const [sign, setSign] = useState<string>('');
     const [source, setSource] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
 
-    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery({ period: { year_month: '2023-08' } })
-    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery({ period: { year_month: '2023-08' } })
+    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery({
+        period: { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) }
+    })
+    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery({
+        period: { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) }
+    })
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
