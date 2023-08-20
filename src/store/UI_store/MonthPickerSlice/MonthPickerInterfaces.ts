@@ -3,6 +3,7 @@ export interface IMonthPickerState {
     type: 'year-month' | 'date-range',
     rangeType: TRangeType
     isPickedWeekMonth: boolean,
+    isChangedRange: boolean,
     rangesFromFastNav: boolean,
     startDate: string, 
     endDate: string, 

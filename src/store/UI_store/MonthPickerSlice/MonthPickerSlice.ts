@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { addDays, subMonths } from 'date-fns'
+import { addDays, subMonths,  } from 'date-fns'
 //types
 import { IMonthPickerState, TRangeType } from './MonthPickerInterfaces'
 import DateService from '@services/DateService/DateService'
@@ -9,7 +9,8 @@ const initialState: IMonthPickerState = {
     months: DateService.getMonths(),
     startDate: new Date().toISOString(), 
     endDate: addDays(new Date(), 1).toISOString(), 
-    rangeType: 'range',
+    isChangedRange: false,
+    rangeType: 'today',
     isPickedWeekMonth: false,
     rangesFromFastNav: false,
     type: 'year-month',
@@ -46,6 +47,9 @@ export const MonthPickerSlice = createSlice({
                 initialState.type = 'date-range'
             }
         },
+        setTypeFetchingData: (initialState: IMonthPickerState, action: PayloadAction<'year-month' | 'date-range'>): void => {
+            initialState.type = action.payload
+        },
         setRangeType: (initialState: IMonthPickerState, action: PayloadAction<TRangeType>): void => {
             initialState.rangeType = action.payload
         },
@@ -54,6 +58,9 @@ export const MonthPickerSlice = createSlice({
         },
         setIsPickedWeekMonth: (initialState: IMonthPickerState, action: PayloadAction<boolean>): void => {
             initialState.isPickedWeekMonth = action.payload
+        },
+        setIsChangedRange: (initialState: IMonthPickerState, action: PayloadAction<boolean>) => {
+            initialState.isChangedRange = action.payload
         },
         setStartDate: (initialState: IMonthPickerState, action: PayloadAction<string>): void => {
             initialState.startDate = action.payload;
@@ -68,6 +75,8 @@ export const MonthPickerSlice = createSlice({
         setCurrentDateTime: (initialState: IMonthPickerState): void => {
             initialState.currentMonth = DateService.getCurrentMonth();
             initialState.currentYear = new Date().getFullYear();
+            initialState.startDate = new Date().toISOString();
+            initialState.endDate = addDays(new Date(), 1).toISOString();
         },
         setDateTimeByRangePickerEndDate: (initialState: IMonthPickerState): void => {
             if(new Date(initialState.endDate).getMonth() !== DateService.getMonthIdxByName(initialState.currentMonth)){

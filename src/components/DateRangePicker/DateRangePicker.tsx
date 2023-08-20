@@ -63,10 +63,10 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
     }
 
     const {width, height} = useWindowSize();
-    const [dateChangeCount, setDateChangeCount] = useState<number>(0);
+    const [isSubmited, setIsSubmited] = useState<boolean>(false);
 
-    const initTimeRangePicker = useCallback(() => {
-        if(isTimeRangePicker && dateChangeCount >= 2){
+    const submitRangePicker = useCallback(() => {
+        if(isTimeRangePicker && isSubmited && MonthPickerStore.isChangedRange){
             if(timeRanges.selection.startDate && timeRanges.selection.endDate){
                 const localStartDate: Date = timeRanges.selection.startDate
                 const localEndDate: Date = timeRanges.selection.endDate
@@ -78,16 +78,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                         MonthPickerDispatch.setStartDate(new Date(localStartDate).toISOString())
                         MonthPickerDispatch.setEndDate(addDays(new Date(localEndDate), 1).toISOString())
                     }
-                    
                 }   else {
                     MonthPickerDispatch.setStartDate(addDays(new Date(localStartDate), 1).toISOString())
                     MonthPickerDispatch.setEndDate(addDays(new Date(localEndDate), 2).toISOString())
                 }
             }
             MonthPickerDispatch.setIsPickedWeekMonth(false);
-            MonthPickerDispatch.setDateTimeByRangePickerEndDate();
             MonthPickerDispatch.setRangesFromFastNavStatus(false);
-            setDateChangeCount(0);
+            setIsSubmited(false);
             setTimeRanges({
                 selection: {
                     startDate: new Date(),
@@ -96,33 +94,38 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 }
             });
             setIsTimeRangePicker(false);
+        } else if(isTimeRangePicker && isSubmited && MonthPickerStore.isChangedRange) {
+            setIsSubmited(false);
+            setIsTimeRangePicker(false);
         } 
-    }, [dateChangeCount, timeRanges]);
+    }, [isSubmited, timeRanges]);
 
-    const closeTimeRangePicker = useCallback(() => {
-        MonthPickerDispatch.setDateTimeByRangePickerEndDate();
-        MonthPickerDispatch.setRangesFromFastNavStatus(false);
-        setDateChangeCount(0);
-        setTimeRanges({
-            selection: {
-                startDate: new Date(),
-                endDate: new Date(),
-                key: 'selection',
-            }
-        });
-        setIsTimeRangePicker(false);
-    }, []);
-
-    const today = new Date();
+    const closeRangePickerNotChanged = useCallback(() => {
+        if(!MonthPickerStore.isChangedRange && isSubmited){
+            MonthPickerDispatch.setIsPickedWeekMonth(false);
+            MonthPickerDispatch.setCurrentDateTime();
+            MonthPickerDispatch.setRangesFromFastNavStatus(false);
+            setIsSubmited(false);
+            setTimeRanges({
+                selection: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    key: 'selection',
+                }
+            });
+            setIsTimeRangePicker(false);
+        }
+    }, [])
 
     useEffect(() => {
-        initTimeRangePicker()
-    }, [initTimeRangePicker])
+        submitRangePicker()
+    }, [submitRangePicker])
 
     return (
     <UsePortal
     className={classes.wrapperModal}
     title='Select range'
+    onClose={() => setIsSubmited(true)}
     containerWidth={width > 1024 ? 860 : 680}
     isModalOpen={isTimeRangePicker}
     setIsModalOpen={setIsTimeRangePicker}>
@@ -135,6 +138,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     <button
                     onClick={() => {
                     MonthPickerDispatch.setRangeType('today')
+                    MonthPickerDispatch.setIsChangedRange(true)
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     setTimeRanges({selection: {
                         startDate: new Date(),
@@ -151,6 +155,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     <button
                     onClick={() => {
                     MonthPickerDispatch.setRangeType('yesterday')
+                    MonthPickerDispatch.setIsChangedRange(true)
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     setTimeRanges({selection: {
                         startDate: subDays(new Date(), 1),
@@ -167,6 +172,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     <button
                     onClick={() => {
                     MonthPickerDispatch.setRangeType('week'); 
+                    MonthPickerDispatch.setIsChangedRange(true)
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     MonthPickerDispatch.setIsPickedWeekMonth(true);
                     setTimeRanges({selection: {
@@ -184,6 +190,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     <button
                     onClick={() => {
                     MonthPickerDispatch.setRangeType('lastweek'); 
+                    MonthPickerDispatch.setIsChangedRange(true)
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     MonthPickerDispatch.setIsPickedWeekMonth(true);
                     setTimeRanges({selection: {
@@ -200,6 +207,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
+                    MonthPickerDispatch.setIsChangedRange(true)
                     MonthPickerDispatch.setRangeType('month'); 
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     MonthPickerDispatch.setIsPickedWeekMonth(true);
@@ -217,6 +225,7 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                 className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
+                    MonthPickerDispatch.setIsChangedRange(true)
                     MonthPickerDispatch.setRangeType('alltime')
                     MonthPickerDispatch.setRangesFromFastNavStatus(true);    
                     setTimeRanges({selection: {
@@ -234,6 +243,8 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     classNames={classnamesDateRangePicker} 
                     showMonthAndYearPickers={false}
                     onChange={(item) => {
+                        MonthPickerDispatch.setIsChangedRange(true)
+                        MonthPickerDispatch.setRangeType('range')
                         setTimeRanges({ ...timeRanges, ...item })
                     }}
                     maxDate={new Date()}
@@ -253,12 +264,12 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     <CustomButton
                     type='primary'
                     icon='submit'
-                    callback={() => setDateChangeCount(2)}
+                    callback={() => setIsSubmited(true)}
                     isPending={false}>Submit</CustomButton>
                     <CustomButton
                     type='danger'
                     icon='refuse'
-                    callback={() => closeTimeRangePicker()}
+                    callback={() => setIsSubmited(true)}
                     isPending={false}>Cancel</CustomButton>
                 </div>
             </div>

@@ -34,7 +34,7 @@ const MonthPicker: React.FC = () => {
         if(MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
             return `${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate()} ${DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0,3)} ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getFullYear()}`
         }
-        return `${new Date(MonthPickerStore.endDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.endDate).getMonth()).slice(0,3)} ${new Date(MonthPickerStore.endDate).getFullYear()}`
+        return `${subDays(new Date(MonthPickerStore.endDate), 2).getDate()} ${DateService.getMonthNameByIdx(subDays(new Date(MonthPickerStore.endDate), 2).getMonth()).slice(0,3)} ${subDays(new Date(MonthPickerStore.endDate), 2).getFullYear()}`
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.rangesFromFastNav, MonthPickerStore.isPickedWeekMonth])
 
     const getMonthPickerTitle = useMemo(() => {
@@ -43,7 +43,10 @@ const MonthPicker: React.FC = () => {
         } else {
             const firstDateOfMonth = format(new Date(MonthPickerStore.startDate), 'yyyy-MM-01')
             const lastDateOfMonth = format(lastDayOfMonth(new Date(MonthPickerStore.endDate)), 'yyyy-MM-dd')
-            if (MonthPickerStore.rangeType === 'month'){
+            if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday') {
+                return(`${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} ${new Date(MonthPickerStore.startDate).getFullYear()}`)
+            }
+            else if (MonthPickerStore.rangeType === 'month'){
                 return(`${DateService.getMonthNameByIdx(new Date(lastDateOfMonth).getMonth() - 1)} ${new Date(lastDateOfMonth).getFullYear()}`)
             }
             else if (MonthPickerStore.rangeType === 'alltime'){
@@ -58,13 +61,13 @@ const MonthPicker: React.FC = () => {
             else if((new Date(MonthPickerStore.endDate).getMonth() === new Date(MonthPickerStore.startDate).getMonth()) &&
             new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() === new Date(MonthPickerStore.startDate).getDate() &&
             (new Date(MonthPickerStore.endDate).getFullYear() === new Date(MonthPickerStore.startDate).getFullYear())){
-                return(`${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.endDate).getMonth())} ${new Date(MonthPickerStore.endDate).getFullYear()}`)
+                return(`${subDays(new Date(MonthPickerStore.startDate), 1).getDate()} ${DateService.getMonthNameByIdx(subDays(new Date(MonthPickerStore.startDate), 1).getMonth())} ${subDays(new Date(MonthPickerStore.startDate), 1).getFullYear()}`)
             }
             return(`${getStartDateForTitle} - ${getEndDateForTitle}`)
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate, 
         MonthPickerStore.currentMonth, MonthPickerStore.currentYear, 
-        isRangeMode, MonthPickerStore.isPickedWeekMonth])
+        isRangeMode, MonthPickerStore.isPickedWeekMonth, MonthPickerStore.rangesFromFastNav])
 
 
     const monthPickerBody = useMemo(() => {
@@ -75,7 +78,7 @@ const MonthPicker: React.FC = () => {
                 setIsRangeMode(true)
                 setIsTimeRangePicker(true)
                 if(!isRangeMode){
-                    MonthPickerDispatch.changeTypeFetchingData() 
+                    MonthPickerDispatch.setTypeFetchingData('date-range') 
                 }
             }}>
                 <h4 className={classes.title}>{getMonthPickerTitle}</h4>
@@ -93,8 +96,8 @@ const MonthPicker: React.FC = () => {
                 onClick={()=>{
                     setMonth('prev')
                     if(isRangeMode){
-                        MonthPickerDispatch.setDateTimeByRangePickerEndDate()
                         MonthPickerDispatch.changeTypeFetchingData() 
+                        MonthPickerDispatch.setCurrentDateTime()
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
                         setMonth('prev')
@@ -108,8 +111,8 @@ const MonthPicker: React.FC = () => {
                 onClick={() => { 
                     setMonth('next')
                     if(isRangeMode){
-                        MonthPickerDispatch.setDateTimeByRangePickerEndDate()
                         MonthPickerDispatch.changeTypeFetchingData() 
+                        MonthPickerDispatch.setCurrentDateTime()
                         setIsRangeMode(false)
                         setIsTimeRangePicker(false)
                         setMonth('next')
