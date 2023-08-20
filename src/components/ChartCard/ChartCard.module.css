@@ -9,6 +9,9 @@
 
 .inner {
     padding: 24px 32px 25px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .wrapper {
@@ -81,6 +84,28 @@
     padding: 4px 8px;
     margin-bottom: 15px;
 }
+
+/* no expenses */
+.noExpenses {
+    text-align: center;
+    margin: auto 0;
+}
+
+.noExpenses>i {
+    font-size: 50px;
+    color: var(--main-text);
+    display: flex;
+    justify-content: center;
+}
+
+.noExpenses__title {
+    composes: mediumText from "@styles/style.css";
+    margin: 10px 0 5px;
+}
+
+.noExpenses__text {
+    composes: largeItemTitle from "@styles/style.css";
+}
 @media only screen and (max-width: 1440px) {
     .ChartCard {
         width: unset;
@@ -96,11 +121,6 @@
 @media only screen and (max-width: 1028px) {
     .ChartCard {
         min-width: unset;
-        height: 100%;
-    }
-    .inner {
-        display: flex;
-        flex-direction: column;
         height: 100%;
     }
 

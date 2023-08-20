@@ -37,7 +37,7 @@ const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
         return categoriesWithColors.map((item, i) => <ChartCardDot key={i} item={item} setId={setId} />)
     }, [data]) 
 
-    let itemPercentage;
+    let itemPercentage = 0;
     if (itemAmount){
         itemPercentage = +(itemAmount * 100 / total).toFixed(2) || 0;
     }
@@ -60,6 +60,17 @@ const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
 
     let setInterval = () => {
         timeout = setTimeout(handleCloseExtended, 15000);
+    }
+
+    if (data.length === 0) {
+        return <div className={classes.inner}>
+            <h3 className={classes.title}>{title}</h3>
+            <div className={classes.noExpenses}>
+                <i className="bi bi-database-x"></i>
+                <h5 className={classes.noExpenses__title}>You have no expenses</h5>
+                <p className={classes.noExpenses__text}>Try creating a new expense</p>
+            </div>
+        </div>
     }
 
     return (<div className={classes.inner} onMouseEnter={clearInterval} onMouseLeave={setInterval} onClick={handleCloseExtended}>

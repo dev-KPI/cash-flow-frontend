@@ -89,8 +89,8 @@ const UserExpenseChart: FC<ChartProps> = ({ data, total, setId }) => {
         beforeDatasetsDraw: (chart: ChartJS, args: AnyObject, pluginOptions: AnyObject) => {
             const { ctx, data } = chart;
             ctx.save();
-            const xCoor = chart.getDatasetMeta(0).data[0].x;
-            const yCoor = chart.getDatasetMeta(0).data[0].y;
+            const xCoor = chart.getDatasetMeta(0).data[0]?.x || 0;
+            const yCoor = chart.getDatasetMeta(0).data[0]?.y || 0;
             ctx.font = "600 " + 0.12 * chart.chartArea.width + "px Inter";
             ctx.fillStyle = pluginOptions.color
             ctx.textAlign = 'center';
