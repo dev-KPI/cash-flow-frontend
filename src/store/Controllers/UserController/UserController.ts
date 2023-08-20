@@ -1,3 +1,4 @@
+import IHistoryItem from '@models/IHistoryItem';
 import IListResponse from '@models/IListResponse';
 import IUser from '@models/IUser';
 import { api } from '@store/api';
@@ -63,6 +64,23 @@ export const UserApiSlice = api.injectEndpoints({
                 :
                 [{ type: 'UserController' as const, id: 'Users' }],
         }), 
+        getUserHistory: builder.query<IListResponse<IHistoryItem>, { page: number, size: number }>({
+            query: ({ page = 0, size }) => ({
+                url: `users/history`,
+                credentials: 'include',
+                params: {
+                    page: page + 1,
+                    size
+                }
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: 
+                [{ type: 'UserController' as const, id: 0 },
+                {type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
+        }),
         getUserExpensesByGroup: builder.query<IGetUserExpensesByGroupResponse, IGetUserExpensesByGroupBody>({
             query: ({ group_id, period }) => ({
                 url: `/users/${group_id}/expenses`,
@@ -144,6 +162,7 @@ export const {
     useGetUsersQuery,
     useGetUsersByGroupQuery,
     useGetUserExpensesByGroupQuery,
+    useGetUserHistoryQuery,
     useGetUserExpensesByCategoryQuery,
     useGetCurrentUserBalanceQuery,
     useGetTotalExpensesQuery,

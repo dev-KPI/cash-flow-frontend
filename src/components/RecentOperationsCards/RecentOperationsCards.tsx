@@ -9,15 +9,18 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { isUrl, numberWithCommas } from "@services/UsefulMethods/UIMethods";
 import IUser from "@models/IUser";
+import IHistoryItem from "@models/IHistoryItem";
 
-export interface IRecentOperationDashboardCard {
-    ColorBtn: string,
-    title: string,
-    time: string,
-    amount: number,
-    type: 'expense' | 'replenishment'
+// export interface IRecentOperationDashboardCard {
+//     ColorBtn: string,
+//     title: string,
+//     time: string,
+//     amount: number,
+//     type: 'expense' | 'replenishment'
+// }
+interface IRecentOperationDashboardCard {
+    item: IHistoryItem
 }
-
 export interface IRecentOperationGroupCard {
     categoryColor: string,
     categoryTitle: string,
@@ -27,8 +30,8 @@ export interface IRecentOperationGroupCard {
     type: 'expense' | 'replenishment'
 }
 
-export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ ColorBtn, title, time, amount, type }) => {
-
+export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ item }) => {
+    const isExpense = item.category_id !== null;
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
 
@@ -36,16 +39,16 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
         <li className={classes.RecentOperationDashboardCard}>
             <div className={classes.info}>
                 <Light
-                    color={ColorBtn}
+                    color={ isExpense ? item.color_code_category : "#80D667" }
                     type={'hollow'} />
                 <div className={classes.center}>
-                    <h5 className={classes.title}>{title}</h5>
-                    <p className={classes.time}>{timeAgo.format(new Date(time))}</p>
+                    <h5 className={classes.title}>{isExpense ? item.title_category: 'Salary'}</h5>
+                    <p className={classes.time}>{timeAgo.format(new Date(item.time))}</p>
                 </div>
             </div>
-            <p style={{ color: type === 'expense' ? "#FF2D55" : "#80D667" }}
+            <p style={{ color: isExpense ? "#FF2D55" : "#80D667" }}
                 className={classes.amount}>
-                {`${type === 'expense' ? "-" : "+"}$${numberWithCommas(amount)}`}</p>
+                {`${isExpense ? "-" : "+"}$${numberWithCommas(item.amount)}`}</p>
         </li>
     )
 }
