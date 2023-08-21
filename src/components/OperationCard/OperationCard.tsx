@@ -50,7 +50,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         } else if (MonthPickerStore.rangeType === 'alltime') {
             return ``
         }
-        return(`since last pediod`)
+        return(`since last period`)
     }, [MonthPickerStore.rangeType])
 
     let totalAmount = 0
