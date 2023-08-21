@@ -27,7 +27,6 @@ interface IGraphProps {
 
 const Graph: FC<IGraphProps> = ({data}) => {
 
-    console.log(data)
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
