@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 //logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
@@ -18,6 +18,8 @@ import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+
 
 const UserCategoriesCard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
@@ -31,7 +33,7 @@ const UserCategoriesCard = () => {
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
-
+    const navigate = useNavigate()
     const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
     const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByGroupQuery({
         group_id: selectedGroup, 
@@ -135,6 +137,17 @@ const UserCategoriesCard = () => {
                     type='add'
                 />)  
         }
+    } else if (isExpensesError) {
+        categoriesContent = <div className={classes.emptyList}>
+            <p>Create a group before using expenses!</p>
+            <CustomButton
+                type='primary'
+                children={'Browse Groups'}
+                icon='none'
+                callback={() => navigate('/groups')}
+                isPending={false}
+            />
+        </div>
     }
     return (
         <div className={classes.categories}>
