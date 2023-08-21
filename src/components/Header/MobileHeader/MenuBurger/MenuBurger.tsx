@@ -17,6 +17,7 @@ import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
+import { useGetCurrentUserBalanceQuery } from "@store/Controllers/UserController/UserController";
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
     isMenuActive: boolean,
@@ -26,6 +27,7 @@ interface IPropsMenuBurger {
 const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) => {
     const { data: Groups,  isLoading: isGroupsLoading, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null)
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
+    const { data: UserBalance = { balance: 0 }, isError: isUserBalanceError, isFetching: isUserBalanceFetching } = useGetCurrentUserBalanceQuery(null)
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
     const closeMenu = () => setMenuActive(false)
@@ -70,7 +72,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
                 <div className={classes.account__info}>
                     <h2 className={classes.title}>{User.first_name}</h2>
                     <h2 className={classes.title}>{User.last_name}</h2>
-                    <p className={classes.balance}>{numberWithCommas(4124)}$</p>
+                    <p className={classes.balance + ' ' + (UserBalance.balance < 0 ? classes.red : classes.green)}>${numberWithCommas(UserBalance.balance)}</p>
                 </div>
             </div>
             <div className={classes.burgernav__line}></div>
