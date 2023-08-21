@@ -55,6 +55,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     return <>
     {showToolTip()}
     <UsePortal
+        callback={() => {}}
         setIsModalOpen={setIsExpenseModalOpen}
         isModalOpen={isExpenseModalOpen}
         headerIcon={headerIcon}

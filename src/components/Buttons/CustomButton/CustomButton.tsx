@@ -29,10 +29,10 @@ const CustomButton: FC<ICustomButtonProps> = ({ icon, btnWidth, btnHeight, callb
         callback()
     } 
     const getIcon = () => {
-        return icon === 'submit' ? <i className="bi bi-check2"></i>
-            : icon === 'add' ? <i style={{ fontSize: '24px' }} className="bi bi-plus"></i>
-            : icon === 'refuse' ? <i style={{ fontSize: '24px' }} className="bi bi-x"></i> 
-            : icon === 'disband' ? <i style={{ fontSize: '24px' }} className="bi bi-person-slash"></i>
+        return icon === 'submit' ? <i className="bi bi-check2" style={{ fontSize: '18px' }}></i>
+            : icon === 'add' ? <i style={{ fontSize: '18px' }} className="bi bi-plus"></i>
+            : icon === 'refuse' ? <i style={{ fontSize: '18px' }} className="bi bi-x"></i> 
+            : icon === 'disband' ? <i style={{ fontSize: '18px' }} className="bi bi-person-slash"></i>
             : ''
     }
 

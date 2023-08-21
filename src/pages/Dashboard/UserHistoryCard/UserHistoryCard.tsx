@@ -15,7 +15,6 @@ const UserHistoryCard: FC = () => {
         page: 0,
         size: 8
     })
-
     const getRecentActivities = () => {
         let res: ReactNode[] = isHistorySuccess ? HistoryItems.items.map((el, i) =>
             <RecentOperationDashboardCard

@@ -1,14 +1,16 @@
-import { useState, FC, useEffect } from 'react';
+import { useState, FC, useEffect, useMemo } from 'react';
 //store
 import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 //logic
+import { isSameDay, format, lastDayOfMonth, subDays } from 'date-fns'
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import DateService from '@services/DateService/DateService';
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import OperationCardLoader from './OperationCardLoader';
+import { fomatFloatNumber } from '@services/UsefulMethods/UIMethods';
 
 interface OperactionCardProps {
     operation: "Income" | 'Expenses';
@@ -24,19 +26,32 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
     const [source, setSource] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
 
-    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery({
-        period: { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) }
-    })
-    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery({
-        period: { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) }
-    })
+    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery(MonthPickerStore.type === 'year-month' ? 
+    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
+    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
+    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(MonthPickerStore.type === 'year-month' ? 
+    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
+    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
         percentColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
-        percentBackground: sign === "-" ? "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
+        percentBackground: sign === "-" ? "rgba(255, 45, 85, 0.20)" : operation === 'Expenses' ? "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
+
+    const getMonthPickerTitle = useMemo(() => {
+        if (MonthPickerStore.rangeType === 'default' || MonthPickerStore.rangeType === 'month' ) {
+            return 'since last month'
+        } else if (MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
+            return 'since last week'
+        } else if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday') {
+            return 'since last days'
+        } else if (MonthPickerStore.rangeType === 'alltime') {
+            return ``
+        }
+        return(`since last period`)
+    }, [MonthPickerStore.rangeType])
 
     let totalAmount = 0
     let totalPercents = 0;
@@ -49,10 +64,10 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
             totalPercents = Expenses.percentage_increase
         }
         setAmount(Number(totalAmount.toFixed(2)));
-        setPercents(totalPercents);
+        setPercents(Number(totalPercents * 100 > 1000 ? Math.floor(totalPercents * 100) : fomatFloatNumber(totalPercents * 100, 2)));
         setSign(totalPercents === 0 ? '' : totalPercents > 0 ? '+' : '-');
 
-    }, [Replenishments, Expenses])
+    }, [Replenishments, Expenses, isReplenishmentsLoading, isReplenishmentsSuccess, isExpensesLoading, isExpensesSuccess])
     
     const cardTitle = title ? title : operation;
 
@@ -66,7 +81,9 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         <div className={`${classes.operationCard} ${className ? className : ''}`}
             onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
-            {/* <OperationCardLoader /> */}
+            {isExpensesLoading || isReplenishmentsLoading ? 
+                <OperationCardLoader />
+                :
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <div className={classes.info}>
@@ -88,9 +105,10 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
                         >
                         <span style={{ color: styles.percentColor }}>{percents}%</span>
                         </div>
-                        <p className={classes.time}>since last month</p>
+                        <p className={classes.time}>{getMonthPickerTitle}</p>
                     </div>
                 </div>
+            }
         </div>
     </>);
 };

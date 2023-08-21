@@ -4,7 +4,13 @@ export function numberWithCommas(x: number) {
     else
         return x
 }
-
+export const fomatFloatNumber = (inputNumber: number, numbersAfterComma: number) => {
+    if (inputNumber % 1 === 0) {
+        return inputNumber.toString();
+    } else {
+        return inputNumber.toFixed(numbersAfterComma);
+    }
+}
 export const parseColors = (hex: string) => {
     switch (hex) {
         case '#4C6FFF':

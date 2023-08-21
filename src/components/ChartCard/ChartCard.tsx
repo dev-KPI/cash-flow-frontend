@@ -85,16 +85,17 @@ const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
                             <p className={classes.expensePercent}>{itemPercentage}%</p>
                             <span className={classes.expenseAmount}>{numberWithCommas(itemAmount)}$</span>
                         </div>
-                        {isExtended && data.length>4 ?
-                            <ul className={classes.chartList}>
-                                {getItems.slice(0, 4)}
-                                <li className={classes.item}>
-                                    <button className={classes.viewMore} onClick={handleOpenExtended}>View more</button>
-                                </li>
-                            </ul>
-                            :
+                        {isExtended ?
                             <ul className={classes.popupList} onClick={(e) => (e.stopPropagation())}>
                                 {getItems}
+                            </ul>
+                            :
+                           <ul className={classes.chartList}>
+                                {getItems.slice(0, 4)}
+                                {data.length > 4 &&
+                                <li className={classes.item}>
+                                    <button className={classes.viewMore} onClick={handleOpenExtended}>View more</button>
+                                </li>}
                             </ul>
                         }
                     </div>

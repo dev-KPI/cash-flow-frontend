@@ -1,3 +1,5 @@
+import {startOfDay, addDays} from 'date-fns'
+
 class DateServiceClass {
 
     months: string[];
@@ -57,6 +59,17 @@ class DateServiceClass {
     }
     getYearMonth(year: number, month: string): string {
         return `${year}-${this.getMonthIdxByName(month) < 10 ? '0' + this.getMonthIdxByName(month) : this.getMonthIdxByName(month)}`
+    }
+    getDatesInRange(startDate: Date, endDate: Date): Date[] {
+        const dates: Date[] = [];
+        let currentDate = startOfDay(startDate);
+    
+        while (currentDate <= endDate) {
+            dates.push(currentDate);
+            currentDate = addDays(currentDate, 1);
+        }
+    
+        return dates;
     }
 }
 const DateService = new DateServiceClass();

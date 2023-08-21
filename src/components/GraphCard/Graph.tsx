@@ -15,23 +15,14 @@ import { Context } from 'vm';
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
+import { IGetCurrentUserDailyExpensesResponse } from '@store/Controllers/ExpensesController/ExpensesControllerInterfaces';
 
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export interface IExpenseItem { 
-    id: number, 
-    description: string,
-    amount: number,
-    time: string,
-    user_id: number,
-    group_id: number,
-    category_id: number
-}
-
 interface IGraphProps {
-    data: IExpenseItem[]
+    data: IGetCurrentUserDailyExpensesResponse[]
 }
 
 const Graph: FC<IGraphProps> = ({data}) => {
@@ -48,12 +39,12 @@ const Graph: FC<IGraphProps> = ({data}) => {
     }, [data])
 
     const getXParams = useCallback((): { high: number, step: number } => {
-        return { high: 2, step: 5 }
+        return { high: new Date(data[data.length - 1].date).getDate(), step: 1 }
     }, [data])
     
     const getChartData = useCallback((): { key: string; value: number }[] => {
         return [...data.map(el => {return {
-            key: new Date(el.time).getDate() + '',
+            key: new Date(el.date).getDate() + '',
             value: el.amount,
             data: el
         }})]
@@ -66,6 +57,10 @@ const Graph: FC<IGraphProps> = ({data}) => {
                 yAxisKey: 'value',
                 xAxisKey: 'key',
             },
+            maxBarThickness: 24,
+            borderRadius: 20,
+            backgroundColor: "#80D667",
+            hoverBackgroundColor: "#80EE67",
         }],
     };
     
@@ -75,9 +70,9 @@ const Graph: FC<IGraphProps> = ({data}) => {
     const [yearTooltip, setYearTooltip] = useState<number>(0);
 
     const titleTooltip = (context: Context): string => {
-        setMonthTooltip(DateService.getMonthNameByIdx(new Date(context[0]?.raw.data.time).getMonth()).slice(0,3));
-        setDateTooltip(new Date(context[0]?.raw.data.time).getDate());
-        setYearTooltip(new Date(context[0]?.raw.data.time).getFullYear());
+        setMonthTooltip(DateService.getMonthNameByIdx(new Date(context[0]?.raw.data.date).getMonth()).slice(0,3));
+        setDateTooltip(new Date(context[0]?.raw.data.date).getDate());
+        setYearTooltip(new Date(context[0]?.raw.data.date).getFullYear());
         setPriceTooltip(context[0]?.parsed.y);
         return `${monthTooltip} ${dateTooltip}, ${yearTooltip}`
     }
@@ -95,11 +90,10 @@ const Graph: FC<IGraphProps> = ({data}) => {
         maintainAspectRatio: false,
         elements: {
             bar:{
-                barThickness: 24,
                 backgroundColor: "#80D667",
                 hoverBackgroundColor: "#80EE67",
-                borderRadius: 20,
-            }
+                borderColor: "#80D667",
+            },
         },
         plugins: {
             legend: { display: false },
@@ -197,13 +191,13 @@ const Graph: FC<IGraphProps> = ({data}) => {
     }
 
     return (
-            <Chart<'bar', { key: string, value: number }[]>
-            type="bar"
-            className={classes.chartinner__wrapper}
-            options={options}
-            data={datasets}
-            />
-            )
+        <Chart<'bar', { key: string, value: number }[]>
+        type="bar"
+        className={classes.chartinner__wrapper}
+        options={options}
+        data={datasets}
+        />
+    )
 }
 
 export default React.memo(Graph)

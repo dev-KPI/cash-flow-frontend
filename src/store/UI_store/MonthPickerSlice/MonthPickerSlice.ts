@@ -1,14 +1,19 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-
+import { addDays, subMonths,  } from 'date-fns'
 //types
-import { IMonthPickerState } from './MonthPickerInterfaces'
+import { IMonthPickerState, TRangeType } from './MonthPickerInterfaces'
 import DateService from '@services/DateService/DateService'
 
 
 const initialState: IMonthPickerState = {
     months: DateService.getMonths(),
     startDate: new Date().toISOString(), 
-    endDate: new Date().toISOString(), 
+    endDate: addDays(new Date(), 1).toISOString(), 
+    isChangedRange: false,
+    isChangedRangeFromMount: false,
+    rangeType: 'default',
+    isPickedWeekMonth: false,
+    rangesFromFastNav: false,
     type: 'year-month',
     currentMonth: DateService.getCurrentMonth(),
     currentYear: new Date().getFullYear(),
@@ -43,6 +48,24 @@ export const MonthPickerSlice = createSlice({
                 initialState.type = 'date-range'
             }
         },
+        setTypeFetchingData: (initialState: IMonthPickerState, action: PayloadAction<'year-month' | 'date-range'>): void => {
+            initialState.type = action.payload
+        },
+        setRangeType: (initialState: IMonthPickerState, action: PayloadAction<TRangeType>): void => {
+            initialState.rangeType = action.payload
+        },
+        setRangesFromFastNavStatus: (initialState: IMonthPickerState, action: PayloadAction<boolean>): void => {
+            initialState.rangesFromFastNav = action.payload
+        },
+        setIsPickedWeekMonth: (initialState: IMonthPickerState, action: PayloadAction<boolean>): void => {
+            initialState.isPickedWeekMonth = action.payload
+        },
+        setIsChangedRange: (initialState: IMonthPickerState, action: PayloadAction<boolean>) => {
+            initialState.isChangedRange = action.payload
+        },
+        setIsChangedRangeFromMount: (initialState: IMonthPickerState, action: PayloadAction<boolean>) => {
+            initialState.isChangedRangeFromMount = action.payload
+        },
         setStartDate: (initialState: IMonthPickerState, action: PayloadAction<string>): void => {
             initialState.startDate = action.payload;
         },
@@ -56,10 +79,12 @@ export const MonthPickerSlice = createSlice({
         setCurrentDateTime: (initialState: IMonthPickerState): void => {
             initialState.currentMonth = DateService.getCurrentMonth();
             initialState.currentYear = new Date().getFullYear();
+            initialState.startDate = new Date().toISOString();
+            initialState.endDate = addDays(new Date(), 1).toISOString();
         },
         setDateTimeByRangePickerEndDate: (initialState: IMonthPickerState): void => {
             if(new Date(initialState.endDate).getMonth() !== DateService.getMonthIdxByName(initialState.currentMonth)){
-                initialState.currentMonth = DateService.getMonthNameByIdx(new Date(initialState.endDate).getMonth());
+                initialState.currentMonth = DateService.getMonthNameByIdx(new Date(subMonths(new Date(initialState.endDate), 1)).getMonth());
                 initialState.currentYear = new Date(initialState.endDate).getFullYear();
             }
         },

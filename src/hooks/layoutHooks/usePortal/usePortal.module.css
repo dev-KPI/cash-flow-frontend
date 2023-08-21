@@ -30,6 +30,7 @@
 
 .Header__title {
     composes: pageTitle from '@styles/style.css';
+    margin-left: 24px;
     font-weight: 500;
 }
 .Icon {

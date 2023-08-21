@@ -86,6 +86,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
     return <>
         {showToolTip()}
         <UsePortal
+            callback={() => {}}
             setIsModalOpen={setIsConfirmationModalOpen}
             isModalOpen={isConfirmationModalOpen}
             headerIcon={headerIcon}
