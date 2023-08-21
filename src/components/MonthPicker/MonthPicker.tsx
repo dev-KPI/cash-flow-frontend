@@ -81,7 +81,6 @@ const MonthPicker: React.FC = () => {
                 setIsDateRangePicker(true)
                 if(!isRangeMode){
                     MonthPickerDispatch.setCurrentDateTime()
-                    MonthPickerDispatch.setTypeFetchingData('date-range') 
                 }
             }}>
                 <h4 className={classes.title}>{getMonthPickerTitle}</h4>

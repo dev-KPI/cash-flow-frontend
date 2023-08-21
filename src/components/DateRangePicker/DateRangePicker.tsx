@@ -138,14 +138,6 @@ const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker
             })
             closeRangePickerWithConditions()
         } else if(!MonthPickerStore.isChangedRangeFromMount && isDateRangePicker && isSubmited && !isRefused) {
-            const startDateInUserTimezone = new Date(new Date().getTime() - userTimezoneOffsetMilliseconds);
-            const endDateInUserTimezone = new Date(new Date().getTime() - userTimezoneOffsetMilliseconds);
-            const adjustedStartDate = startDateInUserTimezone.toISOString();
-            const adjustedEndDate = endDateInUserTimezone.toISOString();
-            MonthPickerDispatch.setStartDate(adjustedStartDate)
-            MonthPickerDispatch.setEndDate(addDays(new Date(adjustedEndDate), 1).toISOString())
-            MonthPickerDispatch.setIsChangedRangeFromMount(true)
-            MonthPickerDispatch.setRangeType('today')
             closeRangePickerWithConditions()
         } else if(isRefused){
             closeRangePickerWithConditions()
@@ -305,7 +297,10 @@ const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker
                     <CustomButton
                     type='primary'
                     icon='submit'
-                    callback={() => setIsSubmited(true)}
+                    callback={() => {
+                        MonthPickerDispatch.setTypeFetchingData('date-range') 
+                        setIsSubmited(true)
+                    }}
                     isPending={false}>Submit</CustomButton>
                     <CustomButton
                     type='danger'

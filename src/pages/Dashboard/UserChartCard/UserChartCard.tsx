@@ -14,9 +14,9 @@ import ChartCardLoader from '@components/ChartCard/ChartCardLoader';
 const UserChartCard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const { data: ExpensesByCategory, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByCategoryQuery({
-        period: {
-            year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)
-        }
+        period: MonthPickerStore.type === 'year-month' ? 
+        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
+        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
     })
 
     return (

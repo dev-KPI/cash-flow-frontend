@@ -1,4 +1,4 @@
-import { useState, FC, useEffect } from 'react';
+import { useState, FC, useEffect, useMemo } from 'react';
 //store
 import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
@@ -9,6 +9,7 @@ import DateService from '@services/DateService/DateService';
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import OperationCardLoader from './OperationCardLoader';
+import { fomatFloatNumber } from '@services/UsefulMethods/UIMethods';
 
 interface OperactionCardProps {
     operation: "Income" | 'Expenses';
@@ -24,12 +25,12 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
     const [source, setSource] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
 
-    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery({
-        period: { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) }
-    })
-    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery({
-        period: { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) }
-    })
+    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery(MonthPickerStore.type === 'year-month' ? 
+    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
+    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
+    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(MonthPickerStore.type === 'year-month' ? 
+    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
+    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
@@ -49,10 +50,10 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
             totalPercents = Expenses.percentage_increase
         }
         setAmount(Number(totalAmount.toFixed(2)));
-        setPercents(totalPercents);
+        setPercents(Number(fomatFloatNumber(totalPercents, 2)));
         setSign(totalPercents === 0 ? '' : totalPercents > 0 ? '+' : '-');
 
-    }, [Replenishments, Expenses])
+    }, [Replenishments, Expenses, isReplenishmentsLoading, isReplenishmentsSuccess, isExpensesLoading, isExpensesSuccess])
     
     const cardTitle = title ? title : operation;
 
@@ -66,7 +67,9 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         <div className={`${classes.operationCard} ${className ? className : ''}`}
             onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
-            {/* <OperationCardLoader /> */}
+            {isExpensesLoading || isReplenishmentsLoading ? 
+                <OperationCardLoader />
+                :
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <div className={classes.info}>
@@ -91,6 +94,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
                         <p className={classes.time}>since last month</p>
                     </div>
                 </div>
+            }
         </div>
     </>);
 };

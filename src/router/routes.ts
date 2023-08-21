@@ -31,9 +31,6 @@ export const routesNotAuth = [
     {
         path: LOG_IN_PAGE,
         component: Login
-    },{
-        path: 'testpage',
-        component: MonthPicker
     }
 ];
 export const routesAuth = [
