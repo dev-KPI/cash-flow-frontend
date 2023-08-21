@@ -1,64 +1,50 @@
-import React, {FC, useState} from 'react';
+import React, { useEffect, useMemo, useState} from 'react';
 
 //UI
 import classes from './History.module.css';
-
+import Light from '@components/Light/Light';
 //logic
-import ICategory from '@models/ICategory';
-import { HistoryObj } from "@pages/HistoryObj";
 import DateService from '@services/DateService/DateService';
-import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods";
 import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    PaginationState,
     SortingState,
     useReactTable,
 } from '@tanstack/react-table'
-import Light from '@components/Light/Light';
+
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import IGroup from '@models/IGroup';
+import IHistoryItem from '@models/IHistoryItem';
+import { useGetUserHistoryQuery } from '@store/Controllers/UserController/UserController';
 
 
-interface Transaction {
-    id: number;
-    amount: number;
-    time: string;
-    description: string;
-    category_group?: {
-        group?: IGroup
-        category?: ICategory
-    },
-    type: string
-}
-
-
-const columnHelper = createColumnHelper<Transaction>()
+const columnHelper = createColumnHelper<IHistoryItem>()
 const columns = [
-    columnHelper.accessor('description', {
+    columnHelper.accessor('descriptions', {
         header: () =>'Description',
         cell: info => info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue(),
     }),
-    columnHelper.accessor('category_group.category.category.title', {
+    columnHelper.accessor('title_category', {
         header: () => 'Category',
         cell: info => info.renderValue() ? <div className={classes.wrapItem}>
             <Light
                 className={classes.dotLight}
-                style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
-                color={info.row.original.category_group?.category?.color_code || 'var(--main-green)'}
+                style={{ display: info.row.original.category_id !== null ? 'inline-block' : 'none' }}
+                color={info.row.original.color_code_category || 'var(--main-green)'}
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
         </div> : '-',
     }),
-    columnHelper.accessor('category_group.group.group.title', {
+    columnHelper.accessor('title_group', {
         header: () => 'Group',
         cell: info => info.renderValue() ? <div className={classes.wrapItem}>
             <Light
                 className={classes.dotLight}
-                style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
-                color={info.row.original.category_group?.group?.group.color_code || 'var(--main-green)'}
+                style={{ display: info.row.original.category_id !== null ? 'inline-block' : 'none' }}
+                color={info.row.original.color_code_group || 'var(--main-green)'}
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue() ?? '-'}</p>
         </div> :
@@ -74,49 +60,57 @@ const columns = [
             width: '100px'
         },
         cell: info =>
-            <p className={classes.amount} style={{ color: info.row.original.type === 'expense' ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.type === 'expense' ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
+            <p className={classes.amount} style={{ color: info.row.original.category_id !== null ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.category_id !== null ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
     }),
 ]
-const expensesDTO: Transaction[] = [...HistoryObj.expenses.map((el: Object) =>
-    Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-const replenishmentsDTO: Transaction[] = [...HistoryObj.replenishments.map((el: Object) =>
-    Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
-const HistoryArray: Transaction[] = [...expensesDTO, ...replenishmentsDTO]
-
-const getMixedHistory = () => {
-    return (HistoryArray.sort((b, a) => {
-        const dateA = new Date(a.time).getTime();
-        const dateB = new Date(b.time).getTime();
-        return dateA - dateB;
-    }))
-}
 
 const History: React.FC = () => {
-    const [data, setData] = useState([...getMixedHistory()])
+    const [{ pageIndex, pageSize }, setPagination] =
+        useState<PaginationState>({
+            pageIndex: 0,
+            pageSize: 8,
+        })
+    const { data: History, isLoading: isHistoryLoading, isError: isHistoryError, isSuccess: isHistorySuccess } = useGetUserHistoryQuery({ page: pageIndex, size: pageSize });
+    const [data, setData] = useState<IHistoryItem[]>([])
+    useEffect(() => {
+        if (isHistorySuccess) {
+            setData(History.items)
+        }
+    }, [History])
     const [sorting, setSorting] = useState<SortingState>([]) 
     
-    const rerender = React.useReducer(() => ({}), {})[1]
+    const pagination = useMemo(
+        () => ({
+            pageIndex,
+            pageSize,
+        }),
+        [pageIndex, pageSize]
+    )
 
     const table = useReactTable({
         data,
         columns,
-        state: {
-            sorting
-        },
+        pageCount: History?.pages,
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
+        manualPagination: true,
+        onPaginationChange: setPagination,
+        state: {
+            sorting,
+            pagination
+        },
         initialState: {
             pagination: {
                 pageSize: 8
             }
         }
     })
-    const { pageIndex, pageSize } = table.getState().pagination
-    const pageCount  = table.getPageCount()
+
+    const totalCount = History?.total;
+    const pageCount = History?.pages
     const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? data.length : (pageIndex + 1) * pageSize;
+    const endIndex = pageIndex + 1 === pageCount ? totalCount : (pageIndex + 1) * pageSize;
 
     return (
         <main id='HistoryPage'>
@@ -168,7 +162,7 @@ const History: React.FC = () => {
                                     <div className={classes.selector}>
                                         <span>Rows per page: </span>
                                         <select
-                                            value={pageSize}
+                                            value={table.getState().pagination.pageSize}
                                             className={classes.select}
                                             onChange={e => {
                                                 table.setPageSize(Number(e.target.value))
@@ -183,7 +177,7 @@ const History: React.FC = () => {
                                     </div>
                                     <span className={classes.counter}>
                                         {`${startIndex} - ${endIndex}`} of{' '}
-                                        {data.length}
+                                        {totalCount}
                                     </span>
                                     <div className={classes.nav}>
                                         <button
