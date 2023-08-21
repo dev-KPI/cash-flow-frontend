@@ -71,7 +71,8 @@ export const UserApiSlice = api.injectEndpoints({
                 params: {
                     page: page + 1,
                     size
-                }
+                },
+                refetchInterval: 60000,
             }),
             transformErrorResponse: (
                 response: { status: string | number },
