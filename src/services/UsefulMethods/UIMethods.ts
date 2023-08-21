@@ -30,13 +30,22 @@ export const customColors: string[] = [
     '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00'
 ];
 
+// export const shaffledColors: string[] = [
+//     '#c90076', '#f6ffb2', '#1794bb', '#6312bf', '#FFFF00', '#FFCC00',
+//     '#00FF66', '#00FFCC', '#00FF99', '#00FFFF', '#0099FF', '#00CCFF',
+//     '#CCFF00', '#66FF00', '#99FF00', '#33FF00', '#00FF33', '#00FF00',
+//     '#CC00FF', '#FF00CC', '#FF00FF', '#FF0099', '#FF0033', '#FF0066',
+//     '#0066FF', '#0000FF', '#0033FF', '#3300FF', '#9900FF', '#6600FF',
+// ];
 export const shaffledColors: string[] = [
-    '#c90076', '#f6ffb2', '#1794bb', '#6312bf', '#FFFF00', '#FFCC00',
-    '#00FF66', '#00FFCC', '#00FF99', '#00FFFF', '#0099FF', '#00CCFF',
-    '#CCFF00', '#66FF00', '#99FF00', '#33FF00', '#00FF33', '#00FF00',
-    '#CC00FF', '#FF00CC', '#FF00FF', '#FF0099', '#FF0033', '#FF0066',
-    '#0066FF', '#0000FF', '#0033FF', '#3300FF', '#9900FF', '#6600FF',
+    "#54bac3", "#ff2500", "#00a3ff", "#a3df00", "#ff4bff", "#00aa58",
+    "#fc53ff", "#005a00", "#620088", "#96d07a", "#a10089", "#396700",
+    "#ff7acf", "#003c00", "#2a97ff", "#ff6127", "#00b1ff", "#a80044",
+    "#00d7e4", "#a90063", "#003000", "#ff739c", "#2f4300", "#003a9a",
+    "#ffb57f", "#232d78", "#ffb78b", "#006ac1", "#9da36c", "#06050f",
+    "#ffb9ed", "#0c0000", "#ff8cc0", "#421f00", "#925a93", "#4e5d54"
 ];
+
 export const customIcons: string[] = [
     'bi bi-people', 'bi bi-activity', 'bi bi-alarm', 'bi bi-alipay', 'bi bi-apple', 'bi bi-android2',
     'bi bi-archive', 'bi bi-arrow-through-heart', 'bi bi-badge-3d', 'bi bi-badge-wc', 'bi bi-badge-vr', 'bi bi-bag-check',
