@@ -3,15 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 //logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
-import IExpense from '@models/IExpense';
-import { useGetExpensesByGroupQuery } from '@store/Controllers/ExpensesController/ExpensesController';
-import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
-import { useGetCategoriesByGroupQuery } from '@store/Controllers/CategoriesController/CategoriesController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
 import IGroupState from '@store/Group/GroupInterfaces';
-import ICategory from '@models/ICategory';
+import { ICategoryAmount } from '@models/ICategory';
+import { useGetUserExpensesByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import classes from './UserCategoriesCard.module.css'
@@ -21,11 +19,10 @@ import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal'
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 
-
 const UserCategoriesCard = () => {
-
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
+    const [categories, setCategories] = useState<ICategoryAmount[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
     const [pageGroup, setGroupPage] = useState<number>(0);
     const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
@@ -35,44 +32,35 @@ const UserCategoriesCard = () => {
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
 
-    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError } = useGetCurrentUserGroupsQuery(null);
-    const { data: UserCategoriesByGroup, isLoading: isCategoriesByGroupLoading, isError: isCategoriesByGroupError } = useGetCategoriesByGroupQuery(selectedGroup);
-    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError } = useGetExpensesByGroupQuery({
+    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
+    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByGroupQuery({
         group_id: selectedGroup, 
         period: {
             year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)
         }
     })
+    useEffect(() => {
+        if (isExpensesSuccess)
+            setCategories(ExpensesByGroup.categories)
+    }, [ExpensesByGroup, UserGroups])
 
     const initializeHandleWrapper = useCallback(()=> {
         handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
-    }, [height, width, ExpensesByGroup, UserCategoriesByGroup, UserGroups])
-
-  
+    }, [height, width, ExpensesByGroup, UserGroups])
 
     useEffect(()=>{
         initializeHandleWrapper()
     }, [initializeHandleWrapper])
 
-    const getCategories = (categories: ICategory[]) => {
-        if(categories.length > 0){
-            return categories.map((item, i) => 
-                <CategoriesCardItem 
-                key={i} 
-                category={item}
-                setIdModalOpen={setSelectedCategory}
-                setIsModalOpen={setIsExpenseModalOpen}
-                />
-            )
-        } else {
-            return categories.map((item, i) => 
-                <CategoriesCardItem 
-                category={item}
-                key={i} 
-                setIdModalOpen={setSelectedCategory}
-                setIsModalOpen={setIsExpenseModalOpen}/>
-            )
-        }
+    const getCategories = (categories: ICategoryAmount[]) => {
+        return categories.map((item, i) => 
+            <CategoriesCardItem 
+            key={i} 
+            category={item}
+            setIdModalOpen={setSelectedCategory}
+            setIsModalOpen={setIsExpenseModalOpen}
+            />
+        )
     }
     const getExpenseModal = () => {
         return <ExpenseModal
@@ -88,7 +76,7 @@ const UserCategoriesCard = () => {
             setIsModalOpen={setIsMoreModalOpen}
             isAddModalOpen={isCategoryModalOpen}
             setIsAddModalOpen={setIsCategoryModalOpen}
-            data={UserCategoriesByGroup ? getCategories(UserCategoriesByGroup.categories_group) : []}
+            data={getCategories(categories)}
             type={'categories'}
         />
     }
@@ -102,12 +90,11 @@ const UserCategoriesCard = () => {
         />
     }
 
-    const properCategories: ICategory[] = useMemo(() => {
-        if (UserCategoriesByGroup)
-            return UserCategoriesByGroup.categories_group?.slice(0, totalItems)
-        else
-            return []
-    }, [UserCategoriesByGroup, totalItems])
+    const properCategories: ICategoryAmount[] = useMemo(() => {
+            return categories.slice(0, totalItems)
+    }, [categories, totalItems])
+
+    
 
     const handleNextGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (UserGroups && UserGroups.user_groups[pageGroup + 1]) {
@@ -122,13 +109,39 @@ const UserCategoriesCard = () => {
             setSelectedGroup(UserGroups.user_groups[pageGroup - 1].group.id);
         } 
     }
-
+    let categoriesContent;
+    if (isExpensesSuccess && isGroupsSuccess) {
+        if (categories.length === 0)
+            categoriesContent = <div className={classes.emptyList}>
+                <p>Category list is empty!</p>
+                <SpecialButton
+                    handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+                    className={classes.specialItem}
+                    type='add'
+                />
+            </div>
+        else {
+            categoriesContent = getCategories(properCategories)
+            categories.length >= totalItems ?
+                categoriesContent.push(<SpecialButton
+                    handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+                    className={classes.specialItem}
+                    type='view'
+                />)
+                :
+                categoriesContent.push(<SpecialButton
+                    handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+                    className={classes.specialItem}
+                    type='add'
+                />)  
+        }
+    }
     return (
         <div className={classes.categories}>
             {getExpenseModal()}
             {getViewMoreModal()}
             {getCategoryModal()}
-            {isGroupsLoading ? <UserCategoriesCardLoader /> : <>            
+            {isGroupsLoading || isExpensesLoading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <h3 className={classes.title}>Categories <span className={classes.categoryName}>
@@ -155,31 +168,7 @@ const UserCategoriesCard = () => {
                         </div>
                     </div>
                     <ul className={classes.list} ref={squareRef}>
-                        {properCategories ? getCategories(properCategories) : ''}
-                        {
-                        UserCategoriesByGroup && UserCategoriesByGroup.categories_group.length === 0 ?
-                            <div className={classes.emptyList}>
-                                <p>Category list is empty!</p>
-                                    <SpecialButton
-                                        handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
-                                        className={classes.specialItem}
-                                        type='add'
-                                    />
-                            </div> 
-                            :
-                            UserCategoriesByGroup && UserCategoriesByGroup.categories_group.length! >= totalItems ?
-                            <SpecialButton 
-                                handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
-                                className={classes.specialItem}
-                                type='view'
-                            />
-                            :
-                            <SpecialButton
-                                handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
-                                className={classes.specialItem}
-                                type='add'
-                            />
-                        }
+                       {categoriesContent}
                     </ul>    
                 </div>
             </>}

@@ -12,7 +12,7 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import CategoriesCard from "./CategoriesCard/CategoriesCard";
 import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal";
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
-import PageGlobalLoader from "@components/PageGlobalPreloader/PageGlobalPreloader";
+import PreLoader from "@components/PreLoader/PreLoader";
 
 
 
@@ -109,7 +109,10 @@ const Categories: FC = () => {
     let categoriesContent;
     let groupsContent;
     if (isCategoriesLoading || isGroupsLoading) {
-        return <PageGlobalLoader />
+        groupsContent = <div className={classes.loaderWrapper}>
+            <PreLoader preLoaderSize={50} type='auto' />
+        </div>
+        categoriesContent = null
     } else if (isCategoriesError) {
         groupsContent = (<div className={classes.noItems}>
             <i className="bi bi-person-x" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>

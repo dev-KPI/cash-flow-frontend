@@ -21,6 +21,8 @@
     justify-content: space-between;
 }
 .inviteForm img{
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
 }
 .InviteGroupRef{
@@ -44,6 +46,13 @@
 .noNotifications {
     text-align: center;
     margin-bottom: 10px;
+}
+
+.noNotifications > i{
+    font-size: 50px;
+    color: var(--main-text);
+    display: flex;
+    justify-content: center;
 }
 
 .noNotifications__title {
@@ -85,19 +94,39 @@
     opacity: 1
 }
 
-.refresh{
+.loaderWrapper {
+    height: 181px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 32px;
-    cursor: pointer;
-    font-size: 24px;
+}
+
+.refreshButtonWrapper{
+   display: flex;
+   justify-content: center;
+   margin-top: 26px; 
+}
+
+.refreshButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 30px;
+    
+    border-radius: 7px;
+    background-color: var(--refetch-btn);
     color: var(--main-text);
+
+    cursor: pointer;
     transition: all .3s ease;
 }
-.refresh:hover{
-    fill: var(--main-green);
-    color: var(--main-green);
+.refreshButton:hover{
+    background-color: var(--refetch-btn-hover);
+}
+.btnText{
+    composes: smallText from '@styles/style.css';
+    font-weight: 500;
 }
 @keyframes fadeIn {
     0% {

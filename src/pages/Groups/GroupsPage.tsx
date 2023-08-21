@@ -3,13 +3,13 @@ import  { FC, useState, useMemo, ReactNode, useCallback, useEffect } from "react
 //logic
 import uuid from "react-uuid";
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
-import IUser from "@models/IUser";
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
 import { useGetCurrentUserInfoQuery } from "@store/Controllers/UserController/UserController";
 //UI
 import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
+import PreLoader from "@components/PreLoader/PreLoader";
 
 
 
@@ -23,7 +23,12 @@ const Groups: FC = () => {
     const [isEditGroupModal, setIsEditGroupModal] = useState<boolean>(false);
 
     let groupsContent;
-    if (isGroupsSuccess) {
+    if (isGroupsFetching) {
+        groupsContent = <div className={classes.loaderWrapper}>
+            <PreLoader preLoaderSize={50} type='auto' />
+        </div>
+    }
+    else if (isGroupsSuccess) {
         if (Groups.user_groups.length > 0) {
             groupsContent = <section className={classes.groups}>
                 {Groups.user_groups.map((el, i) =>

@@ -40,13 +40,14 @@ const GroupCategoriesCard = () => {
         autoHandleCloseModal])
     
     const getCategories = (categoriesByGroup: ICategory[]) => {
-        return categoriesByGroup.map((item, i) =>
-            <CategoriesCardItem
-                key={i}
-                setIdModalOpen={setIdModalOpen}
-                setIsModalOpen={setIsExpenseModalOpen}
-                category={item} />
-        )
+        // return categoriesByGroup.map((item, i) =>
+        //     <CategoriesCardItem
+        //         key={i}
+        //         setIdModalOpen={setIdModalOpen}
+        //         setIsModalOpen={setIsExpenseModalOpen}
+        //         category={item} />
+        // )
+        return null
     }
 
     const properCategories = useMemo(() => {

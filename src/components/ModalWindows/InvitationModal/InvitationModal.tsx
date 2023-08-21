@@ -46,7 +46,7 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
         if (isInvitationCreated) {
             return <StatusTooltip
                 type="success"
-                title={`${userName} successfully invited to ${selectedGroup.title} group`} />
+                title={<p>{userName} successfully invited to <span>{selectedGroup.title}</span> group</p>} />
         } else if (isInvitationError) {
             return <StatusTooltip
                 type="error"

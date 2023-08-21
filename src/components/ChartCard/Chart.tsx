@@ -4,10 +4,9 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartEvent } from 'chart
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import type { ChartData, ChartOptions } from 'chart.js/auto';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
-import { IUserExpenseChartDataItem } from '@store/Tmp/TemporaryInterfaces';
-import { AnyObject, EmptyObject } from 'chart.js/dist/types/basic';
+import { AnyObject } from 'chart.js/dist/types/basic';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import { IMembersExpensesChart } from './ChartCard';
+import { ISimplifiedCategoryWithColor } from '@models/ICategory';
 
 
 interface DoughnutProps {
@@ -22,7 +21,7 @@ ChartJS.register(
 )
 
 interface ChartProps {
-    data: IUserExpenseChartDataItem[] | IMembersExpensesChart[];
+    data: ISimplifiedCategoryWithColor[];
     total: number;
     setId: Dispatch<SetStateAction<number>>
 }
@@ -32,13 +31,8 @@ const UserExpenseChart: FC<ChartProps> = ({ data, total, setId }) => {
     const { mainTextColor } = useAppSelector(state => state.persistedThemeSlice);
     const dataAmount = data.map((item) => item.amount);
     let backgroundColor = data.map((item) => '')
-    if (data.some(item => item.hasOwnProperty("member"))) {
-        const members = data as IMembersExpensesChart[];
-        backgroundColor = members.map((item) => item.member.color || '#4C6FFF') ;
-    } else if (data.some(item => item.hasOwnProperty("category"))) {
-        const categories = data as IUserExpenseChartDataItem[];
-        backgroundColor = categories.map((item) => item.category.color)
-    }
+    const categories = data as ISimplifiedCategoryWithColor[];
+    backgroundColor = categories.map((item) => item.color)
 
     //fix to avoid very small segments
     let inPercent = dataAmount.map(v => Math.max(v / total * 100, 2)); 
@@ -95,8 +89,8 @@ const UserExpenseChart: FC<ChartProps> = ({ data, total, setId }) => {
         beforeDatasetsDraw: (chart: ChartJS, args: AnyObject, pluginOptions: AnyObject) => {
             const { ctx, data } = chart;
             ctx.save();
-            const xCoor = chart.getDatasetMeta(0).data[0].x;
-            const yCoor = chart.getDatasetMeta(0).data[0].y;
+            const xCoor = chart.getDatasetMeta(0).data[0]?.x || 0;
+            const yCoor = chart.getDatasetMeta(0).data[0]?.y || 0;
             ctx.font = "600 " + 0.12 * chart.chartArea.width + "px Inter";
             ctx.fillStyle = pluginOptions.color
             ctx.textAlign = 'center';
@@ -113,16 +107,9 @@ const UserExpenseChart: FC<ChartProps> = ({ data, total, setId }) => {
         const index = element[0]?.index
         if (index !== undefined) {
             const item = data[index]
-            if ('member' in item) {
-                const memberId = item.member.id;
-                setId(memberId)
-            } else {
-                const categoryId = item.category.id;
-                setId(categoryId)
-            }
-        }
-        
-        
+            const categoryId = item.id;
+            setId(categoryId)
+        } 
     }
 
 
