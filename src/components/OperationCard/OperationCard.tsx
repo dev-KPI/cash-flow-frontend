@@ -3,6 +3,7 @@ import { useState, FC, useEffect, useMemo } from 'react';
 import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 //logic
+import { isSameDay, format, lastDayOfMonth, subDays } from 'date-fns'
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import DateService from '@services/DateService/DateService';
 //UI
@@ -39,6 +40,19 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         cursor: operation === "Income" ? "pointer" : "auto"
     }
 
+    const getMonthPickerTitle = useMemo(() => {
+        if (MonthPickerStore.rangeType === 'default' || MonthPickerStore.rangeType === 'month' ) {
+            return 'since last month'
+        } else if (MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
+            return 'since last week'
+        } else if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday') {
+            return 'since last days'
+        } else if (MonthPickerStore.rangeType === 'alltime') {
+            return ``
+        }
+        return(`since last pediod`)
+    }, [MonthPickerStore.rangeType])
+
     let totalAmount = 0
     let totalPercents = 0;
     useEffect(() => {
@@ -50,7 +64,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
             totalPercents = Expenses.percentage_increase
         }
         setAmount(Number(totalAmount.toFixed(2)));
-        setPercents(Number(fomatFloatNumber(totalPercents, 2)));
+        setPercents(Number(fomatFloatNumber(totalPercents * 100, 2)));
         setSign(totalPercents === 0 ? '' : totalPercents > 0 ? '+' : '-');
 
     }, [Replenishments, Expenses, isReplenishmentsLoading, isReplenishmentsSuccess, isExpensesLoading, isExpensesSuccess])
@@ -91,7 +105,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
                         >
                         <span style={{ color: styles.percentColor }}>{percents}%</span>
                         </div>
-                        <p className={classes.time}>since last month</p>
+                        <p className={classes.time}>{getMonthPickerTitle}</p>
                     </div>
                 </div>
             }
