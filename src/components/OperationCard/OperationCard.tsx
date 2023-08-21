@@ -36,7 +36,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
         percentColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
-        percentBackground: sign === "-" ? "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
+        percentBackground: sign === "-" ? "rgba(255, 45, 85, 0.20)" : operation === 'Expenses' ? "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
 
@@ -64,7 +64,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
             totalPercents = Expenses.percentage_increase
         }
         setAmount(Number(totalAmount.toFixed(2)));
-        setPercents(Number(fomatFloatNumber(totalPercents * 100, 2)));
+        setPercents(Number(totalPercents * 100 > 1000 ? Math.floor(totalPercents * 100) : fomatFloatNumber(totalPercents * 100, 2)));
         setSign(totalPercents === 0 ? '' : totalPercents > 0 ? '+' : '-');
 
     }, [Replenishments, Expenses, isReplenishmentsLoading, isReplenishmentsSuccess, isExpensesLoading, isExpensesSuccess])
