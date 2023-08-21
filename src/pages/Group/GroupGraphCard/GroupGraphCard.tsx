@@ -15,6 +15,7 @@ import IUser from "@models/IUser";
 import { addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
 import DateService from "@services/DateService/DateService";
 import { useGetCurrentUserExpensesDailyQuery } from "@store/Controllers/ExpensesController/ExpensesController";
+import { subDays, isSameDay } from 'date-fns'
 
 
 interface IGraphGroupMembers {
@@ -151,12 +152,26 @@ const GroupGraphCard: FC = () => {
     const [isToggled, setIsToggled] = useState<boolean>(false);
     const { currentMonth } = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     
-    const RangeTitle = (startDate: string, endDate: string) => {
-        return (<h3 className={classes.range}>From {
-            new Date(startDate).getDate() + ' ' + currentMonth.slice(0, 3)
-        } - {new Date(endDate).getDate() + ' ' + currentMonth.slice(0, 3)}
-        </h3>);
-    }
+    const RangeTitle = useMemo(() => {
+        if(userDailyExpenses){
+            if (MonthPickerStore.rangeType === 'month' || MonthPickerStore.type === 'year-month') {
+                return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+                ${new Date(MonthPickerStore.startDate).getFullYear()}`
+            } 
+            else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
+                isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
+                return `${new Date(MonthPickerStore.startDate).getDate()} 
+                ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+                ${new Date(MonthPickerStore.startDate).getFullYear()}`
+            } else if (MonthPickerStore.rangeType === 'alltime'){
+                return 'All time'
+            } else {
+                return `From ${
+                    new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
+                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0, 3)}`
+            }
+        }
+    }, [userDailyExpenses, MonthPickerStore.rangeType, MonthPickerStore.type])
 
     return (
         <div className={classes.GroupGraph}>
@@ -165,8 +180,9 @@ const GroupGraphCard: FC = () => {
                     <div className={classes.uppernav}>
                         <div className={classes.titleRange}>
                             <h2 className={classes.title}>Statistic</h2>
-                            {isUserDailyExpensesSuccess && userDailyExpenses && userDailyExpenses[0]?.date  
-                            ? RangeTitle(userDailyExpenses[0].date, userDailyExpenses[userDailyExpenses.length - 1].date) : ''}
+                            <h3 className={classes.range}> 
+                                {RangeTitle}
+                            </h3>
                             </div>
                         <div className={classes.button}>
                             <span className={classes.buttonText}>Members</span>

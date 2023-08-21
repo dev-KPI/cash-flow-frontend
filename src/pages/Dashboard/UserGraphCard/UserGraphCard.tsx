@@ -4,7 +4,7 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { useGetCurrentUserExpensesDailyQuery } from '@store/Controllers/ExpensesController/ExpensesController';
 import DateService from '@services/DateService/DateService';
-import {addDays} from 'date-fns'
+import {addDays, subDays, isSameDay} from 'date-fns'
 //UI
 import classes from './UserGraphCard.module.css'
 import GraphCardLoader from '@components/GraphCard/GraphCardLoader';
@@ -31,13 +31,26 @@ const UserGraphCard = () => {
     }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
     const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess, refetch} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
 
-    const RangeTitle = (startDate: string, endDate: string) => {
-        return (<h3 className={classes.range}>From {
-            new Date(startDate).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0, 3)
-        } - {new Date(endDate).getDate() + ' ' + MonthPickerStore.currentMonth.slice(0, 3)}
-        </h3>);
-    }
-
+    const RangeTitle = useMemo(() => {
+        if(userDailyExpenses){
+            if (MonthPickerStore.rangeType === 'month' || MonthPickerStore.type === 'year-month') {
+                return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+                ${new Date(MonthPickerStore.startDate).getFullYear()}`
+            } 
+            else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
+                isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
+                return `${new Date(MonthPickerStore.startDate).getDate()} 
+                ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+                ${new Date(MonthPickerStore.startDate).getFullYear()}`
+            } else if (MonthPickerStore.rangeType === 'alltime'){
+                return 'All time'
+            } else {
+                return `From ${
+                    new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
+                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0, 3)}`
+            }
+        }
+    }, [userDailyExpenses, MonthPickerStore.rangeType, MonthPickerStore.type])
 
     return (
         <div className={classes.UserGraph}>
@@ -48,8 +61,9 @@ const UserGraphCard = () => {
                         <div className={classes.uppernav}>
                             <div className={classes.titleRange}>
                                 <h2 className={classes.title}>Statistic</h2>
-                                {isUserDailyExpensesSuccess && userDailyExpenses && userDailyExpenses[0]?.date  
-                                ? RangeTitle(userDailyExpenses[0].date, userDailyExpenses[userDailyExpenses.length - 1].date) : ''}
+                                <h3 className={classes.range}> 
+                                {RangeTitle}
+                                </h3>
                             </div>
                         </div>
                         <div className={classes.graph}>
