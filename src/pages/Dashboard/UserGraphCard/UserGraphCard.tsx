@@ -44,10 +44,10 @@ const UserGraphCard = () => {
                 ${new Date(MonthPickerStore.startDate).getFullYear()}`
             } else if (MonthPickerStore.rangeType === 'alltime'){
                 return 'All time'
-            } else {
+            }  else {
                 return `From ${
                     new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
-                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0, 3)}`
+                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
             }
         }
     }, [userDailyExpenses, MonthPickerStore.rangeType, MonthPickerStore.type])
