@@ -19,20 +19,28 @@ import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 
 
 export interface ITimeRangePickerProps {
-    isTimeRangePicker: boolean,
-    setIsTimeRangePicker: React.Dispatch<React.SetStateAction<boolean>>
+    isDateRangePicker: boolean,
+    setIsDateRangePicker: React.Dispatch<React.SetStateAction<boolean>>,
+    offRangePicker: () => void
 }
 
-const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, setIsTimeRangePicker}) => {
+const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker, setIsDateRangePicker, offRangePicker}) => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice)
     const MonthPickerDispatch = useActionCreators(MonthPickerActions);
 
     const [focusedRange, setFocusedRange] = useState<RangeFocus | undefined>(undefined);
-    const [timeRanges, setTimeRanges] = useState<{ selection: Range }>({
+    const [dateRanges, setDateRanges] = useState<{ selection: Range }>({
         selection: {
-            startDate: new Date(MonthPickerStore.startDate),
-            endDate: new Date(MonthPickerStore.endDate),
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+        },
+    });
+    const [dateRangesFromFastNav, setDateRangesFromFastNav] = useState<{ selection: Range }>({
+        selection: {
+            startDate: new Date(),
+            endDate: new Date(),
             key: 'selection',
         },
     });
@@ -66,57 +74,102 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
     const [isSubmited, setIsSubmited] = useState<boolean>(false);
     const [isRefused, setIsRefused] = useState<boolean>(false);
 
-    const closeRangePicker = useCallback(() => {
-        if(isTimeRangePicker && isSubmited && !isRefused){
-            if(timeRanges.selection.startDate && timeRanges.selection.endDate){
-                const localStartDate: Date = timeRanges.selection.startDate
-                const localEndDate: Date = timeRanges.selection.endDate
-                if(MonthPickerStore.rangesFromFastNav){
-                    if(MonthPickerStore.rangeType){
-                        MonthPickerDispatch.setIsChangedRange(false)
-                        setIsSubmited(false);
-                        setIsTimeRangePicker(false);
-                        MonthPickerDispatch.setStartDate(addDays(new Date(localStartDate), 1).toISOString())
-                        MonthPickerDispatch.setEndDate(addDays(new Date(localEndDate), 1).toISOString())
-                    } else{
-                        MonthPickerDispatch.setIsChangedRange(false)
-                        setIsSubmited(false);
-                        setIsTimeRangePicker(false);
-                        MonthPickerDispatch.setStartDate(addDays(new Date(localStartDate), 1).toISOString())
-                        MonthPickerDispatch.setEndDate(addDays(new Date(localEndDate), 1).toISOString())
-                    } 
-                } else {
-                    MonthPickerDispatch.setIsChangedRange(false)
-                    setIsSubmited(false);
-                    setIsTimeRangePicker(false);
-                    MonthPickerDispatch.setStartDate(addDays(new Date(localStartDate), 1).toISOString())
-                    MonthPickerDispatch.setEndDate(addDays(new Date(localEndDate), 2).toISOString())
-                }
-            }
-        } else {
-            MonthPickerDispatch.setIsChangedRange(false)
-            setIsSubmited(false);
-            setIsRefused(false);
-            setIsTimeRangePicker(false);
-            setTimeRanges({
+    const closeRangePickerWithConditions = useCallback(() => {
+        setIsDateRangePicker(false)
+        setIsSubmited(false)
+    }, [])
+
+    const setNullDateStates = useCallback(() => {
+        if(MonthPickerStore.rangesFromFastNav || isRefused){
+            setIsRefused(false)
+            setDateRanges({
                 selection: {
                     startDate: new Date(),
                     endDate: new Date(),
                     key: 'selection',
-                }
-            });
-            if(!MonthPickerStore.isChangedRange && isRefused){
-                MonthPickerDispatch.setCurrentDateTime()
-                MonthPickerDispatch.setRangesFromFastNavStatus(false)
-                MonthPickerDispatch.setRangeType('today')
-                MonthPickerDispatch.setTypeFetchingData('year-month')
+                },
+            })
+        } else if (!MonthPickerStore.rangesFromFastNav || isRefused) {
+            setIsRefused(false)
+            setDateRangesFromFastNav({
+                selection: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    key: 'selection',
+                },
+            })
+        }
+    }, [MonthPickerStore.rangesFromFastNav, MonthPickerStore.rangeType, isRefused])
+
+    const closeRangePicker = useCallback(() => {
+        const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
+        const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
+        if(isDateRangePicker && isSubmited && !isRefused && dateRanges.selection.startDate && dateRanges.selection.endDate &&
+            dateRangesFromFastNav.selection.startDate && dateRangesFromFastNav.selection.endDate){
+            if(MonthPickerStore.rangesFromFastNav){
+                const startDateInUserTimezone = new Date(dateRangesFromFastNav.selection.startDate.getTime() - userTimezoneOffsetMilliseconds);
+                const endDateInUserTimezone = new Date(dateRangesFromFastNav.selection.endDate.getTime() - userTimezoneOffsetMilliseconds);
+                const adjustedStartDate = startDateInUserTimezone.toISOString();
+                const adjustedEndDate = endDateInUserTimezone.toISOString();
+                MonthPickerDispatch.setStartDate(adjustedStartDate)
+                MonthPickerDispatch.setEndDate(addDays(new Date(adjustedEndDate), 1).toISOString())
+            } else {
+                const startDateInUserTimezone = new Date(dateRanges.selection.startDate.getTime() - userTimezoneOffsetMilliseconds);
+                const endDateInUserTimezone = new Date(dateRanges.selection.endDate.getTime() - userTimezoneOffsetMilliseconds);
+                const adjustedStartDate = startDateInUserTimezone.toISOString();
+                const adjustedEndDate = endDateInUserTimezone.toISOString();
+                MonthPickerDispatch.setStartDate(adjustedStartDate)
+                MonthPickerDispatch.setEndDate(addDays(new Date(adjustedEndDate), 1).toISOString())
             }
+            MonthPickerDispatch.setIsChangedRangeFromMount(true)
+            setDateRanges({
+                selection: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    key: 'selection',
+                },
+            })
+            setDateRangesFromFastNav({
+                selection: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    key: 'selection',
+                },
+            })
+            closeRangePickerWithConditions()
+        } else if(!MonthPickerStore.isChangedRangeFromMount && isDateRangePicker && isSubmited && !isRefused) {
+            const startDateInUserTimezone = new Date(new Date().getTime() - userTimezoneOffsetMilliseconds);
+            const endDateInUserTimezone = new Date(new Date().getTime() - userTimezoneOffsetMilliseconds);
+            const adjustedStartDate = startDateInUserTimezone.toISOString();
+            const adjustedEndDate = endDateInUserTimezone.toISOString();
+            MonthPickerDispatch.setStartDate(adjustedStartDate)
+            MonthPickerDispatch.setEndDate(addDays(new Date(adjustedEndDate), 1).toISOString())
+            MonthPickerDispatch.setIsChangedRangeFromMount(true)
+            MonthPickerDispatch.setRangeType('today')
+            closeRangePickerWithConditions()
+        } else if(isRefused){
+            closeRangePickerWithConditions()
+            setDateRanges({
+                selection: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    key: 'selection',
+                },
+            })
+            setDateRangesFromFastNav({
+                selection: {
+                    startDate: new Date(),
+                    endDate: new Date(),
+                    key: 'selection',
+                },
+            })
         }
     }, [isSubmited, isRefused]);
 
     useEffect(() => {
         closeRangePicker()
-    }, [closeRangePicker])
+        setNullDateStates()
+    }, [closeRangePicker, setNullDateStates])
 
     return (
     <UsePortal
@@ -124,19 +177,19 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
     title='Select range'
     callback={() => setIsRefused(true)}
     containerWidth={width > 1024 ? 860 : 680}
-    isModalOpen={isTimeRangePicker}
-    setIsModalOpen={setIsTimeRangePicker}>
+    isModalOpen={isDateRangePicker}
+    setIsModalOpen={setIsDateRangePicker}>
         <div className={classes.contentWrapper}>
             <ul className={classes.FastNav}>
                 <li 
-                style={{color: `${(isSameDay(new Date() || 0, timeRanges.selection.startDate || 0) &&
-                isSameDay(new Date() || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(new Date() || 0, dateRangesFromFastNav.selection.startDate || 0) &&
+                isSameDay(new Date() || 0, dateRangesFromFastNav.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                     className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
                     MonthPickerDispatch.setRangeType('today')
-                    MonthPickerDispatch.setIsChangedRange(true)
-                    setTimeRanges({selection: {
+                    MonthPickerDispatch.setRangesFromFastNavStatus(true)
+                    setDateRangesFromFastNav({selection: {
                         startDate: new Date(),
                         endDate: new Date(),
                     }})}}
@@ -145,14 +198,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     </button>
                 </li>
                 <li 
-                style={{color: `${(isSameDay(subDays(new Date(), 1) || 0, timeRanges.selection.startDate || 0) &&
-                isSameDay(subDays(new Date(), 1) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(subDays(new Date(), 1) || 0, dateRangesFromFastNav.selection.startDate || 0) &&
+                isSameDay(subDays(new Date(), 1) || 0, dateRangesFromFastNav.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                     className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
                     MonthPickerDispatch.setRangeType('yesterday')
-                    MonthPickerDispatch.setIsChangedRange(true)
-                    setTimeRanges({selection: {
+                    MonthPickerDispatch.setRangesFromFastNavStatus(true)
+                    setDateRangesFromFastNav({selection: {
                         startDate: subDays(new Date(), 1),
                         endDate: subDays(new Date(), 1),
                     }})}}
@@ -161,15 +214,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     </button>
                 </li>
                 <li 
-                style={{color: `${(isSameDay(addDays(startOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1) || 0, timeRanges.selection.startDate || 0) &&
-                isSameDay(addDays(endOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(addDays(startOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1) || 0, dateRangesFromFastNav.selection.startDate || 0) &&
+                isSameDay(addDays(endOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1) || 0, dateRangesFromFastNav.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                     className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
-                    MonthPickerDispatch.setRangeType('week'); 
-                    MonthPickerDispatch.setIsChangedRange(true)
-                    MonthPickerDispatch.setIsPickedWeekMonth(true);
-                    setTimeRanges({selection: {
+                    MonthPickerDispatch.setRangeType('week')
+                    MonthPickerDispatch.setRangesFromFastNavStatus(true)
+                    setDateRangesFromFastNav({selection: {
                         startDate: addDays(startOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1),
                         endDate: addDays(endOfWeek(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date()), 1),
                     }})}}
@@ -178,15 +230,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     </button>
                 </li>
                 <li 
-                style={{color: `${(isSameDay(addDays(startOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1) || 0, timeRanges.selection.startDate || 0) &&
-                isSameDay(addDays(endOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(addDays(startOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1) || 0, dateRangesFromFastNav.selection.startDate || 0) &&
+                isSameDay(addDays(endOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1) || 0, dateRangesFromFastNav.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                     className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
-                    MonthPickerDispatch.setRangeType('lastweek'); 
-                    MonthPickerDispatch.setIsChangedRange(true)
-                    MonthPickerDispatch.setIsPickedWeekMonth(true);
-                    setTimeRanges({selection: {
+                    MonthPickerDispatch.setRangeType('lastweek')
+                    MonthPickerDispatch.setRangesFromFastNavStatus(true)
+                    setDateRangesFromFastNav({selection: {
                         startDate: addDays(startOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1),
                         endDate: addDays(endOfWeek(subWeeks(new Date().getDay() === 0 ? subDays(new Date(), 1) : new Date(), 1)), 1),
                     }})}}
@@ -195,15 +246,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     </button>
                 </li>
                 <li 
-                style={{color: `${(isSameDay(startOfMonth(new Date()) || 0, timeRanges.selection.startDate || 0) &&
-                    isSameDay(endOfMonth(new Date()) || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(startOfMonth(new Date()) || 0, dateRangesFromFastNav.selection.startDate || 0) &&
+                    isSameDay(endOfMonth(new Date()) || 0, dateRangesFromFastNav.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                 className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
-                    MonthPickerDispatch.setIsChangedRange(true)
-                    MonthPickerDispatch.setRangeType('month'); 
-                    MonthPickerDispatch.setIsPickedWeekMonth(true);
-                    setTimeRanges({selection: {
+                    MonthPickerDispatch.setRangeType('month')
+                    MonthPickerDispatch.setRangesFromFastNavStatus(true)
+                    setDateRangesFromFastNav({selection: {
                         startDate: startOfMonth(new Date()),
                         endDate: endOfMonth(new Date()),
                     }})}}
@@ -212,14 +262,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     </button>
                 </li>
                 <li 
-                style={{color: `${(isSameDay(new Date(2023, 0, 1) || 0, timeRanges.selection.startDate || 0) &&
-                    isSameDay(new Date() || 0, timeRanges.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
+                style={{color: `${(isSameDay(new Date(2023, 0, 1) || 0, dateRangesFromFastNav.selection.startDate || 0) &&
+                    isSameDay(new Date() || 0, dateRangesFromFastNav.selection.endDate || 0)) ? 'var(--main-green)' : ''}`}}
                 className={classes.FastNav__Item}>
                     <button
                     onClick={() => {
-                    MonthPickerDispatch.setIsChangedRange(true)
                     MonthPickerDispatch.setRangeType('alltime')
-                    setTimeRanges({selection: {
+                    MonthPickerDispatch.setRangesFromFastNavStatus(true)
+                    setDateRangesFromFastNav({selection: {
                         startDate: new Date(2023, 0, 1),
                         endDate: new Date()
                     }})}}
@@ -234,14 +284,14 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     classNames={classnamesDateRangePicker} 
                     showMonthAndYearPickers={false}
                     onChange={(item) => {
-                        MonthPickerDispatch.setIsChangedRange(true)
+                        setDateRanges({ ...dateRanges, ...item })
+                        MonthPickerDispatch.setRangesFromFastNavStatus(false)
                         MonthPickerDispatch.setRangeType('range')
-                        setTimeRanges({ ...timeRanges, ...item })
                     }}
                     maxDate={new Date()}
                     weekStartsOn={1}
                     months={width > 768 ? 2 : 1}
-                    ranges={[timeRanges.selection]}
+                    ranges={MonthPickerStore.rangesFromFastNav ? [dateRangesFromFastNav.selection] : [dateRanges.selection]}
                     dragSelectionEnabled={true}
                     focusedRange={focusedRange}
                     onRangeFocusChange={(focus) => {
@@ -260,7 +310,10 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
                     <CustomButton
                     type='danger'
                     icon='refuse'
-                    callback={() => setIsRefused(true)}
+                    callback={() => {
+                        setIsRefused(true)
+                        closeRangePickerWithConditions()
+                    }}
                     isPending={false}>Cancel</CustomButton>
                 </div>
             </div>
@@ -268,4 +321,4 @@ const TimeRangePicker: React.FC<ITimeRangePickerProps> = ({isTimeRangePicker, se
     </UsePortal>);
 }
 
-export default TimeRangePicker
+export default DateRangePickerCard
