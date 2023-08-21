@@ -6,7 +6,7 @@ import { useLeaveGroupMutation } from '@store/Controllers/GroupsController/Group
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetActiveUsersByGroupQuery, useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';
@@ -38,7 +38,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
 
 
     const [leaveGroup, { isLoading: isLeavingGroup, isSuccess: isLeavedGroup, isError: isLeavingGroupError},] = useLeaveGroupMutation();
-    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetUsersByGroupQuery({group_id: id});
+    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetActiveUsersByGroupQuery({group_id: id});
 
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
