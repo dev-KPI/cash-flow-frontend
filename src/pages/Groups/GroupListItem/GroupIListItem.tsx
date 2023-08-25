@@ -129,7 +129,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                     />
                     <Link
                         key={uuid()}
-                        to={`/group/${id}`}
+                        to={`/group/${id}/`}
                     >
                         <div className={classes.inner}>
                             <h4 className={classes.title}>{title}</h4>

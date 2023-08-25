@@ -48,7 +48,7 @@ const GroupMemberUserCard = () => {
                 <div className={classes.cardsWrapper}>
                     <OperationCard
                         operation={'Expenses'}
-                        title={`${name}' expenses`}
+                        title={`${name}'s expenses`}
                         className={classes.expensesCard}
                     />
                     <div className={classes.cardInner}>
