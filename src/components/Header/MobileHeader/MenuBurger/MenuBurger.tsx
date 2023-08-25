@@ -45,7 +45,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
 
     const groupsList = useMemo(() => {
         if(Groups?.user_groups){
-            return Groups.user_groups.map(el => (
+            const userGroups = Groups.user_groups.map(el => (
                 <li>
                     <NavLink to={`/group/${el.group.id}`} key={'12grt13'} className={classes.groupItem}>
                         <Light type={'solid'} color={el.group.color_code}/>
@@ -53,6 +53,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
                     </NavLink>
                 </li>
             ))
+            return Groups.user_groups.length < 3 ? userGroups : userGroups.slice(0,3)
         }
     }, [])
 
