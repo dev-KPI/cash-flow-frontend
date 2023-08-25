@@ -76,6 +76,28 @@
     color: var(--main-green);
 }
 
+.noNotifications {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.noNotifications > i{
+    font-size: 50px;
+    color: var(--main-text);
+    display: flex;
+    justify-content: center;
+}
+
+.noNotifications__title {
+    composes: mediumText from "@styles/style.css";
+    margin: 10px 0 5px;
+}
+
+.noNotifications__text {
+    composes: largeItemTitle from "@styles/style.css";
+}
+
+
 @media only screen and (max-width: 1440px) {
     .SpendersCard {
         width: unset;
