@@ -5,6 +5,10 @@ import { useParams } from 'react-router-dom';
 import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 import { useWindowSize } from 'usehooks-ts';
+import { useGetCurrentGroupSpendersQuery, useGetCurrentUserInGroupTotalExpensesQuery, useGetGroupTotalExpensesQuery } from '@store/Controllers/ExpensesController/ExpensesController';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import DateService from '@services/DateService/DateService';
 //UI
 import classes from './Group.module.css';
 import OperationCard from '@components/OperationCard/OperationCard';
@@ -19,10 +23,30 @@ import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal'
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 
 
+
 const Group = () => {
 
     const { groupId } = useParams();
 
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
+    const {data: GroupTotalExpenses, isLoading: isGroupTotalExpensesLoading, isError: isGroupTotalExpensesError, isSuccess: isGroupTotalExpensesSuccess, isFetching: isGroupSpendersFetching} = useGetGroupTotalExpensesQuery({
+        group_id: Number(groupId),
+        period: MonthPickerStore.type === 'year-month' ? 
+        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
+        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+    })
+    const {data: GroupCurrentUserTotalExpenses, isLoading: isGroupCurrentUserTotalExpensesLoading, isError: isGroupCurrentUserTotalExpensesError, isSuccess: isGroupCurrentUserTotalExpensesSuccess} = useGetCurrentUserInGroupTotalExpensesQuery({
+        group_id: Number(groupId),
+        period: MonthPickerStore.type === 'year-month' ? 
+        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
+        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+    })
+    const {data: GroupSpenders, isLoading: isGroupSpendersLoading, isError: isGroupSpendersError, isSuccess: isGroupSpendersSuccess} = useGetCurrentGroupSpendersQuery({
+        group_id: Number(groupId),
+        period: MonthPickerStore.type === 'year-month' ? 
+        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
+        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+    })
     const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError} = useGetInfoByGroupQuery({group_id: Number(groupId)})
     const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)    
 
@@ -57,10 +81,27 @@ const Group = () => {
                         <SearchBar/>
                     </div>
                     <div className={classes.grid__operation}>
-                        <OperationCard operation={'Expenses'} title='Total group expenses' icon='bi bi-people'/>
-                        <OperationCard operation={'Expenses'} />
+                        <OperationCard 
+                        operation={'Expenses'}
+                        title='Total group expenses' icon='bi bi-people'
+                        data={GroupTotalExpenses}
+                        isSuccess={isGroupTotalExpensesSuccess}
+                        isLoading={isGroupTotalExpensesLoading}
+                        isError={isGroupTotalExpensesError} />
+                        <OperationCard 
+                        operation={'Expenses'} 
+                        data={GroupCurrentUserTotalExpenses}
+                        isSuccess={isGroupCurrentUserTotalExpensesSuccess}
+                        isLoading={isGroupCurrentUserTotalExpensesLoading}
+                        isError={isGroupCurrentUserTotalExpensesError}/>
                     </div>
-                    <GroupSpendersCard />
+                    <GroupSpendersCard 
+                    data={GroupSpenders}
+                    isSuccess={isGroupSpendersSuccess}
+                    isFetching={isGroupSpendersFetching}
+                    isLoading={isGroupSpendersLoading}
+                    isError={isGroupSpendersError}
+                    />
                     <GroupInfoCard 
                         isAdmin={GroupInfo.admin.id === CurrentUser.id}
                         isInfoLoading={isGroupInfoLoading} 
