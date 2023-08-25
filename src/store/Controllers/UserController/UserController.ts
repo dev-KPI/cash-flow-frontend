@@ -73,9 +73,27 @@ export const UserApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetUsersFromGroupResponse, arg, body): IGetUsersFromGroupResponse => {
-                return {
-                    users_group: [...response.users_group.filter(el => el.status === 'ACTIVE')]
-                } as IGetUsersFromGroupResponse
+                if(response.users_group){
+                    return {
+                        users_group: [...response.users_group.filter(el => el.status === 'ACTIVE')]
+                    } as IGetUsersFromGroupResponse
+                } else {
+                    return {
+                        users_group: [
+                            {
+                                user: {
+                                    id: 0,
+                                    login: '',
+                                    first_name: '',
+                                    last_name: '',
+                                    picture: '',
+                                },
+                                status: 'INACTIVE',
+                                date_join: ''
+                            }
+                        ]
+                    } as IGetUsersFromGroupResponse 
+                }
             },
             providesTags: (result, err, body) => result ?
                 [...result.users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
