@@ -24,8 +24,6 @@ const GroupCategoriesCard = () => {
     const {groupId} = useParams<{groupId: string}>();
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
-    const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
-    const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
     const [totalItems, setTotalItems] = useState<number>(11);
     const [idModalOpen, setIdModalOpen] = useState<number>(-1);
     const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] = useState<boolean>(false);
@@ -33,7 +31,7 @@ const GroupCategoriesCard = () => {
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     
     const { data: CategoriesByGroup, isLoading: isCategoriesByGroupLoading, isError: isCategoriesByGroupError, isSuccess: isCategoriesByGroupSuccess } = useGetUserExpensesByGroupQuery({
-        group_id: selectedGroup, 
+        group_id: Number(groupId), 
         period: MonthPickerStore.type === 'year-month' ? 
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
         {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
@@ -46,6 +44,7 @@ const GroupCategoriesCard = () => {
         if (!isExpenseModalOpen) setIdModalOpen(-1)
     }, [isExpenseModalOpen])
 
+    
     useEffect(() => {
         initializeHandleWrapper()
         autoHandleCloseModal()

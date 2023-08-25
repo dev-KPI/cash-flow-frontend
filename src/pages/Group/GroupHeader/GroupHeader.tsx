@@ -70,7 +70,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
 
     const getMonthPicker = useMemo(() => {
         if(width > 768) return (<>
-            <div style={{maxWidth: '320px', marginLeft: '30px'}}>
+            <div style={{maxWidth: 'max-content'}}>
                 <MonthPicker/>
             </div>
         </>)
@@ -103,7 +103,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
             />}
             <div className={classes.header}>
                 <div className={classes.header__container}>
-                    <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex', gap: '30px'}}>
                         <h2 
                         onClick={() => setGroupTitleCustom(groupInfo.title)}
                         className={`${classes.title} pageTitle`}>{groupTitleCustom}</h2>
