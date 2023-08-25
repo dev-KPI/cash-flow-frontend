@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
+import { useWindowSize } from 'usehooks-ts';
 //UI
 import classes from './Group.module.css';
 import OperationCard from '@components/OperationCard/OperationCard';
@@ -15,6 +16,7 @@ import GroupChartsCard from '@pages/Group/GroupChartsCard/GroupChartsCard';
 import GroupGraphCard from '@pages/Group/GroupGraphCard/GroupGraphCard';
 import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
+import MonthPicker from '@components/MonthPicker/MonthPicker';
 
 
 const Group = () => {
@@ -24,10 +26,22 @@ const Group = () => {
     const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError} = useGetInfoByGroupQuery({group_id: Number(groupId)})
     const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)    
 
+    const {width, height} = useWindowSize();
+    const getMonthPicker = useMemo(() => {
+        if(width < 769) {
+            return (
+                <div className={classes.MonthPicker}>
+                    <MonthPicker/>
+                </div>
+            )
+        }
+    }, [width])
+
     return (<>
         {GroupInfo && CurrentUser &&
         <main id='GroupPage' className={'no-padding'}>
             <div className={classes.page__container}>
+                {getMonthPicker}
                 <div className={classes.grid}>
                     <GroupCategoriesCard />
                     <div className={classes.search}>
@@ -43,7 +57,7 @@ const Group = () => {
                         <SearchBar/>
                     </div>
                     <div className={classes.grid__operation}>
-                        <OperationCard operation={'Income'} />
+                        <OperationCard operation={'Expenses'} title='total group expenses' icon='bi bi-people'/>
                         <OperationCard operation={'Expenses'} />
                     </div>
                     <GroupSpendersCard />

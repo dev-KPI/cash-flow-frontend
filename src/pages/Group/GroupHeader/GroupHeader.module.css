@@ -1,7 +1,7 @@
 .header {
     position: relative;
     margin-top: 22px;
-    height: 80px;
+    height: 110px;
     border-bottom: 1px solid rgba(238, 238, 238, var(--opacity));
 }
 
@@ -14,6 +14,8 @@
 .page__container {}
 
 .title{
+    display: flex;
+    align-items: center;
     white-space: nowrap;
 }
 .breadcrumbs {
