@@ -6,12 +6,13 @@ import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import { RecentOperationGroupCard } from "@components/RecentOperationsCards/RecentOperationsCards";
 
 //logic
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
 import { MembersHistoryObj } from "@pages/MembersHistoryObj";
 import GroupHistoryCardLoader from "./GroupHistoryCardLoader";
 import ICategory from "@models/ICategory";
 import IUser from "@models/IUser";
+import { useGetGroupUsersHistoryQuery } from "@store/Controllers/GroupsController/GroupsController";
 
 
 interface GroupTransaction {
@@ -20,7 +21,7 @@ interface GroupTransaction {
     time: string;
     description: string;
     category_group?: {
-        group?: ICategory // but IGroup
+        group?: ICategory
         category?: ICategory
     },
     user: IUser
@@ -29,48 +30,47 @@ interface GroupTransaction {
 
 const GroupHistoryCard: FC = () => {
 
-    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
-
-    setTimeout(() => {
-        setIsPageLoading(false)
-    }, 1500);
-
-    const getMixedHistory = () => {
-        const expensesDTO: GroupTransaction[] = [...MembersHistoryObj.expenses.map((el: Object) =>
-            Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-        const replenishmentsDTO: GroupTransaction[] = [...MembersHistoryObj.replenishments.map((el: Object) =>
-            Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
-
-        const HistoryArray: GroupTransaction[] = [...expensesDTO, ...replenishmentsDTO]
-        return (HistoryArray.sort((b, a) => {
-            const dateA = new Date(a.time).getTime();
-            const dateB = new Date(b.time).getTime();
-            return dateA - dateB;
-        })).slice(0, 8)
-    }
+    const { groupId } = useParams();
+    
+    const {data: GroupRecentHistory, isError: isGroupRecentHistoryError, isLoading: isGroupRecentHistoryLoading, isFetching: isGroupRecentHistoryFetching, isSuccess: isGroupRecentHistorySuccess} = useGetGroupUsersHistoryQuery({
+        group_id: Number(groupId),
+        page: 1,
+        size: 8
+    });
 
     const getRecentActivities = () => {
-
-        let res: ReactNode[] = getMixedHistory().map((el, i) =>
+        if(GroupRecentHistory && isGroupRecentHistorySuccess){
+            const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
+            const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
+            let res: ReactNode[] = GroupRecentHistory.items.map((el, i) =>
             <RecentOperationGroupCard
                 key={i}
-                type={el.type === 'expense' ? 'expense' : 'replenishment'}
-                categoryColor={el.category_group?.category?.color_code || '#80D667'}
-                categoryTitle={el.category_group?.category?.category?.title || 'Salary'}
-                member={el.user}
+                type={'expense'}
+                categoryColor={el.color_code_category|| '#80D667'}
+                categoryTitle={el.title_category || 'Salary'}
+                member={{
+                    id: el.user_id,
+                    login: el.user_login,
+                    first_name: el.user_first_name,
+                    last_name: el.user_last_name,
+                    picture: el.user_picture,
+                }}
                 amount={el.amount}
-                time={el.time}></RecentOperationGroupCard>
-        ) 
-        return res
+                time={new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()}></RecentOperationGroupCard>
+            ) 
+            return res.slice(0,7)
+        } else {
+            return []
+        }
     }
 
     return (<>
         <div className={classes.HistoryCard}>
-            {isPageLoading ? <GroupHistoryCardLoader /> :
+            {isGroupRecentHistoryLoading ? <GroupHistoryCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Recent Activity</h3>
                     <ul>
-                        {getRecentActivities().slice(0,7)}
+                        {getRecentActivities()}
                     </ul>
                     { getRecentActivities().length > 7 ?
                         <div key='239k23' className={classes.ViewMore}>

@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 
 //UI
 import classes from './GroupHistory.module.css';
@@ -16,11 +16,14 @@ import {
     getCoreRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    PaginationState,
     SortingState,
     useReactTable,
 } from '@tanstack/react-table'
 import Light from '@components/Light/Light';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { useParams } from 'react-router-dom';
+import { useGetGroupUsersHistoryQuery } from '@store/Controllers/GroupsController/GroupsController';
 
 
 
@@ -86,45 +89,98 @@ const columns = [
             <p className={classes.amount} style={{ color: info.row.original.type === 'expense' ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.type === 'expense' ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
     }),
 ]
-const expensesDTO: GroupHistory[] = [...GroupHistoryObj.expenses.map((el: Object) =>
-    Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-const replenishmentsDTO: GroupHistory[] = [...GroupHistoryObj.replenishments.map((el: Object) =>
-    Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
-const HistoryArray: GroupHistory[] = [...expensesDTO, ...replenishmentsDTO]
 
-const getMixedHistory = () => {
-    return (HistoryArray.sort((b, a) => {
-        const dateA = new Date(a.time).getTime();
-        const dateB = new Date(b.time).getTime();
-        return dateA - dateB;
-    }))
-}
+
 
 const History: React.FC = () => {
-    const [data, setData] = useState([...getMixedHistory()])
-    const [sorting , setSorting] = useState<SortingState>([]) 
-    const rerender = React.useReducer(() => ({}), {})[1]
+
+    const { groupId } = useParams();
+    
+    const [{ pageIndex, pageSize }, setPagination] =
+        useState<PaginationState>({
+            pageIndex: 0,
+            pageSize: 8,
+    })
+    const [sorting, setSorting] = useState<SortingState>([]) 
+    
+    const pagination = useMemo(
+        () => ({
+            pageIndex,
+            pageSize,
+        }),
+        [pageIndex, pageSize]
+    )
+
+    const {data: GroupRecentHistory, isError: isGroupRecentHistoryError, isLoading: isGroupRecentHistoryLoading, isFetching: isGroupRecentHistoryFetching, isSuccess: isGroupRecentHistorySuccess} = useGetGroupUsersHistoryQuery({
+        group_id: Number(groupId),
+        page: pageIndex + 1,
+        size: pageSize
+    });
+
+    const initData = useCallback(() => {
+        if(GroupRecentHistory && isGroupRecentHistorySuccess){
+            const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
+            const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
+            const HistoryArray: GroupHistory[] = GroupRecentHistory.items.map(el => {
+                return {
+                    id: el.id,
+                    amount: el.amount,
+                    time: new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString(),
+                    description: el.descriptions,
+                    category_group: {
+                        category: {
+                            category: {
+                                id: el.category_id,
+                                title: el.title_category,
+                            },
+                            icon_url: '',
+                            color_code: el.color_code_category
+                        }
+                    },
+                    user: {
+                        id: el.user_id,
+                        login: el.user_login,
+                        first_name: el.user_first_name,
+                        last_name: el.user_last_name,
+                        picture: el.user_picture,
+                    },
+                    type: 'expense'
+                }
+            })
+            setData(HistoryArray)
+        } else {
+            setData([])
+        }
+    }, [GroupRecentHistory, isGroupRecentHistoryLoading, isGroupRecentHistoryError, isGroupRecentHistoryFetching, isGroupRecentHistorySuccess])
+
+    useEffect(() => {
+        initData()
+    }, [initData])
+
+    const [data, setData] = useState<GroupHistory[]>([])
 
     const table = useReactTable({
         data,
         columns,
-        state: {
-            sorting
-        },
+        pageCount: GroupRecentHistory?.pages,
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
+        manualPagination: true,
+        onPaginationChange: setPagination,
+        state: {
+            sorting,
+            pagination
+        },
         initialState: {
             pagination: {
                 pageSize: 8
             }
         }
     })
-    const { pageIndex, pageSize } = table.getState().pagination
     const pageCount  = table.getPageCount()
     const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? data.length : (pageIndex + 1) * pageSize;
+    const endIndex = pageIndex === pageCount - 1 ? GroupRecentHistory?.total: (pageIndex + 1) * pageSize;
 
     return (
         <main id='GroupHistoryPage' className="no-padding">
@@ -177,9 +233,7 @@ const History: React.FC = () => {
                                         <select
                                             value={pageSize}
                                             className={classes.select}
-                                            onChange={e => {
-                                                table.setPageSize(Number(e.target.value))
-                                            }}
+                                            onChange={e => table.setPageSize(Number(e.target.value))}
                                         >
                                             {[4, 6, 8, 16, 24].map(pageSize => (
                                                 <option key={pageSize} value={pageSize}>
@@ -190,12 +244,14 @@ const History: React.FC = () => {
                                     </div>
                                     <span className={classes.counter}>
                                         {`${startIndex} - ${endIndex}`} of{' '}
-                                        {data.length}
+                                        {GroupRecentHistory?.total}
                                     </span>
                                     <div className={classes.nav}>
                                         <button
                                             className={classes.btn}
-                                            onClick={() => table.previousPage()}
+                                            onClick={() => {
+                                                table.previousPage()
+                                            }}
                                             disabled={!table.getCanPreviousPage()}
                                         >
                                             <i id='chevron' className="bi bi-chevron-left"></i>
