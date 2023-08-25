@@ -15,10 +15,11 @@ import { fomatFloatNumber } from '@services/UsefulMethods/UIMethods';
 interface OperactionCardProps {
     operation: "Income" | 'Expenses';
     title?: string;
+    icon?: string;
     className?: string;
 }
 
-const OperationCard: FC<OperactionCardProps> = ({ operation, title, className }) => {
+const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon }) => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const [amount, setAmount] = useState<number>(0);
     const [percents, setPercents] = useState<number>(0);
@@ -95,7 +96,8 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
                             style={{ background: styles.operationColor }}
                         >
                             {operation === "Income" ?
-                                <i className="bi bi-credit-card-2-front"></i> : <i className="bi bi-graph-down"></i>}
+                                <i className="bi bi-credit-card-2-front"></i> : 
+                                icon ? <i className={icon}></i> : <i className="bi bi-graph-down"></i>}
                         </div>
                     </div>
                     <div className={classes.bottom}>
