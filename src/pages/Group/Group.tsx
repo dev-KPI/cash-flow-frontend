@@ -57,7 +57,7 @@ const Group = () => {
                         <SearchBar/>
                     </div>
                     <div className={classes.grid__operation}>
-                        <OperationCard operation={'Expenses'} title='total group expenses' icon='bi bi-people'/>
+                        <OperationCard operation={'Expenses'} title='Total group expenses' icon='bi bi-people'/>
                         <OperationCard operation={'Expenses'} />
                     </div>
                     <GroupSpendersCard />
