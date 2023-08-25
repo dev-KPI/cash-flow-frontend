@@ -24,18 +24,6 @@ const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) 
     const { id, title, description, color_code, icon_url } = groupInfo;
     const { members, expenses  } = groupInfo;
     const descriptionModded  = description.length > 150 ? description.slice(0, 180) + '...' : description;
-    const getAdminIcon = () => {
-        return isUrl(icon_url) ?
-            <img className={classes.photo}
-                alt={'user icon'}
-                src={icon_url} />
-            :
-            <div className={classes.icon}
-                style={{ backgroundColor: color_code }}>
-                <i className={"bi bi-people"}></i>
-            </div>
-    }
-
 
     return (
         <div className={classes.GroupInfoCard}>
@@ -59,7 +47,12 @@ const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) 
                                 <i className={"bi bi-pencil"}></i>
                             </button> : null
                         }
-                        <div className={classes.avatar}>{getAdminIcon()}</div>
+                        <div className={classes.avatar}>
+                            <div className={classes.icon}
+                                style={{ backgroundColor: color_code }}>
+                                <i className={groupInfo.icon_url}></i>
+                            </div>
+                        </div>
                         <div className={classes.group__info}>
                             <h4 className={classes.title}>{title}</h4>
                             <ul className={classes.details}>

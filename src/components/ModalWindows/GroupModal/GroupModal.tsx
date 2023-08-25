@@ -50,7 +50,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
 
     const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
-    const [disbandGroup, { isLoading: isGroupDisbanding, isSuccess: isGroupDisbanded, isError: isGroupDisbandingError},] = useLeaveGroupMutation();
+    const [leaveGroup, { isLoading: isGroupDisbanding, isSuccess: isGroupDisbanded, isError: isGroupDisbandingError},] = useLeaveGroupMutation();
 
     const closeModalHandler = useCallback(() => {
         if(!isGroupCreating || !isGroupUpdating){
@@ -88,7 +88,13 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 intitializeBaseGroup();
                 closeModalHandler();
             }
-        }
+        } else if(mode === 'disband' || mode === 'leave'){
+            if(groupId){
+                leaveGroup(groupId)
+                intitializeBaseGroup();
+                closeModalHandler();
+            }
+        } 
     }
 
     const showToolTip = useMemo(() => {
