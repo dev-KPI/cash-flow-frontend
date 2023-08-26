@@ -81,7 +81,7 @@ const Input: FC<IInputProps> = ({
     //----------------------------------------------{NAME INPUT}-----------------------------------------------------
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
-            const regExp = /[^a-zA-Zа-яА-Я,^і^І, ]+/g
+            const regExp = /[^a-zA-Zа-яА-Я,^і^І, ,\d,.,_,-]+/g
             if (setFormValue.type === 'name') { 
                 setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
             }
