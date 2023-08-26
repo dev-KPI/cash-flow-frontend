@@ -15,7 +15,7 @@ import PreLoader from "@components/PreLoader/PreLoader";
 
 const Groups: FC = () => {
 
-    const {data: Groups, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess} = useGetCurrentUserGroupsQuery(null);
+    const {data: Groups, isFetching: isGroupsFetching, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess} = useGetCurrentUserGroupsQuery(null);
     const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null);
 
     const [groupId, setGroupId] = useState<number>(0);
