@@ -24,7 +24,7 @@ interface IGroupModalProps{
     setGroupId: Dispatch<SetStateAction<number>>,
     isGroupModalOpen: boolean
     setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
-    mode: 'create' | 'edit',
+    mode: 'create' | 'edit' | 'disband' | 'leave',
 }
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
@@ -150,7 +150,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
         groupId={groupId ?? 0} 
         setIsConfirmationModalOpen={setIsConfirmationModal} 
         isConfirmationModalOpen={isConfirmationModal} 
-        mode="disband"/>
+        mode={mode === 'disband' ? "disband" : 'leave'}/>
     }
     {showToolTip}
         <UsePortal
