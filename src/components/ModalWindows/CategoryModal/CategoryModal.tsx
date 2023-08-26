@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction } from "react";
+import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect, useMemo } from "react";
 
 //UI
 import classes from './CategoryModal.module.css';
@@ -11,10 +11,12 @@ import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import { useCreateCategoryByGroupMutation, useUpdateCategoryByGroupMutation } from "@store/Controllers/CategoriesController/CategoriesController";
+import { IGetCategoriesByGroupResponse } from "@store/Controllers/CategoriesController/CategoriesControllerInterfaces";
 
 interface ICategoryModalProps{
     isCategoryModalOpen: boolean
-    setIsCategoryModalOpen: Dispatch<SetStateAction<boolean>>;
+    Categories?: IGetCategoriesByGroupResponse
+    setIsCategoryModalOpen: Dispatch<SetStateAction<boolean>>
     mode: 'create' | 'edit',
     groupId: number,
     categoryId?: number
@@ -24,7 +26,7 @@ interface IModalState {
     color: string
 }
 
-const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode, groupId, categoryId }) => {
+const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode, groupId, Categories, categoryId }) => {
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Category'
@@ -41,6 +43,20 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
 
     const [createCategory, {isLoading: isCategoryCreating, isError: isCategoryCreatingError, isSuccess: isCategoryCreated}] = useCreateCategoryByGroupMutation();
     const [updateCategory, {isLoading: isCategoryUpdating, isError: isCategoryUpdatingError, isSuccess: isCategoryUpdated}] = useUpdateCategoryByGroupMutation();
+    
+    const getSelectedCategory = useMemo(() => {
+        if(Categories){
+            return Categories.categories_group.filter(el => el.category.id === categoryId)[0]
+        }
+    }, [Categories, isCategoryModalOpen])
+
+    const initializeModalInputs = useCallback(() => {
+        if(getSelectedCategory){
+            setNameValue(mode === 'edit' ? getSelectedCategory.category.title : '')
+            setPickedColor(mode === 'edit' ? getSelectedCategory.color_code : '#FF2D55')
+            setIcon(mode === 'edit' ? getSelectedCategory.icon_url : 'bi bi-people')
+        }
+    }, [getSelectedCategory])
 
     const handleSubmit = () => {
         if(mode === 'create'){
@@ -98,6 +114,11 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     } else if (mode === 'edit') {
         labelText = 'Please enter the name of the category:'
     }
+
+    useEffect(() => {
+        initializeModalInputs()
+    }, [initializeModalInputs])
+
     return <>
     {showToolTip()}
     <UsePortal

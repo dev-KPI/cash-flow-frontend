@@ -52,6 +52,15 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
     const [leaveGroup, { isLoading: isGroupDisbanding, isSuccess: isGroupDisbanded, isError: isGroupDisbandingError},] = useLeaveGroupMutation();
 
+    const initializeModalInputs = useCallback(() => {
+        if(group){
+            setNameValue(mode === 'edit' ? group.title : '')
+            setDescValue(mode === 'edit' ? group.description : '')
+            setPickedColor(mode === 'edit' ? group.color_code : '#FF2D55')
+            setIcon(mode === 'edit' ? group.icon_url : 'bi bi-people')
+        }
+    }, [group])
+
     const closeModalHandler = useCallback(() => {
         if(!isGroupCreating || !isGroupUpdating){
             setGroupId(0);
@@ -130,9 +139,10 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }
  
     useEffect(() => {
+        initializeModalInputs()
         intitializeBaseGroup()
         closeModalHandler()
-    }, [intitializeBaseGroup, closeModalHandler])
+    }, [intitializeBaseGroup, closeModalHandler, initializeModalInputs])
 
     return <>
     {isConfirmationModal && 

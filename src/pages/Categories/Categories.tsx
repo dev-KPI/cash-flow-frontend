@@ -14,8 +14,6 @@ import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal"
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 import PreLoader from "@components/PreLoader/PreLoader";
 
-
-
 const Categories: FC = () => {
     
     const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
@@ -167,6 +165,7 @@ const Categories: FC = () => {
             categoryId={selectedCategory}
             setIsCategoryModalOpen={setIsEditCategoryModal}
             isCategoryModalOpen={isEditCategoryModal}
+            Categories={CategoriesByGroup}
             mode='edit'
         />}
         <main id='CategoriesPage'>
