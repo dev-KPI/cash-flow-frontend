@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 //logic
@@ -6,7 +6,7 @@ import { useLeaveGroupMutation } from '@store/Controllers/GroupsController/Group
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import { useGetActiveUsersByGroupQuery, useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
 //UI
 import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';
@@ -38,16 +38,24 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
 
 
     const [leaveGroup, { isLoading: isLeavingGroup, isSuccess: isLeavedGroup, isError: isLeavingGroupError},] = useLeaveGroupMutation();
-    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isError: isUsersInGroupError} = useGetActiveUsersByGroupQuery({group_id: id});
+    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isLoading: isUsersByGroupLoading, isError: isUsersInGroupError, isSuccess: isUsersInGroupSuccess} = useGetUsersByGroupQuery({group_id: id, size: 8, page: 1});
 
+    const filteredUsersInGroup = useMemo(() => {
+        if(UsersInGroup && isUsersInGroupSuccess){
+            return UsersInGroup.items[0].users_group.filter(el => el.status === 'ACTIVE')
+        }
+    }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupSuccess, isUsersInGroupError])
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
 
-    const memberIcons = (): string[] => {
-        return UsersInGroup?.users_group.map(el => el.user.picture) || [''];
-    }
-    const getMemberIcons = () => {
-        return memberIcons().map((icon, i) => 
+    const memberIcons = useMemo((): string[] => {
+        if(filteredUsersInGroup){
+            return filteredUsersInGroup.map(el => el.user.picture);
+        }
+        return ['']
+    }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupSuccess, isUsersInGroupError])
+    const getMemberIcons = useMemo(() => {
+        return memberIcons.map((icon, i) => 
             <div
                 className={classes.avatar}
                 key={i}
@@ -58,7 +66,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                 />
             </div>
         ).slice(0,3)
-    }
+    }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupSuccess, isUsersInGroupError])
 
     const getAdminIcon = () => {
         return isUrl(icon) ? 
@@ -68,11 +76,6 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             :
             <i className={"bi bi-people"}></i>
     }
-    
-
-    const showLoader = useCallback (() => {
-        return  <></>
-    }, [UsersInGroup?.users_group[0]])
 
     const showToolTip = useCallback(() => {
         if (isLeavedGroup) {
@@ -95,7 +98,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             setIsConfirmationModalOpen={setIsConfirmationModal} 
             mode={isAdmin ? 'disband' : 'leave'}/>}
             {showToolTip()}
-            {!UsersInGroup?.users_group[0] ? <GroupListItemLoader/> :
+            {isUsersByGroupLoading ? <GroupListItemLoader/> :
                 <>
                     <SmallModal
                         active={isMenuOpen}
@@ -146,8 +149,8 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                 <div className={classes.description}>{description}</div>
                                 <div className={classes.contentBottom}>
                                     <div className={classes.members}>
-                                        {getMemberIcons()}
-                                        {memberIcons().length > 3 ?
+                                        {getMemberIcons}
+                                        {memberIcons.length > 3 ?
                                             <div className={classes.avatar}>
                                                 <div className={classes.avatarLeftMembers}
                                                     style={{ backgroundColor: color }}></div>

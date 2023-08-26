@@ -9,13 +9,21 @@ export interface IGetCurrentUserBalance {
 }
 
 export interface IGetUsersFromGroupResponse {
-    users_group: [
+    items: [
         {
-            user: IUser
-            status: string,
-            date_join: string
+            users_group: [
+                {
+                    user: IUser
+                    status: string,
+                    date_join: string
+                }
+            ]
         }
-    ]
+    ],
+    total: 0,
+    page: 0,
+    size: 0,
+    pages: 0
 }
 export interface IGetTotalExpensesResponse {
     amount: number,

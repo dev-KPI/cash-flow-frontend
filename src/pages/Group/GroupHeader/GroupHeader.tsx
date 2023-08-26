@@ -23,7 +23,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
     const { groupId } = useParams<{ groupId: string }>();
     const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
 
-    const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError } = useGetUsersByGroupQuery({ group_id: Number(groupId) });
+    const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError, isSuccess: isUsersByGroupSuccess } = useGetUsersByGroupQuery({ group_id: Number(groupId), size: 8, page: 1 });
     const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUseError } = useGetCurrentUserInfoQuery(null)
 
     const breadcrumbs = [
@@ -44,9 +44,9 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
         setIsLeaveModalOpen(!isLeaveModalOpen);
     }
 
-    const getMemberIcons = () => {
-        if (UsersByGroup) {
-            return UsersByGroup.users_group.map((el, i) =>
+    const getMemberIcons = useMemo(() => {
+        if (UsersByGroup && isUsersByGroupSuccess) {
+            return UsersByGroup.items[0].users_group.filter(el => el.status === 'ACTIVE').map((el, i) =>
                 <div key={i} className={classes.avatar}>
                     <img className={classes.photo}
                         alt={'user icon'}
@@ -57,7 +57,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
         } else {
             return []
         }
-    }
+    }, [UsersByGroup, isUsersByGroupSuccess, isUsersByGroupLoading, isUsersByGroupLoading])
     const {width, height} = useWindowSize();
     const [groupTitleCustom, setGroupTitleCustom] = useState<string>(groupInfo.title);
     const setGroupTitleCustomCallback = useCallback(() => {
@@ -115,14 +115,14 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
                     </nav>
                     <div className={classes.header__right}>
                         <div className={classes.members}>
-                            {getMemberIcons()}
-                            {getMemberIcons().length > 3 ?
+                            {getMemberIcons}
+                            {getMemberIcons.length > 3 ?
                                 <div className={classes.avatar}>
                                     <div className={classes.avatarLeftMembers}
                                         style={{ backgroundColor: 'var(--main-green)' }}></div>
                                     <p className={classes.leftMembers}
                                         style={{ color: 'var(--main-green)' }}
-                                    >+{getMemberIcons().length - 3}
+                                    >+{getMemberIcons.length - 3}
                                     </p>
                                 </div>
                                 : null
