@@ -27,18 +27,13 @@ type IChartProps = { setId: (Dispatch<SetStateAction<number>>), total: number; }
 )
 
 const UserExpenseChart: FC<IChartProps> = ({ categories, members, total, setId }) => {
+    const { mainTextColor } = useAppSelector(state => state.persistedThemeSlice);
     let dataAmount: number[] = [];
     let backgroundColor: string[] = [];
+
     const data = categories ? categories : members;
-    const { mainTextColor } = useAppSelector(state => state.persistedThemeSlice);
-    if (categories) {
-        backgroundColor = categories.map((item) => item.color_code)
-        dataAmount = categories.map((item) => item.amount);
-    } else if (members) {
-        backgroundColor = members.map((item) => item.color_code);
-        dataAmount = members.map((item) => item.amount);
-    }
-    
+    backgroundColor = data.map((item) => item.color_code);
+    dataAmount = data.map((item) => item.amount);
 
     //fix to avoid very small segments
     let inPercent = dataAmount.map(v => Math.max(v / total * 100, 2)); 
