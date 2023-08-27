@@ -14,13 +14,3 @@ export interface ICategoryAmount {
     icon_url: string,
     amount: number
 }
-
-export interface ISimplifiedCategory {
-    id: number
-    title: string,
-    amount: number
-}
-
-export interface ISimplifiedCategoryWithColor extends ISimplifiedCategory {
-    color: string
-}

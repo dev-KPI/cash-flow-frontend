@@ -1,10 +1,10 @@
 import IExpense, { IExpensePeriodRangeDates, IExpensePeriodYearMonth } from "@models/IExpense"
-import IUser from "@models/IUser"
+import IUser, { IExtendedUser } from "@models/IUser"
 
 
 // create & update 
 export interface IExpenseByGroupResponse extends IExpense {
-    user: Omit<Omit<Omit<IUser, 'first_name'>, 'last_name'>, 'picture'> 
+    user: Omit<Omit<Omit<IUser, 'first_name'>, 'last_name'>, 'picture'>
 }
 
 export interface IGetExpensesBody {
@@ -31,6 +31,21 @@ export interface IUpdateExpenseByGroupBody extends ICreateExpenseByGroupBody {
 }
 
 export interface IGetExpensesByGroupBody {
-    group_id: number, 
+    group_id: number,
+    period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
+}
+
+export interface IGetTotalExpensesBody {
+    group_id: number,
+    period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
+}
+export interface IGetTotalExpensesResponse {
+    amount: number,
+    percentage_increase: number
+}
+
+export interface IGetCurrentGroupSpendersResponse extends IExtendedUser { }
+export interface IGetCurrentGroupSpendersBody {
+    group_id: number,
     period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
 }

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+//logic
 import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 //UI
@@ -14,12 +13,11 @@ import SearchBar from '@components/SearchBar/SearchBar';
 import GroupChartsCard from '@pages/Group/GroupChartsCard/GroupChartsCard';
 import GroupGraphCard from '@pages/Group/GroupGraphCard/GroupGraphCard';
 import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
-import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
 
 const Group = () => {
 
-    const { groupId } = useParams();
+    const { groupId } = useParams<{ groupId: string }>();
 
     const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError} = useGetInfoByGroupQuery({group_id: Number(groupId)})
     const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)    
@@ -52,7 +50,7 @@ const Group = () => {
                         isInfoLoading={isGroupInfoLoading} 
                         groupInfo={GroupInfo}
                     />
-                    <GroupChartsCard />
+                    <GroupChartsCard groupId={Number(groupId)} />
                     <GroupGraphCard />
                     <GroupHistoryCard/>
                 </div>

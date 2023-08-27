@@ -4,22 +4,29 @@ import { FC, Dispatch, SetStateAction } from 'react';
 import classes from './ChartCardDot.module.css'
 import Light from '@components/Light/Light';
 //store
-import { ISimplifiedCategoryWithColor } from '@models/ICategory';
+import { ICategoryAmount } from '@models/ICategory';
+import { IExtendedUser } from '@models/IUser';
 
 
-interface ChartCardDotProps {
-    item: ISimplifiedCategoryWithColor;
-    setId: (Dispatch<SetStateAction<number>>)
-}
+type IChartCardDotProps = { setId: (Dispatch<SetStateAction<number>>) } & (
+    | { category: ICategoryAmount, member?: never }
+    | { category?: never, member: IExtendedUser }
+)
 
-const ChartCardDot: FC<ChartCardDotProps> = ({ item, setId }) => {
+const ChartCardDot: FC<IChartCardDotProps> = ({ category, member, setId }) => {
     let color = '#4C6FFF'
     let title = ''
     const onClick = () => {
-        setId(item.id)
+        setId(category ? category.id : member.id)
     }
-    color = item.color;
-    title = item.title || '';
+    if (category) {
+        color = category.color_code;
+        title = category.title || '';
+    } else if (member) {
+        color = member.color_code!;
+        title = member.first_name + ' ' + member.last_name|| '';
+    }
+    
 
     title = title.length > 13 ? title.slice(0,12) + '..' : title
     return (

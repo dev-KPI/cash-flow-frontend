@@ -5,3 +5,8 @@ export default interface IUser {
     last_name: string,
     picture: string,
 }
+
+export interface IExtendedUser extends Omit<IUser, 'login'> {
+    amount: number,
+    color_code: string
+}

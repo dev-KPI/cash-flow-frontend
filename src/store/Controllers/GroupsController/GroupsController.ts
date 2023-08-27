@@ -1,7 +1,6 @@
 import { api } from '@store/api';
 
 //types
-import IGroup from '@models/IGroup';
 import { 
     IGetCurrentUserGroups, 
     ICreateGroupBody,
@@ -9,7 +8,9 @@ import {
     IUpdateGroupBody,
     IUpdateGroupResponse,
     IRemoveUserResponse,
-    IGetInfoFromGroupResponse
+    IGetInfoFromGroupResponse,
+    IGetGroupExpensesByCategoryResponse,
+    IGetGroupExpensesByCategoryBody
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
@@ -47,6 +48,19 @@ export const GroupsApiSlice = api.injectEndpoints({
             { type: 'GroupsController', id: 'GROUPS' }] : 
             [{ type: 'GroupsController', id: 'GROUPS' }]
         }),
+        getGroupExpensesByCategory: builder.query<IGetGroupExpensesByCategoryResponse[], IGetGroupExpensesByCategoryBody>({
+            query: ({group_id, period}) => ({
+                url: `/groups/${group_id}/category-expenses`,
+                credentials: 'include',
+                params: period
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags:
+                [{ type: 'GroupsController', id: 'GROUPS' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
+        }), 
         createGroup: builder.mutation<ICreateGroupResponse, ICreateGroupBody>({
             query: (body) => ({
                 url: `/groups/`,
@@ -99,9 +113,10 @@ export const GroupsApiSlice = api.injectEndpoints({
 
 export const {
     useGetCurrentUserGroupsQuery,
+    useGetInfoByGroupQuery,
+    useGetGroupExpensesByCategoryQuery,
     useRemoveUserMutation,
     useUpdateGroupMutation,
     useCreateGroupMutation,
     useLeaveGroupMutation,
-    useGetInfoByGroupQuery
 } = GroupsApiSlice
