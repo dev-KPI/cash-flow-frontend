@@ -51,7 +51,7 @@ const Group = () => {
                         groupInfo={GroupInfo}
                     />
                     <GroupChartsCard groupId={Number(groupId)} />
-                    <GroupGraphCard />
+                    <GroupGraphCard groupId={Number(groupId)}/>
                     <GroupHistoryCard/>
                 </div>
             </div>

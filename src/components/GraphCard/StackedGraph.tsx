@@ -17,17 +17,15 @@ import { Context } from 'vm';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import IUser from '@models/IUser';
+import { IExtendedUser } from '@models/IUser';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface IGraphGroupMembers {
     date: string,
-    details: {
-        user: IUser
-        amount: number
-    }[]
+    amount: number,
+    users: Omit<IExtendedUser, 'picture'>[]
 }
 
 interface IStackedGraphProps {
@@ -37,16 +35,13 @@ interface IStackedGraphProps {
 const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     function findMaxAmount(existingData: IGraphGroupMembers[]) {
         let maxAmount = 0;
 
         existingData.forEach((item) => {
-            item.details.forEach((detail) => {
-                if (detail.amount > maxAmount) {
-                    maxAmount = detail.amount;
-                }
-            });
+            if (item.amount > maxAmount) {
+                maxAmount = item.amount;
+            }
         });
 
         return maxAmount;
@@ -86,9 +81,9 @@ const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
 
     function getAmountsByUserId(data: IGraphGroupMembers[], userId: number): number[] {
         const amounts: number[] = [];
-
         data.forEach((item) => {
-            const details = item.details.find((detail) => detail.user.id === userId);
+            
+            const details = item.users.find((user) => user.id === userId);
             if (details) {
                 amounts.push(details.amount);
             } else {
@@ -98,31 +93,31 @@ const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
 
         return amounts;
     }
+
     function findAllUsers(data: IGraphGroupMembers[]) {
-        const fullNameUserMap: { [key: string]: number } = {};
+        const idUserMap: { [key: number]: string } = {}; 
 
         data.forEach((item) => {
-            item.details.forEach((detail) => {
-                const { user } = detail;
+            item.users.forEach((user) => {
                 const fullName = `${user.first_name} ${user.last_name}`;
                 const userId = user.id;
 
-                fullNameUserMap[fullName] = userId;
+                idUserMap[userId] = fullName;
             });
         });
 
-        return fullNameUserMap;
+        return idUserMap;
     }
 
     const getChartData = useCallback(() => {
         const users = findAllUsers(data);
-        return Object.keys(users).map((user,i) => {
-            const id = users[user]
+        return Object.keys(users).map((userId, i) => {
+            const fullName = users[+userId]; 
             return {
-                label: user,
+                label: fullName, 
                 key: data.map((el) => new Date(el.date).toISOString().split('T')[0]),
-                data: getAmountsByUserId(data, id),
-                backgroundColor: shaffledColors[i]
+                data: getAmountsByUserId(data, +userId),
+                backgroundColor: shaffledColors[i % shaffledColors.length]
             };
         });
     }, [data]);

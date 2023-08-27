@@ -1,6 +1,6 @@
 import ICategory, { ICategoryAmount } from "@models/ICategory"
 import IGroup from "@models/IGroup"
-import IUser from "@models/IUser"
+import IUser, { IExtendedUser } from "@models/IUser"
 import { IPeriodYearMonth, IPeriodRangeDates } from "@models/IPeriod"
 
 export interface IGetCurrentUserGroups { 
@@ -51,6 +51,22 @@ export interface IGetGroupExpensesByCategoryBody {
     group_id: number,
     period: IPeriodYearMonth | IPeriodRangeDates
 }
+
+export interface IGetGroupExpensesDailyResponse {
+    date: string,
+    amount: number
+}
+export interface IGetGroupExpensesByMemberDailyResponse {
+    date: string,
+    amount: number,
+    users: Omit<IExtendedUser, 'picture'>[]
+}
+
+export interface IGetGroupExpensesDailyBody {
+    group_id: number,
+    period: IPeriodYearMonth | IPeriodRangeDates
+}
+
 export interface IRemoveUserResponse {
     user: IUser,
     status: string,

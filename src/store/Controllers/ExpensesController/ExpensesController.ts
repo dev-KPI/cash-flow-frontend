@@ -88,7 +88,6 @@ export const ExpensesApiSlice = api.injectEndpoints({
             },
             providesTags: [
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
                 { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' },
                 { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
             ]
