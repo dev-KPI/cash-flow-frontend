@@ -46,9 +46,9 @@ const Input: FC<IInputProps> = ({
                 setFormValue.callback(+(e.value!))
             }
         }} 
-        min={1}
+        min={0}
         maxLength={22}
-        minFractionDigits={2} 
+        minFractionDigits={1} 
         maxFractionDigits={2}
         inputStyle={{
             backgroundColor: 'var(--cardBg)',
@@ -81,7 +81,7 @@ const Input: FC<IInputProps> = ({
     //----------------------------------------------{NAME INPUT}-----------------------------------------------------
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
-            const regExp = /[^a-zA-Zа-яА-Я,^і^І, ]+/g
+            const regExp = /[^a-zA-Zа-яА-Я,^і^І, ,\d,.,_,-]+/g
             if (setFormValue.type === 'name') { 
                 setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
             }

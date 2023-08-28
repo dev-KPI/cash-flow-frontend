@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect } from "react";
+import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect, useMemo } from "react";
 
 //UI
 import classes from './ConfirmationModal.module.css';
@@ -9,65 +9,39 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import IGroup from "@models/IGroup";
-import { useLeaveGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
+import { useLeaveGroupMutation, useRemoveUserMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { useNavigate } from "react-router-dom";
+import IUser from "@models/IUser";
 
 interface IContfirmationModalProps {
     title?: string
-    kickedUserName?: string
+    kickedUser?: IUser
     groupId: number
     isConfirmationModalOpen: boolean
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
     mode: 'leave' | 'kick' | 'disband'
 }
 
-const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConfirmationModalOpen, setIsConfirmationModalOpen, mode, kickedUserName = 'Unknown Unkown'}) => {
+const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConfirmationModalOpen, setIsConfirmationModalOpen, mode, kickedUser}) => {
 
-    const [leaveGroup, {isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
     const navigate = useNavigate();
+    const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
+    const [removeUser, { isLoading: isRemovingUser, isSuccess: isRemoveUserSuccess, isError: isRemoveUserError}] = useRemoveUserMutation();
     
     let headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let titleModal: string = ''
     let modalText: ReactNode = '';
 
     const handleSubmit = () => {
-        if(mode === 'kick'){
-        }else if (mode === 'leave' || mode === 'disband') {
+        if(mode === 'kick' && kickedUser){
+            setIsConfirmationModalOpen(false)
+            removeUser({group_id: groupId, user_id: kickedUser.id})
+        } else if (mode === 'leave' || mode === 'disband') {
+            navigate('/groups')
+            setIsConfirmationModalOpen(false)
             leaveGroup(groupId)
         }
     }
-    
-    const showToolTip = useCallback(() => {
-        if(mode === 'leave'){
-            if (!isLeavingGroupLoading && isLeavingGroupSuccess) {
-                setIsConfirmationModalOpen(false)
-                navigate('/groups')
-                return <StatusTooltip
-                    type="success"
-                    title="You have successfully left the group" />
-            } else if(!isLeavingGroupLoading && isLeavingGroupError) {
-                setIsConfirmationModalOpen(false)
-                navigate('/groups')
-                return <StatusTooltip
-                    type="error"
-                    title={"You haven`t left the group"} />
-            }
-        } else if(mode === 'disband'){
-            if (!isLeavingGroupLoading && isLeavingGroupSuccess) {
-                setIsConfirmationModalOpen(false)
-                navigate('/groups')
-                return <StatusTooltip
-                    type="success"
-                    title="You have successfully left the group" />
-            } else if(!isLeavingGroupLoading && isLeavingGroupError) {
-                setIsConfirmationModalOpen(false)
-                navigate('/groups')
-                return <StatusTooltip
-                    type="error"
-                    title={"You haven`t left the group"} />
-            }
-        }
-    }, [leaveGroup, isLeavingGroupLoading, isLeavingGroupError, isLeavingGroupSuccess])
 
     if (mode === 'leave') {
         headerIcon = <i className= "bi bi-box-arrow-right" ></i>
@@ -76,15 +50,50 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
     } else if (mode === 'kick') {
         headerIcon = <i className="bi bi-person-dash"></i>
         titleModal = 'Remove user'
-        modalText = <p>Are you sure you want to remove <span>{kickedUserName}</span> from the group?</p>
+        modalText = <p>Are you sure you want to remove {kickedUser?.first_name} {kickedUser?.last_name} from the group?</p>
     } else if (mode === 'disband') {
         headerIcon = <i className="bi bi-people"></i>
         titleModal = 'Disband group'
         modalText = <p>Are you sure you want to disband your <span>{title}</span> group?</p>
     }
 
-    return <>
-        {showToolTip()}
+    const showToolTip = useMemo(() => {
+        if(mode === 'disband'){
+            if (isLeavingGroupSuccess) {
+                return <StatusTooltip
+                type="success"
+                title={"You have successfully disband the group"} />
+            } else if(isLeavingGroupError) {
+                return <StatusTooltip
+                type="error"
+                title={"You haven't disband the group"} />
+            }
+        } else if (mode === 'leave'){
+            if (isLeavingGroupSuccess) {
+                return <StatusTooltip
+                type="success"
+                title={"You have successfully left from group"} />
+            } else if(isLeavingGroupError) {
+                return <StatusTooltip
+                type="error"
+                title={"You haven't left from group"} />
+            }
+        } else if(mode === 'kick'){
+            if (isRemoveUserSuccess) {
+                return <StatusTooltip
+                    type="success"
+                    title={"You have successfully removed user"} />
+            } else if(isRemoveUserError) {
+                return <StatusTooltip
+                    type="error"
+                    title={"You haven't removed user"} />
+            }
+        }
+    }, [mode, leaveGroup, isLeavingGroupError, isLeavingGroupSuccess,
+        removeUser, isRemoveUserSuccess, isRemoveUserError])
+
+    return <div>
+        {showToolTip}
         <UsePortal
             callback={() => {}}
             setIsModalOpen={setIsConfirmationModalOpen}
@@ -100,7 +109,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
                 </div>
                 <div className={classes.confirmBtnWrapper}>
                     <CustomButton
-                        isPending={isLeavingGroupLoading}
+                        isPending={isLeavingGroupLoading || isRemovingUser}
                         children="Confirm"
                         btnWidth={170}
                         btnHeight={36}
@@ -120,7 +129,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
                 </div>
             </form>
         </UsePortal>
-    </>
+    </div>
 };
 
 export default React.memo(ConfirmationModal);

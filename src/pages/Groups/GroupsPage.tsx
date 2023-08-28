@@ -10,17 +10,20 @@ import classes from './GroupsPage.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import PreLoader from "@components/PreLoader/PreLoader";
+import ConfirmationModal from "@components/ModalWindows/ConfirtmationModal/ConfirmationModal";
+import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 
 
 
 const Groups: FC = () => {
 
-    const {data: Groups, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess} = useGetCurrentUserGroupsQuery(null);
+    const {data: Groups, isFetching: isGroupsFetching, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess} = useGetCurrentUserGroupsQuery(null);
     const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null);
 
     const [groupId, setGroupId] = useState<number>(0);
     const [isCreateGroupModal, setIsCreateGroupModal] = useState<boolean>(false);
     const [isEditGroupModal, setIsEditGroupModal] = useState<boolean>(false);
+    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
 
     let groupsContent;
     if (isGroupsFetching) {
@@ -45,6 +48,7 @@ const Groups: FC = () => {
                         isEditGroupModal={isEditGroupModal}
                         setIsEditGroupModal={setIsEditGroupModal}
                         isGroupLoading={isGroupsFetching}
+                        setIsConfirmationModal={setIsConfirmationModal}
                         setGroupId={setGroupId}
                     />)}
             </section>
@@ -57,6 +61,7 @@ const Groups: FC = () => {
             </div>)
         }     
     } 
+
     return (<>
         {<GroupModal
             groupId={groupId}
@@ -71,6 +76,14 @@ const Groups: FC = () => {
             isGroupModalOpen={isCreateGroupModal}
             mode='create'
         />}
+        { 
+            <ConfirmationModal 
+            groupId={groupId} 
+            title={Groups?.user_groups?.find(el => groupId === el.group.id )?.group.title}
+            isConfirmationModalOpen={isConfirmationModal} 
+            setIsConfirmationModalOpen={setIsConfirmationModal} 
+            mode={!!Groups?.user_groups?.find(el => CurrentUser?.id === el.group.admin.id ) ? 'disband' : 'leave'}/>
+        }
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>

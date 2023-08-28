@@ -24,7 +24,7 @@ interface IGroupModalProps{
     setGroupId: Dispatch<SetStateAction<number>>,
     isGroupModalOpen: boolean
     setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
-    mode: 'create' | 'edit',
+    mode: 'create' | 'edit' | 'disband' | 'leave',
 }
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
@@ -50,7 +50,16 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
 
     const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
-    const [disbandGroup, { isLoading: isGroupDisbanding, isSuccess: isGroupDisbanded, isError: isGroupDisbandingError},] = useLeaveGroupMutation();
+    const [leaveGroup, { isLoading: isGroupDisbanding, isSuccess: isGroupDisbanded, isError: isGroupDisbandingError},] = useLeaveGroupMutation();
+
+    const initializeModalInputs = useCallback(() => {
+        if(group){
+            setNameValue(mode === 'edit' ? group.title : '')
+            setDescValue(mode === 'edit' ? group.description : '')
+            setPickedColor(mode === 'edit' ? group.color_code : '#FF2D55')
+            setIcon(mode === 'edit' ? group.icon_url : 'bi bi-people')
+        }
+    }, [group])
 
     const closeModalHandler = useCallback(() => {
         if(!isGroupCreating || !isGroupUpdating){
@@ -88,7 +97,13 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 intitializeBaseGroup();
                 closeModalHandler();
             }
-        }
+        } else if(mode === 'disband' || mode === 'leave'){
+            if(groupId){
+                leaveGroup(groupId)
+                intitializeBaseGroup();
+                closeModalHandler();
+            }
+        } 
     }
 
     const showToolTip = useMemo(() => {
@@ -124,17 +139,18 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }
  
     useEffect(() => {
+        initializeModalInputs()
         intitializeBaseGroup()
         closeModalHandler()
-    }, [intitializeBaseGroup, closeModalHandler])
+    }, [intitializeBaseGroup, closeModalHandler, initializeModalInputs])
 
     return <>
-    {isConfirmationModal && 
+    {
         <ConfirmationModal 
         groupId={groupId ?? 0} 
         setIsConfirmationModalOpen={setIsConfirmationModal} 
         isConfirmationModalOpen={isConfirmationModal} 
-        mode="disband"/>
+        mode={mode === 'disband' ? "disband" : 'leave'}/>
     }
     {showToolTip}
         <UsePortal

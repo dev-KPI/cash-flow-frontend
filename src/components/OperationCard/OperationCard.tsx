@@ -6,32 +6,33 @@ import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerI
 import { isSameDay, format, lastDayOfMonth, subDays } from 'date-fns'
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import DateService from '@services/DateService/DateService';
+import { fomatFloatNumber } from '@services/UsefulMethods/UIMethods';
+import { IGetTotalExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
 import OperationCardLoader from './OperationCardLoader';
-import { fomatFloatNumber } from '@services/UsefulMethods/UIMethods';
+
 
 interface OperactionCardProps {
     operation: "Income" | 'Expenses';
     title?: string;
+    icon?: string;
+    data: IGetTotalExpensesResponse | undefined;
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean
     className?: string;
 }
 
-const OperationCard: FC<OperactionCardProps> = ({ operation, title, className }) => {
+const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError }) => {
+
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const [amount, setAmount] = useState<number>(0);
     const [percents, setPercents] = useState<number>(0);
     const [sign, setSign] = useState<string>('');
     const [source, setSource] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
-
-    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery(MonthPickerStore.type === 'year-month' ? 
-    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
-    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
-    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(MonthPickerStore.type === 'year-month' ? 
-    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
-    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
 
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
@@ -56,18 +57,15 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
     let totalAmount = 0
     let totalPercents = 0;
     useEffect(() => {
-        if (operation === "Income" && isReplenishmentsSuccess) {
-            totalAmount = Replenishments.amount;
-            totalPercents = Replenishments.percentage_increase
-        } else if (operation === 'Expenses' && isExpensesSuccess) {
-            totalAmount = Expenses.amount;
-            totalPercents = Expenses.percentage_increase
+        if(data){
+            totalAmount = data.amount;
+            totalPercents = data.percentage_increase
         }
         setAmount(Number(totalAmount.toFixed(2)));
         setPercents(Number(totalPercents * 100 > 1000 ? Math.floor(totalPercents * 100) : fomatFloatNumber(totalPercents * 100, 2)));
         setSign(totalPercents === 0 ? '' : totalPercents > 0 ? '+' : '-');
 
-    }, [Replenishments, Expenses, isReplenishmentsLoading, isReplenishmentsSuccess, isExpensesLoading, isExpensesSuccess])
+    }, [data, isSuccess, isError, isLoading])
     
     const cardTitle = title ? title : operation;
 
@@ -81,7 +79,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
         <div className={`${classes.operationCard} ${className ? className : ''}`}
             onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
-            {isExpensesLoading || isReplenishmentsLoading ? 
+            {isLoading ? 
                 <OperationCardLoader />
                 :
                 <div className={classes.inner}>
@@ -95,7 +93,8 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className })
                             style={{ background: styles.operationColor }}
                         >
                             {operation === "Income" ?
-                                <i className="bi bi-credit-card-2-front"></i> : <i className="bi bi-graph-down"></i>}
+                                <i className="bi bi-credit-card-2-front"></i> : 
+                                icon ? <i className={icon}></i> : <i className="bi bi-graph-down"></i>}
                         </div>
                     </div>
                     <div className={classes.bottom}>

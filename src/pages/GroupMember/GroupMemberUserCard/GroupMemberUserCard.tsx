@@ -3,18 +3,29 @@ import { NavLink, useParams } from 'react-router-dom';
 import { isUrl } from '@services/UsefulMethods/UIMethods'
 
 import { MembersObj } from '@pages/MembersObj';
-
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import { useGetGroupTotalExpensesQuery } from '@store/Controllers/ExpensesController/ExpensesController';
+import DateService from '@services/DateService/DateService';
 //UI
 import classes from './GroupMemberUserCard.module.css'
 import userIcon from '@assets/user-icon.svg';
 import IMember from '@models/IMember';
 import OperationCard from '@components/OperationCard/OperationCard';
 
+
 const GroupMemberUserCard = () => {
     const { groupId, memberId } = useParams<{
         groupId: string,
         memberId: string
     }>();
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
+    const {data: GroupTotalExpenses, isLoading: isGroupTotalExpensesLoading, isError: isGroupTotalExpensesError, isSuccess: isGroupTotalExpensesSuccess} = useGetGroupTotalExpensesQuery({
+        group_id: Number(groupId),
+        period: MonthPickerStore.type === 'year-month' ? 
+        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
+        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+    })
     const members: IMember[] = MembersObj.members
 
     let picture = ''
@@ -48,8 +59,12 @@ const GroupMemberUserCard = () => {
                 <div className={classes.cardsWrapper}>
                     <OperationCard
                         operation={'Expenses'}
-                        title={`${name}' expenses`}
+                        title={`${name}'s expenses`}
                         className={classes.expensesCard}
+                        data={GroupTotalExpenses}
+                        isError={isGroupTotalExpensesError}
+                        isSuccess={isGroupTotalExpensesSuccess}
+                        isLoading={isGroupTotalExpensesLoading}
                     />
                     <div className={classes.cardInner}>
                         <h3 className={classes.title}>{`${name}'s total count of expenses`}</h3>

@@ -10,7 +10,7 @@ const UserGroupsCardItem: FC<Pick<IGroup, 'group'>> = ({group}) => {
     return (
         <li className={classes.item}>
             <Link to={`/group/${group.id}`} className={classes.itemInner}>
-                <h6 className={classes.expenseName}>{group.title}</h6>
+                <h6 className={classes.expenseName}>{group.title.length > 12 ? group.title.slice(0,12) : group.title}</h6>
                 <div className={classes.icon} style={{ background: group.color_code }}>
                     <i className={group.icon_url}></i>
                 </div>

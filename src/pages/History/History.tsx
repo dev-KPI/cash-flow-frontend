@@ -122,7 +122,7 @@ const History: React.FC = () => {
         <main id='HistoryPage'>
             <div className={classes.page__container}>
                 <h1 className={classes.pageTitle}>History</h1>
-                <table className={classes.recentOperations__table}>
+                {data.length > 0 ? (<table className={classes.recentOperations__table}>
                     <thead className={classes.tableTitle}>
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
@@ -205,7 +205,10 @@ const History: React.FC = () => {
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table>) : (<div className={classes.noGroupHistory}>
+                    <i className="bi bi-clock-history"></i>
+                    <p>You haven't expenses in this group, back to group page and make at least one</p>
+                </div>)}
             </div>
         </main>
     )

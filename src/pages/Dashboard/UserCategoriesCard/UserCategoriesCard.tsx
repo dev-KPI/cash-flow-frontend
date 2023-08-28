@@ -145,7 +145,7 @@ const UserCategoriesCard = () => {
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <h3 className={classes.title}>Categories <span className={classes.categoryName}>
-                                ({UserGroups?.user_groups[pageGroup]?.group.title || 'You haven`t groups'})
+                                ({UserGroups?.user_groups[pageGroup] ? UserGroups.user_groups[pageGroup].group.title : 'You haven`t groups'})
                             </span>
                         </h3>
                         <div className={classes.nav}>
@@ -168,7 +168,10 @@ const UserCategoriesCard = () => {
                         </div>
                     </div>
                     <ul className={classes.list} ref={squareRef}>
-                       {categoriesContent}
+                       {(!isGroupsLoading && UserGroups?.user_groups[pageGroup]) ? categoriesContent : <div className={classes.ifNoGroups}>
+                            <i className="bi bi-people"></i>
+                            <p>You haven't groups, create at least one</p>
+                        </div>}
                     </ul>    
                 </div>
             </>}

@@ -9,7 +9,8 @@ import {
     IUpdateGroupBody,
     IUpdateGroupResponse,
     IRemoveUserResponse,
-    IGetInfoFromGroupResponse
+    IGetInfoFromGroupResponse,
+    IGetGroupUsersHistoryResponse
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
@@ -47,6 +48,25 @@ export const GroupsApiSlice = api.injectEndpoints({
             { type: 'GroupsController', id: 'GROUPS' }] : 
             [{ type: 'GroupsController', id: 'GROUPS' }]
         }),
+        getGroupUsersHistory: builder.query<IGetGroupUsersHistoryResponse, {group_id: number, page: number, size: number}>({
+            query: ({group_id, page, size}) => ({
+                url: `/groups/${group_id}/history`,
+                credentials: 'include',
+                params: {
+                    page: page,
+                    size: size
+                }
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result, err, body) => 
+            result ? [{ type: 'GroupsController' as const, id: body.group_id },
+            { type: 'GroupsController', id: 'GROUPS' },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },] : 
+            [{ type: 'GroupsController', id: 'GROUPS' },
+            {type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },]
+        }),
         createGroup: builder.mutation<ICreateGroupResponse, ICreateGroupBody>({
             query: (body) => ({
                 url: `/groups/`,
@@ -73,14 +93,16 @@ export const GroupsApiSlice = api.injectEndpoints({
         }),
         removeUser: builder.mutation<IRemoveUserResponse, {group_id: number, user_id: number}>({
             query: ({group_id, user_id}) => ({
-                url: `/groups/${group_id}/remove/${user_id}/`,
+                url: `/groups/${group_id}/users/${user_id}/remove/`,
                 method: 'POST',
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number }
             ) => response.status,
-            invalidatesTags: [{ type: 'GroupsController', id: 'GROUPS' }],
+            invalidatesTags: [{ type: 'GroupsController', id: 'GROUPS' }, 
+            { type: 'UserController' as const, id: 'Users' },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
         leaveGroup: builder.mutation<null, number>({
             query: (group_id) => ({
@@ -91,7 +113,11 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response,
-            invalidatesTags: [{ type: 'GroupsController' as const, id: 'GROUPS_DELETE' }],
+            invalidatesTags: [
+                { type: 'GroupsController', id: 'GROUPS' },
+            { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
+            { type: 'UserController' as const, id: 'Users' },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
     }),
     overrideExisting: false,
@@ -100,6 +126,7 @@ export const GroupsApiSlice = api.injectEndpoints({
 export const {
     useGetCurrentUserGroupsQuery,
     useRemoveUserMutation,
+    useGetGroupUsersHistoryQuery,
     useUpdateGroupMutation,
     useCreateGroupMutation,
     useLeaveGroupMutation,

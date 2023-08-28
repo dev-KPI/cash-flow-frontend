@@ -50,35 +50,20 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [{ type: 'UserController' as const }],
         }),
-        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, { group_id: number }>({
-            query: ({ group_id }) => ({
+        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, {group_id: number, page: number, size: number}>({
+            query: ({ group_id, page, size}) => ({
                 url: `/groups/${group_id}/users`,
                 credentials: 'include',
+                params: {
+                    page: page,
+                    size: size
+                }
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result, err, body) => result ?
-                [...result.users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
-                { type: 'UserController' as const, id: 'Users' }]
-                :
-                [{ type: 'UserController' as const, id: 'Users' }],
-        }), 
-        getActiveUsersByGroup: builder.query<IGetUsersFromGroupResponse, { group_id: number }>({
-            query: ({ group_id }) => ({
-                url: `/groups/${group_id}/users`,
-                credentials: 'include',
-            }),
-            transformErrorResponse: (
-                response: { status: string | number },
-            ) => response.status,
-            transformResponse: (response: IGetUsersFromGroupResponse, arg, body): IGetUsersFromGroupResponse => {
-                return {
-                    users_group: [...response.users_group.filter(el => el.status === 'ACTIVE')]
-                } as IGetUsersFromGroupResponse
-            },
-            providesTags: (result, err, body) => result ?
-                [...result.users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
+            providesTags: (result, err, body) => result?.items ?
+                [...result.items[0].users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
                 { type: 'UserController' as const, id: 'Users' }]
                 :
                 [{ type: 'UserController' as const, id: 'Users' }],
@@ -206,7 +191,6 @@ export const {
     useGetCurrentUserInfoQuery,
     useGetUsersQuery,
     useGetUsersByGroupQuery,
-    useGetActiveUsersByGroupQuery,
     useGetUserExpensesByGroupQuery,
     useGetUserHistoryQuery,
     useGetUserExpensesByCategoryQuery,

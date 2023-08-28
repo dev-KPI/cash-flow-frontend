@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 //UI
 import classes from './GroupMembers.module.css';
@@ -15,18 +15,28 @@ import {
     getExpandedRowModel,
     getPaginationRowModel,
     getSortedRowModel, 
+    PaginationState, 
     Row,
     useReactTable,
 } from '@tanstack/react-table'
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetInfoByGroupQuery, useLeaveGroupMutation, useRemoveUserMutation } from '@store/Controllers/GroupsController/GroupsController';
+import { SortingState } from '@tanstack/react-table';
+import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
+import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
+import IUser from '@models/IUser';
+import ButtonContent from './ButtonContent';
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends unknown> {
         getClass: (row: Row<TData>) => string;
     }
 }
+
 interface GroupMember extends IMember {
     role: 'Owner' | 'Member'
 }
@@ -34,27 +44,99 @@ interface GroupMember extends IMember {
 const columnHelper = createColumnHelper<GroupMember>()
 
 const History: React.FC = () => {
-    const { groupId } = useParams<{ groupId: string }>();
-    const [data, setData] = useState([...MembersObj.members])
-
+    const { groupId } = useParams();
     
+    const [{ pageIndex, pageSize }, setPagination] =
+        useState<PaginationState>({
+            pageIndex: 0,
+            pageSize: 8,
+    })
+    const [sorting, setSorting] = useState<SortingState>([]) 
+    
+    const pagination = useMemo(
+        () => ({
+            pageIndex,
+            pageSize,
+        }),
+        [pageIndex, pageSize]
+    )
+    const [data, setData] = useState<GroupMember[]>([{
+        user: {
+            id: 0,
+            login: '0',
+            first_name: '0',
+            last_name: '0',
+            picture: '0'
+        },
+        status: '0',
+        date_join: '0',
+        role: 'Member'
+    }])
+
+    const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError, isSuccess: isUsersByGroupSuccess } = useGetUsersByGroupQuery({  group_id: Number(groupId),
+        page: pageIndex + 1,
+        size: pageSize });
+    const { data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError, isSuccess: isGroupInfoSuccess } = useGetInfoByGroupQuery({ group_id: Number(groupId)});
+    const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess} = useGetCurrentUserInfoQuery(null);
+
+    const initializeData = useCallback(() => {
+        if(UsersByGroup && isUsersByGroupSuccess && GroupInfo && isGroupInfoSuccess){
+            const data: GroupMember[] = UsersByGroup.items[0].users_group.map(el => {
+                return {
+                    user: {
+                        id: el.user.id,
+                        login: el.user.login,
+                        first_name: el.user.first_name,
+                        last_name: el.user.last_name,
+                        picture: el.user.picture
+                    },
+                    status: el.status,
+                    date_join: el.date_join,
+                    role: GroupInfo.admin.id === el.user.id ? 'Owner' : 'Member'
+                }
+            })
+            setData(data)
+        }
+    }, [UsersByGroup, isUsersByGroupLoading, isUsersByGroupSuccess, isUsersByGroupError, GroupInfo, isGroupInfoSuccess])
+
+    useEffect(() => {
+        initializeData()
+    }, [initializeData])
+    
+    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
+    const [kickedUser, setKickedUser] = useState<IUser>({
+        id: 0,
+        login: '',
+        first_name: '',
+        last_name: '',
+        picture: ''
+    });
+    const [confirmationMode, setConfirmationMode] = useState<'disband' | 'kick'>('kick');
+
     const columns = [
-        columnHelper.accessor(`user.last_name`, {
+        columnHelper.accessor(`user.first_name`, {
             header: () => 'Member',
             cell: info => {
                 const picture = info.row.original.user.picture ?? ''
-                const full_name = info.row.original.user.first_name + ' ' + info.row.original.user.last_name
+                const full_name = () => {
+                    if(info?.row?.original?.user?.last_name){
+                        return info.row.original.user.first_name + ' ' + info.row.original.user.last_name
+                    } else {
+                        return info.row.original.user.first_name
+                    }
+                }
                 const email = info.row.original.user.login
                 return info.renderValue() ?
                     <div className={classes.memberWrapper}>
                         <div className={classes.details}>
                             <div className={classes.icon}>
                                 <img className={classes.photo}
+                                    style={{borderRadius: '50%'}}
                                     alt={'user icon'}
                                     src={isUrl(picture) ? picture : userIcon} />
                             </div>
                             <div className={classes.memberInfo}>
-                                <h6 className={classes.name}>{full_name}</h6>
+                                <h6 className={classes.name}>{full_name()}</h6>
                                 <p className={classes.email}>{email}</p>
                             </div>
                         </div>
@@ -69,7 +151,7 @@ const History: React.FC = () => {
         columnHelper.accessor('role', {
             header: () => 'Role',
             cell: info => {
-                if (info.row.original.user.id === 0) { //adminId
+                if (info.row.original.user.id === GroupInfo?.admin.id) {
                     return <p style={{ color: 'var(--main-green)' }}>Owner</p>
                 } else {
                     return 'Member'
@@ -86,7 +168,14 @@ const History: React.FC = () => {
             cell: info => {
                 const isActionDisabled = info.row.original.status === 'pending';
                 return <div className={classes.btnWrapper}>
-                    <ButtonContent groupId={groupId} userId={info.row.original.user.id} isActionDisabled={isActionDisabled}/>
+                    <ButtonContent 
+                    setConfirmationMode={setConfirmationMode}
+                    setIsConfirmationModal={setIsConfirmationModal}
+                    groupInfo={GroupInfo} 
+                    groupId={groupId} 
+                    user={info.row.original.user} 
+                    CurrentUser={CurrentUser} 
+                    isActionDisabled={isActionDisabled}/>
                 </div >
         }
         }),
@@ -95,28 +184,46 @@ const History: React.FC = () => {
     const table = useReactTable({
         data,
         columns,
+        pageCount: UsersByGroup?.pages,
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getExpandedRowModel: getExpandedRowModel(),
+        manualPagination: true,
+        onPaginationChange: setPagination,
+        state: {
+            sorting,
+            pagination
+        },
         initialState: {
             pagination: {
                 pageSize: 8
             }
         },
+        getPaginationRowModel: getPaginationRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
         meta: {
             getClass: (row: Row<GroupMember>): string => (
                 row.original.status === 'pending' ? classes.pending : ''
             ),
         }
     })
-    const { pageIndex, pageSize } = table.getState().pagination
     const pageCount = table.getPageCount()
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex === pageCount - 1 ? data.length : (pageIndex + 1) * pageSize;
 
+    
+
     return (
         <main id='GroupMembersPage' className="no-padding">
+            {
+                <ConfirmationModal 
+                groupId={Number(groupId)} 
+                title={GroupInfo?.title}
+                kickedUser={kickedUser}
+                setIsConfirmationModalOpen={setIsConfirmationModal} 
+                isConfirmationModalOpen={isConfirmationModal} 
+                mode={confirmationMode}/>
+            }
             <div className={classes.page__container}>
                 <table className={classes.recentOperations__table}>
                     <thead className={classes.tableTitle}>
@@ -209,59 +316,3 @@ const History: React.FC = () => {
 }
 
 export default History
-
-const ButtonContent: React.FC<{
-        groupId: string | undefined,
-        userId: number,
-        isActionDisabled: boolean
-    }> = ({ groupId, userId, isActionDisabled }) => {
-    const [isActionsOpen, setIsActionsOpen] = useState<boolean>(false)
-    const actionsButtonRef = useRef(null);
-    const handleActionOpen = () => {
-        if (isActionDisabled) return
-        else setIsActionsOpen(!isActionsOpen)
-    }
-    const navigate = useNavigate();
-    return (<>
-        <button className={[classes.moreBtn, isActionDisabled ? classes.actionsDisabled : ''].join(' ')}
-            onClick={handleActionOpen}
-            ref={actionsButtonRef}>
-            <div></div>
-            <div></div>
-            <div></div>
-        </button>
-        <SmallModal
-            active={isActionsOpen}
-            setActive={setIsActionsOpen}
-            className={classes.actionsModal}
-            title=''
-            buttonRef={actionsButtonRef}
-            disableHeader={true}
-            children={
-                <div className={classes.actionsWrapper}>
-                    <CustomButton
-                        icon={'none'}
-                        type={'white'}
-                        background={'outline'}
-                        callback={() => navigate(`/group/${groupId}/member/${userId}`)}
-                        isPending={false}
-                        disableScale={true}
-                        className={classes.btnInsight}
-                        children={
-                            <div className={classes.btnChild}>
-                                <i className="bi bi-bar-chart"></i>
-                                <p>Insight</p>
-                            </div>
-                        } />
-                    <CustomButton
-                        isPending={false}
-                        children="Remove member"
-                        icon={'none'}
-                        type="danger"
-                        background={'outline'}
-                        disableScale={true}
-                        callback={() => { }}
-                        className={`${classes.leaveButton} btn-danger outline`} />
-                </div>}
-        /></>)
-}

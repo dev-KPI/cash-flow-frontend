@@ -34,3 +34,24 @@ export interface IGetExpensesByGroupBody {
     group_id: number, 
     period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
 }
+
+export interface IGetTotalExpensesBody {
+    group_id: number, 
+    period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
+}
+export interface IGetTotalExpensesResponse {
+    amount: number,
+    percentage_increase: number
+}
+
+export interface IGetCurrentGroupSpendersResponse {
+    id: number,
+    first_name: string,
+    last_name: string,
+    picture: string,
+    amount: number
+}
+export interface IGetCurrentGroupSpendersBody {
+    group_id: number, 
+    period: IExpensePeriodYearMonth | IExpensePeriodRangeDates
+}

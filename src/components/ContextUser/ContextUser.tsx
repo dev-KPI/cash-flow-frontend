@@ -33,7 +33,7 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
             disableHeader={true}
             children={
                 <ul className={classes.List}>
-                    <li className={classes.item}>
+                    {/* <li className={classes.item}>
                         <Link to={'/'}>
                             <h4 className={classes.Link}>Settings</h4>
                         </Link>
@@ -42,7 +42,7 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
                         <Link to={'/'}>
                             <h4 className={classes.Link}>Personal information</h4>
                         </Link>
-                    </li>
+                    </li> */}
                     <li className={classes.item}>
                         <button onClick={LogOut}>
                             <Link to={"https://api.cash-money.store/logout"} style={{cursor: 'pointer'}}>

@@ -12,6 +12,7 @@ import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import { useWindowSize } from 'usehooks-ts';
+import MonthPicker from '@components/MonthPicker/MonthPicker';
 
 export interface IPropsGroupHeader {
     groupInfo: IGetInfoFromGroupResponse
@@ -22,13 +23,13 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
     const { groupId } = useParams<{ groupId: string }>();
     const [isLeaveModalOpen, setIsLeaveModalOpen] = useState<boolean>(false);
 
-    const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError } = useGetUsersByGroupQuery({ group_id: Number(groupId) });
+    const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError, isSuccess: isUsersByGroupSuccess } = useGetUsersByGroupQuery({ group_id: Number(groupId), size: 8, page: 1 });
     const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUseError } = useGetCurrentUserInfoQuery(null)
 
     const breadcrumbs = [
         {
             'title': 'Dashboard',
-            'link': `/group/${groupId}`
+            'link': `/group/${groupId}/`
         },
         {
             'title': 'Members',
@@ -36,16 +37,16 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
         },
         {
             'title': 'History',
-            'link': `/group/${groupId}/history`
+            'link': `/group/${groupId}/history/`
         },
     ]
     const handleLeave = () => {
         setIsLeaveModalOpen(!isLeaveModalOpen);
     }
 
-    const getMemberIcons = () => {
-        if (UsersByGroup) {
-            return UsersByGroup.users_group.map((el, i) =>
+    const getMemberIcons = useMemo(() => {
+        if (UsersByGroup && isUsersByGroupSuccess) {
+            return UsersByGroup.items[0].users_group.filter(el => el.status === 'ACTIVE').map((el, i) =>
                 <div key={i} className={classes.avatar}>
                     <img className={classes.photo}
                         alt={'user icon'}
@@ -56,12 +57,25 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
         } else {
             return []
         }
-    }
+    }, [UsersByGroup, isUsersByGroupSuccess, isUsersByGroupLoading, isUsersByGroupLoading])
     const {width, height} = useWindowSize();
-    const [groupTitleCustom, setGroupTitleCustom] = useState<string>(groupInfo.title.length > 12 && width < 520 ? groupInfo.title.slice(0, 12) + '...' : groupInfo.title);
+    const [groupTitleCustom, setGroupTitleCustom] = useState<string>(groupInfo.title);
+    const setGroupTitleCustomCallback = useCallback(() => {
+        ((groupInfo.title.length > 9) && (width < 520)) ? 
+        setGroupTitleCustom(groupInfo.title.slice(0, 9) + '...') : 
+        setGroupTitleCustom(groupInfo.title)
+    }, [width])
     const [leaveMode, setLeaveMode] = useState<'leave' | 'disband' | 'kick'>('leave');
     const [buttonName, setButtonName] = useState<string>('Leave group')
 
+    const getMonthPicker = useMemo(() => {
+        if(width > 768) return (<>
+            <div style={{maxWidth: 'max-content'}}>
+                <MonthPicker/>
+            </div>
+        </>)
+        
+    }, [width])
     const getLeaveButton = useCallback(() => {
         if (CurrentUser?.id === groupInfo.admin.id) {
             setButtonName('Disband group')
@@ -70,13 +84,13 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
             setButtonName('Leave group')
             setLeaveMode('leave')
         }
-
     }, [CurrentUser, isCurrentUserLoading, isCurrentUseError,
         UsersByGroup, isUsersByGroupLoading, isUsersByGroupError])
 
     useEffect(() => {
         getLeaveButton()
-    }, [getLeaveButton])
+        setGroupTitleCustomCallback()
+    }, [getLeaveButton, setGroupTitleCustomCallback])
 
     return (
         <>
@@ -89,22 +103,28 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
             />}
             <div className={classes.header}>
                 <div className={classes.header__container}>
-                    <h2 
-                    onClick={() => setGroupTitleCustom(groupInfo.title)}
-                    className={`${classes.title} pageTitle`}>{groupTitleCustom}</h2>
+                    <div style={{display: 'flex', gap: '30px'}}>
+                        <h2 
+                        onClick={() => ((groupTitleCustom === groupInfo.title) && width < 768) ? 
+                            setGroupTitleCustom(groupInfo.title.slice(0,9)) : 
+                            setGroupTitleCustom(groupInfo.title + '...')}
+                        className={`${classes.title} pageTitle`}>{groupTitleCustom}</h2>
+                        {getMonthPicker}
+                    </div>
                     <nav className={classes.breadcrumbs}>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
+                        <div className={classes.breadcrumbs__underline}></div>
                     </nav>
                     <div className={classes.header__right}>
                         <div className={classes.members}>
-                            {getMemberIcons()}
-                            {getMemberIcons().length > 3 ?
+                            {getMemberIcons}
+                            {getMemberIcons.length > 3 ?
                                 <div className={classes.avatar}>
                                     <div className={classes.avatarLeftMembers}
                                         style={{ backgroundColor: 'var(--main-green)' }}></div>
                                     <p className={classes.leftMembers}
                                         style={{ color: 'var(--main-green)' }}
-                                    >+{getMemberIcons().length - 3}
+                                    >+{getMemberIcons.length - 3}
                                     </p>
                                 </div>
                                 : null
