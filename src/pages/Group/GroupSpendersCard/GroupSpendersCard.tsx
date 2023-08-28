@@ -31,7 +31,7 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
 
     const getSpenders = () => {
         if(data && !isError && !isLoading){
-            let spenders: IGetCurrentGroupSpendersResponse[] = data;
+            let spenders: IGetCurrentGroupSpendersResponse[] = data.slice(0,3);
             return spenders.map((item, i) => {
                 const photo = item.picture
                 const name = item.first_name + " " + item.last_name
