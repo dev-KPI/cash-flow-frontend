@@ -2,6 +2,7 @@ import ICategory, { ICategoryAmount } from "@models/ICategory"
 import IGroup from "@models/IGroup"
 import IUser, { IExtendedUser } from "@models/IUser"
 import { IPeriodYearMonth, IPeriodRangeDates } from "@models/IPeriod"
+import IListResponse from "@models/IListResponse"
 
 export interface IGetCurrentUserGroups { 
     user_groups: IGroup[] 
@@ -82,23 +83,17 @@ export interface IGetCategoriesByGroupResponse {
     ]
 }
 
-export interface IGetGroupUsersHistoryResponse {
-    items: [{
-        id: number,
-        descriptions: string,
-        amount: number,
-        time: string,
-        category_id: number,
-        color_code_category: string,
-        title_category: string,
-        user_id: number,
-        user_login: string,
-        user_first_name: string,
-        user_last_name: string,
-        user_picture: string
-    }],
-    total: number,
-    page: number,
-    size: number,
-    pages: number
-}
+export interface IGetGroupUsersHistoryResponse extends IListResponse<{
+    id: number,
+    descriptions: string,
+    amount: number,
+    time: string,
+    category_id: number,
+    color_code_category: string,
+    title_category: string,
+    user_id: number,
+    user_login: string,
+    user_first_name: string,
+    user_last_name: string,
+    user_picture: string
+}> { };
