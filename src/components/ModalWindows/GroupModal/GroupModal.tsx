@@ -145,7 +145,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }, [intitializeBaseGroup, closeModalHandler, initializeModalInputs])
 
     return <>
-    {isConfirmationModal && 
+    {
         <ConfirmationModal 
         groupId={groupId ?? 0} 
         setIsConfirmationModalOpen={setIsConfirmationModal} 
