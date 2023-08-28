@@ -41,11 +41,17 @@ const Users: React.FC = () => {
             
     }, [Users, Groups, CurrentUser])
     const columns = [
-        columnHelper.accessor(`last_name`, {
+        columnHelper.accessor(`first_name`, {
             header: () => 'Member',
             cell: info => {
                 const picture = info.row.original.picture ?? ''
-                const full_name = info.row.original.first_name + ' ' + info.row.original.last_name
+                const full_name = () => {
+                    if(info?.row?.original?.last_name){
+                        return info.row.original.first_name + ' ' + info.row.original.last_name
+                    } else {
+                        return info.row.original.first_name
+                    }
+                }
                 const email = info.row.original.login
                 return info.renderValue() ?
                     <div className={classes.memberWrapper}>
@@ -56,7 +62,7 @@ const Users: React.FC = () => {
                                     src={isUrl(picture) ? picture : userIcon} />
                             </div>
                             <div className={classes.memberInfo}>
-                                <h6 className={classes.name}>{full_name}</h6>
+                                <h6 className={classes.name}>{full_name()}</h6>
                                 <p className={classes.email}>{email}</p>
                             </div>
                         </div>

@@ -43,22 +43,29 @@ interface GroupHistory {
 
 const columnHelper = createColumnHelper<GroupHistory>()
 const columns = [
-    columnHelper.accessor(`user.last_name`, {
+    columnHelper.accessor(`user.first_name`, {
         header: () =>'Member',
         cell: info => { 
             const picture = info.row.original.user.picture ?? '' 
-            const full_name = info.row.original.user.first_name + ' ' + info.row.original.user.last_name
+            const full_name = () => {
+                if(info?.row?.original?.user?.last_name){
+                    return info.row.original.user.first_name + ' ' + info.row.original.user.last_name
+                } else {
+                    return info.row.original.user.first_name
+                }
+            }
             const email = info.row.original.user.login
             return info.renderValue() ?
                 <div className={classes.memberWrapper}>
                     <div className={classes.details}>
                         <div className={classes.icon}>
                             <img className={classes.photo}
+                                style={{borderRadius: '50%'}}
                                 alt={'user icon'}
                                 src={isUrl(picture) ? picture : userIcon} />
                         </div>
                         <div className={classes.memberInfo}>
-                            <h6 className={classes.name}>{full_name}</h6>
+                            <h6 className={classes.name}>{full_name()}</h6>
                             <p className={classes.email}>{email}</p>
                         </div>
                     </div>
@@ -185,7 +192,7 @@ const History: React.FC = () => {
     return (
         <main id='GroupHistoryPage' className="no-padding">
             <div className={classes.page__container}>
-                <table className={classes.recentOperations__table}>
+                {data.length > 0 ? (<table className={classes.recentOperations__table}>
                     <thead className={classes.tableTitle}>
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
@@ -268,7 +275,10 @@ const History: React.FC = () => {
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table>) : (<div className={classes.noGroupHistory}>
+                    <i className="bi bi-clock-history"></i>
+                    <p>You haven't expenses in this group, back to group page and make at least one</p>
+                </div>)}
             </div>
         </main>
     )
