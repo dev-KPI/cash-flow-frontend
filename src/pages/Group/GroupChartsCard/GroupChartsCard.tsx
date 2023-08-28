@@ -1,79 +1,40 @@
+import { FC } from 'react';
 //logic
-import { categoryExpenses } from '../../Expenses';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import DateService from '@services/DateService/DateService';
+import { useGetGroupExpensesByCategoryQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useGetCurrentGroupSpendersQuery } from '@store/Controllers/ExpensesController/ExpensesController';
 //UI
 import classes from './GroupChartsCard.module.css';
 import ChartCard from '@components/ChartCard/ChartCard';
-import { shaffledColors } from '@services/UsefulMethods/UIMethods';
+import ChartCardLoader from '@components/ChartCard/ChartCardLoader';
 
 
+const GroupChartsCard:FC<{groupId:number}> = ({groupId}) => {
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
+    const { data: GroupExpensesByCategory, isLoading: isExpensesByCategoryLoading } = useGetGroupExpensesByCategoryQuery({
+        group_id: groupId,
+        period: MonthPickerStore.type === 'year-month' ?
+            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
+            { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
+    })
+    const { data: GroupExpensesByMember, isLoading: isExpensesByMemberLoading } = useGetCurrentGroupSpendersQuery({
+        group_id: groupId,
+        period: MonthPickerStore.type === 'year-month' ?
+            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
+            { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
+    })
 
-const GroupChartsCard = () => {
-    // const MembersObj: IMembersExpensesChart[] = JSON.parse(JSON.stringify([
-    //     {
-    //         "member": {
-    //             "id":0,
-    //             "login": "johndoe@gmail.com",
-    //             "first_name": "Dmitriy",
-    //             "last_name": "Rezenkov",
-    //             "picture": "ref.com"
-    //         },
-    //         "amount": 1000
-    //     },
-    //     {
-    //         "member": {
-    //             "id": 1,
-    //             "login": "johndoe@gmail.com",
-    //             "first_name": "Dima",
-    //             "last_name": "Rezenkov",
-    //             "picture": "ref.com"
-    //         },
-    //         "amount": 999
-    //     },
-    //     {
-    //         "member": {
-    //             "id": 2,
-    //             "login": "johndoe@gmail.com",
-    //             "first_name": "Dima",
-    //             "last_name": "Pestenkov",
-    //             "picture": "ref.com"
-    //         },
-    //         "amount": 777
-    //     },
-    //     {
-    //         "member": {
-    //             "id": 3,
-    //             "login": "johndoe@gmail.com",
-    //             "first_name": "Dasdima",
-    //             "last_name": "Pesasdtenkov",
-    //             "picture": "ref.com"
-    //         },
-    //         "amount": 7534
-    //     },
-    //     {
-    //         "member": {
-    //             "id": 4,
-    //             "login": "johndoe@gmail.com",
-    //             "first_name": "Daqwema",
-    //             "last_name": "Pesasasddtenkov",
-    //             "picture": "ref.com"
-    //         },
-    //         "amount": 34
-    //     }
-    // ]
-    // ))
-
-    // const members = MembersObj.map((item, index) => {
-    //     const member = item.member;
-    //     return {
-    //         member: { ...member, color: shaffledColors[MembersObj.length%(index+1)] },
-    //         amount: item.amount,
-    //     };
-    // });
     return (
         <div className={classes.ChartsCard}>
-            {/* <ChartCard data={categoryExpenses} title={'Expenses by categories'} /> */}
-            {/* <ChartCard data={members} title={'Expenses by members'} /> */}
-        </div>
+            {isExpensesByCategoryLoading ? <ChartCardLoader /> :
+                <ChartCard categories={GroupExpensesByCategory || []} title={'Expenses by categories'} />
+            }
+            {isExpensesByMemberLoading ? <ChartCardLoader /> :
+                <ChartCard members={GroupExpensesByMember?.filter(item => item.amount !== 0) || []} title={'Expenses by members'} />
+            }
+        </div>        
     );
 };
 

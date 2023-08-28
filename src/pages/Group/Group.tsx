@@ -1,7 +1,7 @@
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
-
+import { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+//logic
 import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 import { useWindowSize } from 'usehooks-ts';
@@ -19,14 +19,14 @@ import SearchBar from '@components/SearchBar/SearchBar';
 import GroupChartsCard from '@pages/Group/GroupChartsCard/GroupChartsCard';
 import GroupGraphCard from '@pages/Group/GroupGraphCard/GroupGraphCard';
 import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
-import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import MonthPicker from '@components/MonthPicker/MonthPicker';
+
 
 
 
 const Group = () => {
 
-    const { groupId } = useParams();
+    const { groupId } = useParams<{ groupId: string }>();
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const {data: GroupTotalExpenses, isLoading: isGroupTotalExpensesLoading, isError: isGroupTotalExpensesError, isSuccess: isGroupTotalExpensesSuccess, isFetching: isGroupSpendersFetching} = useGetGroupTotalExpensesQuery({
@@ -107,8 +107,8 @@ const Group = () => {
                         isInfoLoading={isGroupInfoLoading} 
                         groupInfo={GroupInfo}
                     />
-                    <GroupChartsCard />
-                    <GroupGraphCard />
+                    <GroupChartsCard groupId={Number(groupId)} />
+                    <GroupGraphCard groupId={Number(groupId)}/>
                     <GroupHistoryCard/>
                 </div>
             </div>

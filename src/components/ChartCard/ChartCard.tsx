@@ -1,41 +1,69 @@
-import { FC, useCallback, useMemo, useState} from 'react';
+import { FC, ReactNode, useState} from 'react';
 //UI
 import classes from './ChartCard.module.css'
 import ChartCardDot from '@components/ChartCard/ChartCardDot/ChartCardDot';
+import Chart from '@components/ChartCard/Chart';
 //Logic
 import { numberWithCommas, shaffledColors } from '@services/UsefulMethods/UIMethods';
-import Chart from '@components/ChartCard/Chart';
-import { ISimplifiedCategory, ISimplifiedCategoryWithColor } from '@models/ICategory';
+import { ICategoryAmount } from '@models/ICategory';
+import { IExtendedUser } from '@models/IUser';
 
 
-type IChartCardProps = {
-    data: ISimplifiedCategory[];
-    title: string;
-}; 
+type IChartCardProps = { title: string } & (
+    | { categories: ICategoryAmount[], members?: never }
+    | { categories?: never, members: IExtendedUser[] }
+)
 
 
-
-const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
-    const [id, setId] = useState<number>(data[0]?.id || 0);
+const ChartCard: FC<IChartCardProps> = ({ categories, members, title }) => {
+    const [id, setId] = useState<number>(categories ? categories[0]?.id : members[0]?.id || 0 );
     const [isExtended, setIsExtended] = useState<boolean>(false);
     let itemAmount = 0;
     let itemTitle = '';
-    const categories = data as ISimplifiedCategoryWithColor[];
-    const category = categories.find(el => el.id === id)
-    itemTitle = category?.title || '';
-    itemAmount = category?.amount || 0
-    const categoriesWithColors: ISimplifiedCategoryWithColor[] = categories.map( (category, index) => ({
-        ...category,
-        color: shaffledColors[index % shaffledColors.length]
-    }));
+    let total = 0;
+    let getItems: ReactNode[] = []; 
+    let chartItem: ReactNode;
+    let dataLength: number = 0;
+    if (categories) {
+        const category = categories.find(el => el.id === id)
 
-    const total = data
-        .map((item) => item.amount || 0)
-        .reduce((acc, curr) => acc + curr, 0);
+        itemTitle = category?.title || '';
+        itemAmount = category?.amount || 0
 
-    const getItems = useMemo(() => {
-        return categoriesWithColors.map((item, i) => <ChartCardDot key={i} item={item} setId={setId} />)
-    }, [data]) 
+        const result = categories.map((category, index) => ({
+            ...category,
+            icon_url: '',
+            color_code: category.color_code ?
+                category.color_code : shaffledColors[index % shaffledColors.length]
+        }));
+
+        total = result
+            .map((item) => item.amount || 0)
+            .reduce((acc, curr) => acc + curr, 0);
+        
+        getItems = categories.map((item, i) => <ChartCardDot key={i} category={item} setId={setId} />)
+        dataLength = result.length;
+        chartItem = <Chart categories={result} total={total} setId={setId} /> 
+ 
+    } else if (members) {
+        const member = members.find(el => el.id === id)
+
+        itemTitle = member?.first_name + " " + member?.last_name
+        itemAmount = member?.amount || 0;
+
+        const result = members.map((member, index) => ({
+            ...member,
+            color_code: shaffledColors[index % shaffledColors.length]
+        }));
+        total = result
+            .map((item) => item.amount || 0)
+            .reduce((acc, curr) => acc + curr, 0);
+
+        getItems = result.map((item, i) => <ChartCardDot key={i} member={item} setId={setId} />)
+        dataLength = result.length;
+        chartItem = <Chart members={result} total={total} setId={setId} /> 
+    }
+    
 
     let itemPercentage = 0;
     if (itemAmount){
@@ -62,7 +90,7 @@ const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
         timeout = setTimeout(handleCloseExtended, 15000);
     }
 
-    if (data.length === 0) {
+    if (dataLength === 0) {
         return <div className={classes.inner}>
             <h3 className={classes.title}>{title}</h3>
             <div className={classes.noExpenses}>
@@ -72,12 +100,11 @@ const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
             </div>
         </div>
     }
-
     return (<div className={classes.inner} onMouseEnter={clearInterval} onMouseLeave={setInterval} onClick={handleCloseExtended}>
                 <h3 className={classes.title}>{title}</h3>
                 <div className={classes.wrapper}>
                     <div className={classes.chart}>
-                        <Chart data={categoriesWithColors} total={total} setId={setId} />
+                        {chartItem}
                     </div>
                     <div className={classes.info}>
                         <div className={classes.expenseInfo}>
@@ -92,7 +119,7 @@ const ChartCard: FC<IChartCardProps> = ({ data, title }) => {
                             :
                            <ul className={classes.chartList}>
                                 {getItems.slice(0, 4)}
-                                {data.length > 4 &&
+                                {dataLength > 4 &&
                                 <li className={classes.item}>
                                     <button className={classes.viewMore} onClick={handleOpenExtended}>View more</button>
                                 </li>}
