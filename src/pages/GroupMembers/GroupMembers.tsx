@@ -29,6 +29,7 @@ import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/G
 import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import IUser from '@models/IUser';
+import ButtonContent from './ButtonContent';
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends unknown> {
@@ -102,23 +103,40 @@ const History: React.FC = () => {
         initializeData()
     }, [initializeData])
     
+    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
+    const [kickedUser, setKickedUser] = useState<IUser>({
+        id: 0,
+        login: '',
+        first_name: '',
+        last_name: '',
+        picture: ''
+    });
+    const [confirmationMode, setConfirmationMode] = useState<'disband' | 'kick'>('kick');
+
     const columns = [
-        columnHelper.accessor(`user.last_name`, {
+        columnHelper.accessor(`user.first_name`, {
             header: () => 'Member',
             cell: info => {
                 const picture = info.row.original.user.picture ?? ''
-                const full_name = info.row.original.user.first_name + ' ' + info.row.original.user.last_name
+                const full_name = () => {
+                    if(info?.row?.original?.user?.last_name){
+                        return info.row.original.user.first_name + ' ' + info.row.original.user.last_name
+                    } else {
+                        return info.row.original.user.first_name
+                    }
+                }
                 const email = info.row.original.user.login
                 return info.renderValue() ?
                     <div className={classes.memberWrapper}>
                         <div className={classes.details}>
                             <div className={classes.icon}>
                                 <img className={classes.photo}
+                                    style={{borderRadius: '50%'}}
                                     alt={'user icon'}
                                     src={isUrl(picture) ? picture : userIcon} />
                             </div>
                             <div className={classes.memberInfo}>
-                                <h6 className={classes.name}>{full_name}</h6>
+                                <h6 className={classes.name}>{full_name()}</h6>
                                 <p className={classes.email}>{email}</p>
                             </div>
                         </div>
@@ -151,6 +169,8 @@ const History: React.FC = () => {
                 const isActionDisabled = info.row.original.status === 'pending';
                 return <div className={classes.btnWrapper}>
                     <ButtonContent 
+                    setConfirmationMode={setConfirmationMode}
+                    setIsConfirmationModal={setIsConfirmationModal}
                     groupInfo={GroupInfo} 
                     groupId={groupId} 
                     user={info.row.original.user} 
@@ -191,8 +211,19 @@ const History: React.FC = () => {
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex === pageCount - 1 ? data.length : (pageIndex + 1) * pageSize;
 
+    
+
     return (
         <main id='GroupMembersPage' className="no-padding">
+            {
+                <ConfirmationModal 
+                groupId={Number(groupId)} 
+                title={GroupInfo?.title}
+                kickedUser={kickedUser}
+                setIsConfirmationModalOpen={setIsConfirmationModal} 
+                isConfirmationModalOpen={isConfirmationModal} 
+                mode={confirmationMode}/>
+            }
             <div className={classes.page__container}>
                 <table className={classes.recentOperations__table}>
                     <thead className={classes.tableTitle}>
@@ -285,87 +316,3 @@ const History: React.FC = () => {
 }
 
 export default History
-
-const ButtonContent: React.FC<{
-        groupId: string | undefined,
-        groupInfo: IGetInfoFromGroupResponse | undefined,
-        CurrentUser: IUser | undefined,
-        user: IUser,
-        isActionDisabled: boolean
-    }> = ({ groupId, user, isActionDisabled, groupInfo, CurrentUser}) => {
-    const [isActionsOpen, setIsActionsOpen] = useState<boolean>(false)
-    const actionsButtonRef = useRef(null);
-    const handleActionOpen = () => {
-        if (isActionDisabled) return
-        else setIsActionsOpen(!isActionsOpen)
-    }
-    const navigate = useNavigate();
-
-    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
-    const [confirmationMode, setConfirmationMode] = useState<'disband' | 'kick'>('kick');
-
-    const getSpecialButton = useMemo(() => {
-        if(CurrentUser && groupInfo){
-            if(CurrentUser.id === groupInfo.admin.id)
-            return <CustomButton
-                isPending={false}
-                children={user.id === groupInfo.admin.id ? "Disband group" : 'Remove member'}
-                icon={'none'}
-                type="danger"
-                background={'outline'}
-                disableScale={true}
-                callback={() => {
-                    if(user.id === groupInfo.admin.id){
-                        setConfirmationMode("disband")
-                    } else {
-                        setConfirmationMode('kick')
-                    }
-                    setIsConfirmationModal(true)
-                }}
-                className={`${classes.leaveButton} btn-danger outline`} />}
-    }, [])
-
-    return (<>
-        {isConfirmationModal && 
-            <ConfirmationModal 
-            groupId={Number(groupId)} 
-            title={groupInfo?.title}
-            kickedUser={user}
-            setIsConfirmationModalOpen={setIsConfirmationModal} 
-            isConfirmationModalOpen={isConfirmationModal} 
-            mode={confirmationMode}/>
-        }
-        <button className={[classes.moreBtn, isActionDisabled ? classes.actionsDisabled : ''].join(' ')}
-            onClick={handleActionOpen}
-            ref={actionsButtonRef}>
-            <div></div>
-            <div></div>
-            <div></div>
-        </button>
-        <SmallModal
-            active={isActionsOpen}
-            setActive={setIsActionsOpen}
-            className={classes.actionsModal}
-            title=''
-            buttonRef={actionsButtonRef}
-            disableHeader={true}
-            children={
-                <div className={classes.actionsWrapper}>
-                    <CustomButton
-                        icon={'none'}
-                        type={'white'}
-                        background={'outline'}
-                        callback={() => navigate(`/group/${groupId}/member/${user.id}`)}
-                        isPending={false}
-                        disableScale={true}
-                        className={classes.btnInsight}
-                        children={
-                            <div className={classes.btnChild}>
-                                <i className="bi bi-bar-chart"></i>
-                                <p>Insight</p>
-                            </div>
-                        } />
-                    {getSpecialButton}
-                </div>}
-        /></>)
-}

@@ -24,20 +24,20 @@ interface IGroupItemProps {
     adminEmail: string,
     color: string,
     isEditGroupModal: boolean,
+    setIsConfirmationModal: React.Dispatch<SetStateAction<boolean>>
     setIsEditGroupModal: React.Dispatch<SetStateAction<boolean>>,
     isGroupLoading: boolean,
     setGroupId: React.Dispatch<SetStateAction<number>>
 }
 const GroupItem: FC<IGroupItemProps> = ({ id, 
     title, description, icon, adminName, isAdmin,
-    adminEmail, color, isEditGroupModal, setIsEditGroupModal, setGroupId
+    adminEmail, color, isEditGroupModal, setIsEditGroupModal, setGroupId, setIsConfirmationModal
 }) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const buttonRef = useRef(null);
     const navigate = useNavigate();
 
 
-    const [leaveGroup, { isLoading: isLeavingGroup, isSuccess: isLeavedGroup, isError: isLeavingGroupError},] = useLeaveGroupMutation();
     const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isLoading: isUsersByGroupLoading, isError: isUsersInGroupError, isSuccess: isUsersInGroupSuccess} = useGetUsersByGroupQuery({group_id: id, size: 8, page: 1});
 
     const filteredUsersInGroup = useMemo(() => {
@@ -45,7 +45,6 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             return UsersInGroup.items[0].users_group.filter(el => el.status === 'ACTIVE')
         }
     }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupSuccess, isUsersInGroupError])
-    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
 
     const memberIcons = useMemo((): string[] => {
@@ -77,27 +76,8 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
             <i className={"bi bi-people"}></i>
     }
 
-    const showToolTip = useCallback(() => {
-        if (isLeavedGroup) {
-            return <StatusTooltip
-            type="success" 
-            title={`You leaved from ${title} group`}/>
-        } else if(isLeavingGroupError) {
-            return <StatusTooltip
-            type="error" 
-            title={`You not leaved from ${title} group`}/>
-        }
-    }, [leaveGroup, isLeavedGroup, isLeavingGroup, isLeavingGroupError])
-
     return (
         <div className={classes.group}>
-            {isConfirmationModal && 
-            <ConfirmationModal 
-            groupId={id} 
-            isConfirmationModalOpen={isConfirmationModal} 
-            setIsConfirmationModalOpen={setIsConfirmationModal} 
-            mode={isAdmin ? 'disband' : 'leave'}/>}
-            {showToolTip()}
             {isUsersByGroupLoading ? <GroupListItemLoader/> :
                 <>
                     <SmallModal
@@ -164,7 +144,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                     </div>
                                     <button className={classes.moreBtn}
                                         ref={buttonRef}
-                                        onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen) }}>
+                                        onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); setGroupId(id)}}>
                                         <div></div>
                                         <div></div>
                                         <div></div>
