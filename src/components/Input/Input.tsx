@@ -46,9 +46,9 @@ const Input: FC<IInputProps> = ({
                 setFormValue.callback(+(e.value!))
             }
         }} 
-        min={1}
+        min={0}
         maxLength={22}
-        minFractionDigits={2} 
+        minFractionDigits={1} 
         maxFractionDigits={2}
         inputStyle={{
             backgroundColor: 'var(--cardBg)',
