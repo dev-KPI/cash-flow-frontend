@@ -93,14 +93,16 @@ export const GroupsApiSlice = api.injectEndpoints({
         }),
         removeUser: builder.mutation<IRemoveUserResponse, {group_id: number, user_id: number}>({
             query: ({group_id, user_id}) => ({
-                url: `/groups/${group_id}/remove/${user_id}/`,
+                url: `/groups/${group_id}/users/${user_id}/remove/`,
                 method: 'POST',
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number }
             ) => response.status,
-            invalidatesTags: [{ type: 'GroupsController', id: 'GROUPS' }],
+            invalidatesTags: [{ type: 'GroupsController', id: 'GROUPS' }, 
+            { type: 'UserController' as const, id: 'Users' },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
         leaveGroup: builder.mutation<null, number>({
             query: (group_id) => ({
@@ -111,7 +113,11 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response,
-            invalidatesTags: [{ type: 'GroupsController' as const, id: 'GROUPS_DELETE' }],
+            invalidatesTags: [
+                { type: 'GroupsController', id: 'GROUPS' },
+            { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
+            { type: 'UserController' as const, id: 'Users' },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
     }),
     overrideExisting: false,

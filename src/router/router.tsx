@@ -22,7 +22,7 @@ const Router: FC = () => {
     const {data: UserGroups, isError: isUserGroupsError, isLoading: isUserGroupsLoading, isSuccess: isUserGroupsSuccess} = useGetCurrentUserGroupsQuery(null);
 
     const intitializeBaseGroup = useCallback(() => {
-        if (isUserGroupsSuccess && UserGroups.user_groups[0].group.id) {
+        if (isUserGroupsSuccess && UserGroups.user_groups[0] && UserGroups.user_groups[0].group.id) {
             GroupsSliceDispatch.setDefaultGroup(UserGroups.user_groups[0].group.id)
         }
     }, [UserGroups, isUserGroupsError, isUserGroupsLoading, isUserGroupsSuccess])
