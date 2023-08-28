@@ -177,7 +177,7 @@ const Graph: FC<IGraphProps> = ({data}) => {
                         size: 14,
                         weight: "300",
                     },
-                    stepSize: getYParams().step,
+                    // stepSize: getYParams().step,
                     callback: (value: string | number, index: number, ticks: Tick[]): string => {
                         const resValue = +(value);
                         if (window.innerWidth < 440 && resValue >= 1000) {
