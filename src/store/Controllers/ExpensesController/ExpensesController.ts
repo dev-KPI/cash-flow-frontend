@@ -1,7 +1,7 @@
 import { api } from '@store/api';
 
 //types
-import { 
+import {
     ICreateExpenseByGroupBody,
     IUpdateExpenseByGroupBody,
     IExpenseByGroupResponse,
@@ -23,7 +23,7 @@ import DateService from '@services/DateService/DateService';
 export const ExpensesApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getExpenses: builder.query<IExpense[], IGetExpensesBody>({
-            query: ({period}) => ({
+            query: ({ period }) => ({
                 url: `groups/expenses`,
                 params: period,
                 credentials: 'include',
@@ -35,11 +35,11 @@ export const ExpensesApiSlice = api.injectEndpoints({
             { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
             { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
                 :
-            [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-            { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+                [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
         }),
         getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IExpensePeriods>({
-            query: ({period}) => ({
+            query: ({ period }) => ({
                 url: `users/daily-expenses`,
                 params: period,
                 credentials: 'include',
@@ -53,10 +53,10 @@ export const ExpensesApiSlice = api.injectEndpoints({
                     response.forEach(expense => {
                         expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
                     });
-                
+
                     const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
-                    dateRange.shift(); 
-                
+                    dateRange.shift();
+
                     return dateRange.map(date => {
                         const dateISOString = date.toISOString().split('T')[0];
                         if (expenseMap[dateISOString]) {
@@ -71,14 +71,14 @@ export const ExpensesApiSlice = api.injectEndpoints({
                 } else {
                     const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
                     const startDate = new Date(body.period.year_month + '-01');
-                    
+
                     return Array.from({ length: daysInMonth }, (_, i) => {
                         const currentDate = addDays(startDate, i);
                         const formattedDate = DateService.getFormatedDate(currentDate.getDate());
                         const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
-                    
+
                         const existingExpense = response.find(expense => expense.date === dateKey);
-                    
+
                         return existingExpense || {
                             date: dateKey,
                             amount: 0,
@@ -87,14 +87,13 @@ export const ExpensesApiSlice = api.injectEndpoints({
                 }
             },
             providesTags: [
-            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-            { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' },
-            { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' },
+                { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
             ]
         }),
         getGroupTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
-            query: ({period, group_id}) => ({
+            query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/total-expenses`,
                 params: period,
                 credentials: 'include',
@@ -142,7 +141,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
             { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
         }),
         getExpensesByGroup: builder.query<IExpense[], IGetExpensesByGroupBody>({
-            query: ({group_id, period}) => ({
+            query: ({ group_id, period }) => ({
                 url: `groups/${group_id}/expenses`,
                 params: period,
                 credentials: 'include',
@@ -151,7 +150,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             providesTags: (result, arg, body) => result ? [...result.map(item => ({ type: 'ExpensesController' as const, id: item.id }))]
-            : []
+                : []
         }),
         createExpenseByGroup: builder.mutation<IExpenseByGroupResponse, ICreateExpenseByGroupBody>({
             query: (body) => ({
@@ -170,15 +169,15 @@ export const ExpensesApiSlice = api.injectEndpoints({
                 url: `expenses/${body.group_id}/expenses/${body.id}`,
                 method: 'PUT',
                 credentials: 'include',
-                body: Omiter(['id','group_id'], body)
+                body: Omiter(['id', 'group_id'], body)
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
             invalidatesTags: (result, error, body) => [{ type: 'ExpensesController', id: body.id }],
         }),
-        deleteExpenseByGroup: builder.mutation<null, {group_id:number, expense_id: number}>({
-            query: ({ group_id, expense_id}) => ({
+        deleteExpenseByGroup: builder.mutation<null, { group_id: number, expense_id: number }>({
+            query: ({ group_id, expense_id }) => ({
                 url: `groups/${group_id}/expenses/${expense_id}`,
                 method: 'DELETE',
                 credentials: 'include',

@@ -64,7 +64,13 @@
     font-weight: 500;
     color: var(--main-green)
 }
+.red {
+    color: var(--main-red);
+}
 
+.green {
+    color: var(--main-green);
+}
 .burgernav__line{
     height: 0px;
     margin: 16px 20px 0px;

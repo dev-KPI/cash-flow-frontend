@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 //logic
 import DateService from '@services/DateService/DateService';
 //store
@@ -22,7 +21,7 @@ const UserChartCard = () => {
     return (
         <div className={classes.UserChart}>
             {isExpensesLoading ? <ChartCardLoader /> :
-                <ChartCard data={ExpensesByCategory || []} title={'Expenses'} />
+                <ChartCard categories={ExpensesByCategory || []} title={'Expenses'} />
             }
         </div>
     );

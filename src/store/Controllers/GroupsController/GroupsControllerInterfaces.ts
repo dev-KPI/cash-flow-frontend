@@ -1,7 +1,8 @@
-import ICategory from "@models/ICategory"
+import ICategory, { ICategoryAmount } from "@models/ICategory"
 import IGroup from "@models/IGroup"
-import IUser from "@models/IUser"
-
+import IUser, { IExtendedUser } from "@models/IUser"
+import { IPeriodYearMonth, IPeriodRangeDates } from "@models/IPeriod"
+import IListResponse from "@models/IListResponse"
 
 export interface IGetCurrentUserGroups { 
     user_groups: IGroup[] 
@@ -45,6 +46,28 @@ export interface IGetInfoFromGroupResponse {
     expenses: number
 }
 
+export interface IGetGroupExpensesByCategoryResponse extends ICategoryAmount { }
+
+export interface IGetGroupExpensesByCategoryBody {
+    group_id: number,
+    period: IPeriodYearMonth | IPeriodRangeDates
+}
+
+export interface IGetGroupExpensesDailyResponse {
+    date: string,
+    amount: number
+}
+export interface IGetGroupExpensesByMemberDailyResponse {
+    date: string,
+    amount: number,
+    users: Omit<IExtendedUser, 'picture'>[]
+}
+
+export interface IGetGroupExpensesDailyBody {
+    group_id: number,
+    period: IPeriodYearMonth | IPeriodRangeDates
+}
+
 export interface IRemoveUserResponse {
     user: IUser,
     status: string,
@@ -60,23 +83,17 @@ export interface IGetCategoriesByGroupResponse {
     ]
 }
 
-export interface IGetGroupUsersHistoryResponse {
-    items: [{
-        id: number,
-        descriptions: string,
-        amount: number,
-        time: string,
-        category_id: number,
-        color_code_category: string,
-        title_category: string,
-        user_id: number,
-        user_login: string,
-        user_first_name: string,
-        user_last_name: string,
-        user_picture: string
-    }],
-    total: number,
-    page: number,
-    size: number,
-    pages: number
-}
+export interface IGetGroupUsersHistoryResponse extends IListResponse<{
+    id: number,
+    descriptions: string,
+    amount: number,
+    time: string,
+    category_id: number,
+    color_code_category: string,
+    title_category: string,
+    user_id: number,
+    user_login: string,
+    user_first_name: string,
+    user_last_name: string,
+    user_picture: string
+}> { };
