@@ -44,13 +44,11 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
                             <p className={classes.order}>{i + 1}.</p>
                             <div className={classes.details}>
                                 <div className={classes.info}>
-                                    <div className={classes.avatar}>
-                                        <img className={classes.photo}
-                                            alt={'user icon'}
-                                            src={isUrl(photo) ? photo : userIcon}
-                                        />
-                                    </div>
-                                    <p className={classes.name}>{name.length > 14 ? name.slice(0,15) + '...' : name}</p>
+                                    <img className={classes.photo}
+                                        alt={'user icon'}
+                                        src={isUrl(photo) ? photo : userIcon}
+                                    />
+                                    <p className={classes.name}>{name}</p>
                                 </div>
                                 <p className={classes.amount}>{numberWithCommas(item.amount)}$</p>
                             </div>
