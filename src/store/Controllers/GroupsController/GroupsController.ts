@@ -9,12 +9,17 @@ import {
     IUpdateGroupResponse,
     IRemoveUserResponse,
     IGetInfoFromGroupResponse,
+    IGetTotalExpensesResponse,
+    IGetTotalExpensesBody,
+    IGetCurrentGroupSpendersResponse,
+    IGetCurrentGroupSpendersBody,
     IGetGroupExpensesByCategoryResponse,
     IGetGroupExpensesByCategoryBody,
     IGetGroupExpensesDailyResponse,
     IGetGroupExpensesDailyBody,
     IGetGroupExpensesByMemberDailyResponse,
-    IGetGroupUsersHistoryResponse
+    IGetGroupUsersHistoryResponse,
+    IGetUsersFromGroupResponse
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import { IPeriods } from '@models/IPeriod';
@@ -55,6 +60,56 @@ export const GroupsApiSlice = api.injectEndpoints({
             { type: 'GroupsController', id: 'GROUPS' }] : 
             [{ type: 'GroupsController', id: 'GROUPS' }]
         }),
+        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, { group_id: number, page: number, size: number }>({
+            query: ({ group_id, page, size }) => ({
+                url: `/groups/${group_id}/users`,
+                credentials: 'include',
+                params: {
+                    page: page,
+                    size: size
+                }
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result, err, body) => result?.items ?
+                [...result.items[0].users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
+                { type: 'UserController' as const, id: 'Users' }]
+                :
+                [{ type: 'UserController' as const, id: 'Users' }],
+        }), 
+        getGroupTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
+            query: ({ period, group_id }) => ({
+                url: `groups/${group_id}/total-expenses`,
+                params: period,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result, arg, body) => result ? [{ type: 'ExpensesController' as const, id: body.group_id },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+            { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+                :
+                [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+        }),
+        getCurrentUserInGroupTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
+            query: ({ period, group_id }) => ({
+                url: `groups/${group_id}/my-total-expenses`,
+                params: period,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result, arg, body) => result ? [{ type: 'ExpensesController' as const, id: body.group_id },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+            { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+                :
+                [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+        }),
         getGroupUsersHistory: builder.query<IGetGroupUsersHistoryResponse, { group_id: number, page: number, size: number }>({
             query: ({ group_id, page, size }) => ({
                 url: `/groups/${group_id}/history`,
@@ -73,6 +128,22 @@ export const GroupsApiSlice = api.injectEndpoints({
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },] :
                     [{ type: 'GroupsController', id: 'GROUPS' },
                     { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },]
+        }),
+        getCurrentGroupSpenders: builder.query<IGetCurrentGroupSpendersResponse[], IGetCurrentGroupSpendersBody>({
+            query: ({ period, group_id }) => ({
+                url: `groups/${group_id}/users-spenders`,
+                params: period,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result, arg, body) => result ? [{ type: 'ExpensesController' as const, id: body.group_id },
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+            { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+                :
+                [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
         }),
         getGroupExpensesByCategory: builder.query<IGetGroupExpensesByCategoryResponse[], IGetGroupExpensesByCategoryBody>({
             query: ({group_id, period}) => ({

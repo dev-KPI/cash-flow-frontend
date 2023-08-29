@@ -3,6 +3,7 @@ import IGroup from "@models/IGroup"
 import IUser, { IExtendedUser } from "@models/IUser"
 import { IPeriodYearMonth, IPeriodRangeDates } from "@models/IPeriod"
 import IListResponse from "@models/IListResponse"
+import IMember from "@models/IMember"
 
 export interface IGetCurrentUserGroups { 
     user_groups: IGroup[] 
@@ -35,15 +36,35 @@ export interface IGetInfoFromGroupResponse {
     status: string,
     icon_url: string,
     color_code: string,
-    admin: {
-        id: number,
-        login: string,
-        first_name: string,
-        last_name: string,
-        picture: string
-    },
+    admin: IUser,
     members: number,
     expenses: number
+}
+
+export interface IGetUsersFromGroupResponse extends IListResponse<{
+    users_group: IMember[];
+}> {
+}
+
+export interface IGetTotalExpensesBody {
+    group_id: number,
+    period: IPeriodYearMonth | IPeriodRangeDates
+}
+export interface IGetTotalExpensesResponse {
+    amount: number,
+    percentage_increase: number
+}
+
+export interface IGetCurrentGroupSpendersResponse {
+    id: number,
+    first_name: string,
+    last_name: string,
+    picture: string,
+    amount: number
+}
+export interface IGetCurrentGroupSpendersBody {
+    group_id: number,
+    period: IPeriodYearMonth | IPeriodRangeDates
 }
 
 export interface IGetGroupExpensesByCategoryResponse extends ICategoryAmount { }
