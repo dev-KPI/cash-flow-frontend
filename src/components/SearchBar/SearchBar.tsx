@@ -7,11 +7,13 @@ import { isUrl } from '@services/UsefulMethods/UIMethods';
 //store
 import IUser from '@models/IUser';
 import IMember from '@models/IMember';
-import { useGetUsersByGroupQuery, useGetUsersQuery } from '@store/Controllers/UserController/UserController';
+import { useGetUsersQuery } from '@store/Controllers/UserController/UserController';
+import { useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import classes from './SearchBar.module.css'
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+
 
 
 const SearchBar: FC<{groupId:number}> = ({groupId}) => {

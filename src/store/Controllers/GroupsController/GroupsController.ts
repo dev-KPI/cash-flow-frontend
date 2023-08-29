@@ -323,6 +323,10 @@ export const GroupsApiSlice = api.injectEndpoints({
 export const {
     useGetCurrentUserGroupsQuery,
     useGetInfoByGroupQuery,
+    useGetCurrentGroupSpendersQuery,
+    useGetCurrentUserInGroupTotalExpensesQuery,
+    useGetGroupTotalExpensesQuery,
+    useGetUsersByGroupQuery,
     useGetGroupExpensesByCategoryQuery,
     useGetGroupExpensesDailyQuery,
     useGetGroupExpensesByMemberDailyQuery,

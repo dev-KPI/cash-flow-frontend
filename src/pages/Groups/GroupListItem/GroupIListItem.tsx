@@ -1,18 +1,17 @@
-import React, { FC, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, SetStateAction, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 //logic
-import { useLeaveGroupMutation } from '@store/Controllers/GroupsController/GroupsController';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import uuid from 'react-uuid';
 import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';
 import GroupListItemLoader from './GroupListItemLoader';
-import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
-import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
+
+
 
 interface IGroupItemProps {
     id: number;
