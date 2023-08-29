@@ -1,10 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 //types
-import IGroupState from './GroupInterfaces';
+import IGroupState, { ITooltip } from './GroupInterfaces';
 
 const initialState: IGroupState = {
-    defaultGroup: 0
+    defaultGroup: 0,
+    tooltip: {
+        shouldShowTooltip: false,
+        modeTooltip: 'leave',
+        textTooltip: '',
+        status: 'success'
+    }
 }
 
 export const GroupSlice = createSlice({
@@ -13,6 +19,9 @@ export const GroupSlice = createSlice({
     reducers: {
         setDefaultGroup: (initialState, action: PayloadAction<number>): void => {
             initialState.defaultGroup = action.payload
+        },
+        setTooltip: (initialState, action: PayloadAction<ITooltip>): void => {
+            initialState.tooltip = action.payload
         },
     },
 })
