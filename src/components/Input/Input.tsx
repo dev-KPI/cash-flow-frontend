@@ -10,8 +10,10 @@ import { InputTextarea } from 'primereact/inputtextarea';
         
 
 const Input: FC<IInputProps> = ({
-    value,
+    value = '',
     inputType, 
+    isSubmited = false,
+    setIsSubmited = () => {},
     setFormValue, 
     placeholder, 
     Icon, 
@@ -78,7 +80,10 @@ const Input: FC<IInputProps> = ({
         value={inputStringValue}
         name={name} 
         id={id}/>
-    //----------------------------------------------{NAME INPUT}-----------------------------------------------------
+    //----------------------------------------------{NAME INPUT}-----------------------------------------------------  
+    const nameInputErrorClass = useMemo(() => {
+        return ((isSubmited && inputType === 'name' && inputStringValue.length < 1) ? classes.errorInput : '')
+    }, [isSubmited, inputStringValue])  
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
             const regExp = /[^a-zA-Zа-яА-Я,^і^І, ,\d,.,_,-]+/g
@@ -88,9 +93,10 @@ const Input: FC<IInputProps> = ({
             setInputStringValue(e.currentTarget.value.replace(regExp, ''))
         }} 
         min={3}
-        maxLength={24}
+        maxLength={16}
         style={{
             height: '50px',
+            maxHeight: '50px',
             backgroundColor: 'var(--cardBg)',
             borderRadius: '10px',
             paddingLeft: Icon ? '' : '12px',
@@ -124,6 +130,12 @@ const Input: FC<IInputProps> = ({
     id={id}/>
     
 
+    const getInputError = useMemo(() => {
+        return (isSubmited && inputType === 'name' && inputStringValue.length < 1) ? <div className={classes.errorLabel}>
+            <label>This field is required</label>
+        </div> : null
+    }, [isSubmited, inputStringValue])
+
     //splitter for inputs
     const getCurrentInput: ReactNode = 
     inputType === 'cash' ? cashInput :  
@@ -132,13 +144,14 @@ const Input: FC<IInputProps> = ({
     inputType === 'area' ? areaInput : <></>;
 
     return(<>
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper + ' ' + nameInputErrorClass}>
             {Icon && 
             <div className={classes.Icon__wrapper}>
                 {Icon}
             </div>}
             {getCurrentInput}
         </div>
+        {getInputError}
     </>)
 }
 
