@@ -1,18 +1,15 @@
-import IReplenishment from "@models/IReplenishment";
+import { IPeriodRangeDates, IPeriodYearMonth } from "@models/IPeriod";
 import IUser from "@models/IUser";
 
 
 export interface IGetReplenishmentsByUserBody {
-    year_month: string, 
-    // start_date: string,
-    // end_date: string
+    period: IPeriodYearMonth | IPeriodRangeDates
 }
 export interface IGetReplenishmentsByUserResponse {
     amount: number,
     descriptions: string,
     time: string
 }
-
 
 export interface ICreateReplenishmentBody {
     amount: number,

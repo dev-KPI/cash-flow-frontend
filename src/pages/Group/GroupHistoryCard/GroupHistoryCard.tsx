@@ -1,4 +1,4 @@
-import React, { FC, useState, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 //UI
 import classes from './GroupHistoryCard.module.css';
@@ -7,26 +7,10 @@ import { RecentOperationGroupCard } from "@components/RecentOperationsCards/Rece
 
 //logic
 import { Link, useParams } from "react-router-dom";
-import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
-import { MembersHistoryObj } from "@pages/MembersHistoryObj";
 import GroupHistoryCardLoader from "./GroupHistoryCardLoader";
 import ICategory from "@models/ICategory";
 import IUser from "@models/IUser";
 import { useGetGroupUsersHistoryQuery } from "@store/Controllers/GroupsController/GroupsController";
-
-
-interface GroupTransaction {
-    id: number;
-    amount: number;
-    time: string;
-    description: string;
-    category_group?: {
-        group?: ICategory
-        category?: ICategory
-    },
-    user: IUser
-    type: string
-}
 
 const GroupHistoryCard: FC = () => {
 
