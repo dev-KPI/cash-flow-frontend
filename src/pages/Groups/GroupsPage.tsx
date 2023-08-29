@@ -12,6 +12,7 @@ import GroupListItem from "./GroupListItem/GroupIListItem";
 import PreLoader from "@components/PreLoader/PreLoader";
 import ConfirmationModal from "@components/ModalWindows/ConfirtmationModal/ConfirmationModal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
+import PageGlobalLoader from "@components/PageGlobalPreloader/PageGlobalPreloader";
 
 
 
@@ -84,6 +85,7 @@ const Groups: FC = () => {
             setIsConfirmationModalOpen={setIsConfirmationModal} 
             mode={!!Groups?.user_groups?.find(el => CurrentUser?.id === el.group.admin.id ) ? 'disband' : 'leave'}/>
         }
+        {isGroupsLoading ? <PageGlobalLoader/> : 
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
@@ -103,6 +105,7 @@ const Groups: FC = () => {
                 {groupsContent}
             </div>
         </main>
+        }
     </>)
 }
 
