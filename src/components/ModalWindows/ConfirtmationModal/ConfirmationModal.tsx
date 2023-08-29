@@ -12,6 +12,8 @@ import IGroup from "@models/IGroup";
 import { useLeaveGroupMutation, useRemoveUserMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { useNavigate } from "react-router-dom";
 import IUser from "@models/IUser";
+import { GroupSliceActions } from "@store/Group/GroupSlice";
+import { useActionCreators } from "@hooks/storeHooks/useAppStore";
 
 interface IContfirmationModalProps {
     title?: string
@@ -27,6 +29,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
     const navigate = useNavigate();
     const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
     const [removeUser, { isLoading: isRemovingUser, isSuccess: isRemoveUserSuccess, isError: isRemoveUserError}] = useRemoveUserMutation();
+    const GroupsDispatch = useActionCreators(GroupSliceActions)
     
     let headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let titleModal: string = ''
@@ -37,8 +40,6 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
             setIsConfirmationModalOpen(false)
             removeUser({group_id: groupId, user_id: kickedUser.id})
         } else if (mode === 'leave' || mode === 'disband') {
-            navigate('/groups')
-            setIsConfirmationModalOpen(false)
             leaveGroup(groupId)
         }
     }
@@ -57,43 +58,70 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
         modalText = <p>Are you sure you want to disband your <span>{title}</span> group?</p>
     }
 
-    const showToolTip = useMemo(() => {
+    const showToolTip = useCallback(() => {
         if(mode === 'disband'){
             if (isLeavingGroupSuccess) {
-                return <StatusTooltip
-                type="success"
-                title={"You have successfully disband the group"} />
+                GroupsDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'disband',
+                    textTooltip: 'You have successfully disbanded the group',
+                    status: 'success'
+                })
+                navigate('/groups')
+                setIsConfirmationModalOpen(false)
             } else if(isLeavingGroupError) {
-                return <StatusTooltip
-                type="error"
-                title={"You haven't disband the group"} />
+                setIsConfirmationModalOpen(false)
+                GroupsDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'disband',
+                    textTooltip: "You haven't disbanded the group",
+                    status: 'error'
+                })
             }
         } else if (mode === 'leave'){
             if (isLeavingGroupSuccess) {
-                return <StatusTooltip
-                type="success"
-                title={"You have successfully left from group"} />
+                navigate('/groups')
+                setIsConfirmationModalOpen(false)
+                GroupsDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'leave',
+                    textTooltip: "You have successfully left from group",
+                    status: 'success'
+                })
             } else if(isLeavingGroupError) {
-                return <StatusTooltip
-                type="error"
-                title={"You haven't left from group"} />
+                setIsConfirmationModalOpen(false)
+                GroupsDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'leave',
+                    textTooltip: "You haven't left from group",
+                    status: 'error'
+                })
             }
         } else if(mode === 'kick'){
             if (isRemoveUserSuccess) {
-                return <StatusTooltip
-                    type="success"
-                    title={"You have successfully removed user"} />
+                GroupsDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'kick',
+                    textTooltip: "You have successfully removed user",
+                    status: 'success'
+                })
             } else if(isRemoveUserError) {
-                return <StatusTooltip
-                    type="error"
-                    title={"You haven't removed user"} />
+                GroupsDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'kick',
+                    textTooltip: "You haven't removed user",
+                    status: 'error'
+                })
             }
         }
     }, [mode, leaveGroup, isLeavingGroupError, isLeavingGroupSuccess,
         removeUser, isRemoveUserSuccess, isRemoveUserError])
 
+    useEffect(() => {
+        showToolTip()
+    }, [showToolTip])
+
     return <div>
-        {showToolTip}
         <UsePortal
             callback={() => {}}
             setIsModalOpen={setIsConfirmationModalOpen}

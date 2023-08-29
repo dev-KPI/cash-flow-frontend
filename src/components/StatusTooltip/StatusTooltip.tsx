@@ -1,6 +1,8 @@
 import {FC, useState, ReactNode} from "react";
 
 import classes from './StatusTooltip.module.css'
+import { useActionCreators } from "@hooks/storeHooks/useAppStore";
+import { GroupSliceActions } from "@store/Group/GroupSlice";
 
 interface IStatusTooltipProps {
     title: ReactNode
@@ -11,6 +13,7 @@ const StatusTooltip: FC<IStatusTooltipProps> = ({title, type}) => {
 
     const [showTooltip, setShowTooltip] = useState<boolean>(true);
     const [showTooltipAnim, setShowTooltipAnim] = useState<string>(classes.slideIn);
+    const GroupsDispatch = useActionCreators(GroupSliceActions)
 
     const icon = type === 'success' ? 
     <i className="bi bi-check"></i> : 
@@ -21,7 +24,15 @@ const StatusTooltip: FC<IStatusTooltipProps> = ({title, type}) => {
     const closeAnimTooltip = () => {
         const tooltip = document.getElementById('StatusTooltip')
         setShowTooltipAnim(classes.slideOut);
-        if(tooltip) setTimeout(() => setShowTooltip(false), 1000)
+        if(tooltip) setTimeout(() => {
+            GroupsDispatch.setTooltip({
+                shouldShowTooltip: false,
+                modeTooltip: 'leave',
+                textTooltip: '',
+                status: 'success'
+            })
+            setShowTooltip(false)
+        }, 1000)
     }
 
 
