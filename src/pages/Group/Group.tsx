@@ -22,8 +22,6 @@ import GroupHistoryCard from '@pages/Group/GroupHistoryCard/GroupHistoryCard';
 import MonthPicker from '@components/MonthPicker/MonthPicker';
 
 
-
-
 const Group = () => {
 
     const { groupId } = useParams<{ groupId: string }>();
@@ -72,13 +70,13 @@ const Group = () => {
                         <div className={classes.searchTop}>
                             <h3 className={classes.cardTitle}>Members</h3>
                             <NavLink
-                                to={`/group/${groupId}/member/1`}
+                                to={`/group/${groupId}/members`}
                                 className={classes.membersLink}
                                 >
                                 See all
                             </NavLink>
                         </div>
-                        <SearchBar/>
+                        <SearchBar groupId={Number(groupId)}/>
                     </div>
                     <div className={classes.grid__operation}>
                         <OperationCard 
