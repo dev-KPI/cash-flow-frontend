@@ -41,7 +41,7 @@ export const UserApiSlice = api.injectEndpoints({
                 url: `users`,
                 credentials: 'include',
                 params: {
-                    page: page + 1,
+                    page,
                     size
                 }
             }),

@@ -30,7 +30,7 @@ const Users: React.FC = () => {
             pageIndex: 0,
             pageSize: 8,
         })
-    const { data: Users, isLoading: isUsersLoading, isError: isUsersError, isSuccess: isUsersSuccess } = useGetUsersQuery({ page: pageIndex, size: pageSize });
+    const { data: Users, isLoading: isUsersLoading, isError: isUsersError, isSuccess: isUsersSuccess } = useGetUsersQuery({ page: pageIndex + 1, size: pageSize });
     const { data: Groups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
     const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess } = useGetCurrentUserInfoQuery(null);
     const [data, setData] = useState<IUser[]>([])
