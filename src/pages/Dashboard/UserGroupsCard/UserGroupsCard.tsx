@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { mergeRefs } from 'react-merge-refs';
+//logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import IGroup from '@models/IGroup';
@@ -14,6 +15,7 @@ import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 
 
+
 const UserGroupsCard = () => {
 
     const {data: UserGroups, isLoading: isUserGroupsLoading, isError: isUserGroupsError} = useGetCurrentUserGroupsQuery(null)
@@ -23,10 +25,11 @@ const UserGroupsCard = () => {
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [isGroupModalOpen, setIsGroupModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
+    const ref = useRef<HTMLUListElement>(null);
 
-    useEffect(()=> {
-        handleWrap(classes.list, classes.wrapped, classes.specialItem, 1);
-    }, [height, width, UserGroups, isUserGroupsLoading, isUserGroupsError])
+    useEffect(() => {
+        handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+    }, [UserGroups, width, height])
 
     const getGroups = useMemo(() => {
         if(UserGroups){
@@ -71,7 +74,7 @@ const UserGroupsCard = () => {
             {isUserGroupsLoading ? <UserGroupsCardLoader/> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Groups</h3>
-                    <ul className={classes.list} ref={squareRef}>
+                    <ul className={classes.list} ref={mergeRefs([ref, squareRef])}>
                         {getGroups}
                         {
                         UserGroups!.user_groups.length === 0 ?
