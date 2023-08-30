@@ -8,10 +8,10 @@ import IUser from '@models/IUser';
 //UI
 import classes from './GroupSpendersCard.module.css';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import { IGetCurrentGroupSpendersResponse } from '@store/Controllers/ExpensesController/ExpensesControllerInterfaces';
 import PreLoader from '@components/PreLoader/PreLoader';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import { IGetCurrentGroupSpendersResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 
 interface IGroupSpendersCardProps {
     data: IGetCurrentGroupSpendersResponse[] | undefined,

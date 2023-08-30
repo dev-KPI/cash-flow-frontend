@@ -228,6 +228,7 @@ export const {
     useGetCurrentUserInfoQuery,
     useGetUsersQuery,
     useGetUserExpensesByGroupQuery,
+    useGetCurrentUserExpensesDailyQuery,
     useGetUserHistoryQuery,
     useGetUserExpensesByCategoryQuery,
     useGetCurrentUserBalanceQuery,

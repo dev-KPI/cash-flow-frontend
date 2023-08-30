@@ -55,13 +55,7 @@ export interface IGetTotalExpensesResponse {
     percentage_increase: number
 }
 
-export interface IGetCurrentGroupSpendersResponse {
-    id: number,
-    first_name: string,
-    last_name: string,
-    picture: string,
-    amount: number
-}
+export interface IGetCurrentGroupSpendersResponse extends IExtendedUser { }
 export interface IGetCurrentGroupSpendersBody {
     group_id: number,
     period: IPeriodYearMonth | IPeriodRangeDates

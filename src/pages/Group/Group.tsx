@@ -2,10 +2,9 @@ import { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 //logic
-import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useGetCurrentGroupSpendersQuery, useGetCurrentUserInGroupTotalExpensesQuery, useGetGroupTotalExpensesQuery, useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 import { useWindowSize } from 'usehooks-ts';
-import { useGetCurrentGroupSpendersQuery, useGetCurrentUserInGroupTotalExpensesQuery, useGetGroupTotalExpensesQuery } from '@store/Controllers/ExpensesController/ExpensesController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';

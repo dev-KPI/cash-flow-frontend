@@ -3,16 +3,17 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';
 import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
-import { useGetInfoByGroupQuery, useLeaveGroupMutation } from '@store/Controllers/GroupsController/GroupsController';
-import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
+import { useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useWindowSize } from 'usehooks-ts';
 //UI
 import classes from './GroupHeader.module.css'
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
-import { useWindowSize } from 'usehooks-ts';
 import MonthPicker from '@components/MonthPicker/MonthPicker';
+
 
 export interface IPropsGroupHeader {
     groupInfo: IGetInfoFromGroupResponse

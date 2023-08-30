@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { mergeRefs } from 'react-merge-refs';
+//logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import IGroup from '@models/IGroup';
@@ -14,32 +15,32 @@ import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 
 
+
 const UserGroupsCard = () => {
 
-    const {data: UserGroups, isLoading: isUserGroupsLoading, isError: isUserGroupsError} = useGetCurrentUserGroupsQuery(null)
+    const {data: UserGroups, isLoading: isUserGroupsLoading, isError: isUserGroupsError, isSuccess: isUserGroupsSuccess} = useGetCurrentUserGroupsQuery(null)
 
     const [groupId, setGroupId] = useState<number>(0);
-    const [totalItems, setTotalItems] = useState<number>(11);
+    const [totalItems, setTotalItems] = useState<number>(5);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [isGroupModalOpen, setIsGroupModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
+    const ref = useRef<HTMLUListElement>(null);
 
-    useEffect(()=> {
-        handleWrap(classes.list, classes.wrapped, classes.specialItem, 1);
-    }, [height, width, UserGroups, isUserGroupsLoading, isUserGroupsError])
+    useEffect(() => {
+        handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+    }, [UserGroups, width, height])
 
-    const getGroups = useMemo(() => {
-        if(UserGroups){
-            return UserGroups.user_groups.map((item: IGroup, i) => <UserGroupsCardItem key={i} group={item.group} />)
-        }
-    }, [UserGroups, isUserGroupsLoading, isUserGroupsError])
-
-    const useGroups = (groups: IGroup[], total: number) => {
-        const properGroups = useMemo(() => {
-            return groups?.slice(0, total)
-        }, [groups, total])
-        return properGroups;
+    const getGroups = (groups: IGroup[]) => {
+        return groups.map((item: IGroup, i) => <UserGroupsCardItem key={i} group={item.group} />)
     }
+    
+    const properGroups: IGroup[] = useMemo(() => {
+        if (UserGroups)
+            return UserGroups.user_groups.slice(0, totalItems)
+        else return []
+    }, [UserGroups, totalItems])
+
 
     const createGroupModal = () => {
         return <GroupModal
@@ -56,14 +57,35 @@ const UserGroupsCard = () => {
             setIsModalOpen={setIsMoreModalOpen}
             isAddModalOpen={isGroupModalOpen}
             setIsAddModalOpen={setIsGroupModalOpen}          
-            data={getGroups}
+            data={getGroups(properGroups)}
             type={'groups'}
         />
     }
 
-
-    const properGroups = useGroups(UserGroups?.user_groups!, totalItems!)
-
+    let groupsContent;
+    if (isUserGroupsSuccess && UserGroups.user_groups.length !== 0) {
+        groupsContent = getGroups(properGroups)
+        UserGroups.user_groups.length >= totalItems ?
+            groupsContent.push(<SpecialButton
+                handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+                className={classes.specialItem}
+                type='view'
+            />)
+            :
+            groupsContent.push(<SpecialButton
+                handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
+                className={classes.specialItem}
+                type='add'
+            />)
+    } else {
+        groupsContent = <div className={classes.emptyList}>
+            <SpecialButton
+                handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
+                className={classes.specialItem}
+                type='add'
+            />
+        </div>
+    }
     return (
         <div className={classes.groups}>
             {getViewMoreModal()}
@@ -71,31 +93,8 @@ const UserGroupsCard = () => {
             {isUserGroupsLoading ? <UserGroupsCardLoader/> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Groups</h3>
-                    <ul className={classes.list} ref={squareRef}>
-                        {getGroups}
-                        {
-                        UserGroups!.user_groups.length === 0 ?
-                            <div className={classes.emptyList}>
-                                <SpecialButton
-                                    handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
-                                    className={classes.specialItem}
-                                    type='add'
-                                />
-                            </div>
-                        :
-                        UserGroups!.user_groups.length >= 5 ?
-                            <SpecialButton
-                                    handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
-                                    className={classes.specialItem}
-                                    type='view'
-                                />
-                            :
-                            <SpecialButton
-                                handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
-                                className={classes.specialItem}
-                                type='add'
-                            />
-                        }
+                    <ul className={classes.list} ref={mergeRefs([ref, squareRef])}>
+                        {groupsContent}
                     </ul>
                 </div>
                 }

@@ -3,8 +3,7 @@ import { FC } from 'react';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
-import { useGetGroupExpensesByCategoryQuery } from '@store/Controllers/GroupsController/GroupsController';
-import { useGetCurrentGroupSpendersQuery } from '@store/Controllers/ExpensesController/ExpensesController';
+import { useGetCurrentGroupSpendersQuery, useGetGroupExpensesByCategoryQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import classes from './GroupChartsCard.module.css';
 import ChartCard from '@components/ChartCard/ChartCard';
