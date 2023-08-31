@@ -98,6 +98,21 @@ export interface IGetCategoriesByGroupResponse {
     ]
 }
 
+export interface IGetUserByGroupInfoResponse extends IUser{
+    count_expenses: 0,
+    total_expenses: {
+      amount: 0,
+      percentage_increase: 0
+    },
+    best_category: ICategoryAmount
+}
+
+export interface IGetUserByGroupInfoBody {
+    group_id: number, 
+    member_id: number, 
+    period: IPeriodYearMonth | IPeriodRangeDates
+}
+
 export interface IGetGroupUsersHistoryResponse extends IListResponse<{
     id: number,
     descriptions: string,
