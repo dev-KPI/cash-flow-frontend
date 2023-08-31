@@ -28,7 +28,7 @@ const UserCategoriesCard = () => {
     const [categories, setCategories] = useState<ICategoryAmount[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
     const [pageGroup, setGroupPage] = useState<number>(0);
-    const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
+    const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [isExpenseModalOpen, setIsExpenseModalOpen] = useState<boolean>(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
@@ -37,19 +37,28 @@ const UserCategoriesCard = () => {
     const ref = useRef<HTMLUListElement>(null);
     
     const navigate = useNavigate()
-    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
+    const { data: UserGroups, isLoading: isGroupsLoading,isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
+    
+    useEffect(() => {
+        if (isGroupsSuccess && UserGroups.user_groups[0]) {
+            setSelectedGroup(UserGroups.user_groups[0].group.id)
+            console.log('set',UserGroups.user_groups[0].group.id);
+        }
+            
+    }, [UserGroups, isGroupsFetching])
+    console.log(UserGroups?.user_groups);
     const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByGroupQuery({
-        group_id: selectedGroup, 
-        period: MonthPickerStore.type === 'year-month' ? 
-        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
-    })
+        group_id: selectedGroup,
+        period: MonthPickerStore.type === 'year-month' ?
+            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
+            { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
+    }, { skip: !isGroupsSuccess || selectedGroup === 0 })
     useEffect(() => {
         if (isExpensesSuccess)
             setCategories(ExpensesByGroup.categories)
-    }, [ExpensesByGroup, UserGroups])
+    }, [ExpensesByGroup])
 
-
+    console.log(selectedGroup);
     requestAnimationFrame(_ => {
         handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
     })
@@ -140,7 +149,7 @@ const UserCategoriesCard = () => {
                     type='add'
                 />)  
         }
-    } else if (isExpensesError || isGroupsError || !UserGroups?.user_groups[pageGroup]) {
+    } else if (!UserGroups?.user_groups[pageGroup]) {
         categoriesContent = <div className={classes.emptyList}>
             <p>Create a group before using expenses!</p>
             <CustomButton
@@ -151,6 +160,8 @@ const UserCategoriesCard = () => {
                 isPending={false}
             />
         </div>
+    } else {
+        console.log(ExpensesByGroup?.categories);
     }
     return (
         <div className={classes.categories}>
