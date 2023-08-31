@@ -6,15 +6,22 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
 import { useGetGroupTotalExpensesQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { IGetUserByGroupInfoResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 //UI
 import classes from './GroupMemberUserCard.module.css'
 import userIcon from '@assets/user-icon.svg';
-import IMember from '@models/IMember';
 import OperationCard from '@components/OperationCard/OperationCard';
+import { useMemo } from 'react';
+import GroupMemberUserCardLoader from './GroupMemberUserCardLoader';
 
+interface IGroupMemberUserCardProps {
+    Member: IGetUserByGroupInfoResponse
+    isMemberLoading: boolean 
+    isMemberError: boolean 
+    isMemberSuccess: boolean
+}
 
-
-const GroupMemberUserCard = () => {
+const GroupMemberUserCard: React.FC<IGroupMemberUserCardProps> = ({Member, isMemberLoading, isMemberError, isMemberSuccess}) => {
     const { groupId, memberId } = useParams<{
         groupId: string,
         memberId: string
@@ -26,21 +33,44 @@ const GroupMemberUserCard = () => {
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
         {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
     })
-    const members: IMember[] = MembersObj.members
 
-    let picture = ''
-    let name = ''
-    let fullname = ''
-    let login = ''
-    if (memberId) {
-        const member = members.find(item => item.user.id === +memberId)
-        picture = member?.user.picture ?? ''
-        name = member?.user.first_name ?? ''
-        fullname = member?.user.first_name + ' ' + member?.user.last_name
-        login = member?.user.login ?? ''
-    }
+    let picture = Member.picture ? Member.picture : userIcon
+    let name = Member.first_name;
+    let fullname = Member.first_name + (Member.last_name ? (' ' + Member.last_name) : '')
+    let login = Member.login
 
-    return (
+    const memberBestCategory = useMemo(() => {
+        if(Member?.best_category?.id){
+            return (
+                <div className={classes.cardInner}>
+                    <div className={classes.top}>
+                        <div className={classes.info}>
+                            <h3 className={classes.title}>{`${name}'s best category`}</h3>
+                            <p className={classes.numberTitle}>{Member.best_category.amount}$</p>
+                        </div>
+                        <div className={classes.icon}>
+                            <i className={Member.best_category.icon_url}></i>
+                        </div>
+                    </div>
+                    <h4 className={classes.subtitle}>{Member.best_category.title}</h4>
+                </div>
+            )
+        } else if (Member) {
+            return (
+                <div className={classes.noBestCategory}>
+                    <i className='bi bi-ui-checks-grid'></i>
+                    <p>Has no best category</p>
+                </div>
+            )
+        }
+    }, [Member])
+
+    return (<>
+        {isMemberLoading || isGroupTotalExpensesLoading ? (
+        <div className={classes.infoCard}>
+            <GroupMemberUserCardLoader/> 
+        </div>
+        ): (
         <div className={classes.infoCard}>
             <div className={classes.inner}>
                 <div className={classes.user}>
@@ -48,7 +78,7 @@ const GroupMemberUserCard = () => {
                         <img className={classes.photo}
                             alt={'user icon'}
                             src={isUrl(picture) ? picture : userIcon}
-                        // style={{ filter: picture ? (actualTheme === 'light' ? 'invert(0)' : 'invert(1)') : '' }}
+                            // style={{ filter: picture ? (actualTheme === 'light' ? 'invert(0)' : 'invert(1)') : '' }}
                         />
                     </div>
                     <div className={classes.personal__data}>
@@ -60,6 +90,7 @@ const GroupMemberUserCard = () => {
                     <OperationCard
                         operation={'Expenses'}
                         title={`${name}'s expenses`}
+                        offPreloader={true}
                         className={classes.expensesCard}
                         data={GroupTotalExpenses}
                         isError={isGroupTotalExpensesError}
@@ -68,24 +99,13 @@ const GroupMemberUserCard = () => {
                     />
                     <div className={classes.cardInner}>
                         <h3 className={classes.title}>{`${name}'s total count of expenses`}</h3>
-                        <p className={classes.numberTitle}>10</p>
+                        <p className={classes.numberTitle}>{Member?.count_expenses}</p>
                     </div>
-                    <div className={classes.cardInner}>
-                        <div className={classes.top}>
-                            <div className={classes.info}>
-                                <h3 className={classes.title}>{`${name}'s best category`}</h3>
-                                <p className={classes.numberTitle}>12,312$</p>
-                            </div>
-                            <div className={classes.icon}>
-                                    <i className="bi bi-credit-card-2-front"></i>
-                            </div>
-                        </div>
-                        <h4 className={classes.subtitle}>Entertainment</h4>
-                    </div>
+                    {memberBestCategory}
                 </div>
             </div>
         </div>
-    );
+    )}</>);
 };
 
 export default GroupMemberUserCard;
