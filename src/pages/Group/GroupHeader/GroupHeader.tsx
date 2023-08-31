@@ -3,16 +3,17 @@ import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';
 import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
-import { useGetInfoByGroupQuery, useLeaveGroupMutation } from '@store/Controllers/GroupsController/GroupsController';
-import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
+import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
+import { useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useWindowSize } from 'usehooks-ts';
 //UI
 import classes from './GroupHeader.module.css'
 import Breadcrumbs from '@components/Breadcrumbs/Breadcrumbs';
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
-import { useWindowSize } from 'usehooks-ts';
 import MonthPicker from '@components/MonthPicker/MonthPicker';
+
 
 export interface IPropsGroupHeader {
     groupInfo: IGetInfoFromGroupResponse
@@ -59,18 +60,13 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
         }
     }, [UsersByGroup, isUsersByGroupSuccess, isUsersByGroupLoading, isUsersByGroupLoading])
     const {width, height} = useWindowSize();
-    const [groupTitleCustom, setGroupTitleCustom] = useState<string>(groupInfo.title);
-    const setGroupTitleCustomCallback = useCallback(() => {
-        ((groupInfo.title.length > 9) && (width < 520)) ? 
-        setGroupTitleCustom(groupInfo.title.slice(0, 9) + '...') : 
-        setGroupTitleCustom(groupInfo.title)
-    }, [width])
+
     const [leaveMode, setLeaveMode] = useState<'leave' | 'disband' | 'kick'>('leave');
     const [buttonName, setButtonName] = useState<string>('Leave group')
 
     const getMonthPicker = useMemo(() => {
         if(width > 768) return (<>
-            <div style={{maxWidth: 'max-content'}}>
+            <div style={{flex: '1'}}>
                 <MonthPicker/>
             </div>
         </>)
@@ -89,8 +85,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
 
     useEffect(() => {
         getLeaveButton()
-        setGroupTitleCustomCallback()
-    }, [getLeaveButton, setGroupTitleCustomCallback])
+    }, [getLeaveButton])
 
     return (
         <>
@@ -103,14 +98,10 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
             />}
             <div className={classes.header}>
                 <div className={classes.header__container}>
-                    <div style={{display: 'flex', gap: '30px'}}>
-                        <h2 
-                        onClick={() => ((groupTitleCustom === groupInfo.title) && width < 768) ? 
-                            setGroupTitleCustom(groupInfo.title.slice(0,9)) : 
-                            setGroupTitleCustom(groupInfo.title + '...')}
-                        className={`${classes.title} pageTitle`}>{groupTitleCustom}</h2>
-                        {getMonthPicker}
+                    <div className={classes.titleWrapper}>
+                        <h2 className={`${classes.title} pageTitle`}>{groupInfo.title}</h2>
                     </div>
+                    {getMonthPicker}
                     <nav className={classes.breadcrumbs}>
                         <Breadcrumbs breadcrumbs={breadcrumbs} />
                         <div className={classes.breadcrumbs__underline}></div>

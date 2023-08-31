@@ -9,14 +9,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 30px;
 }
 
 .page__container {}
 
-.title{
+.titleWrapper{
     display: flex;
-    align-items: center;
+    min-width: 0;
+}
+.title{
+    display: block;
+
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .breadcrumbs {
     position: absolute;

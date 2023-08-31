@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {  useMemo } from 'react';
 
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
-import { useGetCurrentUserExpensesDailyQuery } from '@store/Controllers/ExpensesController/ExpensesController';
 import DateService from '@services/DateService/DateService';
 import {addDays, subDays, isSameDay} from 'date-fns'
 //UI
 import classes from './UserGraphCard.module.css'
 import GraphCardLoader from '@components/GraphCard/GraphCardLoader';
 import Graph from '@components/GraphCard/Graph';
+import { useGetCurrentUserExpensesDailyQuery } from '@store/Controllers/UserController/UserController';
 
 
 const UserGraphCard = () => {

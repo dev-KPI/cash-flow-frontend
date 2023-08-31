@@ -51,7 +51,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
     } else if (mode === 'kick') {
         headerIcon = <i className="bi bi-person-dash"></i>
         titleModal = 'Remove user'
-        modalText = <p>Are you sure you want to remove {kickedUser?.first_name} {kickedUser?.last_name} from the group?</p>
+        modalText = <p>Are you sure you want to remove  <span>{kickedUser?.first_name} {kickedUser?.last_name}</span> from the group?</p>
     } else if (mode === 'disband') {
         headerIcon = <i className="bi bi-people"></i>
         titleModal = 'Disband group'

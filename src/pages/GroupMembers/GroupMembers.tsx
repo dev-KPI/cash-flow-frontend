@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 //UI
 import classes from './GroupMembers.module.css';
 import userIcon from '@assets/user-icon.svg'
 
 //logic
 import IMember from '@models/IMember';
-import { MembersObj } from '@pages/MembersObj';
+
 import DateService from '@services/DateService/DateService';
 import {
     createColumnHelper,
@@ -20,13 +20,10 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import { isUrl } from '@services/UsefulMethods/UIMethods';
-import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import CustomButton from '@components/Buttons/CustomButton/CustomButton';
-import { useGetCurrentUserInfoQuery, useGetUsersByGroupQuery } from '@store/Controllers/UserController/UserController';
-import { useGetInfoByGroupQuery, useLeaveGroupMutation, useRemoveUserMutation } from '@store/Controllers/GroupsController/GroupsController';
+
+import { useGetCurrentUserInfoQuery,  } from '@store/Controllers/UserController/UserController';
+import { useGetInfoByGroupQuery, useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { SortingState } from '@tanstack/react-table';
-import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
-import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import IUser from '@models/IUser';
 import ButtonContent from './ButtonContent';

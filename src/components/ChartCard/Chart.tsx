@@ -6,8 +6,8 @@ import type { ChartData, ChartOptions } from 'chart.js/auto';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
 import { AnyObject } from 'chart.js/dist/types/basic';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import { ISimplifiedCategoryWithColor } from '@models/ICategory';
-
+import { ICategoryAmount } from '@models/ICategory';
+import { IExtendedUser } from '@models/IUser';
 
 interface DoughnutProps {
     options: ChartOptions<'doughnut'>;
@@ -20,19 +20,20 @@ ChartJS.register(
     Legend,
 )
 
-interface ChartProps {
-    data: ISimplifiedCategoryWithColor[];
-    total: number;
-    setId: Dispatch<SetStateAction<number>>
-}
 
-const UserExpenseChart: FC<ChartProps> = ({ data, total, setId }) => {
+type IChartProps = { setId: (Dispatch<SetStateAction<number>>), total: number; } & (
+    | { categories: ICategoryAmount[], members?: never }
+    | { categories?: never, members: IExtendedUser[] }
+)
 
+const UserExpenseChart: FC<IChartProps> = ({ categories, members, total, setId }) => {
     const { mainTextColor } = useAppSelector(state => state.persistedThemeSlice);
-    const dataAmount = data.map((item) => item.amount);
-    let backgroundColor = data.map((item) => '')
-    const categories = data as ISimplifiedCategoryWithColor[];
-    backgroundColor = categories.map((item) => item.color)
+    let dataAmount: number[] = [];
+    let backgroundColor: string[] = [];
+
+    const data = categories ? categories : members;
+    backgroundColor = data.map((item) => item.color_code);
+    dataAmount = data.map((item) => item.amount);
 
     //fix to avoid very small segments
     let inPercent = dataAmount.map(v => Math.max(v / total * 100, 2)); 

@@ -12,10 +12,11 @@ import { Chart as ChartJS, CategoryScale, LinearScale,
 import { Context } from 'vm';
 
 //store
-import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import { IGetCurrentUserDailyExpensesResponse } from '@store/Controllers/ExpensesController/ExpensesControllerInterfaces';
+import { IGetCurrentUserDailyExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
+
 
 
 
@@ -177,7 +178,7 @@ const Graph: FC<IGraphProps> = ({data}) => {
                         size: 14,
                         weight: "300",
                     },
-                    stepSize: getYParams().step,
+                    // stepSize: getYParams().step,
                     callback: (value: string | number, index: number, ticks: Tick[]): string => {
                         const resValue = +(value);
                         if (window.innerWidth < 440 && resValue >= 1000) {

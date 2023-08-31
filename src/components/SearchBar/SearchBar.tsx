@@ -1,54 +1,79 @@
-import React, { useRef, useState } from 'react';
-
-import { useOnClickOutside } from 'usehooks-ts'
+import React, { FC, useMemo, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import useEscapeKey from '@hooks/layoutHooks/useEscapeKey';
+import { useOnClickOutside } from 'usehooks-ts'
+import { isUrl } from '@services/UsefulMethods/UIMethods';
 //store
+import IUser from '@models/IUser';
 import IMember from '@models/IMember';
-
+import { useGetUsersQuery } from '@store/Controllers/UserController/UserController';
+import { useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import classes from './SearchBar.module.css'
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
-import { MembersObj } from '@pages/MembersObj';
-import { isUrl } from '@services/UsefulMethods/UIMethods';
 
 
-const SearchBar = () => {
-    const [filter, setFilter] = useState<{query: string, list: IMember[]}>({
+
+const SearchBar: FC<{groupId:number}> = ({groupId}) => {
+    const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError, isSuccess: isUsersByGroupSuccess } = useGetUsersByGroupQuery({ group_id: Number(groupId), size: 500, page: 1 });
+    const { data: Users, isLoading: isUsersLoading, isError: isUsersError, isSuccess: isUsersSuccess } = useGetUsersQuery({ page: 1, size: 500 });
+
+    const filteredUsersInGroup = useMemo(() => {
+        if (UsersByGroup && isUsersByGroupSuccess) {
+            return UsersByGroup.items[0].users_group.filter(el => el.status === 'ACTIVE')
+        } else 
+            return []
+    }, [UsersByGroup, isUsersByGroupLoading, isUsersByGroupSuccess, isUsersByGroupError])
+    const users = useMemo(() => {
+        if (Users && isUsersSuccess)
+            return Users.items
+        else 
+            return []
+    }, [Users, isUsersLoading, isUsersSuccess, isUsersError])
+    const [filter, setFilter] = useState<{query: string, membersList: IMember[], usersList: IUser[]}>({
         query: '',
-        list: []
+        membersList: [],
+        usersList: []
     })
     const [isOpen, setIsOpen] = useState<boolean>(false)
-    const ref = useRef(null)
     
-
+    const ref = useRef(null)
     const handleClickOutside = () => {
         setIsOpen(false)
     }
     useOnClickOutside(ref, handleClickOutside)
-    const handleButton = () => {
-        // console.log();
+    useEscapeKey(handleClickOutside);
+    const handleOpenClick = () => {
+        if (isOpen) return;
+        setIsOpen(!isOpen)
     }
 
-    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const results = members.filter(member => {
-            if (e.target.value === "") return members
+        const membersResult = filteredUsersInGroup.filter(member => {
+            if (e.target.value === "") return filteredUsersInGroup
             const name = member.user.first_name + " " + member.user.last_name;
             return name.toLowerCase().includes(e.target.value.toLowerCase())
         })
+        const usersResult = users.filter(user => {
+            if (e.target.value === "") return null
+            const name = user.first_name + " " + user.last_name;
+            return name.toLowerCase().includes(e.target.value.toLowerCase())
+        }).filter((user) => !membersResult.some((member) => member.user.id === user.id)).slice(0, 3)
+
         setFilter({
             query: e.target.value,
-            list: results
+            membersList: membersResult,
+            usersList: usersResult
         })
     }
-    const members: IMember[] = MembersObj.members
-    const getMembers = (member: IMember) => {
-        const name = member.user.first_name + " " + member.user.last_name;
-        const photo = member.user.picture
+    
+    const getMembers = (user: IUser, mode: 'insight' | 'add') => {
+        const name = user.first_name + " " + user.last_name;
+        const photo = user.picture
         return (<li className={classes.item}
-            key={`${member.user.first_name} + ${member.date_join}`}>
+            key={`${user.first_name}`}>
             <div className={classes.member}>
                 <div className={classes.icon}>
                     <img className={classes.photo}
@@ -58,36 +83,55 @@ const SearchBar = () => {
                 </div>
                 <p className={classes.name}>{name}</p>
             </div>
-            <CustomButton
-                icon={'none'}
-                type={'white'}
-                background={'outline'}
-                callback={handleButton}
-                isPending={false}
-                disableScale={true}
-                children={
-                    <div className={classes.btnChild}>
-                        <i className="bi bi-bar-chart"></i>
-                        <p>Insight</p>
-                    </div>
-                }
-                className={classes.btn} />
+            {
+                mode === 'insight' &&
+                <CustomButton
+                    icon={'none'}
+                    type={'white'}
+                    background={'outline'}
+                    callback={() => { }}
+                    isPending={false}
+                    disableScale={true}
+                    children={
+                        <div className={classes.btnChild}>
+                            <i className="bi bi-bar-chart"></i>
+                            <p>Insight</p>
+                        </div>
+                    }
+                    className={classes.btn} />
+            }
+            {
+                mode === 'add' &&
+                <CustomButton
+                    icon={'add'}
+                    type={'primary'}
+                    background={'outline'}
+                    callback={() => { }}
+                    isPending={false}
+                    disableScale={true}
+                    children={'Add'}
+                    className={classes.btn} />
+            }
+           
         </li>)
     }
     const getFilteredMembers = () => {
-        return filter.query === '' ? members.map(member => getMembers(member))
-            : filter.list.map(member => {
-                return getMembers(member)
+        return filter.query === '' ? filteredUsersInGroup.map(({user}) => getMembers(user, 'insight'))
+            : filter.membersList.map(({user})=> {
+                return getMembers(user, 'insight')
             })
     }
-    
+    const getUsers = () => {
+        return filter.query === '' ? '' : filter.usersList.map(user => getMembers(user, 'add'))
+    }
+    console.log('render');
     
     const contentClasses = classes.content + ' ' + `${isOpen ? classes.show : classes.hide}`  // eslint-disable-line no-useless-concat
     return (
         <div className={classes.searchBar}
             ref={ref}>
             <form className={classes.searchForm}
-                onClick={() => setIsOpen(!isOpen)}>
+                onClick={handleOpenClick}>
                 <button className={classes.searchBtn} type="button">
                     <i className="bi bi-search"></i>
                 </button>
@@ -99,12 +143,22 @@ const SearchBar = () => {
             </form>
             <div className={contentClasses}>
                 <h5 className={classes.optionsTitle}>Members</h5>
-                <ul className={classes.options} >
-                    {getFilteredMembers()}
+                <ul className={classes.options}>
+                    {getFilteredMembers().length === 0 ?
+                        <p className={classes.emptyList}>No members match your search!</p>
+                        :
+                        getFilteredMembers()
+                    }
                 </ul>
+                {getUsers().length > 0 ? (<>
+                    <h5 className={classes.optionsTitle}>Users</h5>
+                    <ul className={classes.options}>
+                        {getUsers()}
+                    </ul>
+                </>) : null}
                 <div className={classes.moreBlock}>
                     <NavLink
-                        to="/group/members"
+                        to={`/group/${groupId}/members`}
                         className={classes.membersLink}
                     >
                         See all

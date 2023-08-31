@@ -15,14 +15,10 @@ import { ICreateReplenishmentBody,
 export const ReplenishmentsApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getReplenishmentsByUser: builder.query<IGetReplenishmentsByUserResponse[], IGetReplenishmentsByUserBody>({
-            query: (body) => ({
+            query: ({period}) => ({
                 url: `/replenishments/`,
                 credentials: 'include',
-                params: {
-                    year_month: body.year_month,
-                    // start_date: body.start_date,
-                    // end_date: body.end_date
-                }
+                params: period
             }),
             transformErrorResponse: (
                 response: { status: string | number },

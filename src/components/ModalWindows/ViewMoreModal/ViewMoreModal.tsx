@@ -14,12 +14,8 @@ interface IViewMoreModalProps{
     data: any,
     type: 'categories' | 'groups'
 }
-interface IModalState {
-    name: string
-    color: string
-}
 
-const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModalOpen, isAddModalOpen,setIsAddModalOpen, data, type }) => {
+const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModalOpen, isAddModalOpen, setIsAddModalOpen, data, type }) => {
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let title = ''
     let modalName = ''
@@ -30,7 +26,14 @@ const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModa
     } else if (type === 'groups') {
         title = 'Groups'
         modalName = 'ViewMoreGroupsModal'
-     }
+    }
+
+    const handleClick = (e: React.MouseEvent<HTMLUListElement>) => {
+        const element = e.target as HTMLElement;
+        if (element.tagName !== 'UL') {
+            setIsModalOpen(!isModalOpen)
+        }
+    }
 
     return <UsePortal
         callback={() => {}}
@@ -40,7 +43,7 @@ const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModa
         title={title}
     >
         <div className={classes.modal__wrapper}>
-            <ul className={classes.list}>
+            <ul className={classes.list} onClick={handleClick}>
                 {data}
                 <SpecialButton
                     handleClick={() => {

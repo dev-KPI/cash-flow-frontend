@@ -1,17 +1,17 @@
-import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { isUrl } from '@services/UsefulMethods/UIMethods'
 
 import { MembersObj } from '@pages/MembersObj';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
-import { useGetGroupTotalExpensesQuery } from '@store/Controllers/ExpensesController/ExpensesController';
 import DateService from '@services/DateService/DateService';
+import { useGetGroupTotalExpensesQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
 import classes from './GroupMemberUserCard.module.css'
 import userIcon from '@assets/user-icon.svg';
 import IMember from '@models/IMember';
 import OperationCard from '@components/OperationCard/OperationCard';
+
 
 
 const GroupMemberUserCard = () => {

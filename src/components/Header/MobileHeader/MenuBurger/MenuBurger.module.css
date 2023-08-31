@@ -64,7 +64,13 @@
     font-weight: 500;
     color: var(--main-green)
 }
+.red {
+    color: var(--main-red);
+}
 
+.green {
+    color: var(--main-green);
+}
 .burgernav__line{
     height: 0px;
     margin: 16px 20px 0px;
@@ -132,6 +138,9 @@
     height: 16px;
     cursor: pointer;
 }
+.burgerIcon path {
+    fill: var(--text);
+}
 .burgerIcon i {
     font-size: 16px;
 }
@@ -167,7 +176,7 @@
     line-height: 13px;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    color: #7A7A9D;
+    color: var(--text);
 }
 
 .burgernav__groups .list{

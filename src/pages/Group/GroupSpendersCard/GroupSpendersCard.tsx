@@ -8,10 +8,10 @@ import IUser from '@models/IUser';
 //UI
 import classes from './GroupSpendersCard.module.css';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import { IGetCurrentGroupSpendersResponse } from '@store/Controllers/ExpensesController/ExpensesControllerInterfaces';
 import PreLoader from '@components/PreLoader/PreLoader';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import { IGetCurrentGroupSpendersResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 
 interface IGroupSpendersCardProps {
     data: IGetCurrentGroupSpendersResponse[] | undefined,
@@ -44,13 +44,11 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
                             <p className={classes.order}>{i + 1}.</p>
                             <div className={classes.details}>
                                 <div className={classes.info}>
-                                    <div className={classes.avatar}>
-                                        <img className={classes.photo}
-                                            alt={'user icon'}
-                                            src={isUrl(photo) ? photo : userIcon}
-                                        />
-                                    </div>
-                                    <p className={classes.name}>{name.length > 14 ? name.slice(0,15) + '...' : name}</p>
+                                    <img className={classes.photo}
+                                        alt={'user icon'}
+                                        src={isUrl(photo) ? photo : userIcon}
+                                    />
+                                    <p className={classes.name}>{name}</p>
                                 </div>
                                 <p className={classes.amount}>{numberWithCommas(item.amount)}$</p>
                             </div>

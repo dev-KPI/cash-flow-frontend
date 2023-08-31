@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
+import { createRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { mergeRefs } from "react-merge-refs";
+import { useNavigate } from 'react-router-dom';
 //logic
 import { useElementSize } from 'usehooks-ts'
 import { handleWrap } from '@services/UsefulMethods/UIMethods';
@@ -18,6 +19,8 @@ import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+
 
 const UserCategoriesCard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
@@ -31,7 +34,9 @@ const UserCategoriesCard = () => {
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
-
+    const ref = useRef<HTMLUListElement>(null);
+    
+    const navigate = useNavigate()
     const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
     const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByGroupQuery({
         group_id: selectedGroup, 
@@ -44,13 +49,13 @@ const UserCategoriesCard = () => {
             setCategories(ExpensesByGroup.categories)
     }, [ExpensesByGroup, UserGroups])
 
-    const initializeHandleWrapper = useCallback(()=> {
-        handleWrap(classes.list, classes.wrapped, classes.specialItem, 2);
-    }, [height, width, ExpensesByGroup, UserGroups])
 
+    requestAnimationFrame(_ => {
+        handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
+    })
     useEffect(()=>{
-        initializeHandleWrapper()
-    }, [initializeHandleWrapper])
+        handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
+    }, [ExpensesByGroup, UserGroups, width, height])
 
     const getCategories = (categories: ICategoryAmount[]) => {
         return categories.map((item, i) => 
@@ -135,6 +140,17 @@ const UserCategoriesCard = () => {
                     type='add'
                 />)  
         }
+    } else if (isExpensesError || isGroupsError || !UserGroups?.user_groups[pageGroup]) {
+        categoriesContent = <div className={classes.emptyList}>
+            <p>Create a group before using expenses!</p>
+            <CustomButton
+                type='primary'
+                children={'Browse Groups'}
+                icon='none'
+                callback={() => navigate('/groups')}
+                isPending={false}
+            />
+        </div>
     }
     return (
         <div className={classes.categories}>
@@ -167,11 +183,8 @@ const UserCategoriesCard = () => {
                             </button>
                         </div>
                     </div>
-                    <ul className={classes.list} ref={squareRef}>
-                       {(!isGroupsLoading && UserGroups?.user_groups[pageGroup]) ? categoriesContent : <div className={classes.ifNoGroups}>
-                            <i className="bi bi-people"></i>
-                            <p>You haven't groups, create at least one</p>
-                        </div>}
+                    <ul className={classes.list} ref={mergeRefs([ref, squareRef])}>
+                       {categoriesContent}
                     </ul>    
                 </div>
             </>}

@@ -1,134 +1,23 @@
-import React, { FC, MouseEvent, ReactNode, useCallback, useMemo, useState } from "react";
-
+import { FC, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 //UI
 import classes from './GroupMemberGraphCard.module.css';
 import ToggleButton from "@components/Buttons/ToggleButton/ToggleButton";
 import GraphCardLoader from "@components/GraphCard/GraphCardLoader";
 import StackedGraph from "@components/GraphCard/StackedGraph";
 import Graph from "@components/GraphCard/Graph";
-//store
-import { addDays, subDays, isSameDay} from 'date-fns'
+//logic
+import { addDays } from 'date-fns'
 import { IMonthPickerState } from "@store/UI_store/MonthPickerSlice/MonthPickerInterfaces";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-import IUser from "@models/IUser";
-import { addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
-import { useGetCurrentUserExpensesDailyQuery } from "@store/Controllers/ExpensesController/ExpensesController";
 import DateService from "@services/DateService/DateService";
+import { subDays, isSameDay } from 'date-fns'
+import { useGetGroupExpensesByMemberDailyQuery, useGetGroupExpensesDailyQuery } from "@store/Controllers/GroupsController/GroupsController";
 
 
-interface IGraphGroupMembers {
-    date: string,
-    details: {
-        user: IUser
-        amount: number
-    }[]
-}
-type Colors = {
-    [key: string]: string;
-};
-
-const colors: Colors = {
-    blue: "#4C6FFF",
-    orange: "#FF6E01",
-    red: "#FF2D55",
-    green: "#28CD41",
-    purple: "#D96FF8"
-};
-
-
-const existingData = [
-    {
-        date: '2023-04-01',
-        details: [
-            {
-                user: {
-                    id: 0,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'John',
-                    last_name: 'Doe',
-                    picture: 'ref.com',
-                },
-                amount: 132,
-            },
-            {
-                user: {
-                    id: 1,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'Dima',
-                    last_name: 'Rezenkov',
-                    picture: 'ref.com',
-                },
-                amount: 24,
-            },
-        ],
-    },
-];
-
-const startDate = new Date('2023-04-02');
-const endDate = new Date('2023-04-30');
-
-const newData = [];
-
-for (let date = startDate; date <= endDate; date.setDate(date.getDate() + 1)) {
-    const dateString = date.toISOString().split('T')[0];
-    const object = {
-        date: dateString,
-        details: [
-            {
-                user: {
-                    id: 0,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'John',
-                    last_name: 'Doe',
-                    picture: 'ref.com',
-                },
-                amount: Math.floor(Math.random() * (2110 - 100 + 1)) + 100,
-            },
-            {
-                user: {
-                    id: 1,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'Dima',
-                    last_name: 'Rezenkov',
-                    picture: 'ref.com',
-                },
-                amount: Math.floor(Math.random() * (2200 - 100 + 1)) + 100,
-            },
-            {
-                user: {
-                    id: 31,
-                    login: 'johndoe@gmail.com',
-                    first_name: 'Dima',
-                    last_name: 'Pestenkov',
-                    picture: 'ref.com',
-                },
-                amount: Math.floor(Math.random() * (2110 - 100 + 1)) + 100,
-            },
-        ],
-    };
-    newData.push(object);
-}
-
-const combinedData = [...existingData, ...newData];
-
-
-const addColorToUser = (data: IGraphGroupMembers[]) => {
-    return data.map((object) => {
-        return {
-            ...object,
-            details: object.details.map((detail, index) => {
-                return addFieldToObject(detail, 'user', {
-                    ...detail.user,
-                    color: colors[Object.keys(colors)[index % Object.keys(colors).length]]
-                });
-            }),
-        };
-    });
-}
-
-const updatedData = addColorToUser(combinedData)
 
 const GroupMemberGraphCard: FC = () => {
+    const { groupId = 0} = useParams<{ groupId: string }>();
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     const MonthPickerRange = useMemo(() => {
@@ -146,34 +35,35 @@ const GroupMemberGraphCard: FC = () => {
             }
         }
     }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
-    const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
+    
+    const { data: GroupExpenses, isFetching: isGroupExpensesFetching, isLoading: isGroupExpensesLoading, isError: isGroupExpensesError, isSuccess: isGroupExpensesSuccess } = useGetGroupExpensesDailyQuery({ group_id: +groupId || 0, period: MonthPickerRange.period });
+
+    const { data: GroupExpensesByMember, isFetching: isGroupExpensesByMemberFetching, isLoading: isGroupExpensesByMemberLoading, isError: isGroupExpensesByMemberError, isSuccess: isGroupExpensesByMemberSuccess } = useGetGroupExpensesByMemberDailyQuery({ group_id: +groupId || 0, period: MonthPickerRange.period });
 
     const [isToggled, setIsToggled] = useState<boolean>(false);
     
     const RangeTitle = useMemo(() => {
-        if(userDailyExpenses){
-            if (MonthPickerStore.rangeType === 'month' || MonthPickerStore.type === 'year-month') {
-                return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-                ${new Date(MonthPickerStore.startDate).getFullYear()}`
-            } 
-            else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
-                isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
-                return `${new Date(MonthPickerStore.startDate).getDate()} 
-                ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-                ${new Date(MonthPickerStore.startDate).getFullYear()}`
-            } else if (MonthPickerStore.rangeType === 'alltime'){
-                return 'All time'
-            } else {
-                return `From ${
-                    new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
-                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0, 3)}`
-            }
+        if (MonthPickerStore.rangeType === 'month' || MonthPickerStore.type === 'year-month') {
+            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+            ${new Date(MonthPickerStore.startDate).getFullYear()}`
+        } 
+        else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
+            isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
+            return `${new Date(MonthPickerStore.startDate).getDate()} 
+            ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+            ${new Date(MonthPickerStore.startDate).getFullYear()}`
+        } else if (MonthPickerStore.rangeType === 'alltime'){
+            return 'All time'
+        } else {
+            return `From ${
+                new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
+            } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0, 3)}`
         }
-    }, [userDailyExpenses, MonthPickerStore.rangeType, MonthPickerStore.type])
+    }, [MonthPickerStore.rangeType, MonthPickerStore.type])
 
     return (
         <div className={classes.GroupMemberGraph}>
-            {isUserDailyExpensesLoading ? <GraphCardLoader /> :
+            {isGroupExpensesLoading || isGroupExpensesByMemberLoading ? <GraphCardLoader /> :
                 <div className={classes.inner}>
                     <div className={classes.uppernav}>
                         <div className={classes.titleRange}>
@@ -189,9 +79,9 @@ const GroupMemberGraphCard: FC = () => {
                     </div>
                     <div className={classes.graph}>
                         {!isToggled ?
-                            userDailyExpenses && isUserDailyExpensesSuccess ? <Graph data={userDailyExpenses}/> : ''
+                            isGroupExpensesSuccess ? <Graph data={GroupExpenses} /> : null
                             :
-                            <StackedGraph data={updatedData} />
+                            isGroupExpensesByMemberSuccess ? <StackedGraph data={GroupExpensesByMember} /> : null
                         }
                     </div>
                 </div>}

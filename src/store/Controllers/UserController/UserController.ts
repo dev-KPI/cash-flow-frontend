@@ -1,11 +1,12 @@
+import { api } from '@store/api';
+import { getDaysInMonth, addDays } from 'date-fns';
+import DateService from '@services/DateService/DateService';
+//types
+import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetTotalExpensesBody, IGetTotalExpensesResponse, IGetTotalReplenishmentsResponse, IGetTotalReplenishmentsBody, IGetUserExpensesByCategoryResponse, IGetUserExpensesByCategoryBody, IGetCurrentUserDailyExpensesResponse, IGetUserExpensesByGroupResponse, IGetUserExpensesByGroupBody } from './UserControllerInterfaces';
 import IHistoryItem from '@models/IHistoryItem';
 import IListResponse from '@models/IListResponse';
 import IUser from '@models/IUser';
-import { api } from '@store/api';
-
-//types
-import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetUsersFromGroupResponse, IGetTotalExpensesBody, IGetTotalExpensesResponse, IGetTotalReplenishmentsResponse, IGetTotalReplenishmentsBody, IGetUserExpensesByGroupResponse, IGetUserExpensesByGroupBody, IGetUserExpensesByCategoryResponse, IGetUserExpensesByCategoryBody } from './UserControllerInterfaces';
-
+import { IPeriods } from '@models/IPeriod';
 
 export const UserApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -41,7 +42,7 @@ export const UserApiSlice = api.injectEndpoints({
                 url: `users`,
                 credentials: 'include',
                 params: {
-                    page: page + 1,
+                    page,
                     size
                 }
             }),
@@ -50,24 +51,6 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [{ type: 'UserController' as const }],
         }),
-        getUsersByGroup: builder.query<IGetUsersFromGroupResponse, {group_id: number, page: number, size: number}>({
-            query: ({ group_id, page, size}) => ({
-                url: `/groups/${group_id}/users`,
-                credentials: 'include',
-                params: {
-                    page: page,
-                    size: size
-                }
-            }),
-            transformErrorResponse: (
-                response: { status: string | number },
-            ) => response.status,
-            providesTags: (result, err, body) => result?.items ?
-                [...result.items[0].users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
-                { type: 'UserController' as const, id: 'Users' }]
-                :
-                [{ type: 'UserController' as const, id: 'Users' }],
-        }), 
         getUserHistory: builder.query<IListResponse<IHistoryItem>, { page: number, size: number }>({
             query: ({ page = 0, size }) => ({
                 url: `users/history`,
@@ -156,6 +139,60 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
+        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IPeriods>({
+            query: ({ period }) => ({
+                url: `users/daily-expenses`,
+                params: period,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: IPeriods): IGetCurrentUserDailyExpensesResponse[] => {
+                if ('start_date' in body.period && 'end_date' in body.period) {
+                    const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
+                    response.forEach(expense => {
+                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
+                    });
+
+                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
+                    dateRange.shift();
+
+                    return dateRange.map(date => {
+                        const dateISOString = date.toISOString().split('T')[0];
+                        if (expenseMap[dateISOString]) {
+                            return expenseMap[dateISOString];
+                        } else {
+                            return {
+                                date: dateISOString,
+                                amount: 0,
+                            };
+                        }
+                    });
+                } else {
+                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
+                    const startDate = new Date(body.period.year_month + '-01');
+
+                    return Array.from({ length: daysInMonth }, (_, i) => {
+                        const currentDate = addDays(startDate, i);
+                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
+                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
+
+                        const existingExpense = response.find(expense => expense.date === dateKey);
+
+                        return existingExpense || {
+                            date: dateKey,
+                            amount: 0,
+                        };
+                    });
+                }
+            },
+            providesTags: [
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' },
+                { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
+            ]
+        }),
         getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
             query: ({period}) => ({
                 url: `users/total-expenses`,
@@ -190,8 +227,8 @@ export const {
     useGetUserAuthStatusQuery,
     useGetCurrentUserInfoQuery,
     useGetUsersQuery,
-    useGetUsersByGroupQuery,
     useGetUserExpensesByGroupQuery,
+    useGetCurrentUserExpensesDailyQuery,
     useGetUserHistoryQuery,
     useGetUserExpensesByCategoryQuery,
     useGetCurrentUserBalanceQuery,
