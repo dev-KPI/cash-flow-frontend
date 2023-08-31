@@ -5,17 +5,12 @@ import classes from './GroupModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import ViewMoreModal from "../ViewMoreModal/ViewMoreModal";
 import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import IGroupState from "@store/Group/GroupInterfaces";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { GroupSliceActions } from "@store/Group/GroupSlice";
-import { useNavigate } from "react-router-dom";
 import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 
 interface IGroupModalProps{
@@ -28,13 +23,9 @@ interface IGroupModalProps{
 }
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
-    
-    const GroupsStore = useAppSelector<IGroupState>(state => state.persistedGroupSlice)
-    const GroupsSliceDispatch = useActionCreators(GroupSliceActions);
-    
+
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const navigate = useNavigate();
     //pickers
     const [nameValue, setNameValue] = useState<string>('');
     const [descValue, setDescValue] = useState<string>('');
@@ -69,11 +60,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }, [isGroupUpdatingError, isGroupUpdating, isGroupUpdated,
         isGroupCreatingError, isGroupCreating, isGroupCreated])
 
-    const intitializeBaseGroup = useCallback(() => {
-        if (GroupsStore.defaultGroup === 0 && !isGroupCreating && isGroupCreated && !isGroupCreatingError){
-            GroupsSliceDispatch.setDefaultGroup(groupId)
-        } 
-    }, [createGroup, isGroupCreating, isGroupCreated, isGroupCreatingError])
+
 
     const handleSubmit = () => {
         if(mode === 'create'){
@@ -83,7 +70,6 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 icon_url: icon,
                 color_code: pickedColor,
             })
-            intitializeBaseGroup();
             closeModalHandler();
         } else if(mode === 'edit'){
             if(groupId){
@@ -94,13 +80,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     icon_url: icon,
                     color_code: pickedColor,
                 })
-                intitializeBaseGroup();
                 closeModalHandler();
             }
         } else if(mode === 'disband' || mode === 'leave'){
             if(groupId){
                 leaveGroup(groupId)
-                intitializeBaseGroup();
                 closeModalHandler();
             }
         } 
@@ -140,9 +124,8 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
  
     useEffect(() => {
         initializeModalInputs()
-        intitializeBaseGroup()
         closeModalHandler()
-    }, [intitializeBaseGroup, closeModalHandler, initializeModalInputs])
+    }, [closeModalHandler, initializeModalInputs])
 
     return <>
     {
