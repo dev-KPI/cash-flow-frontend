@@ -36,17 +36,17 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
     const buttonRef = useRef(null);
     const navigate = useNavigate();
 
-
     const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isLoading: isUsersByGroupLoading, isError: isUsersInGroupError, isSuccess: isUsersInGroupSuccess} = useGetUsersByGroupQuery({group_id: id, size: 500, page: 1});
-
-    const amountMembers: number = UsersInGroup?.total || 0;
 
     const filteredUsersInGroup = useMemo(() => {
         if(isUsersInGroupSuccess){
             return UsersInGroup.items[0].users_group.filter(el => el.status === 'ACTIVE')
         }
+        else return []
     }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupError, isUsersInGroupSuccess])
 
+    const amountMembers: number = filteredUsersInGroup.length
+    
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
 
     const memberIcons = () => {
