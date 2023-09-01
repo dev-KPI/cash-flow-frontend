@@ -18,16 +18,29 @@ const MobileHeader: FC<IHeaderProps> = ({User}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     useClickOutsideRef(BurgerNavRef, () => setIsOpen(false))
 
-    const getBurgerNav = useMemo(() => {
-        const body = document.body;    
+    const isFirstRender = useRef(true);
 
-        if (isOpen && body){
-            body.style.overflowY = 'hidden';
-            return classes.menuBurgerTransition
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
         }
-        if (body) body.style.overflow = 'auto';
-        return ''
-    }, [isOpen])
+
+        const body = document.body;
+
+        if (isOpen && body) {
+            body.style.overflowY = 'hidden';
+        } else if (!isOpen && body) {
+            body.style.overflowY = 'auto';
+        }
+    }, [isOpen]);
+
+    const getBurgerNav = useMemo(() => {
+        if (isOpen) {
+            return classes.menuBurgerOpen;
+        }
+        return classes.menuBurgerClose;
+    }, [isOpen]);
 
     return(<>
         <header className={classes.header}>

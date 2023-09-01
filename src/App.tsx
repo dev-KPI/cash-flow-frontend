@@ -1,7 +1,6 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import './styles/style.css';
-import ReactDOM from 'react-dom/client';
 
 // UI
 import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
@@ -10,10 +9,9 @@ import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 import Router from './router/router';
 // Store
 import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/UserController';
-import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
-import { TooltipSliceActions } from '@store/UI_store/TooltipSlice/TooltipSlice';
 import ITooltipState from '@store/UI_store/TooltipSlice/TooltipSliceInterfaces';
 
 const App: React.FC = () => {
@@ -56,7 +54,7 @@ const App: React.FC = () => {
       <>
         {showToolTip}
         {showPreloader && <PageGlobalLoader />}
-        {(!isAuthLoading || !showPreloader) ? <Router /> : <PageGlobalLoader />}
+        {!isAuthLoading && <Router /> }
       </>
     );
 };
