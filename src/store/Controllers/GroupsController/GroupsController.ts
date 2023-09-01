@@ -73,7 +73,10 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (res) => res ? [{ type: 'UserController' as const, id: res.id }] :
+            providesTags: (res, arg, body) => res ? [
+                { type: 'UserController' as const, id: body.member_id }, 
+                { type: 'GroupsController', id: body.group_id }, 
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] :
             [],
         }),
         getUsersByGroup: builder.query<IGetUsersFromGroupResponse, { group_id: number, page: number, size: number }>({

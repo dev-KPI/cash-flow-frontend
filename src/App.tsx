@@ -3,6 +3,9 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import './styles/style.css';
 import ReactDOM from 'react-dom/client';
 
+//UI
+import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
+import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 //router
 import Router from './router/router';
 //store
@@ -10,9 +13,8 @@ import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/Use
 import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
-import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
-import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
-import IGroupState from '@store/Group/GroupInterfaces';
+import { TooltipSliceActions } from '@store/UI_store/TooltipSlice/TooltipSlice';
+import ITooltipState from '@store/UI_store/TooltipSlice/TooltipSliceInterfaces';
 
 
 const App: React.FC = () => {
@@ -21,8 +23,8 @@ const App: React.FC = () => {
 
     const ThemeDispatch = useActionCreators(ThemeActions);
     const UserSliceDispatch = useActionCreators(UserSliceActions);
-    const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
-    const GroupsDispatch = useActionCreators(GroupSliceActions)
+    const TooltipStore = useAppSelector<ITooltipState>(store => store.TooltipSlice)
+    const TooltipDispatch = useActionCreators(TooltipSliceActions)
     
     const initializeAuth = useCallback(() => {
         if (!isAuthLoading){
@@ -31,12 +33,12 @@ const App: React.FC = () => {
     }, [AuthStatus, isAuthError, isAuthLoading])
 
     const showToolTip = useMemo(() => {
-        if(GroupsStore.tooltip.shouldShowTooltip){
+        if(TooltipStore.tooltip.shouldShowTooltip){
             return <StatusTooltip
-                type={GroupsStore.tooltip.status}
-                title={GroupsStore.tooltip.textTooltip} />
+                type={TooltipStore.tooltip.status}
+                title={TooltipStore.tooltip.textTooltip} />
         }
-    }, [GroupsStore.tooltip.shouldShowTooltip])
+    }, [TooltipStore.tooltip.shouldShowTooltip])
 
     useEffect(() => {
         ThemeDispatch.initializeTheme()

@@ -55,7 +55,9 @@ class DateServiceClass {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year} ${date.getHours()}:${date.getMinutes()}`
+        return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year} ${
+            date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${
+            date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`
     }
     getYearMonth(year: number, month: string): string {
         return `${year}-${this.getMonthIdxByName(month) < 10 ? '0' + this.getMonthIdxByName(month) : this.getMonthIdxByName(month)}`

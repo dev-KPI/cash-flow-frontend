@@ -2,18 +2,15 @@ import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, 
 
 //UI
 import classes from './ConfirmationModal.module.css';
-import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
-
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import IGroup from "@models/IGroup";
 import { useLeaveGroupMutation, useRemoveUserMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { useNavigate } from "react-router-dom";
 import IUser from "@models/IUser";
-import { GroupSliceActions } from "@store/Group/GroupSlice";
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
+import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 
 interface IContfirmationModalProps {
     title?: string
@@ -29,7 +26,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
     const navigate = useNavigate();
     const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
     const [removeUser, { isLoading: isRemovingUser, isSuccess: isRemoveUserSuccess, isError: isRemoveUserError}] = useRemoveUserMutation();
-    const GroupsDispatch = useActionCreators(GroupSliceActions)
+    const TooltipDispatch = useActionCreators(TooltipSliceActions)
     
     let headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let titleModal: string = ''
@@ -61,7 +58,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
     const showToolTip = useCallback(() => {
         if(mode === 'disband'){
             if (isLeavingGroupSuccess) {
-                GroupsDispatch.setTooltip({
+                TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'disband',
                     textTooltip: 'You have successfully disbanded the group',
@@ -71,7 +68,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
                 setIsConfirmationModalOpen(false)
             } else if(isLeavingGroupError) {
                 setIsConfirmationModalOpen(false)
-                GroupsDispatch.setTooltip({
+                TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'disband',
                     textTooltip: "You haven't disbanded the group",
@@ -82,7 +79,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
             if (isLeavingGroupSuccess) {
                 navigate('/groups')
                 setIsConfirmationModalOpen(false)
-                GroupsDispatch.setTooltip({
+                TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'leave',
                     textTooltip: "You have successfully left from group",
@@ -90,7 +87,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
                 })
             } else if(isLeavingGroupError) {
                 setIsConfirmationModalOpen(false)
-                GroupsDispatch.setTooltip({
+                TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'leave',
                     textTooltip: "You haven't left from group",
@@ -99,14 +96,14 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, title, isConf
             }
         } else if(mode === 'kick'){
             if (isRemoveUserSuccess) {
-                GroupsDispatch.setTooltip({
+                TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'kick',
                     textTooltip: "You have successfully removed user",
                     status: 'success'
                 })
             } else if(isRemoveUserError) {
-                GroupsDispatch.setTooltip({
+                TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'kick',
                     textTooltip: "You haven't removed user",

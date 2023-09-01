@@ -3,13 +3,11 @@ import ContentLoader from 'react-content-loader';
 import classes from "./GroupMemberUserCard.module.css";
 import { useMemo } from 'react';
 import { useWindowSize } from 'usehooks-ts';
-import { useContentSize } from '@hooks/layoutHooks/useLayout';
 
 const GroupMemberUserCardLoader = () => {
     const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
-    const {width, height} = useWindowSize();
-    const {width: innerWidth, height: innerHeight} = useContentSize();
+    const {width} = useWindowSize();
 
     const loader = useMemo(() => {
         if (window.matchMedia("screen and (min-width: 1440px)").matches) {
@@ -43,7 +41,7 @@ const GroupMemberUserCardLoader = () => {
                 <circle cx={493} cy="220" r="23" />
             </ContentLoader>
             )
-        } else if (window.matchMedia("screen and (min-width: 400px) and (max-width: 863px)").matches) {
+        } else if (window.matchMedia("screen and (min-width: 400px) and (max-width: 768px)").matches) {
             return (
                 <ContentLoader
                     speed={2}
