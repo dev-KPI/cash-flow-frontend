@@ -23,10 +23,9 @@ const ChartCardDot: FC<IChartCardDotProps> = ({ category, member, setId }) => {
         color = category.color_code;
         title = category.title || '';
     } else if (member) {
-        color = member.color_code!;
+        color = member.color_code;
         title = member.first_name + ' ' + member.last_name || '';
     }
-    
 
     title = title.length > 13 ? title.slice(0,12) + '..' : title
     return (

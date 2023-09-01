@@ -41,7 +41,7 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title }) => {
             .map((item) => item.amount || 0)
             .reduce((acc, curr) => acc + curr, 0);
         
-        getItems = categories.map((item, i) => <ChartCardDot key={i} category={item} setId={setId} />)
+        getItems = result.map((item, i) => <ChartCardDot key={i} category={item} setId={setId} />)
         dataLength = result.length;
         chartItem = <Chart categories={result} total={total} setId={setId} /> 
  
