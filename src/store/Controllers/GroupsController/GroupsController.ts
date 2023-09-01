@@ -19,7 +19,9 @@ import {
     IGetGroupExpensesDailyBody,
     IGetGroupExpensesByMemberDailyResponse,
     IGetGroupUsersHistoryResponse,
-    IGetUsersFromGroupResponse
+    IGetUsersFromGroupResponse,
+    IGetUserByGroupInfoBody,
+    IGetUserByGroupInfoResponse
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import { IPeriods } from '@models/IPeriod';
@@ -59,6 +61,23 @@ export const GroupsApiSlice = api.injectEndpoints({
             result ? [{ type: 'GroupsController' as const, id: body.group_id },
             { type: 'GroupsController', id: 'GROUPS' }] : 
             [{ type: 'GroupsController', id: 'GROUPS' }]
+        }),
+        getMemberInfoByGroup: builder.query<IGetUserByGroupInfoResponse, IGetUserByGroupInfoBody>({
+            query: ({member_id, group_id, period}) => ({
+                url: `groups/${group_id}/member/${member_id}/info`,
+                credentials: 'include',
+                params: {
+                    period: period
+                }
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (res, arg, body) => res ? [
+                { type: 'UserController' as const, id: body.member_id }, 
+                { type: 'GroupsController', id: body.group_id }, 
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] :
+            [],
         }),
         getUsersByGroup: builder.query<IGetUsersFromGroupResponse, { group_id: number, page: number, size: number }>({
             query: ({ group_id, page, size }) => ({
@@ -329,6 +348,7 @@ export const {
     useGetUsersByGroupQuery,
     useGetGroupExpensesByCategoryQuery,
     useGetGroupExpensesDailyQuery,
+    useGetMemberInfoByGroupQuery,
     useGetGroupExpensesByMemberDailyQuery,
     useRemoveUserMutation,
     useGetGroupUsersHistoryQuery,

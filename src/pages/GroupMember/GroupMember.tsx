@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 //logic
-import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useGetInfoByGroupQuery, useGetMemberInfoByGroupQuery, useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { NavLink, useParams } from 'react-router-dom';
+import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
+import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import DateService from '@services/DateService/DateService';
+import { useWindowSize } from 'usehooks-ts';
 //UI
 import GroupMemberUserCard from '@pages/GroupMember/GroupMemberUserCard/GroupMemberUserCard';
 import GroupMemberChartCard from '@pages/GroupMember/GroupMemberChartCard/GroupMemberChartCard';
@@ -9,25 +14,53 @@ import GroupMemberGraphCard from '@pages/GroupMember/GroupMemberGraphCard/GroupM
 import GroupMemberHistoryCard from '@pages/GroupMember/GroupMemberHistoryCard/GroupMemberHistoryCard';
 import classes from './GroupMember.module.css';
 import GroupInfoCard from '@pages/Group/GroupInfoCard/GroupInfoCard';
-import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
+import MonthPicker from '@components/MonthPicker/MonthPicker';
 
 
 
 const GroupMember = () => {
 
     const {groupId} = useParams<{groupId: string}>()
-    const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError} = useGetInfoByGroupQuery({group_id: Number(groupId)})
-    const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)
+    const {memberId} = useParams<{memberId: string}>()
+
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
+    const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError, isSuccess: isGroupInfoSuccess} = useGetInfoByGroupQuery({group_id: Number(groupId)})
+    const {data: Member, isLoading: isMemberLoading, isError: isMemberError, isSuccess: isMemberSuccess} = useGetMemberInfoByGroupQuery({
+        group_id: Number(groupId), 
+        member_id: Number(memberId),
+        period: MonthPickerStore.type === 'year-month' ? 
+        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
+        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+    })
+
+    const {width, height} = useWindowSize();
+    const getMonthPicker = useMemo(() => {
+        if(width < 769) {
+            return (
+                <div className={classes.MonthPicker}>
+                    <MonthPicker/>
+                </div>
+            )
+        }
+    }, [width])
+
 
     return (<>
-        {GroupInfo && CurrentUser && 
+        {isGroupInfoSuccess && isMemberSuccess && GroupInfo && Member && 
         <main id={'GroupMemberPage'} className={'no-padding'}>
             <div className={classes.page__container}>
+                <div style={{marginTop: '10px'}}>
+                    {getMonthPicker}
+                </div>
                 <div className={classes.grid}>
-                    <GroupMemberUserCard />
+                    <GroupMemberUserCard 
+                    Member={Member} 
+                    isMemberLoading={isMemberLoading} 
+                    isMemberError={isMemberError} 
+                    isMemberSuccess={isMemberSuccess}/>
                     <GroupMemberChartCard/>
                     <GroupInfoCard 
-                    isAdmin={GroupInfo.admin.id === CurrentUser.id}
+                    isAdmin={GroupInfo.admin.id === Member.id}
                     isInfoLoading={isGroupInfoLoading} 
                     groupInfo={GroupInfo}/>
                     <GroupMemberGraphCard />

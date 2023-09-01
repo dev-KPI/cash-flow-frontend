@@ -12,12 +12,13 @@ import { useNavigate } from "react-router-dom";
 const ButtonContent: React.FC<{
     groupId: string | undefined,
     groupInfo: IGetInfoFromGroupResponse | undefined,
+    setUser: React.Dispatch<React.SetStateAction<IUser>>
     setConfirmationMode: React.Dispatch<React.SetStateAction<'disband' | 'kick'>>
     setIsConfirmationModal: React.Dispatch<React.SetStateAction<boolean>>
     CurrentUser: IUser | undefined,
     user: IUser,
     isActionDisabled: boolean
-}> = ({ groupId, user, isActionDisabled, groupInfo, CurrentUser, setConfirmationMode, setIsConfirmationModal}) => {
+}> = ({ groupId, user, isActionDisabled, groupInfo, CurrentUser, setConfirmationMode, setIsConfirmationModal, setUser}) => {
 const [isActionsOpen, setIsActionsOpen] = useState<boolean>(false)
 const actionsButtonRef = useRef(null);
 const handleActionOpen = () => {
@@ -44,6 +45,7 @@ const getSpecialButton = useMemo(() => {
                 } else {
                     setConfirmationMode('kick')
                 }
+                setUser(user);
                 setIsConfirmationModal(true)
             }}
             className={`${classes.leaveButton} btn-danger outline`} />}

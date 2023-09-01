@@ -80,7 +80,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
 
     return (
         <div className={classes.group}>
-            {isUsersByGroupLoading ? <GroupListItemLoader/> :
+            {isUsersByGroupLoading && isAdmin ? <GroupListItemLoader/> :
                 <>
                     <SmallModal
                         active={isMenuOpen}

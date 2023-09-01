@@ -11,7 +11,6 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import GroupListItem from "./GroupListItem/GroupIListItem";
 import PreLoader from "@components/PreLoader/PreLoader";
 import ConfirmationModal from "@components/ModalWindows/ConfirtmationModal/ConfirmationModal";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 
 
 

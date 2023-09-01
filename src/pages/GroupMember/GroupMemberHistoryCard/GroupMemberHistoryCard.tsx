@@ -65,7 +65,7 @@ const GroupHistoryCard: FC = () => {
                     key={i}
                     type={el.type === 'expense' ? 'expense' : 'replenishment'}
                     categoryColor={el.category_group?.category?.color_code || '#80D667'}
-                    categoryTitle={el.category_group?.category?.category.title || 'Salary'}
+                    categoryTitle={el.category_group?.category?.category?.title || 'Salary'}
                     member={el.user}
                     amount={el.amount}
                     time={el.time}></RecentOperationGroupCard>

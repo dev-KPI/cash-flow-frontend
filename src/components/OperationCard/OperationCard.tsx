@@ -19,13 +19,14 @@ interface OperactionCardProps {
     title?: string;
     icon?: string;
     data: IGetTotalExpensesResponse | undefined;
+    offPreloader?: boolean
     isLoading: boolean;
     isSuccess: boolean;
     isError: boolean
     className?: string;
 }
 
-const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError }) => {
+const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError, offPreloader = false }) => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const [amount, setAmount] = useState<number>(0);
@@ -79,8 +80,8 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
         <div className={`${classes.operationCard} ${className ? className : ''}`}
             onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
-            {isLoading ? 
-                <OperationCardLoader />
+            {isLoading ?
+                (!offPreloader ? <OperationCardLoader /> : null)
                 :
                 <div className={classes.inner}>
                     <div className={classes.top}>

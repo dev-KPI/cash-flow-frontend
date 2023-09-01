@@ -10,8 +10,10 @@ import { InputTextarea } from 'primereact/inputtextarea';
         
 
 const Input: FC<IInputProps> = ({
-    value,
+    value = '',
     inputType, 
+    isError = false,
+    setIsError = () => {},
     setFormValue, 
     placeholder, 
     Icon, 
@@ -78,19 +80,23 @@ const Input: FC<IInputProps> = ({
         value={inputStringValue}
         name={name} 
         id={id}/>
-    //----------------------------------------------{NAME INPUT}-----------------------------------------------------
+    //----------------------------------------------{NAME INPUT}-----------------------------------------------------  
+    const nameInputErrorClass = useMemo(() => {
+        return (isError ? classes.errorInput : '')
+    }, [isError])  
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
-            const regExp = /[^a-zA-Zа-яА-Я,^і^І, ,\d,.,_,-]+/g
+            const regExp = /^\s*(.*?)\s*$/g
             if (setFormValue.type === 'name') { 
-                setFormValue.callback(e.currentTarget.value.replace(regExp, ''));
+                setFormValue.callback(e.currentTarget.value.replace(regExp, '$1'));
             }
-            setInputStringValue(e.currentTarget.value.replace(regExp, ''))
+            setInputStringValue(e.currentTarget.value);
         }} 
         min={3}
-        maxLength={24}
+        maxLength={16}
         style={{
             height: '50px',
+            maxHeight: '50px',
             backgroundColor: 'var(--cardBg)',
             borderRadius: '10px',
             paddingLeft: Icon ? '' : '12px',
@@ -124,6 +130,13 @@ const Input: FC<IInputProps> = ({
     id={id}/>
     
 
+    const getInputError = useMemo(() => {
+        console.log(isError)
+        return (isError) ? <div className={classes.errorLabel}>
+            <label>This field is required</label>
+        </div> : null
+    }, [isError])
+
     //splitter for inputs
     const getCurrentInput: ReactNode = 
     inputType === 'cash' ? cashInput :  
@@ -132,13 +145,14 @@ const Input: FC<IInputProps> = ({
     inputType === 'area' ? areaInput : <></>;
 
     return(<>
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper + ' ' + nameInputErrorClass}>
             {Icon && 
             <div className={classes.Icon__wrapper}>
                 {Icon}
             </div>}
             {getCurrentInput}
         </div>
+        {getInputError}
     </>)
 }
 
