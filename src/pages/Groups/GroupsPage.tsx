@@ -25,12 +25,7 @@ const Groups: FC = () => {
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
 
     let groupsContent;
-    if (isGroupsFetching) {
-        groupsContent = <div className={classes.loaderWrapper}>
-            <PreLoader preLoaderSize={50} type='auto' />
-        </div>
-    }
-    else if (isGroupsSuccess) {
+    if (isGroupsSuccess) {
         if (Groups.user_groups.length > 0) {
             groupsContent = <section className={classes.groups}>
                 {Groups.user_groups.map((el, i) =>
