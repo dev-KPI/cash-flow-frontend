@@ -5,18 +5,16 @@ import classes from './GroupModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import ViewMoreModal from "../ViewMoreModal/ViewMoreModal";
 import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
+import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
+import ITooltipState from "@store/UI_store/TooltipSlice/TooltipSliceInterfaces";
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
-import IGroupState from "@store/Group/GroupInterfaces";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { GroupSliceActions } from "@store/Group/GroupSlice";
-import { useNavigate } from "react-router-dom";
-import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 
 interface IGroupModalProps{
     groupId?: number,
@@ -29,8 +27,8 @@ interface IGroupModalProps{
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
     
-    const GroupsStore = useAppSelector<IGroupState>(state => state.persistedGroupSlice)
-    const GroupsDispatch = useActionCreators(GroupSliceActions);
+    const TooltipStore = useAppSelector<ITooltipState>(state => state.TooltipSlice)
+    const TooltipDispatch = useActionCreators(TooltipSliceActions);
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
@@ -69,16 +67,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }, [isGroupUpdatingError, isGroupUpdating, isGroupUpdated,
         isGroupCreatingError, isGroupCreating, isGroupCreated])
 
-    const intitializeBaseGroup = useCallback(() => {
-        if (GroupsStore.defaultGroup === 0 && !isGroupCreating && isGroupCreated && !isGroupCreatingError){
-            GroupsDispatch.setDefaultGroup(groupId)
-        } 
-    }, [createGroup, isGroupCreating, isGroupCreated, isGroupCreatingError])
 
     const initializeSubmit = useCallback(() => {
         if(!isGroupModalOpen && isSubmit){
             setIsSubmit(false)
-        }
+        } 
     }, [isSubmit, isGroupModalOpen])
 
 
@@ -91,7 +84,6 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     icon_url: icon,
                     color_code: pickedColor,
                 })
-                intitializeBaseGroup();
                 closeModalHandler();
             } else if(mode === 'edit'){
                 if(groupId){
@@ -102,13 +94,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                         icon_url: icon,
                         color_code: pickedColor,
                     })
-                    intitializeBaseGroup();
                     closeModalHandler();
                 }
             } else if(mode === 'disband' || mode === 'leave'){
                 if(groupId){
                     leaveGroup(groupId)
-                    intitializeBaseGroup();
                     closeModalHandler();
                 }
             } 
@@ -117,14 +107,14 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
 
     const initTooltip = useCallback(() => {
         if (isGroupCreated) {
-            GroupsDispatch.setTooltip({
+            TooltipDispatch.setTooltip({
                 shouldShowTooltip: true,
                 modeTooltip: 'create',
                 textTooltip: `Group ${nameValue} successfully added`,
                 status: 'success'
             })
         } else if(isGroupCreatingError) {
-            GroupsDispatch.setTooltip({
+            TooltipDispatch.setTooltip({
                 shouldShowTooltip: true,
                 modeTooltip: 'create',
                 textTooltip: `Group ${nameValue} not added`,
@@ -132,14 +122,14 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
             })
         }
         else if (isGroupUpdated) {
-            GroupsDispatch.setTooltip({
+            TooltipDispatch.setTooltip({
                 shouldShowTooltip: true,
                 modeTooltip: 'update',
                 textTooltip: `Group ${nameValue} successfully updated`,
                 status: 'success'
             })
         } else if(isGroupUpdatingError) {
-            GroupsDispatch.setTooltip({
+            TooltipDispatch.setTooltip({
                 shouldShowTooltip: true,
                 modeTooltip: 'update',
                 textTooltip: `Group ${nameValue} not updated`,
@@ -151,9 +141,8 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
 
     let labelText = 'Name of the group:';
  
-    useEffect(() => intitializeBaseGroup(), [intitializeBaseGroup])
-    useEffect(() => initializeModalInputs(), [initializeModalInputs])
     useEffect(() => closeModalHandler(), [closeModalHandler])
+    useEffect(() => initializeModalInputs(), [initializeModalInputs])
     useEffect(() => initTooltip(), [initTooltip])
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
@@ -173,7 +162,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
             title={titleModal}
         >
             <form
-                onSubmit={handleSubmit}>
+                onSubmit={() => handleSubmit}>
                 <div className={classes.modal__wrapper}>
                     <div className={classes.inputNameGroup}>
                         <label className={classes.title} htmlFor="groupName">{labelText}</label>
@@ -220,15 +209,15 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                                 <div className={classes.pickBody}>
                                     {
                                         customIcons.map((el, i) =>
-                                            <div
-                                                key={i}
-                                                onClick={(e) => changeIcon(e, el)}
-                                                style={{
-                                                    fontSize: '24px',
-                                                    cursor: 'pointer'
-                                                }}>
-                                                <i style={{ color: 'var(--main-text)' }} className={el}></i>
-                                            </div>)
+                                        <div
+                                            key={i}
+                                            onClick={(e) => changeIcon(e, el)}
+                                            style={{
+                                                fontSize: '24px',
+                                                cursor: 'pointer'
+                                            }}>
+                                            <i style={{ color: 'var(--main-text)' }} className={el}></i>
+                                        </div>)
                                     }
                                 </div>
                             </AccordionTab>

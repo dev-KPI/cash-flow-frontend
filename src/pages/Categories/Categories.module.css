@@ -209,6 +209,11 @@
     composes: largeItemTitle from "@styles/style.css";
 }
 
+.browseBtn{
+    margin-top: 10px;
+    display: inline-block;
+}
+
 @media only screen and (max-width: 1440px) {
     .CategoriesBox {
         grid-template-columns: repeat(2, 1fr);

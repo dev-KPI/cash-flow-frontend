@@ -1,11 +1,10 @@
-import React, { FC, useState, ReactNode, useCallback, useEffect, useMemo, useRef } from "react";
-
+import React, { FC, useState, ReactNode, useEffect, useMemo, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import uuid from 'react-uuid';
 //logic
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
 import { useGetCategoriesByGroupQuery } from "@store/Controllers/CategoriesController/CategoriesController";
-import { useAppSelector } from "@hooks/storeHooks/useAppStore";
-import IGroupState from "@store/Group/GroupInterfaces";
+
 //UI
 import classes from './Categories.module.css'
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
@@ -14,20 +13,22 @@ import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal"
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 import PreLoader from "@components/PreLoader/PreLoader";
 
+
 const Categories: FC = () => {
-    
-    const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
-
-    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
-    
-    const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
+    const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
-
-    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError, isSuccess: isCategoriesSuccess } = useGetCategoriesByGroupQuery(selectedGroup)
-
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
     const [isGroupMenuModal, setIsGroupMenuModal] = useState<boolean>(false);
+    const navigate = useNavigate()
+    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isFetching: isGroupsFetching, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
+    useEffect(() => {
+        if (isGroupsSuccess && UserGroups.user_groups[0]) {
+            setSelectedGroup(UserGroups.user_groups[0].group.id)
+        }
+    }, [UserGroups, isGroupsFetching])
+
+    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError, isSuccess: isCategoriesSuccess } = useGetCategoriesByGroupQuery(selectedGroup, { skip: !isGroupsSuccess || selectedGroup === 0 });
 
     const buttonRef = useRef(null);
  
@@ -111,15 +112,7 @@ const Categories: FC = () => {
             <PreLoader preLoaderSize={50} type='auto' />
         </div>
         categoriesContent = null
-    } else if (isCategoriesError) {
-        groupsContent = (<div className={classes.noItems}>
-            <i className="bi bi-person-x" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
-            <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>
-            <p className={classes.noItems__text}>To add more categories, first create groups.</p>
-        </div>)
-        categoriesContent = null
-    }
-    else if (isCategoriesSuccess && isGroupsSuccess) {
+    } else if (isCategoriesSuccess && isGroupsSuccess) {
         if (UserGroups.user_groups.length > 0) {
             groupsContent = <>
                 <nav className={classes.groupsNav}>
@@ -150,6 +143,21 @@ const Categories: FC = () => {
                     <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
                 </div>)
         }
+    } else {
+        groupsContent = (<div className={classes.noItems}>
+            <i className="bi bi-person-x" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
+            <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>
+            <p className={classes.noItems__text}>To add more categories, first create groups.</p>
+            <CustomButton
+                type='primary'
+                children={'Browse Groups'}
+                icon='none'
+                callback={() => navigate('/groups')}
+                isPending={false}
+                className={classes.browseBtn}
+            />
+        </div>)
+        categoriesContent = null
     }
 
     return (<>
