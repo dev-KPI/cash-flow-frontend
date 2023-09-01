@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 
-import PreLoader from "@components/PreLoader/PreLoader";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
+import classes from './PageGlobalPreloader.module.css';
 
 
 const PageGlobalLoader = () => {
@@ -29,7 +29,18 @@ const PageGlobalLoader = () => {
         justifyContent: 'center',
         alignItems: 'center'
     }}>
-        <PreLoader preLoaderSize={50} type='auto'/> 
+        <div className={classes.container}>
+          <div className={classes.loading}>
+            <div className={classes.loading__letter}>C</div>
+            <div className={classes.loading__letter}>a</div>
+            <div className={classes.loading__letter}>s</div>
+            <div className={classes.loading__letter}>h</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>F</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>l</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>o</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>w</div>
+          </div>
+        </div>
     </div> 
 }
 
