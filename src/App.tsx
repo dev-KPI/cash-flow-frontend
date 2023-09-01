@@ -1,14 +1,14 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import './styles/style.css';
 import ReactDOM from 'react-dom/client';
 
-//UI
+// UI
 import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
 import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
-//router
+// Router
 import Router from './router/router';
-//store
+// Store
 import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/UserController';
 import { useActionCreators, useAppDispatch, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
@@ -16,39 +16,49 @@ import { UserSliceActions } from '@store/User/UserSlice';
 import { TooltipSliceActions } from '@store/UI_store/TooltipSlice/TooltipSlice';
 import ITooltipState from '@store/UI_store/TooltipSlice/TooltipSliceInterfaces';
 
-
 const App: React.FC = () => {
-
-    const {data: AuthStatus, isError: isAuthError, isLoading: isAuthLoading} = useGetUserAuthStatusQuery(null);
+    const { data: AuthStatus, isError: isAuthError, isLoading: isAuthLoading } = useGetUserAuthStatusQuery(null);
 
     const ThemeDispatch = useActionCreators(ThemeActions);
     const UserSliceDispatch = useActionCreators(UserSliceActions);
-    const TooltipStore = useAppSelector<ITooltipState>(store => store.TooltipSlice)
-    const TooltipDispatch = useActionCreators(TooltipSliceActions)
-    
+    const TooltipStore = useAppSelector<ITooltipState>((store) => store.TooltipSlice);
+
     const initializeAuth = useCallback(() => {
-        if (!isAuthLoading){
+        if (!isAuthLoading) {
             UserSliceDispatch.setIsAuth(AuthStatus);
-        } 
-    }, [AuthStatus, isAuthError, isAuthLoading])
+        }
+    }, [AuthStatus, isAuthError, isAuthLoading]);
 
     const showToolTip = useMemo(() => {
-        if(TooltipStore.tooltip.shouldShowTooltip){
-            return <StatusTooltip
-                type={TooltipStore.tooltip.status}
-                title={TooltipStore.tooltip.textTooltip} />
+        if (TooltipStore.tooltip.shouldShowTooltip) {
+            return <StatusTooltip type={TooltipStore.tooltip.status} title={TooltipStore.tooltip.textTooltip} />;
         }
-    }, [TooltipStore.tooltip.shouldShowTooltip])
+    }, [TooltipStore.tooltip.shouldShowTooltip]);
 
     useEffect(() => {
-        ThemeDispatch.initializeTheme()
-        initializeAuth()
-    },[initializeAuth]);
+        ThemeDispatch.initializeTheme();
+        initializeAuth();
+    }, [initializeAuth]);
 
-    return (<>
+    const [showPreloader, setShowPreloader] = useState(true);
+
+    useEffect(() => {
+        const preloaderTimeout = setTimeout(() => {
+            setShowPreloader(false);
+        }, 2000);
+
+        return () => {
+            clearTimeout(preloaderTimeout);
+        };
+    }, []);
+
+    return (
+      <>
         {showToolTip}
-        {(!isAuthLoading) ? <Router /> : <PageGlobalLoader/>}
-    </>)
+        {showPreloader && <PageGlobalLoader />}
+        {(!isAuthLoading || !showPreloader) ? <Router /> : <PageGlobalLoader />}
+      </>
+    );
 };
 
 export default App;
