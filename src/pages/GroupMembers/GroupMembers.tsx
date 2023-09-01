@@ -166,6 +166,7 @@ const History: React.FC = () => {
                 const isActionDisabled = info.row.original.status === 'pending';
                 return <div className={classes.btnWrapper}>
                     <ButtonContent 
+                    setUser={setKickedUser}
                     setConfirmationMode={setConfirmationMode}
                     setIsConfirmationModal={setIsConfirmationModal}
                     groupInfo={GroupInfo} 
