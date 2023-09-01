@@ -10,8 +10,6 @@ import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/Use
 import { useActionCreators } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
-import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
-import { GroupSliceActions } from '@store/Group/GroupSlice';
 import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
 
 

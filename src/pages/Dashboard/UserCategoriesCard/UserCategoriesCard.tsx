@@ -1,4 +1,4 @@
-import { createRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { mergeRefs } from "react-merge-refs";
 import { useNavigate } from 'react-router-dom';
 //logic
@@ -7,7 +7,6 @@ import { handleWrap } from '@services/UsefulMethods/UIMethods';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
-import IGroupState from '@store/Group/GroupInterfaces';
 import { ICategoryAmount } from '@models/ICategory';
 import { useGetUserExpensesByGroupQuery } from '@store/Controllers/UserController/UserController';
 import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
@@ -24,31 +23,38 @@ import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 
 const UserCategoriesCard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
-    const GroupsStore = useAppSelector<IGroupState>(store => store.persistedGroupSlice)
+
     const [categories, setCategories] = useState<ICategoryAmount[]>([]);
     const [totalItems, setTotalItems] = useState<number>(11);
     const [pageGroup, setGroupPage] = useState<number>(0);
-    const [selectedGroup, setSelectedGroup] = useState<number>(GroupsStore.defaultGroup);
+    const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [isExpenseModalOpen, setIsExpenseModalOpen] = useState<boolean>(false);
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState<boolean>(false);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     const ref = useRef<HTMLUListElement>(null);
-    
     const navigate = useNavigate()
-    const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
+
+    const { data: UserGroups, isLoading: isGroupsLoading, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
+    
+    useEffect(() => {
+        if (isGroupsSuccess && UserGroups.user_groups[0]) {
+            setSelectedGroup(UserGroups.user_groups[0].group.id)
+        } 
+    }, [UserGroups, isGroupsFetching])
+
     const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByGroupQuery({
-        group_id: selectedGroup, 
-        period: MonthPickerStore.type === 'year-month' ? 
-        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
-    })
+        group_id: selectedGroup,
+        period: MonthPickerStore.type === 'year-month' ?
+            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
+            { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
+    }, { skip: !isGroupsSuccess || selectedGroup === 0 })
+
     useEffect(() => {
         if (isExpensesSuccess)
             setCategories(ExpensesByGroup.categories)
-    }, [ExpensesByGroup, UserGroups])
-
+    }, [ExpensesByGroup])
 
     requestAnimationFrame(_ => {
         handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
@@ -114,33 +120,32 @@ const UserCategoriesCard = () => {
             setSelectedGroup(UserGroups.user_groups[pageGroup - 1].group.id);
         } 
     }
+
+    const addButton = (<SpecialButton
+        handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+        className={classes.specialItem}
+        type='add'
+    />);
+    const moreButton = (<SpecialButton
+        handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+        className={classes.specialItem}
+        type='view'
+    />);
     let categoriesContent;
     if (isExpensesSuccess && isGroupsSuccess) {
         if (categories.length === 0)
             categoriesContent = <div className={classes.emptyList}>
                 <p>Category list is empty!</p>
-                <SpecialButton
-                    handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
-                    className={classes.specialItem}
-                    type='add'
-                />
+                {addButton}
             </div>
         else {
             categoriesContent = getCategories(properCategories)
             categories.length >= totalItems ?
-                categoriesContent.push(<SpecialButton
-                    handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
-                    className={classes.specialItem}
-                    type='view'
-                />)
+                categoriesContent.push(moreButton)
                 :
-                categoriesContent.push(<SpecialButton
-                    handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
-                    className={classes.specialItem}
-                    type='add'
-                />)  
+                categoriesContent.push(addButton)  
         }
-    } else if (isExpensesError || isGroupsError || !UserGroups?.user_groups[pageGroup]) {
+    } else if (!UserGroups?.user_groups[pageGroup]) {
         categoriesContent = <div className={classes.emptyList}>
             <p>Create a group before using expenses!</p>
             <CustomButton
@@ -150,6 +155,11 @@ const UserCategoriesCard = () => {
                 callback={() => navigate('/groups')}
                 isPending={false}
             />
+        </div>
+    } else {
+        categoriesContent = <div className={classes.emptyList}>
+            <p>Category list is empty!</p>
+            {addButton}
         </div>
     }
     return (
