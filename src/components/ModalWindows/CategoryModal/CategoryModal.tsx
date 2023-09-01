@@ -21,10 +21,6 @@ interface ICategoryModalProps{
     groupId: number,
     categoryId?: number
 }
-interface IModalState {
-    name: string
-    color: string
-}
 
 const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode, groupId, Categories, categoryId }) => {
 

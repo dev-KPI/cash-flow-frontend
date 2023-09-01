@@ -12,7 +12,6 @@ import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore
 import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 
@@ -27,7 +26,6 @@ interface IGroupModalProps{
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
     
-    const TooltipStore = useAppSelector<ITooltipState>(state => state.TooltipSlice)
     const TooltipDispatch = useActionCreators(TooltipSliceActions);
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
