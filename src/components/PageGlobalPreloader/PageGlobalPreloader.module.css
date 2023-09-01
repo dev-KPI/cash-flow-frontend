@@ -1,12 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Audiowide);
 
-.container {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .loading {
   display: flex;
   flex-direction: row;
@@ -19,7 +12,7 @@
   font-family: "Inter";
   color: var(--main-text);
   animation-name: bounce;
-  animation-duration: 2s;
+  animation-duration: 1.5s;
   animation-iteration-count: infinite;
 }
 
@@ -42,7 +35,7 @@
   animation-delay: .6s;
 }
 .loading__letter:nth-child(8) {
-  animation-delay: .8s;
+  animation-delay: .7s;
 }
 .loading__letter:nth-child(9) {
   animation-delay: 1s;

@@ -45,7 +45,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const preloaderTimeout = setTimeout(() => {
             setShowPreloader(false);
-        }, 2050);
+        }, 1600);
 
         return () => {
             clearTimeout(preloaderTimeout);

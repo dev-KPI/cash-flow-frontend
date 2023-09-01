@@ -29,7 +29,6 @@ const PageGlobalLoader = () => {
         justifyContent: 'center',
         alignItems: 'center'
     }}>
-        <div className={classes.container}>
           <div className={classes.loading}>
             <div className={classes.loading__letter}>C</div>
             <div className={classes.loading__letter}>a</div>
@@ -40,7 +39,6 @@ const PageGlobalLoader = () => {
             <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>o</div>
             <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>w</div>
           </div>
-        </div>
     </div> 
 }
 
