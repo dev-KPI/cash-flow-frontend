@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState} from 'react';
+import { FC, ReactNode, useEffect, useState} from 'react';
 //UI
 import classes from './ChartCard.module.css'
 import ChartCardDot from '@components/ChartCard/ChartCardDot/ChartCardDot';
@@ -16,6 +16,7 @@ type IChartCardProps = { title: string } & (
 
 
 const ChartCard: FC<IChartCardProps> = ({ categories, members, title }) => {
+    
     const [id, setId] = useState<number>(categories ? categories[0]?.id : members[0]?.id || 0 );
     const [isExtended, setIsExtended] = useState<boolean>(false);
     let itemAmount = 0;
@@ -24,6 +25,11 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title }) => {
     let getItems: ReactNode[] = []; 
     let chartItem: ReactNode;
     let dataLength: number = 0;
+    
+    useEffect(() => {
+        setId(categories ? categories[0]?.id : members[0]?.id || 0)
+    }, [categories, members])
+
     if (categories) {
         const category = categories.find(el => el.id === id)
 
