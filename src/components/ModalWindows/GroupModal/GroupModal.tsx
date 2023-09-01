@@ -32,8 +32,9 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+    const [isInputError, setIsInputError] = useState<boolean>(false);
     //pickers
     const [nameValue, setNameValue] = useState<string>('');
     const [descValue, setDescValue] = useState<string>('');
@@ -58,25 +59,26 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
         }
     }, [group])
 
+    const initializeSubmit = useCallback(() => {
+        if(!isGroupModalOpen && isSubmitted){
+            setIsSubmitted(false)
+            setIsInputError(false);
+        } 
+    }, [isSubmitted, isGroupModalOpen])
+
     const closeModalHandler = useCallback(() => {
         if(!isGroupCreating || !isGroupUpdating){
             setGroupId(0);
             setIsGroupModalOpen(false);
-            setIsSubmit(false);
+            setIsSubmitted(false);
+            setIsInputError(false);
         }
     }, [isGroupUpdatingError, isGroupUpdating, isGroupUpdated,
         isGroupCreatingError, isGroupCreating, isGroupCreated])
 
-
-    const initializeSubmit = useCallback(() => {
-        if(!isGroupModalOpen && isSubmit){
-            setIsSubmit(false)
-        } 
-    }, [isSubmit, isGroupModalOpen])
-
-
-    const handleSubmit = useCallback(() => {
-        if(isSubmit && nameValue.length > 0) {
+    const handleSubmit = () => {
+        if(isSubmitted && nameValue.replace(/\s/gm, '').length > 0) {
+            setIsInputError(false);
             if(mode === 'create'){
                 createGroup({
                     title: nameValue,
@@ -102,8 +104,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     closeModalHandler();
                 }
             } 
+        } else if (isSubmitted && nameValue.replace(/\s/gm, '').length < 1) {
+            setIsInputError(true)
+            setIsSubmitted(false);
         }
-    }, [isSubmit, nameValue])
+    }
 
     const initTooltip = useCallback(() => {
         if (isGroupCreated) {
@@ -144,8 +149,8 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     useEffect(() => closeModalHandler(), [closeModalHandler])
     useEffect(() => initializeModalInputs(), [initializeModalInputs])
     useEffect(() => initTooltip(), [initTooltip])
-    useEffect(() => initializeSubmit(), [initializeSubmit])
     useEffect(() => handleSubmit(), [handleSubmit])
+    useEffect(() => initializeSubmit(), [initializeSubmit])
 
     return <>
     {
@@ -170,7 +175,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                         <div className={classes.inputWrapper}>
                             <Input
                                 value={group?.title}
-                                isSubmited={isSubmit}
+                                isError={isInputError}
                                 setFormValue={{ type: 'name', callback: setNameValue }}
                                 isInputMustClear={!isGroupModalOpen}
                                 inputType="name" id="groupName"
@@ -244,7 +249,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             btnHeight={36}
                             icon="submit"
                             type='primary'
-                            callback={() => {setIsSubmit(true)}}
+                            callback={() => {setIsSubmitted(true); handleSubmit()}}
                         />
                     </div>
                 </div>

@@ -21,8 +21,8 @@ export interface IInputProps {
     setFormValue: ICashInputCallback  | ITextInputCallback | INameInputCallback | IAreaInputCallback
     placeholder?: string | number
     Icon?: ReactNode,
-    isSubmited?: boolean,
-    setIsSubmited?: React.Dispatch<React.SetStateAction<boolean>>
+    isError?: boolean,
+    setIsError?: React.Dispatch<React.SetStateAction<boolean>>
     name: string
     id: string
     MinMaxValidate?: {min: number} | {max: number} | {min: number, max: number}

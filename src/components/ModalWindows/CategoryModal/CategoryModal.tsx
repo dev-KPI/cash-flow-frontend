@@ -30,8 +30,8 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
 
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Category'
-    const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
+    const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     //pickers
     const [nameValue, setNameValue] = useState<string>('');
     const [pickedColor, setPickedColor] = useState<string>('#FF2D55');
@@ -59,8 +59,18 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
         }
     }, [getSelectedCategory])
 
+    const initializeSubmit = useCallback(() => {
+        if(!isCategoryModalOpen && isSubmitted){
+            setIsSubmitted(false)
+            setIsInputError(false);
+        } 
+    }, [isSubmitted, isCategoryModalOpen])
+
+    const [isInputError, setIsInputError] = useState<boolean>(false);
+
     const handleSubmit = () => {
-        if(isSubmit && nameValue.length > 0) {
+        if(isSubmitted && nameValue.replace(/\s/gm, '').length > 0) {
+            setIsInputError(false);
             if(mode === 'create'){
                 createCategory({
                     group_id: groupId,
@@ -79,17 +89,17 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
                 })
                 closeModalHandler();
             }
+        } else if (isSubmitted && nameValue.replace(/\s/gm, '').length < 1) {
+            setIsInputError(true)
+            setIsSubmitted(false);
         }
     }
 
     const closeModalHandler = () => {
+        setIsSubmitted(false);
         setIsCategoryModalOpen(false);
+        setIsInputError(false);
     }
-    const initializeSubmit = useCallback(() => {
-        if(!isCategoryModalOpen && isSubmit){
-            setIsSubmit(false)
-        }
-    }, [isSubmit, isCategoryModalOpen])
 
     const showToolTip = useCallback(() => {
         if(mode === 'create'){
@@ -119,6 +129,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     let labelText = 'Name of the category:';
 
     useEffect(() => initializeModalInputs(), [initializeModalInputs])
+    useEffect(() => handleSubmit(), [handleSubmit])
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
     return <>
@@ -138,7 +149,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
                         <label className={classes.title} htmlFor="categoryName">{labelText}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
-                            isSubmited={isSubmit}
+                            isError={isInputError}
                             setFormValue={{type: 'name', callback: setNameValue}}
                             isInputMustClear={!isCategoryModalOpen} 
                             inputType="name" id="categoryName" 
@@ -188,7 +199,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
                         btnHeight={36}
                         icon="submit"
                         type='primary'
-                        callback={() => {setIsSubmit(true); handleSubmit()}}
+                        callback={() => {setIsSubmitted(true); handleSubmit()}}
                         className={`btn-primary`} />
                 </div>
             </form>

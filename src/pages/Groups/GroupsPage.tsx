@@ -25,7 +25,7 @@ const Groups: FC = () => {
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
 
     let groupsContent;
-    if (isGroupsSuccess) {
+    if (isGroupsSuccess && CurrentUser && Groups) {
         if (Groups.user_groups.length > 0) {
             groupsContent = <section className={classes.groups}>
                 {Groups.user_groups.map((el, i) =>

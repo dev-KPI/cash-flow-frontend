@@ -77,7 +77,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
 
     return (
         <div className={classes.group}>
-            {isUsersByGroupLoading ? <GroupListItemLoader/> :
+            {isUsersByGroupLoading && isAdmin ? <GroupListItemLoader/> :
                 <>
                     <SmallModal
                         active={isMenuOpen}
@@ -143,7 +143,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                     </div>
                                     <button className={classes.moreBtn}
                                         ref={buttonRef}
-                                        onClick={(e) => { e.preventDefault(); setIsMenuOpen(!isMenuOpen); setGroupId(id)}}>
+                                        onClick={(e) => { e.preventDefault(); setGroupId(id); setIsMenuOpen(!isMenuOpen); }}>
                                         <div></div>
                                         <div></div>
                                         <div></div>

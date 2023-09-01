@@ -12,8 +12,8 @@ import { InputTextarea } from 'primereact/inputtextarea';
 const Input: FC<IInputProps> = ({
     value = '',
     inputType, 
-    isSubmited = false,
-    setIsSubmited = () => {},
+    isError = false,
+    setIsError = () => {},
     setFormValue, 
     placeholder, 
     Icon, 
@@ -82,8 +82,8 @@ const Input: FC<IInputProps> = ({
         id={id}/>
     //----------------------------------------------{NAME INPUT}-----------------------------------------------------  
     const nameInputErrorClass = useMemo(() => {
-        return ((isSubmited && inputType === 'name' && inputStringValue.length < 1) ? classes.errorInput : '')
-    }, [isSubmited, inputStringValue])  
+        return (isError ? classes.errorInput : '')
+    }, [isError])  
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
             const regExp = /^\s*(.*?)\s*$/g
@@ -131,10 +131,11 @@ const Input: FC<IInputProps> = ({
     
 
     const getInputError = useMemo(() => {
-        return (isSubmited && inputType === 'name' && inputStringValue.length < 1) ? <div className={classes.errorLabel}>
+        console.log(isError)
+        return (isError) ? <div className={classes.errorLabel}>
             <label>This field is required</label>
         </div> : null
-    }, [isSubmited, inputStringValue])
+    }, [isError])
 
     //splitter for inputs
     const getCurrentInput: ReactNode = 
