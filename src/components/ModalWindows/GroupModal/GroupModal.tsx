@@ -75,7 +75,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }, [isSubmit, isGroupModalOpen])
 
 
-    const handleSubmit = () => {
+    const handleSubmit = useCallback(() => {
         if(isSubmit && nameValue.length > 0) {
             if(mode === 'create'){
                 createGroup({
@@ -103,7 +103,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 }
             } 
         }
-    }
+    }, [isSubmit, nameValue])
 
     const initTooltip = useCallback(() => {
         if (isGroupCreated) {
@@ -145,6 +145,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     useEffect(() => initializeModalInputs(), [initializeModalInputs])
     useEffect(() => initTooltip(), [initTooltip])
     useEffect(() => initializeSubmit(), [initializeSubmit])
+    useEffect(() => handleSubmit(), [handleSubmit])
 
     return <>
     {
@@ -243,7 +244,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             btnHeight={36}
                             icon="submit"
                             type='primary'
-                            callback={() => {setIsSubmit(true); handleSubmit()}}
+                            callback={() => {setIsSubmit(true)}}
                         />
                     </div>
                 </div>
