@@ -21,14 +21,16 @@ const UserGroupsCard = () => {
     const {data: UserGroups, isLoading: isUserGroupsLoading, isError: isUserGroupsError, isSuccess: isUserGroupsSuccess} = useGetCurrentUserGroupsQuery(null)
 
     const [groupId, setGroupId] = useState<number>(0);
-    const [totalItems, setTotalItems] = useState<number>(5);
+    const [maxItems, setMaxItems] = useState<number>(5);
+    const [totalItems, setTotalItems] = useState<number>(maxItems);
     const [isMoreModalOpen, setIsMoreModalOpen] = useState<boolean>(false);
     const [isGroupModalOpen, setIsGroupModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     const ref = useRef<HTMLUListElement>(null);
 
     useEffect(() => {
-        handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+        const totalGroups = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+        setTotalItems(totalGroups || maxItems);
     }, [UserGroups, width, height])
 
     const getGroups = (groups: IGroup[]) => {
@@ -37,10 +39,11 @@ const UserGroupsCard = () => {
     
     const properGroups: IGroup[] = useMemo(() => {
         if (UserGroups)
-            return UserGroups.user_groups.slice(0, totalItems)
+            return UserGroups.user_groups.slice(0, maxItems)
         else return []
-    }, [UserGroups, totalItems])
+    }, [UserGroups, maxItems])
 
+    const categoriesLength: number = UserGroups?.user_groups.length || 0;
 
     const createGroupModal = () => {
         return <GroupModal
@@ -62,28 +65,28 @@ const UserGroupsCard = () => {
         />
     }
 
+    const addButton = (<SpecialButton
+        handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
+        className={classes.specialItem}
+        type='add'
+    />);
+    const moreButton = (<SpecialButton
+        handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+        className={classes.specialItem}
+        type='view'
+    />);
+    const specialButton = useMemo(() => {
+        return totalItems <= categoriesLength ? moreButton : addButton
+    }, [totalItems])
+
+
     let groupsContent;
     if (isUserGroupsSuccess && UserGroups.user_groups.length !== 0) {
         groupsContent = getGroups(properGroups)
-        UserGroups.user_groups.length >= totalItems ?
-            groupsContent.push(<SpecialButton
-                handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
-                className={classes.specialItem}
-                type='view'
-            />)
-            :
-            groupsContent.push(<SpecialButton
-                handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
-                className={classes.specialItem}
-                type='add'
-            />)
+        groupsContent.push(specialButton);
     } else {
         groupsContent = <div className={classes.emptyList}>
-            <SpecialButton
-                handleClick={() => setIsGroupModalOpen(!isGroupModalOpen)}
-                className={classes.specialItem}
-                type='add'
-            />
+            {addButton}
         </div>
     }
     return (

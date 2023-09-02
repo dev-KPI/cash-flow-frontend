@@ -72,7 +72,6 @@ export function handleWrap(
     if (!container || !wrappedClass || !specialItemClass) return;
     
     const gap = parseFloat(getComputedStyle(container).gap)
-    
     for (const child of container.children) {
         const childElement = child as HTMLElement;
         const prevSibling = childElement.previousElementSibling as HTMLElement;
@@ -83,12 +82,14 @@ export function handleWrap(
 
         if (childElement.offsetTop >= offsetHeight) {
             if (prevSibling)
-                prevSibling.classList.add(`${wrappedClass}`);
+                prevSibling.classList.add(`${wrappedClass}`); 
             if (!childElement.classList.contains(`${specialItemClass}`)) {
                 childElement.classList.add(`${wrappedClass}`);
             }
         }
     }
+
+    return Array.from(container.children).filter(child => !child.classList.contains(wrappedClass)).length;
 }
 
 export const isUrl = (link: string) => {

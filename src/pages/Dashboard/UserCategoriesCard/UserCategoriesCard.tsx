@@ -25,7 +25,8 @@ const UserCategoriesCard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
 
     const [categories, setCategories] = useState<ICategoryAmount[]>([]);
-    const [totalItems, setTotalItems] = useState<number>(11);
+    const [maxItems, setMaxItems] = useState<number>(11);
+    const [totalItems, setTotalItems] = useState<number>(maxItems);
     const [pageGroup, setGroupPage] = useState<number>(0);
     const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
@@ -57,10 +58,12 @@ const UserCategoriesCard = () => {
     }, [ExpensesByGroup])
 
     requestAnimationFrame(_ => {
-        handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
+        const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
+        setTotalItems(totalCategories || maxItems);
     })
     useEffect(()=>{
-        handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
+        const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
+        setTotalItems(totalCategories || maxItems);
     }, [ExpensesByGroup, UserGroups, width, height])
 
     const getCategories = (categories: ICategoryAmount[]) => {
@@ -102,10 +105,10 @@ const UserCategoriesCard = () => {
     }
 
     const properCategories: ICategoryAmount[] = useMemo(() => {
-            return categories.slice(0, totalItems)
-    }, [categories, totalItems])
+            return categories.slice(0, maxItems)
+    }, [categories, maxItems])
 
-    
+    const categoriesLength: number = categories.length;
 
     const handleNextGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (UserGroups && UserGroups.user_groups[pageGroup + 1]) {
@@ -131,6 +134,10 @@ const UserCategoriesCard = () => {
         className={classes.specialItem}
         type='view'
     />);
+    const specialButton = useMemo(() => {
+        return totalItems <= categoriesLength ? moreButton : addButton
+    }, [totalItems])
+
     let categoriesContent;
     if (isExpensesSuccess && isGroupsSuccess) {
         if (categories.length === 0)
@@ -140,10 +147,7 @@ const UserCategoriesCard = () => {
             </div>
         else {
             categoriesContent = getCategories(properCategories)
-            categories.length >= totalItems ?
-                categoriesContent.push(moreButton)
-                :
-                categoriesContent.push(addButton)  
+            categoriesContent.push(specialButton);      
         }
     } else if (!UserGroups?.user_groups[pageGroup]) {
         categoriesContent = <div className={classes.emptyList}>
