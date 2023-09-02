@@ -124,7 +124,6 @@ const SearchBar: FC<{groupId:number}> = ({groupId}) => {
     const getUsers = () => {
         return filter.query === '' ? '' : filter.usersList.map(user => getMembers(user, 'add'))
     }
-    console.log('render');
     
     const contentClasses = classes.content + ' ' + `${isOpen ? classes.show : classes.hide}`  // eslint-disable-line no-useless-concat
     return (
@@ -170,4 +169,4 @@ const SearchBar: FC<{groupId:number}> = ({groupId}) => {
     );
 };
 
-export default SearchBar;
+export default React.memo(SearchBar);
