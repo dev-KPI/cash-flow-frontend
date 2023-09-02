@@ -39,35 +39,33 @@ const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) 
             }
             {isInfoLoading ? <GroupInfoCardLoader /> :
                 <div className={classes.inner}>
-                    <div className={classes.group}>
-                        {
-                            isAdmin ? <button 
-                            onClick={() => setIsEditGroupModal(true)}
-                            className={classes.adminEditButton}>
-                                <i className={"bi bi-pencil"}></i>
-                            </button> : null
-                        }
-                        <div className={classes.avatar}>
-                            <div className={classes.icon}
-                                style={{ backgroundColor: color_code }}>
-                                <i className={groupInfo.icon_url}></i>
-                            </div>
+                    {
+                        isAdmin ? <button 
+                        onClick={() => setIsEditGroupModal(true)}
+                        className={classes.adminEditButton}>
+                            <i className={"bi bi-pencil"}></i>
+                        </button> : null
+                    }
+                    <div className={classes.avatar}>
+                        <div className={classes.icon}
+                            style={{ backgroundColor: color_code }}>
+                            <i className={groupInfo.icon_url}></i>
                         </div>
-                        <div className={classes.group__info}>
-                            <h4 className={classes.title}>{title}</h4>
-                            <ul className={classes.details}>
-                                <li className={classes.detailItem}>
-                                    <p className={classes.detailNumber}>{members}</p>
-                                    <p className={classes.detailTitle}>Members</p>
-                                </li>
-                                <li className={classes.detailItem}>
-                                    <p className={classes.detailNumber}>{expenses}</p>
-                                    <p className={classes.detailTitle}>Expenses</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className={classes.description}>{descriptionModded}</div>
                     </div>
+                    <div className={classes.group__info}>
+                        <h4 className={classes.title}>{title}</h4>
+                        <ul className={classes.details}>
+                            <li className={classes.detailItem}>
+                                <p className={classes.detailNumber}>{members}</p>
+                                <p className={classes.detailTitle}>Members</p>
+                            </li>
+                            <li className={classes.detailItem}>
+                                <p className={classes.detailNumber}>{expenses}</p>
+                                <p className={classes.detailTitle}>Expenses</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className={classes.description}>{descriptionModded}</div>
                 </div>}
         </div>
     )
