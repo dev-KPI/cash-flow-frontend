@@ -141,7 +141,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
             <form
             onSubmit={handleSubmit}>
                 <div className={classes.modal__wrapper}>
-                    <div className={classes.inputNameCategory}>
+                    {mode === 'create' ? <div className={classes.inputNameCategory}>
                         <label className={classes.title} htmlFor="categoryName">{labelText}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
@@ -151,8 +151,8 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
                             inputType="name" id="categoryName" 
                             name="categoryName" placeholder="Name"/>
                         </div>
-                    </div>
-                    <div style={{marginTop: '24px'}}>
+                    </div> : null}
+                    <div style={{marginTop: mode === 'edit' ? '0px' : '24px'}}>
                         <Accordion>
                             <AccordionTab title="Select color" choosedItem={light}>
                                 <div className={classes.pickBody}>
