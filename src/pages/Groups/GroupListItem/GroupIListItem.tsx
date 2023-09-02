@@ -36,24 +36,27 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
     const buttonRef = useRef(null);
     const navigate = useNavigate();
 
-
-    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isLoading: isUsersByGroupLoading, isError: isUsersInGroupError, isSuccess: isUsersInGroupSuccess} = useGetUsersByGroupQuery({group_id: id, size: 8, page: 1});
+    const {data: UsersInGroup, isFetching: isUsersInGroupFetching, isLoading: isUsersByGroupLoading, isError: isUsersInGroupError, isSuccess: isUsersInGroupSuccess} = useGetUsersByGroupQuery({group_id: id, size: 500, page: 1});
 
     const filteredUsersInGroup = useMemo(() => {
-        if(UsersInGroup && isUsersInGroupSuccess){
+        if(isUsersInGroupSuccess){
             return UsersInGroup.items[0].users_group.filter(el => el.status === 'ACTIVE')
         }
-    }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupSuccess, isUsersInGroupError])
+        else return []
+    }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupError, isUsersInGroupSuccess])
+
+    const amountMembers: number = filteredUsersInGroup.length
+    
     description = description.length > 150 ? description.slice(0, 120) + '...' : description;
 
-    const memberIcons = useMemo((): string[] => {
-        if(filteredUsersInGroup){
-            return filteredUsersInGroup.map(el => el.user.picture);
+    const memberIcons = () => {
+        if (filteredUsersInGroup) {
+            return filteredUsersInGroup.slice(0, 3).map(el => el.user.picture)
         }
-        return ['']
-    }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupSuccess, isUsersInGroupError])
-    const getMemberIcons = useMemo(() => {
-        return memberIcons.map((icon, i) => 
+        return []
+    }
+    const getMemberIcons = () => {
+        return memberIcons().map((icon, i) =>
             <div
                 className={classes.avatar}
                 key={i}
@@ -63,8 +66,8 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                     src={isUrl(icon) ? icon : userIcon}
                 />
             </div>
-        ).slice(0,3)
-    }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupSuccess, isUsersInGroupError])
+        );
+    }
 
     const getAdminIcon = () => {
         return isUrl(icon) ? 
@@ -95,14 +98,14 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                     <h6 className={classes.itemTitle}>View</h6>
                                 </li>
                                 {isAdmin && <li className={classes.item}
-                                    onClick={(e) => { e.preventDefault(); setGroupId(id); setIsEditGroupModal(!isEditGroupModal) }}
+                                    onClick={(e) => { e.preventDefault(); setIsEditGroupModal(!isEditGroupModal) }}
                                 >
                                     <i className="bi bi-pencil"></i>
                                     <h6 className={classes.itemTitle}>Edit</h6>
                                 </li>}
                                 <li className={classes.item}
                                     style={{ color: 'var(--main-red)' }}
-                                    onClick={() => { setIsConfirmationModal(true)}}
+                                    onClick={(e) => { e.preventDefault(); setIsConfirmationModal(true)}}
                                 >
                                     <i className="bi bi-box-arrow-left"></i>
                                     <h6 className={classes.itemTitle} style={{ color: 'var(--main-red)' }}>{isAdmin ? 'Disband' : 'Leave'}</h6>
@@ -128,14 +131,14 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                                 <div className={classes.description}>{description}</div>
                                 <div className={classes.contentBottom}>
                                     <div className={classes.members}>
-                                        {getMemberIcons}
-                                        {memberIcons.length > 3 ?
+                                        {getMemberIcons()}
+                                        {amountMembers > 3 ?
                                             <div className={classes.avatar}>
                                                 <div className={classes.avatarLeftMembers}
                                                     style={{ backgroundColor: color }}></div>
                                                 <p className={classes.leftMembers}
                                                     style={{ color: color }}
-                                                >+{memberIcons.length - 3}
+                                                >+{amountMembers - 3}
                                                 </p>
                                             </div>
                                             : null

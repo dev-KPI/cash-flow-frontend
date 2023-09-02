@@ -1,4 +1,4 @@
-.header{
+.header {
     display: none;
     width: 100%;
     position: fixed;
@@ -34,9 +34,10 @@
 .menuBurger::-webkit-scrollbar{
     display: none;
 }
-.menuBurgerTransition{
+.menuBurgerOpen{
     left: 0;
 }
+.menuBurgerClose {}
 .bgDrop {
     position: fixed;
     z-index: 990;
