@@ -195,16 +195,19 @@
     z-index: -1;
 }
 
+/* empty state */
 .noItems {
     text-align: center;
     margin-top: 5%;
 }
-
+.noItems i {
+    font-size: 50px;
+    color: var(--main-text);
+}
 .noItems__title {
     composes: mediumText from "@styles/style.css";
     margin: 10px 0 5px;
 }
-
 .noItems__text {
     composes: largeItemTitle from "@styles/style.css";
 }
