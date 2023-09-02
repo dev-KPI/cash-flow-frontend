@@ -173,6 +173,9 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
+            transformResponse: (response: IGetGroupExpensesByCategoryResponse[], arg, body: IGetGroupExpensesByCategoryBody): IGetGroupExpensesByCategoryResponse[] => { 
+                return response.filter((category)=> category.amount !== null)
+            },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],

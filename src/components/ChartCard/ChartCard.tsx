@@ -9,13 +9,13 @@ import { ICategoryAmount } from '@models/ICategory';
 import { IExtendedUser } from '@models/IUser';
 
 
-type IChartCardProps = { title: string } & (
+type IChartCardProps = { title: string, messageType?: 'user' | 'group'} & (
     | { categories: ICategoryAmount[], members?: never }
     | { categories?: never, members: IExtendedUser[] }
 )
 
 
-const ChartCard: FC<IChartCardProps> = ({ categories, members, title }) => {
+const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageType = 'user' }) => {
     
     const [id, setId] = useState<number>(categories ? categories[0]?.id : members[0]?.id || 0 );
     const [isExtended, setIsExtended] = useState<boolean>(false);
@@ -97,11 +97,13 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title }) => {
     }
 
     if (dataLength === 0) {
+        const emptyMessage = messageType === 'user' ? 'You have no expenses' :
+            messageType === 'group' ? "Group doesn't have expenses" : null
         return <div className={classes.inner}>
             <h3 className={classes.title}>{title}</h3>
             <div className={classes.noExpenses}>
                 <i className="bi bi-database-x"></i>
-                <h5 className={classes.noExpenses__title}>You have no expenses</h5>
+                <h5 className={classes.noExpenses__title}>{emptyMessage}</h5>
                 <p className={classes.noExpenses__text}>Try creating a new expense</p>
             </div>
         </div>

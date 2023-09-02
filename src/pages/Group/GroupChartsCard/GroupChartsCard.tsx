@@ -28,12 +28,12 @@ const GroupChartsCard:FC<{groupId:number}> = ({groupId}) => {
     return (
         <div className={classes.ChartsCard}>
             {(!isExpensesByCategoryLoading && GroupExpensesByCategory) ? 
-                <ChartCard categories={GroupExpensesByCategory} title={'Expenses by categories'} />
+                <ChartCard categories={GroupExpensesByCategory} title={'Expenses by categories'} messageType={'group'} />
                 :
                 <ChartCardLoader />
             }
             {(!isExpensesByMemberLoading && GroupExpensesByMember) ? 
-                <ChartCard members={GroupExpensesByMember?.filter(item => item.amount !== 0)} title={'Expenses by members'} />
+                <ChartCard members={GroupExpensesByMember?.filter(item => item.amount !== 0)} title={'Expenses by members'} messageType={'group'} />
                 :
                 <ChartCardLoader />
             }
