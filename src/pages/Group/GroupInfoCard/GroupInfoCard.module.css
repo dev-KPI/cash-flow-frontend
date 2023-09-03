@@ -10,22 +10,20 @@
 .inner {
     padding: 24px 32px;
     height: 100%;
+    position: relative;
 }
 
 .adminEditButton{
     position: absolute;
     cursor: pointer;
-    top: 1;
-    z-index: 3000;
-    left: 1;
+    top: 24px;
+    right: 24px;
     font-size: 30px;
     line-height: 30px;
     color: var(--main-text);
-    fill: var(--main-text);
 }
 .adminEditButton:active{
     color: var(--main-red);
-    fill: var(--main-red);
 }
 .title {
     composes: cardTitle from "@styles/style.css";

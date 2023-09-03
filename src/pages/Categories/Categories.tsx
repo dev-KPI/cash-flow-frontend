@@ -138,14 +138,14 @@ const Categories: FC = () => {
                 </ul>
             else
                 categoriesContent = (<div className={classes.noItems}>
-                    <i className="bi bi-ui-checks-grid" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
+                    <i className="bi bi-ui-checks-grid"></i>
                     <h5 className={classes.noItems__title}>Your categories list currently is empty!</h5>
                     <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
                 </div>)
         }
     } else {
         groupsContent = (<div className={classes.noItems}>
-            <i className="bi bi-person-x" style={{ fontSize: 50, color: 'var(--main-text)' }}></i>
+            <i className="bi bi-person-x"></i>
             <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>
             <p className={classes.noItems__text}>To add more categories, first create groups.</p>
             <CustomButton

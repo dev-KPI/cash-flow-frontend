@@ -116,7 +116,7 @@ const Users: React.FC = () => {
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex + 1 === pageCount ? totalCount : (pageIndex + 1) * pageSize; 
     let usersContent;
-    if (!isUsersLoading && !isCurrentUserLoading && !isGroupsLoading && data.length !== 0)
+    if (isUsersSuccess && isCurrentUserSuccess && isGroupsSuccess && Users.items.length > 0)
         usersContent = <table className={classes.recentOperations__table}>
             <thead className={classes.tableTitle}>
                 {table.getHeaderGroups().map(headerGroup => (
@@ -202,6 +202,11 @@ const Users: React.FC = () => {
                 </tr>
             </tbody>
         </table>
+    else if (isUsersSuccess && isCurrentUserSuccess && isGroupsSuccess && Users.items.length === 0)
+        usersContent = (<div className={classes.noItems}>
+            <i className="bi bi-person-exclamation"></i>
+            <h5 className={classes.noItems__title}>Our app doesn't have any users yet :(</h5>
+        </div>)
     else
         usersContent = <div className={classes.loaderWrapper}>
             <PreLoader preLoaderSize={50} type='auto' />

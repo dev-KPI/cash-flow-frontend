@@ -3,13 +3,11 @@ import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 //UI
 import classes from './GroupHistory.module.css';
 import userIcon from '@assets/user-icon.svg'
-
+import PreLoader from '@components/PreLoader/PreLoader';
 //logic
 import ICategory from '@models/ICategory';
 import IUser from '@models/IUser';
-import { GroupHistoryObj } from "@pages/GroupHistoryObj";
 import DateService from '@services/DateService/DateService';
-import { addFieldToObject, Omiter } from "@services/UsefulMethods/ObjectMethods";
 import {
     createColumnHelper,
     flexRender,
@@ -188,97 +186,107 @@ const History: React.FC = () => {
     const pageCount  = table.getPageCount()
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex === pageCount - 1 ? GroupRecentHistory?.total: (pageIndex + 1) * pageSize;
-
+    let historyContent;
+    if (isGroupRecentHistorySuccess && GroupRecentHistory.items.length !== 0) {
+        historyContent = (<table className={classes.recentOperations__table}>
+            <thead className={classes.tableTitle}>
+                {table.getHeaderGroups().map(headerGroup => (
+                    <tr key={headerGroup.id}>
+                        {headerGroup.headers.map(header => (
+                            <th key={header.id} colSpan={header.colSpan}>
+                                {header.isPlaceholder ? null : (
+                                    <div
+                                        {...{
+                                            className: header.column.getCanSort()
+                                                ? classes.headerHover
+                                                : '',
+                                            onClick: header.column.getToggleSortingHandler(),
+                                        }}
+                                    >
+                                        {flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )}
+                                        {{
+                                            asc: <i id={classes.sortBtn} className="bi bi-caret-up-fill" style={{ fontSize: 16, position: 'absolute' }}></i>,
+                                            desc: <i id={classes.sortBtn} className="bi bi-caret-down-fill" style={{ fontSize: 16, position: 'absolute' }}></i>
+                                        }[header.column.getIsSorted() as string] ?? null}
+                                    </div>
+                                )}
+                            </th>
+                        ))}
+                    </tr>
+                ))}
+            </thead>
+            <tbody className={classes.tableText}>
+                {table.getRowModel().rows.map(row => (
+                    <tr key={row.id} className={classes['in']}>
+                        {row.getVisibleCells().map(cell => (
+                            <td key={cell.id}>
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+                <tr>
+                    <td colSpan={5}>
+                        <div className={classes.pagination}>
+                            <div className={classes.selector}>
+                                <span>Rows per page: </span>
+                                <select
+                                    value={pageSize}
+                                    className={classes.select}
+                                    onChange={e => table.setPageSize(Number(e.target.value))}
+                                >
+                                    {[4, 6, 8, 16, 24].map(pageSize => (
+                                        <option key={pageSize} value={pageSize}>
+                                            {pageSize}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <span className={classes.counter}>
+                                {`${startIndex} - ${endIndex}`} of{' '}
+                                {GroupRecentHistory?.total}
+                            </span>
+                            <div className={classes.nav}>
+                                <button
+                                    className={classes.btn}
+                                    onClick={() => {
+                                        table.previousPage()
+                                    }}
+                                    disabled={!table.getCanPreviousPage()}
+                                >
+                                    <i id='chevron' className="bi bi-chevron-left"></i>
+                                </button>
+                                <button
+                                    className={classes.btn}
+                                    onClick={() => table.nextPage()}
+                                    disabled={!table.getCanNextPage()}
+                                >
+                                    <i id='chevron' className="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>)
+    } else if (isGroupRecentHistorySuccess && GroupRecentHistory.items.length === 0) {
+        historyContent = (<div className={classes.noItems}>
+            <i className="bi bi-clock-history"></i>
+            <h5 className={classes.noItems__title}>Group members don't have any expenses</h5>
+            <p className={classes.noItems__text}>Back to group page and to add at least one</p>
+        </div>)
+    } else {
+        historyContent = <div className={classes.loaderWrapper}>
+            <PreLoader preLoaderSize={50} type='auto' />
+        </div>
+    }
     return (
         <main id='GroupHistoryPage' className="no-padding">
             <div className={classes.page__container}>
-                {data.length > 0 ? (<table className={classes.recentOperations__table}>
-                    <thead className={classes.tableTitle}>
-                        {table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id}>
-                                {headerGroup.headers.map(header => (
-                                    <th key={header.id} colSpan={header.colSpan}>
-                                        {header.isPlaceholder ? null : (
-                                            <div
-                                                {...{
-                                                    className: header.column.getCanSort()
-                                                        ? classes.headerHover
-                                                        : '',
-                                                    onClick: header.column.getToggleSortingHandler(),
-                                                }}
-                                            >
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                                {{
-                                                    asc: <i id={classes.sortBtn} className="bi bi-caret-up-fill" style={{ fontSize: 16, position: 'absolute'}}></i>,
-                                                    desc: <i id={classes.sortBtn} className="bi bi-caret-down-fill" style={{ fontSize: 16, position: 'absolute'}}></i>
-                                                }[header.column.getIsSorted() as string] ?? null }
-                                            </div>
-                                        )}
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody className={classes.tableText}>
-                        {table.getRowModel().rows.map(row => (
-                            <tr key={row.id} className={classes['in']}>
-                                {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                        <tr>
-                            <td colSpan={5}>
-                                <div className={classes.pagination}>
-                                    <div className={classes.selector}>
-                                        <span>Rows per page: </span>
-                                        <select
-                                            value={pageSize}
-                                            className={classes.select}
-                                            onChange={e => table.setPageSize(Number(e.target.value))}
-                                        >
-                                            {[4, 6, 8, 16, 24].map(pageSize => (
-                                                <option key={pageSize} value={pageSize}>
-                                                    {pageSize}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <span className={classes.counter}>
-                                        {`${startIndex} - ${endIndex}`} of{' '}
-                                        {GroupRecentHistory?.total}
-                                    </span>
-                                    <div className={classes.nav}>
-                                        <button
-                                            className={classes.btn}
-                                            onClick={() => {
-                                                table.previousPage()
-                                            }}
-                                            disabled={!table.getCanPreviousPage()}
-                                        >
-                                            <i id='chevron' className="bi bi-chevron-left"></i>
-                                        </button>
-                                        <button
-                                            className={classes.btn}
-                                            onClick={() => table.nextPage()}
-                                            disabled={!table.getCanNextPage()}
-                                        >
-                                            <i id='chevron' className="bi bi-chevron-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>) : (<div className={classes.noGroupHistory}>
-                    <i className="bi bi-clock-history"></i>
-                    <p>You haven't expenses in this group, back to group page and make at least one</p>
-                </div>)}
+                {historyContent}
             </div>
         </main>
     )
