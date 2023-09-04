@@ -10,7 +10,7 @@ const GroupMemberChartCard = () => {
 
     return (
         <div className={classes.Chart}>
-                {/* <ChartCard data={categoryExpenses} title={'Expenses'} /> */}
+            {/* <ChartCard data={categoryExpenses} title={'Expenses'} /> */}
         </div>
     );
 };

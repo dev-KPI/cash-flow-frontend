@@ -127,3 +127,18 @@ export interface IGetGroupUsersHistoryResponse extends IListResponse<{
     user_last_name: string,
     user_picture: string
 }> { };
+
+
+export interface IGroupMemberExpensesDailyResponse {
+    date: string,
+    amount: number,
+}
+export interface IGroupMemberExpensesDailyBody extends IGetUserByGroupInfoBody{}
+
+
+export interface IGroupMemberExpensesByCategoryDailyResponse {
+    date: string,
+    amount: number,
+    categories: ICategoryAmount[]
+}
+export interface IGroupMemberExpensesByCategoryDailyBody extends IGetUserByGroupInfoBody{}
