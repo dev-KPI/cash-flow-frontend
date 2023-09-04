@@ -33,6 +33,10 @@ const Input: FC<IInputProps> = ({
         }
     }, [])
 
+    const inputErrorClass = useMemo(() => {
+        return (isError ? classes.errorInput : '')
+    }, [isError])  
+
     useMemo(() => {
         if(isInputMustClear){
             setInputNumberValue(0)
@@ -81,9 +85,6 @@ const Input: FC<IInputProps> = ({
         name={name} 
         id={id}/>
     //----------------------------------------------{NAME INPUT}-----------------------------------------------------  
-    const nameInputErrorClass = useMemo(() => {
-        return (isError ? classes.errorInput : '')
-    }, [isError])  
     const nameInput = <InputText
         onInput={(e: FormEvent<HTMLInputElement>) => {
             const regExp = /^\s*(.*?)\s*$/g
@@ -145,7 +146,7 @@ const Input: FC<IInputProps> = ({
     inputType === 'area' ? areaInput : <></>;
 
     return(<>
-        <div className={classes.wrapper + ' ' + nameInputErrorClass}>
+        <div className={classes.wrapper + ' ' + inputErrorClass}>
             {Icon && 
             <div className={classes.Icon__wrapper}>
                 {Icon}
