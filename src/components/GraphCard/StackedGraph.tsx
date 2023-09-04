@@ -29,10 +29,10 @@ interface IGraphGroupMembers {
     users: Omit<IExtendedUser, 'picture'>[]
 }
 
-interface IStackedGraphProps {
-    dataUsers?: IGraphGroupMembers[]
-    dataUserCategories?: IGroupMemberExpensesByCategoryDailyResponse[]
-}
+type IStackedGraphProps = (
+    | { dataUsers: IGraphGroupMembers[], dataUserCategories?: never }
+    | { dataUsers?: never, dataUserCategories: IGroupMemberExpensesByCategoryDailyResponse[] }
+)
 
 const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) => {
     //store
@@ -158,6 +158,8 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                 return {
                     label: fullName ?? '',
                     key: dataUserCategories.map((el) => new Date(el.date).toISOString().split('T')[0]),
+                    maxBarThickness: 24,
+                    borderRadius: 20,
                     data: getAmountsByCategoryId(dataUserCategories, +categoryId),
                     backgroundColor: getColorByCategoryId(dataUserCategories, +categoryId)
                 };
@@ -169,6 +171,8 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                 return {
                     label: fullName, 
                     key: dataUsers.map((el) => new Date(el.date).toISOString().split('T')[0]),
+                    maxBarThickness: 24,
+                    borderRadius: 20,
                     data: getAmountsByUserId(dataUsers, +userId),
                     backgroundColor: shaffledColors[i % shaffledColors.length]
                 };
@@ -178,6 +182,8 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                 label: '', 
                 key: '',
                 data: [0],
+                maxBarThickness: 24,
+                borderRadius: 20,
                 backgroundColor: ''
             }]
         }

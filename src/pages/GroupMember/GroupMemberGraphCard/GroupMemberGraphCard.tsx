@@ -25,14 +25,15 @@ const GroupMemberGraphCard: FC = () => {
         if(MonthPickerStore.type === 'date-range'){
             return {
                 period: {
-                    start_date: MonthPickerStore.startDate,
-                    end_date: MonthPickerStore.endDate
+                    start_date: MonthPickerStore.startDate.split('T')[0],
+                    end_date: MonthPickerStore.endDate.split('T')[0]
                 }
             }
         } else {
             return {
                 period: {
-                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`} 
+                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`
+                } 
             }
         }
     }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
@@ -47,23 +48,27 @@ const GroupMemberGraphCard: FC = () => {
     const [isToggled, setIsToggled] = useState<boolean>(false);
     
     const RangeTitle = useMemo(() => {
-        if (MonthPickerStore.rangeType === 'month' || MonthPickerStore.type === 'year-month') {
-            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } 
-        else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
-            isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
-            return `${new Date(MonthPickerStore.startDate).getDate()} 
-            ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } else if (MonthPickerStore.rangeType === 'alltime'){
-            return 'All time'
+        if(MonthPickerStore.type === 'year-month') {
+            return `${MonthPickerStore.currentMonth} ${MonthPickerStore.currentYear}`
         } else {
-            return `From ${
-                new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
-            } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
+            if (MonthPickerStore.rangeType === 'month') {
+                return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+                    ${new Date(MonthPickerStore.startDate).getFullYear()}`
+                } 
+            else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
+                isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
+                return `${new Date(MonthPickerStore.startDate).getDate()} 
+                ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+                ${new Date(MonthPickerStore.startDate).getFullYear()}`
+            } else if (MonthPickerStore.rangeType === 'alltime'){
+                return 'All time'
+            } else {
+                return `From ${
+                    new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
+                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
+            }
         }
-    }, [MonthPickerStore.rangeType, MonthPickerStore.type])
+    }, [MonthPickerStore.rangeType, MonthPickerStore.type, MonthPickerStore.endDate, MonthPickerStore.startDate, MonthPickerStore.currentMonth])
 
     return (
         <div className={classes.GroupMemberGraph}>

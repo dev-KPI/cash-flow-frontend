@@ -56,7 +56,6 @@ const UserCategoriesCard = () => {
         if (isExpensesSuccess)
             setCategories(ExpensesByGroup.categories)
     }, [ExpensesByGroup])
-
     requestAnimationFrame(_ => {
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
         setTotalItems(totalCategories || maxItems);
