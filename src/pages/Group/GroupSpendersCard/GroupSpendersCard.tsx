@@ -72,12 +72,6 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
             <div className={classes.inner}>
                 <div className={classes.top}>
                     <h2 className={classes.title}>The spender of the {MonthPickerStore.rangeType === 'default' ? 'month' : MonthPickerStore.rangeType}</h2>
-                    <NavLink
-                        to={'/members'}
-                        className={classes.spendersLink}
-                    >
-                        See all
-                    </NavLink>
                 </div>
                 <ul className={classes.spenders}>
                     {getSpenders()}
