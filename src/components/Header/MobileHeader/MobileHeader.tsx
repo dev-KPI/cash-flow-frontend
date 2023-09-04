@@ -18,20 +18,19 @@ const MobileHeader: FC<IHeaderProps> = ({User}) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     useClickOutsideRef(BurgerNavRef, () => setIsOpen(false))
 
-    const isFirstRender = useRef(true);
+    const ref = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
-
         const body = document.body;
 
         if (isOpen && body) {
             body.style.overflowY = 'hidden';
-        } else if (!isOpen && body) {
-            body.style.overflowY = 'auto';
+        } else if (body) {
+            const element = ref.current as HTMLElement;
+            if (getComputedStyle(element, null).display === 'none') {
+                return
+            } else  
+                body.style.overflow = '';
         }
     }, [isOpen]);
 
@@ -43,7 +42,7 @@ const MobileHeader: FC<IHeaderProps> = ({User}) => {
     }, [isOpen]);
 
     return(<>
-        <header className={classes.header}>
+        <header className={classes.header} ref={ref}>
             <div className={classes.header__container}>
                 <BurgerButton 
                 isOpen={isOpen}
