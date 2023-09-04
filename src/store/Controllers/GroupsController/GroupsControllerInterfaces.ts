@@ -142,3 +142,26 @@ export interface IGroupMemberExpensesByCategoryDailyResponse {
     categories: ICategoryAmount[]
 }
 export interface IGroupMemberExpensesByCategoryDailyBody extends IGetUserByGroupInfoBody{}
+
+export interface IGetGroupMemberHistoryResponse {
+    items: [
+        {
+            id: number,
+            descriptions: string,
+            amount: number,
+            time: string,
+            category_id: number,
+            color_code_category: string,
+            title_category: string,
+            user_id: number,
+            user_login: string,
+            user_first_name: string,
+            user_last_name: string,
+            user_picture: string
+        }
+    ],
+    total: number,
+    page: number,
+    size: number,
+    pages: number
+}

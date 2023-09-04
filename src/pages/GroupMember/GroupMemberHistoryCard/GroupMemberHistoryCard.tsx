@@ -1,4 +1,4 @@
-import React, { FC, useState, ReactNode, useCallback } from "react";
+import React, { FC, useState, ReactNode, useCallback, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useWindowSize } from "usehooks-ts";
 //UI
@@ -14,6 +14,8 @@ import { MembersHistoryObj } from "@pages/MembersHistoryObj";
 
 import ICategory from "@models/ICategory";
 import IUser from "@models/IUser";
+import IGroup from "@models/IGroup";
+import { useGetGroupMemberHistoryQuery } from "@store/Controllers/GroupsController/GroupsController";
 
 
 
@@ -23,7 +25,7 @@ interface GroupTransaction {
     time: string;
     description: string;
     category_group?: {
-        group?: ICategory // but IGroup
+        group?: IGroup 
         category?: ICategory
     },
     user: IUser
@@ -31,66 +33,55 @@ interface GroupTransaction {
 }
 
 const GroupHistoryCard: FC = () => {
+
     const { groupId, memberId } = useParams<{
         groupId: string,
         memberId: string,
     }>()
-    const [isPageLoading, setIsPageLoading] = useState<boolean>(true)
+    const { data: MemberHistory, isSuccess: isMemberHistorySuccess, isError: isMemberHistoryError, isLoading: isMemberHistoryLoading } = 
+    useGetGroupMemberHistoryQuery({page: 1, size: 8, group_id: Number(groupId) || 0, member_id: Number(memberId) || 0}, { skip: Number(groupId) === 0 || Number(memberId) === 0 })
+    
     const {width} = useWindowSize();
-    setTimeout(() => {
-        setIsPageLoading(false)
-    }, 1500);
-    const getMixedHistory = () => {
-        const expensesDTO: GroupTransaction[] = [...MembersHistoryObj.expenses.map((el: Object) =>
-            Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'expense'))
-        const replenishmentsDTO: GroupTransaction[] = [...MembersHistoryObj.replenishments.map((el: Object) =>
-            Omiter(['id'], el))].map(el => addFieldToObject(el, 'type', 'replenishment'))
 
-        const HistoryArray: GroupTransaction[] = [...expensesDTO, ...replenishmentsDTO]
-
-        return (HistoryArray.sort((b, a) => {
-            const dateA = new Date(a.time).getTime();
-            const dateB = new Date(b.time).getTime();
-            return dateA - dateB;
-        }))
-    }
-
-    const getRecentActivities = () => {
-        let res: ReactNode[] = []
-        if (memberId) {
-            res = getMixedHistory()
-            .filter(el => el.user.id === +memberId)
-            .map((el, i) =>
-                <RecentOperationGroupCard
+    const getRecentActivities = useMemo(() => {
+        const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
+        const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
+        if(MemberHistory) {
+            if (memberId) {
+                let recentOperations = MemberHistory.items.map((el, i) =>
+                    <RecentOperationGroupCard
                     key={i}
-                    type={el.type === 'expense' ? 'expense' : 'replenishment'}
-                    categoryColor={el.category_group?.category?.color_code || '#80D667'}
-                    categoryTitle={el.category_group?.category?.category?.title || 'Salary'}
-                    member={el.user}
+                    type={'expense'}
+                    categoryColor={el.color_code_category || '#80D667'}
+                    categoryTitle={el.title_category || 'Salary'}
+                    member={{
+                        id: el.user_id,
+                        login: el.user_login,
+                        first_name: el.user_first_name,
+                        last_name: el.user_last_name,
+                        picture: el.user_picture,
+                    }}
                     amount={el.amount}
-                    time={el.time}></RecentOperationGroupCard>
-            )
-        }
-        return res
-    }
-
-    const getHistory = useCallback(() => {
-        if (width > 1440)
-            return getRecentActivities().slice(0, 4)
-        else
-            return getRecentActivities().slice(0, 7)
-    }, [width])
+                    time={new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()}></RecentOperationGroupCard>
+                )
+                if (width > 1440)
+                    return recentOperations.slice(0, 4)
+                else
+                    return recentOperations.slice(0, 7)
+            }
+        } else return []
+    }, [MemberHistory, width])
 
     return (<>
         <div className={classes.HistoryCard}>
-            {isPageLoading ? <GroupMemberHistoryCardLoader /> :
+            {isMemberHistoryLoading ? <GroupMemberHistoryCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Recent Activity</h3>
                     <ul>
-                        {getHistory()}
+                        {getRecentActivities}
                     </ul>
                     {
-                        getRecentActivities().length > 4 ?
+                        getRecentActivities && getRecentActivities?.length > 4 ?
                             <div key='239k23' className={classes.ViewMore}>
                                 <Link to={'/history'}>
                                     <div className={classes.ViewMore__inner}>
@@ -103,7 +94,7 @@ const GroupHistoryCard: FC = () => {
                         null
                     }
                     {
-                        getRecentActivities().length === 0 ?
+                        getRecentActivities?.length === 0 ?
                             <div className={classes.emptyList}>
                                 <i className="bi bi-clock-history"></i>
                                 <p className={classes.emptyTitle}>Activity list is empty!</p>

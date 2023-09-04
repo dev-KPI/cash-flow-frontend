@@ -20,8 +20,7 @@ import MonthPicker from '@components/MonthPicker/MonthPicker';
 
 const GroupMember = () => {
 
-    const {groupId} = useParams<{groupId: string}>()
-    const {memberId} = useParams<{memberId: string}>()
+    const {groupId, memberId} = useParams<{groupId: string, memberId: string}>()
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError, isSuccess: isGroupInfoSuccess} = useGetInfoByGroupQuery({group_id: Number(groupId)})
@@ -30,8 +29,8 @@ const GroupMember = () => {
         member_id: Number(memberId),
         period: MonthPickerStore.type === 'year-month' ? 
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
-    })
+        {start_date: MonthPickerStore.startDate.split('T')[0], end_date: MonthPickerStore.endDate.split('T')[0]} 
+    }, { skip: Number(groupId) === 0 || Number(memberId) === 0 })
 
     const {width, height} = useWindowSize();
     const getMonthPicker = useMemo(() => {
@@ -43,7 +42,6 @@ const GroupMember = () => {
             )
         }
     }, [width])
-
 
     return (<>
         {isGroupInfoSuccess && isMemberSuccess && GroupInfo && Member && 

@@ -25,7 +25,8 @@ import {
     IGroupMemberExpensesDailyBody,
     IGroupMemberExpensesDailyResponse,
     IGroupMemberExpensesByCategoryDailyResponse,
-    IGroupMemberExpensesByCategoryDailyBody
+    IGroupMemberExpensesByCategoryDailyBody,
+    IGetGroupMemberHistoryResponse
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import { IPeriods } from '@models/IPeriod';
@@ -152,6 +153,25 @@ export const GroupsApiSlice = api.injectEndpoints({
                     [{ type: 'GroupsController', id: 'GROUPS' },
                     { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },]
         }),
+        getGroupMemberHistory: builder.query<IGetGroupMemberHistoryResponse, { group_id: number, member_id: number, page: number, size: number }>({
+            query: ({ group_id, member_id, page, size }) => ({
+                url: `/groups/${group_id}/member/${member_id}/history/`,
+                credentials: 'include',
+                params: {
+                    page: page,
+                    size: size
+                },
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result, err, body) =>
+                result ? [{ type: 'GroupsController' as const, id: body.group_id },
+                { type: 'GroupsController', id: 'GROUPS' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },] :
+                    [{ type: 'GroupsController', id: 'GROUPS' },
+                    { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },]
+        }), 
         getCurrentGroupSpenders: builder.query<IGetCurrentGroupSpendersResponse[], IGetCurrentGroupSpendersBody>({
             query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/users-spenders`,
@@ -480,6 +500,7 @@ export const {
     useRemoveUserMutation,
     useGetGroupUsersHistoryQuery,
     useGetGroupMemberExpensesDailyQuery,
+    useGetGroupMemberHistoryQuery,
     useGetGroupMemberExpensesByCategoryDailyQuery,
     useUpdateGroupMutation,
     useCreateGroupMutation,
