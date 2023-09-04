@@ -37,7 +37,10 @@ const GroupCategoriesCard = () => {
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
         {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
     })
-
+    // requestAnimationFrame(_ => {
+    //     const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+    //     setTotalItems(totalCategories || maxItems);
+    // })
     useEffect(()=>{
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
         setTotalItems(totalCategories || maxItems);
