@@ -3,7 +3,7 @@ import  { FC, useState, useMemo, ReactNode, useCallback, useEffect } from "react
 //logic
 import uuid from "react-uuid";
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
-import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
+import { useGetCurrentUserGroupsQuery, useGetInfoByGroupQuery } from "@store/Controllers/GroupsController/GroupsController";
 import { useGetCurrentUserInfoQuery } from "@store/Controllers/UserController/UserController";
 //UI
 import classes from './GroupsPage.module.css'
@@ -16,13 +16,15 @@ import ConfirmationModal from "@components/ModalWindows/ConfirtmationModal/Confi
 
 const Groups: FC = () => {
 
-    const {data: Groups, isFetching: isGroupsFetching, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess} = useGetCurrentUserGroupsQuery(null);
-    const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess } = useGetCurrentUserInfoQuery(null);
-
     const [groupId, setGroupId] = useState<number>(0);
     const [isCreateGroupModal, setIsCreateGroupModal] = useState<boolean>(false);
     const [isEditGroupModal, setIsEditGroupModal] = useState<boolean>(false);
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
+
+    const { data: Groups, isFetching: isGroupsFetching, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess} = useGetCurrentUserGroupsQuery(null);
+    const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess } = useGetCurrentUserInfoQuery(null);
+    const { data: GroupById, isFetching: isGroupByIdFetching, isLoading: isGroupByIdLoading, isError: isGroupByIdError, isSuccess: isGroupByIdSuccess} = useGetInfoByGroupQuery({group_id: groupId}, { skip: groupId === 0 })
+
 
     const groups = useMemo(() => {
         if (isGroupsSuccess && isCurrentUserSuccess && Groups.user_groups.length > 0) {
@@ -61,15 +63,20 @@ const Groups: FC = () => {
         </div>)
     }     
     
-
-    return (<>
-        {<GroupModal
+    const editGroupModal = useMemo(() => {
+        if (GroupById) {
+            return <GroupModal
+            group={GroupById}
             groupId={groupId}
             setGroupId={setGroupId}
             setIsGroupModalOpen={setIsEditGroupModal}
             isGroupModalOpen={isEditGroupModal}
-            mode='edit'
-        />}
+            mode='edit'/>
+        }
+    }, [GroupById, isEditGroupModal])
+
+    return (<>
+        {editGroupModal}
         {<GroupModal
             setGroupId={setGroupId}
             setIsGroupModalOpen={setIsCreateGroupModal}
