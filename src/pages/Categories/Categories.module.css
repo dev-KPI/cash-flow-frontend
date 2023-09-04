@@ -199,7 +199,7 @@
 .noItems {
     text-align: center;
     margin-top: 5%;
-    grid-column-start: span 3;
+    grid-column: 1/-1;
 }
 .noItems i {
     font-size: 50px;
@@ -222,17 +222,11 @@
     .CategoriesBox {
         grid-template-columns: repeat(2, 1fr);
     }
-    .noItems {
-        grid-column-start: span 2;
-    }
 }
 
 @media only screen and (max-width: 768px) {
     .CategoriesBox {
         grid-template-columns: repeat(1, 1fr);
-    }
-    .noItems {
-        grid-column-start: span 1;
     }
 
     .CategoriesPage__container {
