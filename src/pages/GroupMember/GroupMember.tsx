@@ -22,15 +22,7 @@ const GroupMember = () => {
 
     const {groupId, memberId} = useParams<{groupId: string, memberId: string}>()
 
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError, isSuccess: isGroupInfoSuccess} = useGetInfoByGroupQuery({group_id: Number(groupId)})
-    const {data: Member, isLoading: isMemberLoading, isError: isMemberError, isSuccess: isMemberSuccess} = useGetMemberInfoByGroupQuery({
-        group_id: Number(groupId), 
-        member_id: Number(memberId),
-        period: MonthPickerStore.type === 'year-month' ? 
-        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.split('T')[0], end_date: MonthPickerStore.endDate.split('T')[0]} 
-    }, { skip: Number(groupId) === 0 || Number(memberId) === 0 })
 
     const {width, height} = useWindowSize();
     const getMonthPicker = useMemo(() => {
@@ -44,21 +36,17 @@ const GroupMember = () => {
     }, [width])
 
     return (<>
-        {isGroupInfoSuccess && isMemberSuccess && GroupInfo && Member && 
+        {isGroupInfoSuccess && GroupInfo && 
         <main id={'GroupMemberPage'} className={'no-padding'}>
             <div className={classes.page__container}>
                 <div style={{marginTop: '10px'}}>
                     {getMonthPicker}
                 </div>
                 <div className={classes.grid}>
-                    <GroupMemberUserCard 
-                    Member={Member} 
-                    isMemberLoading={isMemberLoading} 
-                    isMemberError={isMemberError} 
-                    isMemberSuccess={isMemberSuccess}/>
+                    <GroupMemberUserCard/> 
                     <GroupMemberChartCard/>
                     <GroupInfoCard 
-                    isAdmin={GroupInfo.admin.id === Member.id}
+                    isAdmin={GroupInfo.admin.id === Number(memberId)}
                     isInfoLoading={isGroupInfoLoading} 
                     groupInfo={GroupInfo}/>
                     <GroupMemberGraphCard />
