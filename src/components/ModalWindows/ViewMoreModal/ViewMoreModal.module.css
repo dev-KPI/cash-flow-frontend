@@ -10,7 +10,20 @@
     flex: 1 0 auto;
 }
 
-.specialItem {}
+.specialItem {
+    height: unset !important;
+    padding-bottom: 5px;
+}
+
+.specialItem h6 {
+    order: -1;
+    margin-top: unset;
+    margin: 0px !important;
+}
+
+.specialItem div {
+    margin-top: unset;
+}
 
 /* media */
 @media only screen and (max-width: 768px) {
