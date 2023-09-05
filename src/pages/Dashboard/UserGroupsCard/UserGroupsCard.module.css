@@ -66,7 +66,7 @@
 }
 .specialItem {
     height: unset !important;
-    margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 .specialItem h6{
     order: -1;

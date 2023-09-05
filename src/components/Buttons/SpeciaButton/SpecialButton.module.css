@@ -6,6 +6,10 @@
     align-items: center;
     flex: 1 0 auto;
     gap: 5px;
+
+    background: linear-gradient(var(--item-hover) 0 0) no-repeat;
+    background-size: 0%;
+    border-radius: 7px;
 }
 
 .item:hover {

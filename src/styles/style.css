@@ -184,6 +184,7 @@
     --opacity: 1;
     --color-picker: #EFF0F8;
 
+    --accordion-bg: #F8F8FF;
     --filter-btn: #e6e6e6;
     --active-filter-color: '';
     --backdrop: #54545490;
@@ -205,6 +206,7 @@
     --color-picker: #2b2b2b;
 
     --active-filter-color: #80D667;
+    --accordion-bg: #333333;
     --filter-btn: #9a9a9a;
     --backdrop: #00000090;
     --confrim-btn: rgba(128, 214, 103, 0.8);

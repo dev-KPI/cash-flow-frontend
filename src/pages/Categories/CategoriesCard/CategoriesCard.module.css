@@ -7,7 +7,7 @@
     gap: 16px;
     overflow: hidden;
     composes: cardComponent from "@styles/style.css";
-    transition: all 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 .CategoriesCard:hover{
     box-shadow: rgba(0, 0, 0, 0.22) 0px 7px 7px;
