@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction  } from "react";
+import { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect  } from "react";
 
 //UI
 import classes from './ExpenseModal.module.css';
@@ -28,18 +28,35 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
 
     const [amountValue, setAmountValue] = useState<number>(0);
     const [descriptionValue, setDescriptionValue] = useState<string>('');
+    const [isInputError, setIsInputError] = useState<boolean>(false);
+    const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
     const [createExpense, { isLoading: isExpenseCreating, isError: isExpenseError, isSuccess: isExpenseCreated }] = useCreateExpenseByGroupMutation();
 
-    const handleSubmit = () => {
-        createExpense({
-            descriptions: descriptionValue,
-            amount: amountValue,
-            category_id: categoryId,
-            group_id: groupId,
-        })
-        setIsExpenseModalOpen(false)
-    }
+    const handleSubmit = useCallback(() => {
+        if(isSubmit && amountValue > 0) {
+            setIsInputError(false)
+            setIsSubmit(false);
+            setIsExpenseModalOpen(false)
+            createExpense({
+                descriptions: descriptionValue,
+                amount: amountValue,
+                category_id: categoryId,
+                group_id: groupId,
+            })
+        } else if (isSubmit && amountValue < 1) {
+            setIsInputError(true)
+            setIsSubmit(false)
+        } 
+    }, [isSubmit])
+
+    const setFalseInputError = useCallback(() => {
+        if(!isExpenseModalOpen && isSubmit) {
+            setIsInputError(false)
+            setIsSubmit(false)
+        }
+    }, [isExpenseModalOpen, isSubmit])
+
     const showToolTip = useCallback(() => {
         if (isExpenseCreated) {
             return <StatusTooltip
@@ -51,6 +68,9 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 title={`Expense not added`} />
         }
     }, [createExpense, isExpenseCreating, isExpenseError, isExpenseCreated])
+
+    useEffect(() => setFalseInputError(), [setFalseInputError])
+    useEffect(() => handleSubmit(), [handleSubmit])
 
     return <>
     {showToolTip()}
@@ -69,6 +89,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         <label className={classes.title} htmlFor="salary">{amountTitle}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
+                            isError={isInputError}
                             setFormValue={{type: 'cash', callback: setAmountValue}}
                             isInputMustClear={!isExpenseModalOpen} 
                             Icon={dollarIcon} inputType="cash" id="salary" 
@@ -94,7 +115,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         btnHeight={36}
                         icon="submit"
                         type={'primary'}
-                        callback={handleSubmit}
+                        callback={() => {setIsSubmit(true)}}
                         />
                 </div>
             </form>

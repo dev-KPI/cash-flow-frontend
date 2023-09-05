@@ -18,6 +18,7 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import { IExtendedUser } from '@models/IUser';
+import { IGroupMemberExpensesByCategoryDailyResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -28,11 +29,12 @@ interface IGraphGroupMembers {
     users: Omit<IExtendedUser, 'picture'>[]
 }
 
-interface IStackedGraphProps {
-    data: IGraphGroupMembers[]
-}
+type IStackedGraphProps = (
+    | { dataUsers: IGraphGroupMembers[], dataUserCategories?: never }
+    | { dataUsers?: never, dataUserCategories: IGroupMemberExpensesByCategoryDailyResponse[] }
+)
 
-const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
+const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) => {
     //store
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     function findMaxAmount(existingData: IGraphGroupMembers[]) {
@@ -79,10 +81,9 @@ const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
         return amount
     }
 
-    function getAmountsByUserId(data: IGraphGroupMembers[], userId: number): number[] {
+    const getAmountsByUserId = (data: IGraphGroupMembers[], userId: number): number[]  => {
         const amounts: number[] = [];
         data.forEach((item) => {
-            
             const details = item.users.find((user) => user.id === userId);
             if (details) {
                 amounts.push(details.amount);
@@ -90,11 +91,36 @@ const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
                 amounts.push(0);
             }
         });
-
         return amounts;
     }
 
-    function findAllUsers(data: IGraphGroupMembers[]) {
+    const getAmountsByCategoryId = (data: IGroupMemberExpensesByCategoryDailyResponse[], categoryId: number): number[]  => {
+        const amounts: number[] = [];
+        data.forEach((item) => {
+            const details = item.categories.find((category) => categoryId === category.id);
+            if (details) {
+                amounts.push(details.amount);
+            } else {
+                amounts.push(0);
+            }
+        });
+        return amounts;
+    }
+
+    const getColorByCategoryId = (data: IGroupMemberExpensesByCategoryDailyResponse[], categoryId: number): string  => {
+        let color: string = '#ff2500';
+        data.forEach((item) => {
+            const details = item.categories.find((category) => categoryId === category.id);
+            if (details) {
+                color = details.color_code;
+            } else {
+                color = '#ff2500';
+            }
+        });
+        return color;
+    }
+
+    const findAllUsers = (data: IGraphGroupMembers[]) => {
         const idUserMap: { [key: number]: string } = {}; 
 
         data.forEach((item) => {
@@ -109,24 +135,65 @@ const StackedGraph: FC<IStackedGraphProps> = ({ data }) => {
         return idUserMap;
     }
 
-    const getChartData = useCallback(() => {
-        const users = findAllUsers(data);
-        return Object.keys(users).map((userId, i) => {
-            const fullName = users[+userId]; 
-            return {
-                label: fullName, 
-                key: data.map((el) => new Date(el.date).toISOString().split('T')[0]),
-                data: getAmountsByUserId(data, +userId),
-                backgroundColor: shaffledColors[i % shaffledColors.length]
-            };
+    const findAllCategories = (data: IGroupMemberExpensesByCategoryDailyResponse[]) => {
+        const idCategoryMap: { [key: number]: string } = {}; 
+
+        data.forEach((item) => {
+            item.categories.forEach((category) => {
+                const fullName = `${category.title}`;
+                const categoryId = category.id;
+
+                idCategoryMap[categoryId] = fullName;
+            });
         });
-    }, [data]);
+
+        return idCategoryMap;
+    }
+
+    const getChartData = useCallback(() => {
+        if(dataUserCategories) {
+            const categories = findAllCategories(dataUserCategories)
+            return Object.keys(categories).map((categoryId, i) => {
+                const fullName = categories[+categoryId];
+                return {
+                    label: fullName ?? '',
+                    key: dataUserCategories.map((el) => new Date(el.date).toISOString().split('T')[0]),
+                    maxBarThickness: 24,
+                    borderRadius: 20,
+                    data: getAmountsByCategoryId(dataUserCategories, +categoryId),
+                    backgroundColor: getColorByCategoryId(dataUserCategories, +categoryId)
+                };
+            });
+        } else if(dataUsers){
+            const users = findAllUsers(dataUsers);
+            return Object.keys(users).map((userId, i) => {
+                const fullName = users[+userId];
+                return {
+                    label: fullName, 
+                    key: dataUsers.map((el) => new Date(el.date).toISOString().split('T')[0]),
+                    maxBarThickness: 24,
+                    borderRadius: 20,
+                    data: getAmountsByUserId(dataUsers, +userId),
+                    backgroundColor: shaffledColors[i % shaffledColors.length]
+                };
+            });
+        } else {
+            return [{
+                label: '', 
+                key: '',
+                data: [0],
+                maxBarThickness: 24,
+                borderRadius: 20,
+                backgroundColor: ''
+            }]
+        }
+    }, [dataUsers, dataUserCategories]);
 
     const datasets = {
-        labels: data.map((el) => new Date(el.date).getDate()),
+        labels: dataUsers ? 
+        dataUsers.map((el, i) => new Date(el.date).getDate()) : dataUserCategories ? dataUserCategories.map((el) => new Date(el.date).getDate()) : [new Date()],
         datasets: getChartData(),
     };
-
 
     const options = {
         maintainAspectRatio: false,
