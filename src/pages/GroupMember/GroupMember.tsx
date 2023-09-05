@@ -9,7 +9,7 @@ import DateService from '@services/DateService/DateService';
 import { useWindowSize } from 'usehooks-ts';
 //UI
 import GroupMemberUserCard from '@pages/GroupMember/GroupMemberUserCard/GroupMemberUserCard';
-import GroupMemberChartCard from '@pages/GroupMember/GroupMemberChartCard/GroupMemberChartCard';
+import GroupMemberChartsCard from '@pages/GroupMember/GroupMemberChartsCard/GroupMemberChartsCard';
 import GroupMemberGraphCard from '@pages/GroupMember/GroupMemberGraphCard/GroupMemberGraphCard';
 import GroupMemberHistoryCard from '@pages/GroupMember/GroupMemberHistoryCard/GroupMemberHistoryCard';
 import classes from './GroupMember.module.css';
@@ -58,7 +58,7 @@ const GroupMember = () => {
                     isMemberLoading={isMemberLoading} 
                     isMemberError={isMemberError} 
                     isMemberSuccess={isMemberSuccess}/>
-                    <GroupMemberChartCard/>
+                    <GroupMemberChartsCard/>
                     <GroupInfoCard 
                     isAdmin={GroupInfo.admin.id === Member.id}
                     isInfoLoading={isGroupInfoLoading} 

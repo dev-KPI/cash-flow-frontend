@@ -67,7 +67,9 @@ export interface IGetGroupExpensesByCategoryBody {
     group_id: number,
     period: IPeriodYearMonth | IPeriodRangeDates
 }
-
+export interface IGetGroupMemberExpensesByCategoryBody extends IGetGroupExpensesByCategoryBody {
+    member_id: number
+}
 export interface IGetGroupExpensesDailyResponse {
     date: string,
     amount: number
