@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState} from 'react';
+import React, { useMemo, useState} from 'react';
 
 //UI
 import classes from './History.module.css';
@@ -10,7 +10,6 @@ import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     PaginationState,
     SortingState,
@@ -72,12 +71,7 @@ const History: React.FC = () => {
             pageSize: 8,
         })
     const { data: History, isLoading: isHistoryLoading, isError: isHistoryError, isSuccess: isHistorySuccess } = useGetUserHistoryQuery({ page: pageIndex, size: pageSize });
-    const [data, setData] = useState<IHistoryItem[]>([])
-    useEffect(() => {
-        if (isHistorySuccess) {
-            setData(History.items)
-        }
-    }, [History])
+
     const [sorting, setSorting] = useState<SortingState>([]) 
     
     const pagination = useMemo(
@@ -89,7 +83,7 @@ const History: React.FC = () => {
     )
 
     const table = useReactTable({
-        data,
+        data: History?.items || [],
         columns,
         pageCount: History?.pages,
         onSortingChange: setSorting,
