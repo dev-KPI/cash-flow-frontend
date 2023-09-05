@@ -108,7 +108,7 @@ const History: React.FC = () => {
         last_name: '',
         picture: ''
     });
-    const [confirmationMode, setConfirmationMode] = useState<'disband' | 'kick'>('kick');
+    const [confirmationMode, setConfirmationMode] = useState<'kick' | 'disband'>('kick');
 
     const columns = [
         columnHelper.accessor(`user.first_name`, {
@@ -213,15 +213,13 @@ const History: React.FC = () => {
 
     return (
         <main id='GroupMembersPage' className="no-padding">
-            {
-                <ConfirmationModal 
-                groupId={Number(groupId)} 
-                title={GroupInfo?.title}
-                kickedUser={kickedUser}
-                setIsConfirmationModalOpen={setIsConfirmationModal} 
-                isConfirmationModalOpen={isConfirmationModal} 
-                mode={confirmationMode}/>
-            }
+            <ConfirmationModal 
+            groupId={Number(groupId)} 
+            title={GroupInfo?.title}
+            kickedUser={kickedUser}
+            setIsConfirmationModalOpen={setIsConfirmationModal} 
+            isConfirmationModalOpen={isConfirmationModal} 
+            mode={confirmationMode}/>
             <div className={classes.page__container}>
                 <table className={classes.recentOperations__table}>
                     <thead className={classes.tableTitle}>

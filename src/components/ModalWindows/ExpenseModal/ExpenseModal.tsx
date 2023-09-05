@@ -10,6 +10,9 @@ import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
 
 interface IExpenseModalProps{
+    amount?: number,
+    description?: string,
+    type: 'create' | 'edit',
     isExpenseModalOpen: boolean
     setIsExpenseModalOpen: Dispatch<SetStateAction<boolean>>;
     groupId: number,
@@ -18,7 +21,8 @@ interface IExpenseModalProps{
 
 const ExpenseModal: FC<IExpenseModalProps> = ({ 
     isExpenseModalOpen = false, 
-    setIsExpenseModalOpen, groupId, categoryId }) => {
+    setIsExpenseModalOpen, groupId, categoryId,
+    amount, description, type }) => {
 
     const dollarIcon: ReactNode = <i className="bi bi-currency-dollar"></i>
     const headerIcon: ReactNode = <i className="bi bi-graph-down-arrow"></i>
@@ -26,8 +30,8 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const amountTitle = 'Amount of expense'
     const descriptionTitle = 'Description of expense'
 
-    const [amountValue, setAmountValue] = useState<number>(0);
-    const [descriptionValue, setDescriptionValue] = useState<string>('');
+    const [amountValue, setAmountValue] = useState<number>(amount ? amount : 0);
+    const [descriptionValue, setDescriptionValue] = useState<string>(description ? description : '');
     const [isInputError, setIsInputError] = useState<boolean>(false);
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
@@ -61,11 +65,11 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
         if (isExpenseCreated) {
             return <StatusTooltip
             type="success" 
-            title="Expense successfully added"/>
+            title={`Expense successfully ${type === 'create' ? 'added' : 'edited'}`}/>
         } else if (isExpenseError) {
             return <StatusTooltip
                 type="error"
-                title={`Expense not added`} />
+                title={`Expense not ${type === 'create' ? 'added' : 'edited'}`} />
         }
     }, [createExpense, isExpenseCreating, isExpenseError, isExpenseCreated])
 
@@ -89,6 +93,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         <label className={classes.title} htmlFor="salary">{amountTitle}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
+                            cashValue={amount}
                             isError={isInputError}
                             setFormValue={{type: 'cash', callback: setAmountValue}}
                             isInputMustClear={!isExpenseModalOpen} 
@@ -100,6 +105,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         <label className={classes.title} htmlFor="description">{descriptionTitle}</label>
                         <div className={classes.inputWrapper}>
                             <Input 
+                            value={description}
                             setFormValue={{type: 'text', callback: setDescriptionValue}}
                             isInputMustClear={!isExpenseModalOpen} 
                             inputType="text" id="description" 
