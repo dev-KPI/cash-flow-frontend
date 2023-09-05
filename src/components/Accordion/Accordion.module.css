@@ -4,7 +4,7 @@
 }
   
 .accordionHeader {
-    background-color: var(--filter-btn);
+    background-color: var(--accordion-bg);
     display: flex;
     height: 44px;
     padding: 0px 16px;
@@ -26,10 +26,10 @@
 }
 
 .accordionHeader.open {
-    background-color: var(--filter-btn);
+    background-color: var(--accordion-bg);
 }
 .accordionHeader.open .title{
-    color: (--main-text)
+    color: var(--main-text);
 } 
 
 .accordionContent {

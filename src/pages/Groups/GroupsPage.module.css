@@ -44,6 +44,7 @@
 .noItems {
     text-align: center;
     margin-top: 5%;
+    grid-column: 1/-1;
 }
 
 .noItems__title {

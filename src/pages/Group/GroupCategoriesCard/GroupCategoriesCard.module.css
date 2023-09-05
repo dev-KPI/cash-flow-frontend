@@ -40,6 +40,9 @@
 
 .emptyList li {
     flex: 0;
+    width: 100%;
+    gap: 0;
+    padding-top: 5px;
 }
 
 .emptyList p {
