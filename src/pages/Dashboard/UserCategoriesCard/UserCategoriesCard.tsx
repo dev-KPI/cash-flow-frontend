@@ -52,14 +52,6 @@ const UserCategoriesCard = () => {
             { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
     }, { skip: !isGroupsSuccess || selectedGroup === 0 })
 
-<<<<<<< HEAD
-    useEffect(() => {
-        if (isExpensesSuccess)
-            setCategories(ExpensesByGroup.categories)
-    }, [ExpensesByGroup])
-=======
-
->>>>>>> 128ae4f1b7048cd061c1092067aac60b14da54c2
     requestAnimationFrame(_ => {
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
         setTotalItems(totalCategories || maxItems);
