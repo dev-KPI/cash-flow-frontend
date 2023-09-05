@@ -52,7 +52,6 @@ const UserCategoriesCard = () => {
             { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
     }, { skip: !isGroupsSuccess || selectedGroup === 0 })
 
-
     requestAnimationFrame(_ => {
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
         setTotalItems(totalCategories || maxItems);
@@ -72,6 +71,7 @@ const UserCategoriesCard = () => {
             />
         )
     }
+
     const getExpenseModal = () => {
         return <ExpenseModal
             isExpenseModalOpen={isExpenseModalOpen}
@@ -80,6 +80,7 @@ const UserCategoriesCard = () => {
             categoryId={selectedCategory}
         />
     }
+
     const getViewMoreModal = () => {
         return <ViewMoreModal
             isModalOpen={isMoreModalOpen}
@@ -90,6 +91,7 @@ const UserCategoriesCard = () => {
             type={'categories'}
         />
     }
+    
     const getCategoryModal = () => {
         return <CategoryModal
             groupId={selectedGroup}

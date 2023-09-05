@@ -25,7 +25,6 @@ const Groups: FC = () => {
     const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess } = useGetCurrentUserInfoQuery(null);
     const { data: GroupById, isFetching: isGroupByIdFetching, isLoading: isGroupByIdLoading, isError: isGroupByIdError, isSuccess: isGroupByIdSuccess} = useGetInfoByGroupQuery({group_id: groupId}, { skip: groupId === 0 })
 
-
     const groups = useMemo(() => {
         if (isGroupsSuccess && isCurrentUserSuccess && Groups.user_groups.length > 0) {
             return Groups.user_groups.map((el, i) =>

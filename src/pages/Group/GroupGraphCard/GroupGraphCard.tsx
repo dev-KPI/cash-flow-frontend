@@ -78,7 +78,7 @@ const GroupGraphCard: FC<{ groupId: number }> = ({ groupId }) => {
                         {!isToggled ?
                             isGroupExpensesSuccess ? <Graph data={GroupExpenses}/> : null
                             :
-                            isGroupExpensesByMemberSuccess ? <StackedGraph data={GroupExpensesByMember} /> : null
+                            isGroupExpensesByMemberSuccess ? <StackedGraph dataUsers={GroupExpensesByMember}/> : null
                         }
                     </div>
                 </div>}

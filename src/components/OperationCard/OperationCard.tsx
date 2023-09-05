@@ -1,4 +1,4 @@
-import { useState, FC, useEffect, useMemo } from 'react';
+import { useState, FC, useEffect, useMemo, useCallback } from 'react';
 //store
 import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
@@ -32,7 +32,6 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     const [amount, setAmount] = useState<number>(0);
     const [percents, setPercents] = useState<number>(0);
     const [sign, setSign] = useState<string>('');
-    const [source, setSource] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
 
     const styles = {
@@ -55,19 +54,19 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
         return(`since last period`)
     }, [MonthPickerStore.rangeType])
 
-    let totalAmount = 0
-    let totalPercents = 0;
-    useEffect(() => {
-        if(data){
-            totalAmount = data.amount;
-            totalPercents = data.percentage_increase
+    const initializeTotalVars = useCallback(() => {
+        if(data && data?.amount && data?.percentage_increase){
+            setAmount(Number(data.amount.toFixed(2)));
+            setPercents(Number(data.percentage_increase * 100 > 1000 ? Math.floor(data.percentage_increase * 100) : fomatFloatNumber(data.percentage_increase * 100, 2)));
+            setSign(data.percentage_increase === 0 ? '' : data.percentage_increase > 0 ? '+' : '-');
+        } else {
+            setAmount(0);
+            setPercents(0);
+            setSign('+');
         }
-        setAmount(Number(totalAmount.toFixed(2)));
-        setPercents(Number(totalPercents * 100 > 1000 ? Math.floor(totalPercents * 100) : fomatFloatNumber(totalPercents * 100, 2)));
-        setSign(totalPercents === 0 ? '' : totalPercents > 0 ? '+' : '-');
-
-    }, [data, isSuccess, isError, isLoading])
+    }, [data])
     
+    useEffect(() => initializeTotalVars(), [initializeTotalVars])
     const cardTitle = title ? title : operation;
 
     return (<>
