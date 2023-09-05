@@ -6,13 +6,13 @@ import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerI
 import DateService from '@services/DateService/DateService';
 import { useGetGroupMemberExpensesByCategoryQuery } from '@store/Controllers/GroupsController/GroupsController';
 //UI
-import classes from './GroupMemberChartsCard.module.css';
+import classes from './GroupMemberChartCard.module.css';
 import ChartCard from '@components/ChartCard/ChartCard';
 import ChartCardLoader from '@components/ChartCard/ChartCardLoader';
 
 
 
-const GroupMemberChartsCard: FC = () => {
+const GroupMemberChartCard: FC = () => {
     const { groupId, memberId } = useParams<{ groupId: string, memberId: string }>()
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const { data: MemberExpenses, isLoading: isMemberExpensesLoading } = useGetGroupMemberExpensesByCategoryQuery({
@@ -34,4 +34,4 @@ const GroupMemberChartsCard: FC = () => {
     );
 };
 
-export default GroupMemberChartsCard;
+export default GroupMemberChartCard;
