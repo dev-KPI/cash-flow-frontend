@@ -4,8 +4,6 @@ import uuid from 'react-uuid';
 //logic
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
 import { useGetCategoriesByGroupQuery } from "@store/Controllers/CategoriesController/CategoriesController";
-import ICategory from "@models/ICategory";
-import IGroup from "@models/IGroup";
 
 //UI
 import classes from './Categories.module.css'
@@ -17,8 +15,6 @@ import PreLoader from "@components/PreLoader/PreLoader";
 
 
 const Categories: FC = () => {
-    const [groups, setGroups] = useState<IGroup[]>([]); 
-    const [categories, setCategories] = useState<ICategory[]>([]); 
     const [selectedGroup, setSelectedGroup] = useState<number>(0);
     const [selectedCategory, setSelectedCategory] = useState<number>(0);
     const [isCreateCategoryModal, setIsCreateCategoryModal] = useState<boolean>(false);
@@ -30,18 +26,11 @@ const Categories: FC = () => {
 
     useEffect(() => {
         if (isGroupsSuccess && UserGroups.user_groups[0]) {
-            setGroups(UserGroups.user_groups)
             setSelectedGroup(UserGroups.user_groups[0].group.id)
         }
     }, [UserGroups, isGroupsFetching])
     
     const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError, isFetching: isCategoriesFetching, isSuccess: isCategoriesSuccess } = useGetCategoriesByGroupQuery(selectedGroup, { skip: !isGroupsSuccess || selectedGroup === 0 });
-
-    useEffect(() => {
-        if (isCategoriesSuccess) {
-            setCategories(CategoriesByGroup.categories_group)
-        }
-    }, [CategoriesByGroup])
 
     const buttonRef = useRef(null);
  
@@ -103,7 +92,8 @@ const Categories: FC = () => {
     }
 
     const getCategories = useMemo((): ReactNode => {
-        return categories.length > 0 ? categories.map((item, i) =>
+        return CategoriesByGroup ? CategoriesByGroup.categories_group.length > 0 ?
+            CategoriesByGroup.categories_group.map((item, i) =>
             <CategoriesCard
                 key={uuid()}
                 id={item.category.id}
@@ -119,8 +109,8 @@ const Categories: FC = () => {
                 <i className="bi bi-ui-checks-grid"></i>
                 <h5 className={classes.noItems__title}>Your categories list currently is empty!</h5>
                 <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
-            </div>)
-    }, [selectedGroup, categories])
+            </div>) : null
+    }, [selectedGroup, CategoriesByGroup])
 
     let categoriesContent;
     let groupsContent;
@@ -129,7 +119,7 @@ const Categories: FC = () => {
             <PreLoader preLoaderSize={50} type='auto' />
         </div>
         categoriesContent = null
-    } else if (groups.length > 0) {
+    } else if (UserGroups && UserGroups.user_groups.length > 0) {
         groupsContent = <>
             <nav className={classes.groupsNav}>
                 {getGroups()}
@@ -158,7 +148,6 @@ const Categories: FC = () => {
             </ul>
         }
     } else if (UserGroups && UserGroups.user_groups.length === 0) {
-        console.log(1);
         groupsContent = (<div className={classes.noItems}>
             <i className="bi bi-person-x"></i>
             <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>
