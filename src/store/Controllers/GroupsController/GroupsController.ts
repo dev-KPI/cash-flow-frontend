@@ -71,9 +71,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({member_id, group_id, period}) => ({
                 url: `groups/${group_id}/member/${member_id}/info`,
                 credentials: 'include',
-                params: {
-                    period: period
-                }
+                params: period
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -82,7 +80,8 @@ export const GroupsApiSlice = api.injectEndpoints({
                 { type: 'UserController' as const, id: body.member_id }, 
                 { type: 'GroupsController', id: body.group_id }, 
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] :
-            [],
+                [{ type: 'GroupsController', id: body.group_id }, 
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
         getUsersByGroup: builder.query<IGetUsersFromGroupResponse, { group_id: number, page: number, size: number }>({
             query: ({ group_id, page, size }) => ({
