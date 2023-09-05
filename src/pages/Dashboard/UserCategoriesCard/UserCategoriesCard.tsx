@@ -19,6 +19,7 @@ import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal'
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+import PreLoader from '@components/PreLoader/PreLoader';
 
 
 const UserCategoriesCard = () => {
@@ -44,7 +45,7 @@ const UserCategoriesCard = () => {
         } 
     }, [UserGroups, isGroupsFetching])
 
-    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByGroupQuery({
+    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess, isFetching: isExpensesFetching } = useGetUserExpensesByGroupQuery({
         group_id: selectedGroup,
         period: MonthPickerStore.type === 'year-month' ?
             { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
@@ -134,7 +135,12 @@ const UserCategoriesCard = () => {
     }, [totalItems])
 
     let categoriesContent;
-    if (isExpensesSuccess && isGroupsSuccess) {
+    if (isExpensesLoading || isExpensesFetching) {
+        categoriesContent = (<div className={classes.loaderWrapper}>
+            <PreLoader preLoaderSize={50} type='auto' />
+        </div>)
+    }
+    else if (isExpensesSuccess && isGroupsSuccess) {
         if (ExpensesByGroup.categories.length === 0)
             categoriesContent = <div className={classes.emptyList}>
                 <p>Category list is empty!</p>
