@@ -91,6 +91,7 @@ const UserCategoriesCard = () => {
             type={'categories'}
         />
     }
+    
     const getCategoryModal = () => {
         return <CategoryModal
             groupId={selectedGroup}
