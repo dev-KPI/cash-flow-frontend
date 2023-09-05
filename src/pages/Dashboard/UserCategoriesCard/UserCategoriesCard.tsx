@@ -71,6 +71,7 @@ const UserCategoriesCard = () => {
             />
         )
     }
+
     const getExpenseModal = () => {
         return <ExpenseModal
             isExpenseModalOpen={isExpenseModalOpen}
@@ -79,6 +80,7 @@ const UserCategoriesCard = () => {
             categoryId={selectedCategory}
         />
     }
+
     const getViewMoreModal = () => {
         return <ViewMoreModal
             isModalOpen={isMoreModalOpen}
