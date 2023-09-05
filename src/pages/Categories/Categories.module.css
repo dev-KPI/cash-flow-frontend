@@ -199,6 +199,7 @@
 .noItems {
     text-align: center;
     margin-top: 5%;
+    grid-column: 1/-1;
 }
 .noItems i {
     font-size: 50px;

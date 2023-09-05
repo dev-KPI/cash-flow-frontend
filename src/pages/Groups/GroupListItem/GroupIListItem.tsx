@@ -121,7 +121,6 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
                             <div className={classes.content}>
                                 <div className={classes.details}>
                                     <div className={classes.icon}
-                                        style={{ backgroundColor: color }}
                                     >{getAdminIcon()}</div>
                                     <div className={classes.info}>
                                         <h6 className={classes.ownerName}>{adminName}</h6>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 //UI
 import classes from './Users.module.css';
 import userIcon from '@assets/user-icon.svg'
@@ -33,13 +33,7 @@ const Users: React.FC = () => {
     const { data: Users, isLoading: isUsersLoading, isError: isUsersError, isSuccess: isUsersSuccess } = useGetUsersQuery({ page: pageIndex + 1, size: pageSize });
     const { data: Groups, isLoading: isGroupsLoading, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
     const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess } = useGetCurrentUserInfoQuery(null);
-    const [data, setData] = useState<IUser[]>([])
-    useEffect(() => {
-        if (isUsersSuccess && isCurrentUserSuccess && isGroupsSuccess) {
-            setData(Users.items)
-        }
-            
-    }, [Users, Groups, CurrentUser])
+
     const columns = [
         columnHelper.accessor(`first_name`, {
             header: () => 'Member',
@@ -94,7 +88,7 @@ const Users: React.FC = () => {
         [pageIndex, pageSize]
     )
     const table = useReactTable({
-        data,
+        data: Users?.items || [],
         columns,
         pageCount: Users?.pages,
         getCoreRowModel: getCoreRowModel(),

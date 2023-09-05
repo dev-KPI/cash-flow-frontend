@@ -27,7 +27,10 @@ const UserGroupsCard = () => {
     const [isGroupModalOpen, setIsGroupModalOpen] = useState<boolean>(false);
     const [squareRef, { width, height }] = useElementSize<HTMLUListElement>();
     const ref = useRef<HTMLUListElement>(null);
-
+    requestAnimationFrame(_ => {
+        const totalGroups = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+        setTotalItems(totalGroups || maxItems);
+    })
     useEffect(() => {
         const totalGroups = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
         setTotalItems(totalGroups || maxItems);

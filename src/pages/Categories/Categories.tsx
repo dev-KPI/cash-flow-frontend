@@ -21,14 +21,16 @@ const Categories: FC = () => {
     const [isEditCategoryModal, setIsEditCategoryModal] = useState<boolean>(false);
     const [isGroupMenuModal, setIsGroupMenuModal] = useState<boolean>(false);
     const navigate = useNavigate()
+
     const { data: UserGroups, isLoading: isGroupsLoading, isError: isGroupsError, isFetching: isGroupsFetching, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null);
+
     useEffect(() => {
         if (isGroupsSuccess && UserGroups.user_groups[0]) {
             setSelectedGroup(UserGroups.user_groups[0].group.id)
         }
     }, [UserGroups, isGroupsFetching])
-
-    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError, isSuccess: isCategoriesSuccess } = useGetCategoriesByGroupQuery(selectedGroup, { skip: !isGroupsSuccess || selectedGroup === 0 });
+    
+    const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError, isFetching: isCategoriesFetching, isSuccess: isCategoriesSuccess } = useGetCategoriesByGroupQuery(selectedGroup, { skip: !isGroupsSuccess || selectedGroup === 0 });
 
     const buttonRef = useRef(null);
  
@@ -90,7 +92,8 @@ const Categories: FC = () => {
     }
 
     const getCategories = useMemo((): ReactNode => {
-        return CategoriesByGroup?.categories_group.map((item, i) =>
+        return CategoriesByGroup ? CategoriesByGroup.categories_group.length > 0 ?
+            CategoriesByGroup.categories_group.map((item, i) =>
             <CategoriesCard
                 key={uuid()}
                 id={item.category.id}
@@ -102,48 +105,49 @@ const Categories: FC = () => {
                 isEditCategoryModal={isEditCategoryModal}
                 setIsEditCategoryModal={setIsEditCategoryModal}
             />
-        )
-    }, [CategoriesByGroup, UserGroups])
+        ) : (<div className={classes.noItems}>
+                <i className="bi bi-ui-checks-grid"></i>
+                <h5 className={classes.noItems__title}>Your categories list currently is empty!</h5>
+                <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
+            </div>) : null
+    }, [selectedGroup, CategoriesByGroup])
 
     let categoriesContent;
     let groupsContent;
-    if (isCategoriesLoading || isGroupsLoading) {
+    if (isGroupsLoading || isGroupsFetching || (isCategoriesLoading && isCategoriesFetching)) {
         groupsContent = <div className={classes.loaderWrapper}>
             <PreLoader preLoaderSize={50} type='auto' />
         </div>
         categoriesContent = null
-    } else if (isCategoriesSuccess && isGroupsSuccess) {
-        if (UserGroups.user_groups.length > 0) {
-            groupsContent = <>
-                <nav className={classes.groupsNav}>
-                    {getGroups()}
-                </nav>
-                <div className={classes.addCategory}>
-                    <div className={classes.upSide}>
-                        <h5 className={classes.CategoryTitle}>Category</h5>
-                        <CustomButton
-                            isPending={false}
-                            callback={() => setIsCreateCategoryModal(!isCreateCategoryModal)}
-                            icon="add"
-                            type="primary"
-                            children="Create new category"
-                        />
-                    </div>
-                    <div className={classes.line}></div>
+    } else if (UserGroups && UserGroups.user_groups.length > 0) {
+        groupsContent = <>
+            <nav className={classes.groupsNav}>
+                {getGroups()}
+            </nav>
+            <div className={classes.addCategory}>
+                <div className={classes.upSide}>
+                    <h5 className={classes.CategoryTitle}>Category</h5>
+                    <CustomButton
+                        isPending={false}
+                        callback={() => setIsCreateCategoryModal(!isCreateCategoryModal)}
+                        icon="add"
+                        type="primary"
+                        children="Create new category"
+                    />
                 </div>
-            </>
-            if (CategoriesByGroup.categories_group.length > 0)
-                categoriesContent = <ul className={classes.CategoriesBox}>
-                    {getCategories}
-                </ul>
-            else
-                categoriesContent = (<div className={classes.noItems}>
-                    <i className="bi bi-ui-checks-grid"></i>
-                    <h5 className={classes.noItems__title}>Your categories list currently is empty!</h5>
-                    <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
-                </div>)
+                <div className={classes.line}></div>
+            </div>
+        </>
+        if (isCategoriesLoading || isCategoriesFetching) {
+            categoriesContent = <div className={classes.loaderWrapper}>
+                <PreLoader preLoaderSize={50} type='auto' />
+            </div>
+        } else {
+            categoriesContent = <ul className={classes.CategoriesBox}>
+                {getCategories}
+            </ul>
         }
-    } else {
+    } else if (UserGroups && UserGroups.user_groups.length === 0) {
         groupsContent = (<div className={classes.noItems}>
             <i className="bi bi-person-x"></i>
             <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>

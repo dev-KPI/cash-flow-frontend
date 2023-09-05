@@ -19,12 +19,12 @@ import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal'
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+import PreLoader from '@components/PreLoader/PreLoader';
 
 
 const UserCategoriesCard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
 
-    const [categories, setCategories] = useState<ICategoryAmount[]>([]);
     const [maxItems, setMaxItems] = useState<number>(11);
     const [totalItems, setTotalItems] = useState<number>(maxItems);
     const [pageGroup, setGroupPage] = useState<number>(0);
@@ -45,17 +45,13 @@ const UserCategoriesCard = () => {
         } 
     }, [UserGroups, isGroupsFetching])
 
-    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetUserExpensesByGroupQuery({
+    const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess, isFetching: isExpensesFetching } = useGetUserExpensesByGroupQuery({
         group_id: selectedGroup,
         period: MonthPickerStore.type === 'year-month' ?
             { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
             { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
     }, { skip: !isGroupsSuccess || selectedGroup === 0 })
 
-    useEffect(() => {
-        if (isExpensesSuccess)
-            setCategories(ExpensesByGroup.categories)
-    }, [ExpensesByGroup])
 
     requestAnimationFrame(_ => {
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 2);
@@ -90,7 +86,7 @@ const UserCategoriesCard = () => {
             setIsModalOpen={setIsMoreModalOpen}
             isAddModalOpen={isCategoryModalOpen}
             setIsAddModalOpen={setIsCategoryModalOpen}
-            data={getCategories(categories)}
+            data={getCategories(ExpensesByGroup ? ExpensesByGroup.categories : [])}
             type={'categories'}
         />
     }
@@ -105,10 +101,10 @@ const UserCategoriesCard = () => {
     }
 
     const properCategories: ICategoryAmount[] = useMemo(() => {
-            return categories.slice(0, maxItems)
-    }, [categories, maxItems])
+            return ExpensesByGroup ? ExpensesByGroup.categories.slice(0, maxItems) : []
+    }, [ExpensesByGroup, maxItems])
 
-    const categoriesLength: number = categories.length;
+    const categoriesLength: number = ExpensesByGroup?.categories.length || 0;
 
     const handleNextGroup = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (UserGroups && UserGroups.user_groups[pageGroup + 1]) {
@@ -139,8 +135,13 @@ const UserCategoriesCard = () => {
     }, [totalItems])
 
     let categoriesContent;
-    if (isExpensesSuccess && isGroupsSuccess) {
-        if (categories.length === 0)
+    if (isExpensesLoading || isExpensesFetching) {
+        categoriesContent = (<div className={classes.loaderWrapper}>
+            <PreLoader preLoaderSize={50} type='auto' />
+        </div>)
+    }
+    else if (isExpensesSuccess && isGroupsSuccess) {
+        if (ExpensesByGroup.categories.length === 0)
             categoriesContent = <div className={classes.emptyList}>
                 <p>Category list is empty!</p>
                 {addButton}
