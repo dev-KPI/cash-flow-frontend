@@ -1,4 +1,4 @@
-import React, { useMemo, useState} from 'react';
+import React, { useMemo, useRef, useState} from 'react';
 
 //UI
 import classes from './History.module.css';
@@ -18,14 +18,44 @@ import {
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import IHistoryItem from '@models/IHistoryItem';
 import { useGetUserHistoryQuery } from '@store/Controllers/UserController/UserController';
+import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
+import { useDeleteExpenseByGroupMutation } from '@store/Controllers/ExpensesController/ExpensesController';
+import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
+import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 
+interface IColumnsHistory extends IHistoryItem {edit_remove?: string}
 
+const History: React.FC = () => {
+    const [{ pageIndex, pageSize }, setPagination] =
+        useState<PaginationState>({
+            pageIndex: 0,
+            pageSize: 8,
+        })
 
-const columnHelper = createColumnHelper<IHistoryItem>()
-const columns = [
+    const { data: History, isLoading: isHistoryLoading, isError: isHistoryError, isSuccess: isHistorySuccess } = useGetUserHistoryQuery({ page: pageIndex, size: pageSize });
+    const [isEditExpenseModal, setIsEditExpenseModal] = useState<boolean>(false);
+    const [isRemoveExpenseModal, setIsRemoveExpenseModal] = useState<boolean>(false);
+
+    const [ExpenseCredentials, setExpenseCredentials] = useState<{
+        id: number,
+        descriptions: string,
+        amount: number,
+        category_id: number,
+        group_id: number,
+    }>({
+        id: 0,
+        descriptions: '',
+        amount: 0,
+        category_id: 0,
+        group_id: 0,
+    });
+
+    const columnHelper = createColumnHelper<IColumnsHistory>()
+    const columns = [
     columnHelper.accessor('descriptions', {
         header: () =>'Description',
-        cell: info => info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue(),
+        cell: info => info.renderValue() ? info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue() : '-',
     }),
     columnHelper.accessor('title_category', {
         header: () => 'Category',
@@ -62,16 +92,40 @@ const columns = [
         cell: info =>
             <p className={classes.amount} style={{ color: info.row.original.category_id !== null ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.category_id !== null ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
     }),
-]
-
-const History: React.FC = () => {
-    const [{ pageIndex, pageSize }, setPagination] =
-        useState<PaginationState>({
-            pageIndex: 0,
-            pageSize: 8,
-        })
-    const { data: History, isLoading: isHistoryLoading, isError: isHistoryError, isSuccess: isHistorySuccess } = useGetUserHistoryQuery({ page: pageIndex, size: pageSize });
-
+    columnHelper.accessor('edit_remove', {
+        header: () => '',
+        meta: {
+            width: '100px'
+        },
+        cell: info => <div className={classes.editRemove}>
+            <button className={classes.editButton} onClick={(e) => {
+                e.preventDefault();
+                setExpenseCredentials({
+                    id: info.row.original.id,
+                    descriptions: info.row.original.descriptions,
+                    amount: info.row.original.amount,
+                    category_id: info.row.original.category_id,
+                    group_id: info.row.original.group_id,
+                })
+                setIsEditExpenseModal(!isEditExpenseModal);
+            }}>
+                <i className="bi bi-pencil"></i>
+            </button>
+            <button className={classes.removeButton} onClick={(e) => { 
+                e.preventDefault(); 
+                setExpenseCredentials({
+                    id: info.row.original.id,
+                    descriptions: info.row.original.descriptions,
+                    amount: info.row.original.amount,
+                    category_id: info.row.original.category_id,
+                    group_id: info.row.original.group_id,
+                })
+                setIsRemoveExpenseModal(!isRemoveExpenseModal); }}>
+                <i className="bi bi-trash"></i>
+            </button>
+        </div>
+    }),
+    ]
     const [sorting, setSorting] = useState<SortingState>([]) 
     
     const pagination = useMemo(
@@ -204,14 +258,41 @@ const History: React.FC = () => {
             <PreLoader preLoaderSize={50} type='auto' />
         </div>
     }
-    return (
+
+    return (<>
+        <ConfirmationModal
+        mode='remove_expense'
+        title={ExpenseCredentials.descriptions}
+        isConfirmationModalOpen={isRemoveExpenseModal}
+        setIsConfirmationModalOpen={setIsRemoveExpenseModal}
+        groupId={ExpenseCredentials.group_id}
+        expenseId={ExpenseCredentials.id}
+        callback={() => {
+            setExpenseCredentials({
+                id: 0,
+                descriptions: '',
+                amount: 0,
+                category_id: 0,
+                group_id: 0,
+            })
+        }}
+        />
+        <ExpenseModal
+            type='edit'
+            amount={ExpenseCredentials.amount}
+            description={ExpenseCredentials.descriptions}
+            isExpenseModalOpen={isEditExpenseModal}
+            setIsExpenseModalOpen={setIsEditExpenseModal}
+            groupId={ExpenseCredentials.group_id}
+            categoryId={ExpenseCredentials.category_id}
+        />
         <main id='HistoryPage'>
             <div className={classes.page__container}>
                 <h1 className={classes.pageTitle}>History</h1>
                 {historyContent}
             </div>
         </main>
-    )
+    </>)
 }
 
 export default History

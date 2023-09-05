@@ -64,7 +64,24 @@
 
     z-index: -1;
 }
-
+/* edit or remove buttons */
+.editRemove{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 24px;
+    font-size: 20px;
+}
+.editButton:hover{
+    color: var(--main-green);
+    cursor: pointer;
+    transition: all ease-in-out .3s;
+}
+.removeButton:hover{
+    color: var(--main-red);
+    cursor: pointer;
+    transition: all ease-in-out .3s;
+}
 /* empty state */
 .noItems {
     text-align: center;
