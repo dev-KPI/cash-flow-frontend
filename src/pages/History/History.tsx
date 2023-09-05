@@ -43,12 +43,14 @@ const History: React.FC = () => {
         amount: number,
         category_id: number,
         group_id: number,
+        isExpense: boolean
     }>({
         id: 0,
         descriptions: '',
         amount: 0,
         category_id: 0,
         group_id: 0,
+        isExpense: true,
     });
 
     const columnHelper = createColumnHelper<IColumnsHistory>()
@@ -106,6 +108,7 @@ const History: React.FC = () => {
                     amount: info.row.original.amount,
                     category_id: info.row.original.category_id,
                     group_id: info.row.original.group_id,
+                    isExpense: !!info.row.original.category_id 
                 })
                 setIsEditExpenseModal(!isEditExpenseModal);
             }}>
@@ -119,6 +122,7 @@ const History: React.FC = () => {
                     amount: info.row.original.amount,
                     category_id: info.row.original.category_id,
                     group_id: info.row.original.group_id,
+                    isExpense: !!info.row.original.category_id 
                 })
                 setIsRemoveExpenseModal(!isRemoveExpenseModal); }}>
                 <i className="bi bi-trash"></i>
@@ -262,6 +266,7 @@ const History: React.FC = () => {
     return (<>
         <ConfirmationModal
         mode='remove_expense'
+        isExpense={ExpenseCredentials.isExpense}
         title={ExpenseCredentials.descriptions}
         isConfirmationModalOpen={isRemoveExpenseModal}
         setIsConfirmationModalOpen={setIsRemoveExpenseModal}
@@ -274,6 +279,7 @@ const History: React.FC = () => {
                 amount: 0,
                 category_id: 0,
                 group_id: 0,
+                isExpense: true,
             })
         }}
         />

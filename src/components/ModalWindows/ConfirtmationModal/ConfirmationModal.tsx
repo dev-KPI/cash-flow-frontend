@@ -18,15 +18,15 @@ type IContfirmationModalProps = {
     isConfirmationModalOpen: boolean
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
 } & (
-    | {mode: 'kick', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never}
-    | {mode: 'leave' | 'disband', kickedUser?: IUser, groupId: number, expenseId?: never, callback?: never}
-    | {mode: 'remove_expense', kickedUser?: never, groupId: number, expenseId: number, callback: () => void}
+    | {mode: 'kick', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never, isExpense?: never}
+    | {mode: 'leave' | 'disband', kickedUser?: IUser, groupId: number, expenseId?: never, callback?: never, isExpense?: never}
+    | {mode: 'remove_expense', kickedUser?: never, groupId: number, expenseId: number, callback: () => void, isExpense: boolean}
 )
 
 const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, 
     expenseId, title, isConfirmationModalOpen, 
     setIsConfirmationModalOpen, mode, kickedUser,
-    callback}) => {
+    callback, isExpense}) => {
 
     const navigate = useNavigate();
     const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
@@ -65,7 +65,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'remove_expense') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove expense'
-        modalText = <p>Are you sure you want to remove <span>{title}</span> expense?</p>
+        modalText = <p>Are you sure you want to remove <span>{title}</span> {isExpense ? 'expense' : 'replenishment'}?</p>
     }
 
     const showToolTip = useCallback(() => {
