@@ -39,10 +39,8 @@ export const ExpensesApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             providesTags: (result, arg, body) => result ? [...result.map(item => ({ type: 'ExpensesController' as const, id: item.id })), 
-            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-            { type: 'ExpensesController', id: 'EXPENSES_HISTORY' }]
-            : [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-            { type: 'ExpensesController', id: 'EXPENSES_HISTORY' }]
+            { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
+            : [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         createExpenseByGroup: builder.mutation<IExpenseByGroupResponse, ICreateExpenseByGroupBody>({
             query: (body) => ({
@@ -58,15 +56,18 @@ export const ExpensesApiSlice = api.injectEndpoints({
         }),
         updateExpenseByGroup: builder.mutation<IExpenseByGroupResponse, IUpdateExpenseByGroupBody>({
             query: (body) => ({
-                url: `expenses/${body.group_id}/expenses/${body.expense_id}`,
+                url: `groups/${body.group_id}/expenses/${body.expense_id}`,
                 method: 'PUT',
                 credentials: 'include',
-                body: Omiter(['id', 'group_id'], body)
+                body: Omiter(['id', 'group_id', 'expense_id'], body)
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: (result, error, body) => [{ type: 'ExpensesController', id: body.expense_id }],
+            invalidatesTags: (result, error, body) => result ? [
+                { type: 'ExpensesController', id: body.expense_id },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] : [
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
         deleteExpenseByGroup: builder.mutation<null, { group_id: number, expense_id: number }>({
             query: ({ group_id, expense_id }) => ({

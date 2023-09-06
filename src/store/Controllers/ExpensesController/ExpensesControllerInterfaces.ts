@@ -21,6 +21,7 @@ export interface ICreateExpenseByGroupBody {
 export interface IUpdateExpenseByGroupBody {
     group_id: number,
     expense_id: number,
+    category_id: number,
     descriptions: string,
     amount: number,
 }
