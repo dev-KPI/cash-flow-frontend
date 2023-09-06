@@ -12,18 +12,12 @@ export const UserApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getUserAuthStatus: builder.query<boolean, null>({
             query: () => ({
-                url: `users/user-balance`,
+                url: `users/check-auth`,
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: {balance: number}): boolean => {
-                if (!response) {
-                    return false  
-                } 
-                return !!response
-            },
             providesTags: [{ type: 'UserController' as const, id: 0 }],
         }),
         getCurrentUserInfo: builder.query<IGetCurrentUserInfo, null>({
@@ -90,8 +84,7 @@ export const UserApiSlice = api.injectEndpoints({
                 } as IListResponse<IHistoryItem>
             },
             providesTags: 
-                [{ type: 'UserController' as const, id: 0 },
-                {type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
+                [{type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         getUserExpensesByGroup: builder.query<IGetUserExpensesByGroupResponse, IGetUserExpensesByGroupBody>({
