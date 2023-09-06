@@ -61,9 +61,9 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 expense_id: expenseId,
                 group_id: groupId,
                 descriptions: descriptionValue,
+                category_id: categoryId,
                 amount: amountValue,
             })
-            callback()
         } else if(isSubmit && type === 'edit' && amountValue > 0 && isReplenishment) {
             setIsInputError(false)
             setIsSubmit(false);
@@ -74,7 +74,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 descriptions: descriptionValue,
                 amount: amountValue,
             })
-            callback()
         } else if (isSubmit && amountValue < 1) {
             setIsInputError(true)
             setIsSubmit(false)
@@ -89,20 +88,34 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     }, [isExpenseModalOpen, isSubmit])
 
     const showToolTip = useCallback(() => {
-        if (isExpenseCreated || isExpenseUpdated) {
+        if (isExpenseCreated) {
             return <StatusTooltip
+            callback={callback}
             type="success" 
-            title={`Expense successfully ${type === 'create' ? 'added' : 'updated'}`}/>
-        } else if (isExpenseCreatingError || isExpenseUpdatingError) {
+            title={`Expense successfully added`}/>
+        } else if (isExpenseCreatingError) {
             return <StatusTooltip
+            callback={callback}
             type="error"
-            title={`Expense not ${type === 'create' ? 'added' : 'updated'}`} />
+            title={`Expense not added`} />
+        } else if (isExpenseUpdated) {
+            return <StatusTooltip
+            callback={callback}
+            type="success" 
+            title={`Expense successfully updated`}/>
+        } else if (isExpenseUpdatingError) {
+            return <StatusTooltip
+            callback={callback}
+            type="error"
+            title={`Expense not updated`} />
         } else if (isReplenishmentUpdated) {
             return <StatusTooltip
+            callback={callback}
             type="success"
             title={`Replenishment successfully updated`} />
         } else if (isReplenishmentUpdatingError) {
             return <StatusTooltip
+            callback={callback}
             type="error"
             title={`Replenishment not updated`} />
         }
