@@ -49,7 +49,7 @@ const MobileNotifications: FC = () => {
             return <li className={classes.inviteLi}
                 key={admin.id + group.title + i}>
                 <form className={classes.inviteForm}>
-                    <img src={admin.picture} alt={admin.first_name + 'avatar'} />
+                    <img src={admin.picture} alt={admin.first_name + '_avatar'} />
                     <p className={classes.Promo}>
                         <span style={{ fontWeight: 600 }}>{userName}
                         </span> has invited you to the group <Link to={`/group/${group.id}`} className={classes.InviteGroupRef}>
@@ -57,21 +57,17 @@ const MobileNotifications: FC = () => {
                     </p>
                     <div className={classes.buttonGroup}>
                         <CustomButton
-                            btnWidth={100}
-                            btnHeight={30}
-                            icon="none"
+                            icon="submit"
                             type="primary"
                             isPending={isResponseCreating && buttonClicked === 'accept' }
-                            children="Accept"
+                            children={<p>Accept</p>}
                             callback={() => { handleSumbit(el.id, 'ACCEPTED') }} />
                         <CustomButton
-                            btnWidth={100}
-                            btnHeight={30}
-                            icon="none"
+                            icon="refuse"
                             type="danger"
                             background="outline"
                             isPending={isResponseCreating && buttonClicked === 'reject'}
-                            children="Reject"
+                            children={<p>Reject</p>}
                             disableScale={true}
                             callback={() => { handleSumbit(el.id, 'DENIED') }} />
                     </div>
@@ -98,7 +94,7 @@ const MobileNotifications: FC = () => {
             <div className={classes.MobileNotifications__container}>
                 <h3 className={classes.title}>Notifications</h3>
                 {showToolTip()}
-                <ul>
+                <ul className={classes.invitesUl}>
                     {notificationsContent}
                 </ul> 
             </div>     
