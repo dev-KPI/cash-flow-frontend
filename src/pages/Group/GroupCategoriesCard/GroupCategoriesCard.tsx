@@ -71,28 +71,28 @@ const GroupCategoriesCard = () => {
 
     const getViewMoreModal = () => {
         return <ViewMoreModal
-            isModalOpen={isMoreModalOpen}
-            setIsModalOpen={setIsMoreModalOpen}
-            isAddModalOpen={isCategoryModalOpen}
-            setIsAddModalOpen={setIsCategoryModalOpen}
-            data={CategoriesByGroup ? getCategories(CategoriesByGroup.categories) : []}
-            type={'categories'}
+        isModalOpen={isMoreModalOpen}
+        setIsModalOpen={setIsMoreModalOpen}
+        isAddModalOpen={isCategoryModalOpen}
+        setIsAddModalOpen={setIsCategoryModalOpen}
+        data={CategoriesByGroup ? getCategories(CategoriesByGroup.categories) : []}
+        type={'categories'}
         />
     }
     const getExpenseModal = () => {
         return <ExpenseModal
-            type='create'
-            isExpenseModalOpen={isExpenseModalOpen}
-            setIsExpenseModalOpen={setIsExpenseModalOpen}
-            categoryId={idModalOpen}
-            groupId={Number(groupId)} />
+        type='create'
+        isExpenseModalOpen={isExpenseModalOpen}
+        setIsExpenseModalOpen={setIsExpenseModalOpen}
+        categoryId={idModalOpen}
+        groupId={Number(groupId)} />
     }
     const getCategoryModal = () => {
         return <CategoryModal
-            isCategoryModalOpen={isCategoryModalOpen}
-            setIsCategoryModalOpen={setIsCategoryModalOpen}
-            mode='create'
-            groupId={Number(groupId)} />
+        isCategoryModalOpen={isCategoryModalOpen}
+        setIsCategoryModalOpen={setIsCategoryModalOpen}
+        mode='create'
+        groupId={Number(groupId)} />
     }
     const moreButton = (<SpecialButton
         handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
