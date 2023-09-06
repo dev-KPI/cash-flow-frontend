@@ -55,7 +55,8 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             invalidatesTags: (result, arg, body) => result ? [{ type: 'ReplenishmentsController', id: body.id }] :
-            [{ type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' }],
+            [{ type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' },
+            { type: 'ExpensesController', id: 'EXPENSES_HISTORY' }],
         }),
         deleteReplenishmentById: builder.mutation<null, IDeleteReplenishmentBody>({
             query: ({id}) => ({
@@ -66,7 +67,8 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' }],
+            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' },
+            { type: 'ExpensesController', id: 'EXPENSES_HISTORY' }],
         })
     }),
     overrideExisting: false,

@@ -12,26 +12,29 @@ import IUser from "@models/IUser";
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
 import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 import { useDeleteExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
+import { useDeleteReplenishmentByIdMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
 
 type IContfirmationModalProps = {
     title?: string
     isConfirmationModalOpen: boolean
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
 } & (
-    | {mode: 'kick', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never, isExpense?: never}
-    | {mode: 'leave' | 'disband', kickedUser?: IUser, groupId: number, expenseId?: never, callback?: never, isExpense?: never}
-    | {mode: 'remove_expense', kickedUser?: never, groupId: number, expenseId: number, callback: () => void, isExpense: boolean}
+    | {mode: 'kick', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
+    | {mode: 'leave' | 'disband', kickedUser?: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
+    | {mode: 'remove_expense', kickedUser?: never, groupId: number, expenseId: number, callback: () => void, replenishmentId?: never}
+    | {mode: 'remove_replenishment', kickedUser?: never, groupId?: never, expenseId?: never, callback: () => void, replenishmentId: number}
 )
 
 const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId, 
     expenseId, title, isConfirmationModalOpen, 
     setIsConfirmationModalOpen, mode, kickedUser,
-    callback, isExpense}) => {
+    callback, replenishmentId}) => {
 
     const navigate = useNavigate();
     const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
     const [removeUser, { isLoading: isRemovingUser, isSuccess: isRemoveUserSuccess, isError: isRemoveUserError}] = useRemoveUserMutation();
     const [removeExpense, {isError: isRemovingExpenseError, isLoading: isRemovingExpenseLoading, isSuccess: isRemovingExpenseSuccess}] = useDeleteExpenseByGroupMutation();
+    const [removeReplenishment, {isError: isRemovingReplenishmentError, isLoading: isRemovingReplenishmentLoading, isSuccess: isRemovingReplenishmentSuccess}] = useDeleteReplenishmentByIdMutation();
     const TooltipDispatch = useActionCreators(TooltipSliceActions)
     
     let headerIcon: ReactNode = <i className="bi bi-boxes"></i>
@@ -47,6 +50,9 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
         } else if (mode === 'remove_expense') {
             setIsConfirmationModalOpen(false)
             removeExpense({group_id: groupId, expense_id: expenseId})
+        } else if (mode === 'remove_replenishment') {
+            setIsConfirmationModalOpen(false)
+            removeReplenishment({id: replenishmentId})
         }
     }
 
@@ -65,7 +71,11 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'remove_expense') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove expense'
-        modalText = <p>Are you sure you want to remove <span>{title}</span> {isExpense ? 'expense' : 'replenishment'}?</p>
+        modalText = <p>Are you sure you want to remove <span>{title}</span> expense?</p>
+    } else if (mode === 'remove_replenishment') {
+        headerIcon = <i className="bi bi-trash"></i>
+        titleModal = 'Remove replenishment'
+        modalText = <p>Are you sure you want to remove <span>{title}</span> replenishment?</p>
     }
 
     const showToolTip = useCallback(() => {
@@ -124,7 +134,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 })
             }
         } else if(mode === 'remove_expense'){
-            if (isRemoveUserSuccess) {
+            if (isRemovingExpenseSuccess) {
                 TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'kick',
@@ -132,7 +142,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                     status: 'success'
                 })
                 callback()
-            } else if(isRemoveUserError) {
+            } else if(isRemovingExpenseError) {
                 TooltipDispatch.setTooltip({
                     shouldShowTooltip: true,
                     modeTooltip: 'kick',
@@ -141,10 +151,30 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 })
                 callback()
             }
+        } else if(mode === 'remove_replenishment'){
+            if (isRemovingReplenishmentSuccess) {
+                TooltipDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'kick',
+                    textTooltip: "You have successfully removed replenishment",
+                    status: 'success'
+                })
+                callback()
+            } else if(isRemovingReplenishmentError) {
+                TooltipDispatch.setTooltip({
+                    shouldShowTooltip: true,
+                    modeTooltip: 'kick',
+                    textTooltip: "You haven't removed replenishment",
+                    status: 'error'
+                })
+                callback()
+            }
         }
     }, [mode, leaveGroup, isLeavingGroupError, isLeavingGroupSuccess,
         removeUser, isRemoveUserSuccess, isRemoveUserError, removeExpense,
-        isRemovingExpenseSuccess, isRemovingExpenseLoading, isRemovingExpenseError])
+        isRemovingExpenseSuccess, isRemovingExpenseLoading, isRemovingExpenseError,
+        removeReplenishment, isRemovingReplenishmentError, isRemovingReplenishmentLoading,
+        isRemovingReplenishmentSuccess])
 
     useEffect(() => {
         showToolTip()
