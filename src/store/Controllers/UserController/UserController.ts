@@ -217,7 +217,9 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [
                 { type: 'UserController' as const, id: 0 },
-                { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' }]
+                { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
+                { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' },
+                { type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' }]
         })
     }),
     overrideExisting: false,

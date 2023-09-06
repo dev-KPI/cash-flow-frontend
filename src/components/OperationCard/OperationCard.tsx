@@ -55,7 +55,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     }, [MonthPickerStore.rangeType])
 
     const initializeTotalVars = useCallback(() => {
-        if(data && data?.amount && data?.percentage_increase){
+        if(data){
             setAmount(Number(data.amount.toFixed(2)));
             setPercents(Number(data.percentage_increase * 100 > 1000 ? Math.floor(data.percentage_increase * 100) : fomatFloatNumber(data.percentage_increase * 100, 2)));
             setSign(data.percentage_increase === 0 ? '' : data.percentage_increase > 0 ? '+' : '-');
