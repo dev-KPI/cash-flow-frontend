@@ -129,7 +129,7 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [
                 { type: 'UserController' as const, id: 0 },
-                { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
+                { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IPeriods>({
@@ -210,6 +210,7 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [
                 { type: 'UserController' as const, id: 0 },
+                { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' }
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         })
     }),
