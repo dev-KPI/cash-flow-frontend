@@ -98,13 +98,16 @@
 }
 
 .title{
-    /* composes: mediumItemTitle from '@styles/style.css'; */
     font-size: 14px;
     line-height: 18px;
     font-weight: 600;
 }
-.activeLink{
+.activeLink{   
     color: var(--main-green);
+    transition: .3s ease-in-out;
+}
+.activeLink svg path{
+    fill: var(--main-green);
     transition: .3s ease-in-out;
 }
 .activeLink::after{
