@@ -261,6 +261,9 @@
 }
 
 @media only screen and (max-width: 400px) {
+    .page__container {
+        overflow-x: auto;
+    }
     .recentOperations__table tbody td {
         width: 90px;
         padding: 0 4px;

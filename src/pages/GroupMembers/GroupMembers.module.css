@@ -351,6 +351,9 @@
 }
 
 @media only screen and (max-width: 400px) {
+    .page__container {
+        overflow-x: auto;
+    }
     .recentOperations__table thead th:first-child>div {
         width: unset;
     }
