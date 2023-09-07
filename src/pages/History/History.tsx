@@ -52,7 +52,7 @@ const columns = [
     }),
     columnHelper.accessor('time', {
         header: () => 'Time',
-        cell: info => DateService.getTime(new Date(info.getValue())),
+        cell: info => DateService.getTime(new Date(info.getValue()), true),
     }),
     columnHelper.accessor('amount', {
         header: () => 'Amount',

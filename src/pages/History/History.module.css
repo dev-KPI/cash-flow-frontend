@@ -32,6 +32,10 @@
     composes: cardComponent from "@styles/style.css";
 }
 
+.recentOperations__table tbody td:first-child {
+    word-break: break-word;
+}
+
 .recentOperations__table thead th {
     height: 50px;
     vertical-align: middle;
@@ -257,9 +261,9 @@
 }
 
 @media only screen and (max-width: 400px) {
-    .recentOperations__table{
-        overflow-x: auto;
-        display: block;
+    .recentOperations__table tbody td {
+        width: 90px;
+        padding: 0 4px;
     }
     .recentOperations__table thead :nth-child(3) {
         display: none;
@@ -268,7 +272,9 @@
     .recentOperations__table tbody td:nth-child(3) {
         display: none;
     }
-
+    .tableText {
+        font-size: 13px;
+    }
     .pagination {
         padding: 10px;
     }
