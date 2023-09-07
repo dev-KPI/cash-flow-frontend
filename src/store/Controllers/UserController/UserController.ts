@@ -137,7 +137,10 @@ export const UserApiSlice = api.injectEndpoints({
             providesTags: [
                 { type: 'UserController' as const, id: 0 },
                 { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
-                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
+                { type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' },
+                { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
         }),
         getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IPeriods>({
             query: ({ period }) => ({
