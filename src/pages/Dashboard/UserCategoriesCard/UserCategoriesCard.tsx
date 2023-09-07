@@ -74,6 +74,7 @@ const UserCategoriesCard = () => {
 
     const getExpenseModal = () => {
         return <ExpenseModal
+            type='create'
             isExpenseModalOpen={isExpenseModalOpen}
             setIsExpenseModalOpen={setIsExpenseModalOpen}
             groupId={selectedGroup}

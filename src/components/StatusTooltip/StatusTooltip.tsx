@@ -7,9 +7,10 @@ import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 interface IStatusTooltipProps {
     title: ReactNode
     type: 'success' | 'error'
+    callback?: () => void
 }
 
-const StatusTooltip: FC<IStatusTooltipProps> = ({title, type}) => {
+const StatusTooltip: FC<IStatusTooltipProps> = ({title, type, callback = () => {}}) => {
 
     const [showTooltip, setShowTooltip] = useState<boolean>(true);
     const [showTooltipAnim, setShowTooltipAnim] = useState<string>(classes.slideIn);
@@ -32,6 +33,7 @@ const StatusTooltip: FC<IStatusTooltipProps> = ({title, type}) => {
                 status: 'success'
             })
             setShowTooltip(false)
+            callback()
         }, 1000)
     }
 
