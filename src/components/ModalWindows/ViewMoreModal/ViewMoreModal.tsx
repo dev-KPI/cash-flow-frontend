@@ -50,7 +50,7 @@ const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModa
                         setIsModalOpen(!isModalOpen)
                         setIsAddModalOpen(!isAddModalOpen)
                     }}
-                    className={classes.specialItem}
+                    className={type === 'groups' ? classes.specialGroupsItem : classes.specialCategoriesItem }
                     type='add'
                 />
             </ul>
