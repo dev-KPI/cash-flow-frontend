@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import useEscapeKey from '@hooks/layoutHooks/useEscapeKey';
 import { useOnClickOutside } from 'usehooks-ts'
@@ -18,6 +18,7 @@ import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/Confi
 
 
 const SearchBar: FC<{ groupId: number }> = ({ groupId }) => {
+    const navigate = useNavigate();
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     const [invitedUser, setInvitedUser] = useState<IUser>({
         id: 0,
@@ -99,7 +100,7 @@ const SearchBar: FC<{ groupId: number }> = ({ groupId }) => {
                     icon={'none'}
                     type={'white'}
                     background={'outline'}
-                    callback={() => { }}
+                    callback={() => { navigate(`./member/${user.id}`) }}
                     isPending={false}
                     disableScale={true}
                     children={
