@@ -48,7 +48,6 @@ const Users: React.FC = () => {
                 }
                 const email = info.row.original.login
                 return info.renderValue() ?
-                    <div className={classes.memberWrapper}>
                         <div className={classes.details}>
                             <div className={classes.icon}>
                                 <img className={classes.photo}
@@ -59,8 +58,7 @@ const Users: React.FC = () => {
                                 <h6 className={classes.name}>{full_name()}</h6>
                                 <p className={classes.email}>{email}</p>
                             </div>
-                        </div>
-                    </div> : '-'
+                        </div> : '-'
             }
         }),
         columnHelper.display({
