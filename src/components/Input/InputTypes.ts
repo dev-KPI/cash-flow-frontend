@@ -18,6 +18,7 @@ export interface IAreaInputCallback {
 }
 export interface IInputProps {
     value?: string
+    cashValue?: number,
     setFormValue: ICashInputCallback  | ITextInputCallback | INameInputCallback | IAreaInputCallback
     placeholder?: string | number
     Icon?: ReactNode,

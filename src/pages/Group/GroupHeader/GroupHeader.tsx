@@ -61,7 +61,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
     }, [UsersByGroup, isUsersByGroupSuccess, isUsersByGroupLoading, isUsersByGroupLoading])
     const {width, height} = useWindowSize();
 
-    const [leaveMode, setLeaveMode] = useState<'leave' | 'disband' | 'kick'>('leave');
+    const [leaveMode, setLeaveMode] = useState<'leave' | 'disband'>('leave');
     const [buttonName, setButtonName] = useState<string>('Leave group')
 
     const getMonthPicker = useMemo(() => {

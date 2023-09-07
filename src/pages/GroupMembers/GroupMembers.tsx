@@ -89,7 +89,7 @@ const History: React.FC = () => {
         last_name: '',
         picture: ''
     });
-    const [confirmationMode, setConfirmationMode] = useState<'disband' | 'kick'>('kick');
+    const [confirmationMode, setConfirmationMode] = useState<'kick' | 'disband'>('kick');
 
     const columns = [
         columnHelper.accessor(`user.first_name`, {

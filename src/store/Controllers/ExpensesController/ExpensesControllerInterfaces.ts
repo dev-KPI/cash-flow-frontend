@@ -18,10 +18,12 @@ export interface ICreateExpenseByGroupBody {
     category_id: number
     group_id: number,
 }
-export interface IUpdateExpenseByGroupBody extends ICreateExpenseByGroupBody {
-    id: number,
-    icon_url: string,
-    color_code: string
+export interface IUpdateExpenseByGroupBody {
+    group_id: number,
+    expense_id: number,
+    category_id: number,
+    descriptions: string,
+    amount: number,
 }
 
 export interface IGetExpensesByGroupBody {

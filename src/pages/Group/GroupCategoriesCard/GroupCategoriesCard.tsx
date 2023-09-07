@@ -37,10 +37,6 @@ const GroupCategoriesCard = () => {
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
         {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
     })
-    // requestAnimationFrame(_ => {
-    //     const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
-    //     setTotalItems(totalCategories || maxItems);
-    // })
     useEffect(()=>{
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
         setTotalItems(totalCategories || maxItems);
@@ -75,27 +71,28 @@ const GroupCategoriesCard = () => {
 
     const getViewMoreModal = () => {
         return <ViewMoreModal
-            isModalOpen={isMoreModalOpen}
-            setIsModalOpen={setIsMoreModalOpen}
-            isAddModalOpen={isCategoryModalOpen}
-            setIsAddModalOpen={setIsCategoryModalOpen}
-            data={CategoriesByGroup ? getCategories(CategoriesByGroup.categories) : []}
-            type={'categories'}
+        isModalOpen={isMoreModalOpen}
+        setIsModalOpen={setIsMoreModalOpen}
+        isAddModalOpen={isCategoryModalOpen}
+        setIsAddModalOpen={setIsCategoryModalOpen}
+        data={CategoriesByGroup ? getCategories(CategoriesByGroup.categories) : []}
+        type={'categories'}
         />
     }
     const getExpenseModal = () => {
         return <ExpenseModal
-            isExpenseModalOpen={isExpenseModalOpen}
-            setIsExpenseModalOpen={setIsExpenseModalOpen}
-            categoryId={idModalOpen}
-            groupId={Number(groupId)} />
+        type='create'
+        isExpenseModalOpen={isExpenseModalOpen}
+        setIsExpenseModalOpen={setIsExpenseModalOpen}
+        categoryId={idModalOpen}
+        groupId={Number(groupId)} />
     }
     const getCategoryModal = () => {
         return <CategoryModal
-            isCategoryModalOpen={isCategoryModalOpen}
-            setIsCategoryModalOpen={setIsCategoryModalOpen}
-            mode='create'
-            groupId={Number(groupId)} />
+        isCategoryModalOpen={isCategoryModalOpen}
+        setIsCategoryModalOpen={setIsCategoryModalOpen}
+        mode='create'
+        groupId={Number(groupId)} />
     }
     const moreButton = (<SpecialButton
         handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}

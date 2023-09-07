@@ -11,6 +11,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 
 const Input: FC<IInputProps> = ({
     value = '',
+    cashValue = 0,
     inputType, 
     isError = false,
     setIsError = () => {},
@@ -22,7 +23,7 @@ const Input: FC<IInputProps> = ({
     isInputMustClear
     }) => {
 
-    const [inputNumberValue, setInputNumberValue] = useState<number>(0);
+    const [inputNumberValue, setInputNumberValue] = useState<number>(cashValue ?? 0);
     const [inputStringValue, setInputStringValue] = useState<string>(value ?? '');
 
     useEffect(() => {
@@ -132,7 +133,6 @@ const Input: FC<IInputProps> = ({
     
 
     const getInputError = useMemo(() => {
-        console.log(isError)
         return (isError) ? <div className={classes.errorLabel}>
             <label>This field is required</label>
         </div> : null
