@@ -6,7 +6,7 @@ import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerI
 import { isSameDay, format, lastDayOfMonth, subDays } from 'date-fns'
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import DateService from '@services/DateService/DateService';
-import { fomatFloatNumber } from '@services/UsefulMethods/UIMethods';
+import { fomatFloatNumber, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { IGetTotalExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
 //UI
 import classes from "./OperationCard.module.css"
@@ -29,7 +29,7 @@ interface OperactionCardProps {
 const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError, offPreloader = false }) => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
-    const [amount, setAmount] = useState<number>(0);
+    const [amount, setAmount] = useState<number | string>(0);
     const [percents, setPercents] = useState<number>(0);
     const [sign, setSign] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
@@ -56,7 +56,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
 
     const initializeTotalVars = useCallback(() => {
         if(data){
-            setAmount(Number(data.amount.toFixed(2)));
+            setAmount(numberWithCommas(Number(data.amount)));
             setPercents(Number(data.percentage_increase * 100 > 1000 ? Math.floor(data.percentage_increase * 100) : fomatFloatNumber(data.percentage_increase * 100, 2)));
             setSign(data.percentage_increase === 0 ? '' : data.percentage_increase > 0 ? '+' : '-');
         } else {

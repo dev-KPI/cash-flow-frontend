@@ -1,6 +1,11 @@
 export function numberWithCommas(x: number) {
+    const formatter = Intl.NumberFormat('en');
+    const compactFormatter = Intl.NumberFormat('en', { notation: 'compact' }); 
     if (x)
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        if (Math.abs(x) > 999999)
+            return compactFormatter.format(x)
+        else
+            return formatter.format(x)
     else
         return x
 }
