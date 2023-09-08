@@ -1,4 +1,4 @@
-aimport React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect, useMemo } from "react";
+import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect, useMemo } from "react";
 
 //UI
 import classes from './ConfirmationModal.module.css';
@@ -24,7 +24,7 @@ type IContfirmationModalProps = {
     | {mode: 'leave' | 'disband', kickedUser?: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
     | {mode: 'remove_expense', kickedUser?: never, groupId: number, expenseId: number, callback: () => void, replenishmentId?: never}
     | {mode: 'remove_replenishment', kickedUser?: never, groupId?: never, expenseId?: never, callback: () => void, replenishmentId: number }
-    | {mode: 'invite', kickedUser?: IUser, groupId?: number, expenseId?: never, callback: never, replenishmentId: never }
+    | {mode: 'invite', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never }
 )
 
 const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
@@ -45,14 +45,14 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     let modalText: ReactNode = '';
 
     const handleSubmit = () => {
-        if (mode === 'kick' && user) {
+        if (mode === 'kick' && kickedUser) {
             setIsConfirmationModalOpen(false)
-            removeUser({ group_id: groupId, user_id: user.id })
+            removeUser({ group_id: groupId, user_id: kickedUser.id })
         } else if (mode === 'leave' || mode === 'disband') {
             leaveGroup(groupId)
-        } else if (mode === 'invite' && user) {
+        } else if (mode === 'invite' && kickedUser) {
             createInvitation({
-                recipient_id: user.id,
+                recipient_id: kickedUser.id,
                 group_id: groupId,
             })
         } else if (mode === 'remove_expense') {
@@ -71,7 +71,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'kick') {
         headerIcon = <i className="bi bi-person-dash"></i>
         titleModal = 'Remove user'
-        modalText = <p>Are you sure you want to remove  <span>{user?.first_name} {user?.last_name}</span> from the group?</p>
+        modalText = <p>Are you sure you want to remove  <span>{kickedUser?.first_name} {kickedUser?.last_name}</span> from the group?</p>
     } else if (mode === 'disband') {
         headerIcon = <i className="bi bi-people"></i>
         titleModal = 'Disband group'
@@ -79,7 +79,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'invite') {
         headerIcon = <i className="bi bi-person-add"></i>
         titleModal = 'Invite user'
-        modalText = <p>Are you sure you want to send <span>{user?.first_name} {user?.last_name}</span> an invitation to the group?</p>
+        modalText = <p>Are you sure you want to send <span>{kickedUser?.first_name} {kickedUser?.last_name}</span> an invitation to the group?</p>
     } else if (mode === 'remove_expense') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove expense'

@@ -182,7 +182,7 @@ const SearchBar: FC<{ groupId: number }> = ({ groupId }) => {
                 <ConfirmationModal
                     groupId={Number(groupId)}
                     title={'title'}
-                    user={invitedUser}
+                    kickedUser={invitedUser}
                     setIsConfirmationModalOpen={setIsConfirmationModal}
                     isConfirmationModalOpen={isConfirmationModal}
                     mode={'invite'} />

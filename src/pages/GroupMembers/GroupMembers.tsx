@@ -191,7 +191,7 @@ const History: React.FC = () => {
                 <ConfirmationModal 
                 groupId={Number(groupId)} 
                 title={GroupInfo?.title}
-                user={kickedUser}
+                kickedUser={kickedUser}
                 setIsConfirmationModalOpen={setIsConfirmationModal} 
                 isConfirmationModalOpen={isConfirmationModal} 
                 mode={confirmationMode}/>
