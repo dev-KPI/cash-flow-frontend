@@ -86,15 +86,22 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 })
                 closeModalHandler();
             } else if(mode === 'edit'){
-                if(groupId){
-                    updateGroup({
-                        id: groupId,
-                        title: nameValue,
-                        description: descValue,
-                        icon_url: icon,
-                        color_code: pickedColor,
-                    })
-                    closeModalHandler();
+                if (groupId) {
+                    if (group?.title === nameValue && group?.description === descValue &&
+                        group?.icon_url === icon && group?.color_code === pickedColor) {
+                        setIsGroupModalOpen(false)
+                        }
+                    else {
+                        updateGroup({
+                            id: groupId,
+                            title: nameValue,
+                            description: descValue,
+                            icon_url: icon,
+                            color_code: pickedColor,
+                        })
+                        closeModalHandler();
+                    }
+                    
                 }
             } else if(mode === 'disband' || mode === 'leave'){
                 if(groupId){
@@ -153,10 +160,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     return <>
     {
         <ConfirmationModal 
-        groupId={groupId ?? 0} 
-        setIsConfirmationModalOpen={setIsConfirmationModal} 
-        isConfirmationModalOpen={isConfirmationModal} 
-        mode={mode === 'disband' ? "disband" : 'leave'}/>
+            groupId={groupId ?? 0}
+            title={group?.title}
+            setIsConfirmationModalOpen={setIsConfirmationModal} 
+            isConfirmationModalOpen={isConfirmationModal} 
+            mode={mode === 'leave' ? "leave" : 'disband'}/>
     }
         <UsePortal
             callback={() => {}}
