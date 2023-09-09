@@ -1,8 +1,9 @@
-import {FC, useState, ReactNode} from "react";
+import {FC, useState, ReactNode, useMemo, useCallback} from "react";
 
 import classes from './StatusTooltip.module.css'
-import { useActionCreators } from "@hooks/storeHooks/useAppStore";
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
+import ITooltipState from "@store/UI_store/TooltipSlice/TooltipSliceInterfaces";
 
 interface IStatusTooltipProps {
     title: ReactNode
@@ -12,9 +13,9 @@ interface IStatusTooltipProps {
 
 const StatusTooltip: FC<IStatusTooltipProps> = ({title, type, callback = () => {}}) => {
 
-    const [showTooltip, setShowTooltip] = useState<boolean>(true);
     const [showTooltipAnim, setShowTooltipAnim] = useState<string>(classes.slideIn);
     const TooltipDispatch = useActionCreators(TooltipSliceActions)
+    const TooltipStore = useAppSelector<ITooltipState>(store => store.TooltipSlice)
 
     const icon = type === 'success' ? 
     <i className="bi bi-check"></i> : 
@@ -25,36 +26,34 @@ const StatusTooltip: FC<IStatusTooltipProps> = ({title, type, callback = () => {
     const closeAnimTooltip = () => {
         const tooltip = document.getElementById('StatusTooltip')
         setShowTooltipAnim(classes.slideOut);
-        if(tooltip) setTimeout(() => {
-            TooltipDispatch.setTooltip({
-                shouldShowTooltip: false,
-                modeTooltip: 'leave',
-                textTooltip: '',
-                status: 'success'
-            })
-            setShowTooltip(false)
-            callback()
-        }, 1000)
+        if(tooltip) { 
+            setTimeout(() => {
+                TooltipDispatch.setTooltip({
+                    shouldShowTooltip: false,
+                    textTooltip: '',
+                    status: 'success'
+                })
+            }, 1000)
+        }
     }
 
-
     const tooltipLayout = <div 
-    id="StatusTooltip" 
-    className={classes.StatusTooltip + ' ' + showTooltipAnim}>
-        <div className={classes.upSide}>
-            <div style={{color: color}} className={classes.iconTooltip}>{icon}</div>
-            <div className={classes.text}>
-                {title}
+        id="StatusTooltip" 
+        className={classes.StatusTooltip + ' ' + showTooltipAnim}>
+            <div className={classes.upSide}>
+                <div style={{color: color}} className={classes.iconTooltip}>{icon}</div>
+                <div className={classes.text}>
+                    {title}
+                </div>
             </div>
+            <div style={{color: color}}
+            id="timerLine"
+            onAnimationEnd={() => closeAnimTooltip()}
+            className={classes.timerLine}></div>
         </div>
-        <div style={{color: color}}
-        id="timerLine"
-        onAnimationEnd={() => closeAnimTooltip()}
-        className={classes.timerLine}></div>
-    </div>
 
     return(<>
-    {showTooltip && tooltipLayout}
+    {TooltipStore.tooltip.shouldShowTooltip && tooltipLayout}
     </>)
 }
 

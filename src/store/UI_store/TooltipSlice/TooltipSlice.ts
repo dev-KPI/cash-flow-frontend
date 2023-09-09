@@ -6,7 +6,6 @@ import ITooltipState, { ITooltip } from './TooltipSliceInterfaces';
 const initialState: ITooltipState = {
     tooltip: {
         shouldShowTooltip: false,
-        modeTooltip: 'leave',
         textTooltip: '',
         status: 'success'
     }
@@ -17,6 +16,7 @@ export const TooltipSlice = createSlice({
     initialState,
     reducers: {
         setTooltip: (initialState, action: PayloadAction<ITooltip>): void => {
+            initialState.tooltip.shouldShowTooltip = false
             initialState.tooltip = action.payload
         },
     },

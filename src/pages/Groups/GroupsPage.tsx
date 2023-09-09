@@ -28,22 +28,22 @@ const Groups: FC = () => {
     const groups = useMemo(() => {
         if (isGroupsSuccess && isCurrentUserSuccess && Groups.user_groups.length > 0) {
             return Groups.user_groups.map((el, i) =>
-                <GroupListItem
-                    key={uuid()}
-                    id={el.group.id}
-                    description={el.group.description}
-                    title={el.group.title}
-                    icon={el.group.admin.picture}
-                    adminName={`${el.group.admin.first_name} ${el.group.admin.last_name}`}
-                    adminEmail={el.group.admin.login}
-                    color={el.group.color_code}
-                    isAdmin={CurrentUser.id === el.group.admin.id}
-                    isEditGroupModal={isEditGroupModal}
-                    setIsEditGroupModal={setIsEditGroupModal}
-                    isGroupLoading={isGroupsFetching}
-                    setIsConfirmationModal={setIsConfirmationModal}
-                    setGroupId={setGroupId}
-                />)
+            <GroupListItem
+                key={uuid()}
+                id={el.group.id}
+                description={el.group.description}
+                title={el.group.title}
+                icon={el.group.admin.picture}
+                adminName={`${el.group.admin.first_name} ${el.group.admin.last_name}`}
+                adminEmail={el.group.admin.login}
+                color={el.group.color_code}
+                isAdmin={CurrentUser.id === el.group.admin.id}
+                isEditGroupModal={isEditGroupModal}
+                setIsEditGroupModal={setIsEditGroupModal}
+                isGroupLoading={isGroupsFetching}
+                setIsConfirmationModal={setIsConfirmationModal}
+                setGroupId={setGroupId}
+            />)
         }
     }, [Groups, CurrentUser])
     let groupsContent;
@@ -73,7 +73,7 @@ const Groups: FC = () => {
             mode='edit'/>
         }
     }, [GroupById, isEditGroupModal])
-
+    
     return (<>
         {editGroupModal}
         {<GroupModal
@@ -82,14 +82,13 @@ const Groups: FC = () => {
             isGroupModalOpen={isCreateGroupModal}
             mode='create'
         />}
-        { 
-            <ConfirmationModal 
+        {<ConfirmationModal 
             groupId={groupId} 
-            title={Groups?.user_groups?.find(el => groupId === el.group.id )?.group.title}
+            title={GroupById?.title}
             isConfirmationModalOpen={isConfirmationModal} 
             setIsConfirmationModalOpen={setIsConfirmationModal} 
-            mode={!!Groups?.user_groups?.find(el => CurrentUser?.id === el.group.admin.id ) ? 'disband' : 'leave'}/>
-        }
+            mode={(GroupById?.admin.id === CurrentUser?.id) ? 'disband' : 'leave'}
+        />}
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>
@@ -102,14 +101,13 @@ const Groups: FC = () => {
                         children="Add new group"
                         icon="add"
                         type="primary"
-                        callback={()=>setIsCreateGroupModal(!isCreateGroupModal)}
+                        callback={() => setIsCreateGroupModal(!isCreateGroupModal)}
                         className={classes.addButton} />
 
                 </div>
                 <section className={classes.groups}>
                     {groupsContent}
                 </section>
-                
             </div>
         </main>
     </>)

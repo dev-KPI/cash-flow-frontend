@@ -13,6 +13,26 @@ import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
 import ITooltipState from '@store/UI_store/TooltipSlice/TooltipSliceInterfaces';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+export const notify = (type: 'success'|'error'|'info', msg: string) => {
+    const toastStyles = {paddingLeft: '16px', borderRadius: '20px', backgroundColor: 'var(--cardbg)', color: 'var(--main-text)', 
+    fontFamily: 'Inter', fontSize: '16px', fontWeight: '500', }
+    if(type === 'success') {
+        toast.success(msg, {
+            style: toastStyles
+        });
+    } else if (type === 'error') {
+        toast.error(msg, {
+            style: toastStyles
+        });
+    } else if (type === 'info') {
+        toast.info(msg, {
+            style: toastStyles
+        });
+    }
+};
 
 const App: React.FC = () => {
     const { data: AuthStatus, isError: isAuthError, isLoading: isAuthLoading } = useGetUserAuthStatusQuery(null);
@@ -27,12 +47,6 @@ const App: React.FC = () => {
         }
     }, [AuthStatus, isAuthError, isAuthLoading]);
 
-    const showToolTip = useMemo(() => {
-        if (TooltipStore.tooltip.shouldShowTooltip) {
-            return <StatusTooltip type={TooltipStore.tooltip.status} title={TooltipStore.tooltip.textTooltip} />;
-        }
-    }, [TooltipStore.tooltip.shouldShowTooltip]);
-
     useEffect(() => {
         ThemeDispatch.initializeTheme();
         initializeAuth();
@@ -43,7 +57,7 @@ const App: React.FC = () => {
     useEffect(() => {
         const preloaderTimeout = setTimeout(() => {
             setShowPreloader(false);
-        }, 1600);
+        }, 1550);
 
         return () => {
             clearTimeout(preloaderTimeout);
@@ -52,7 +66,10 @@ const App: React.FC = () => {
 
     return (
       <>
-        {showToolTip}
+        <ToastContainer
+        closeButton={false}
+        position='top-right'
+        autoClose={3000}/>
         {showPreloader && <PageGlobalLoader />}
         {!isAuthLoading && <Router /> }
       </>
