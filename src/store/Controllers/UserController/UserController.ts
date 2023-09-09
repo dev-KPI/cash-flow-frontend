@@ -129,11 +129,8 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [
                 { type: 'UserController' as const, id: 0 },
-                { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
-                { type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' },
-                { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' },
-                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' }]
+                { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IPeriods>({
             query: ({ period }) => ({
@@ -185,8 +182,7 @@ export const UserApiSlice = api.injectEndpoints({
             },
             providesTags: [
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' },
-                { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
+                { type: 'GroupsController' as const, id: 'GROUPS' },
             ]
         }),
         getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
@@ -213,9 +209,7 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [
                 { type: 'UserController' as const, id: 0 },
-                { type: 'ReplenishmentsController' as const, id: 'CREATE_REPLENISHMENT' },
-                { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENT' },
-                { type: 'ReplenishmentsController', id: 'UPDATE_REPLENISHMENT' }]
+                { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' }]
         })
     }),
     overrideExisting: false,
