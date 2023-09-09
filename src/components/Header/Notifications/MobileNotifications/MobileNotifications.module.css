@@ -43,7 +43,8 @@
     gap: 5px;
     margin-left: auto;
 }
-.buttonGroup button {
+.buttonGroup button,
+.buttonGroup > div {
     width: 100px;
     height: 30px;
 }

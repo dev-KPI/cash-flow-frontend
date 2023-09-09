@@ -1,6 +1,5 @@
 import {FC, ReactNode, useCallback, useState} from "react";
 //logic
-import { Link } from "react-router-dom";
 import IInvitation from "@models/IInvitation";
 import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 //UI
@@ -52,24 +51,28 @@ const MobileNotifications: FC = () => {
                     <img src={admin.picture} alt={admin.first_name + '_avatar'} />
                     <p className={classes.Promo}>
                         <span style={{ fontWeight: 600 }}>{userName}
-                        </span> has invited you to the group <Link to={`/group/${group.id}`} className={classes.InviteGroupRef}>
-                            {group.title}</Link>
+                        </span> has invited you to the group <span className={classes.InviteGroupRef}>
+                            {group.title}</span>
                     </p>
                     <div className={classes.buttonGroup}>
                         <CustomButton
                             icon="submit"
                             type="primary"
                             isPending={isResponseCreating && buttonClicked === 'accept' }
-                            children={<p>Accept</p>}
-                            callback={() => { handleSumbit(el.id, 'ACCEPTED') }} />
+                            callback={() => { handleSumbit(el.id, 'ACCEPTED') }}
+                        >
+                                <p>Accept</p>
+                            </CustomButton>
                         <CustomButton
                             icon="refuse"
                             type="danger"
                             background="outline"
                             isPending={isResponseCreating && buttonClicked === 'reject'}
-                            children={<p>Reject</p>}
                             disableScale={true}
-                            callback={() => { handleSumbit(el.id, 'DENIED') }} />
+                            callback={() => { handleSumbit(el.id, 'DENIED') }}
+                        >
+                                <p>Reject</p>
+                            </CustomButton>
                     </div>
                 </form>
             </li>

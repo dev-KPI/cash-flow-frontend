@@ -1,15 +1,15 @@
-import React, { FC, ReactNode, SetStateAction, Dispatch, useCallback } from "react";
-
+import React, { FC, ReactNode, SetStateAction, Dispatch, useCallback, useState } from "react";
+import { Link } from "react-router-dom";
 //UI
 import classes from './DesktopNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import PreLoader from "@components/PreLoader/PreLoader";
+
 //logic
-import { Link } from "react-router-dom";
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
-import { useGetInvitationsByCurrentUserQuery, useLazyGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
+import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 import IInvitation from "@models/IInvitation";
 
 
@@ -25,12 +25,13 @@ interface IDesktopNotifications {
 const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive, buttonRef }) => {
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess, refetch} = useGetInvitationsByCurrentUserQuery(null)
     const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
-
+    const [buttonClicked, setButtonClicked] = useState<'accept' | 'reject' | 'none'>('none')
     const handleSumbit = (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
         makeResponse({
             invitation_id: invitationId,
             response: response
         })
+        setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
         setIsActive(false)
     }
 
@@ -65,8 +66,8 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                     <img src={admin.picture} alt={admin.first_name + 'avatar'} />
                     <p className={classes.Promo}>
                         <span style={{ fontWeight: 600 }}>{userName}
-                        </span> has invited you to the group <Link to={`/group/${group.id}`} className={classes.InviteGroupRef}>
-                            {group.title}</Link>
+                        </span> has invited you to the group <span className={classes.InviteGroupRef}>
+                            {group.title}</span>
                     </p>
                     <div className={classes.buttonGroup}>
                         <CustomButton
@@ -74,7 +75,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                             btnHeight={25}
                             icon="none"
                             type="primary"
-                            isPending={isResponseCreating}
+                            isPending={isResponseCreating && buttonClicked === 'accept'}
                             children="Accept"
                             callback={() => { handleSumbit(el.id, 'ACCEPTED') } } />
                         <CustomButton
@@ -83,7 +84,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                             icon="none"
                             type="danger"
                             background="outline"
-                            isPending={isResponseCreating}
+                            isPending={isResponseCreating && buttonClicked === 'reject'}
                             children="Reject"
                             disableScale={true}
                             callback={() => { handleSumbit(el.id, 'DENIED') } } />
