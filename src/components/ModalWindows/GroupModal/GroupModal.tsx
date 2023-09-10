@@ -11,7 +11,6 @@ import { notify } from "src/App";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 
@@ -25,8 +24,6 @@ interface IGroupModalProps{
 }
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
-    
-    const TooltipDispatch = useActionCreators(TooltipSliceActions);
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'

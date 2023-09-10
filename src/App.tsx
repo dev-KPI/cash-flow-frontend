@@ -4,7 +4,6 @@ import './styles/style.css';
 
 // UI
 import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
-import StatusTooltip from '@components/StatusTooltip/StatusTooltip';
 // Router
 import Router from './router/router';
 // Store
@@ -12,7 +11,6 @@ import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/Use
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
-import ITooltipState from '@store/UI_store/TooltipSlice/TooltipSliceInterfaces';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -39,7 +37,6 @@ const App: React.FC = () => {
 
     const ThemeDispatch = useActionCreators(ThemeActions);
     const UserSliceDispatch = useActionCreators(UserSliceActions);
-    const TooltipStore = useAppSelector<ITooltipState>((store) => store.TooltipSlice);
 
     const initializeAuth = useCallback(() => {
         if (!isAuthLoading) {

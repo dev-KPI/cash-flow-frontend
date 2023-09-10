@@ -10,7 +10,6 @@ import { notify } from "src/App";
 
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import { useCreateCategoryByGroupMutation, useUpdateCategoryByGroupMutation } from "@store/Controllers/CategoriesController/CategoriesController";
 import { IGetCategoriesByGroupResponse } from "@store/Controllers/CategoriesController/CategoriesControllerInterfaces";
 

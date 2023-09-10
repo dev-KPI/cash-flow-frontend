@@ -7,7 +7,6 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import IGroup from "@models/IGroup";
 import { useCreateInvitationMutation } from "@store/Controllers/InvitationController/InvitationController";
 import { notify } from "src/App";

@@ -4,7 +4,6 @@ import React, { FC, ReactNode, useState, Dispatch, SetStateAction, useCallback }
 import classes from './SalaryModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateReplenishmentMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
