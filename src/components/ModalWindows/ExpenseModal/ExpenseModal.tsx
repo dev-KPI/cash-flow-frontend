@@ -44,18 +44,17 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const [updateExpense, { isLoading: isExpenseUpdating, isError: isExpenseUpdatingError, isSuccess: isExpenseUpdated }] = useUpdateExpenseByGroupMutation();
     const [updateReplenishment, { isLoading: isReplenishmentUpdating, isError: isReplenishmentUpdatingError, isSuccess: isReplenishmentUpdated }] = useUpdateReplenishmentByIdMutation();
 
-    const canSaveExpense = [amountValue, descriptionValue, groupId, expenseId, categoryId].every(Boolean) && !isExpenseUpdating
     const onUpdateExpense = async () => {
-        if (canSaveExpense) {
+        if (amountValue && descriptionValue && groupId && expenseId && categoryId && !isExpenseUpdating) {
             try {
-                const isUpdated = await updateExpense({
+                const isExpenseUpdated = await updateExpense({
                     expense_id: expenseId,
                     group_id: groupId,
                     descriptions: descriptionValue,
                     category_id: categoryId,
                     amount: amountValue,
                 }).unwrap()
-                if (isUpdated) {
+                if (isExpenseUpdated) {
                     notify('success', 'Expense updated')
                 }
                 setAmountValue(0)
@@ -66,16 +65,15 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
             }
         }
     }
-    const canSaveReplenishment = [amountValue, descriptionValue, expenseId].every(Boolean) && !isReplenishmentUpdating
     const onUpdateReplenishment = async () => {
-        if (canSaveReplenishment) {
+        if (amountValue && descriptionValue && expenseId && !isReplenishmentUpdating) {
             try {
-                const isUpdated = await updateReplenishment({
+                const isUpdatedReplenishment = await updateReplenishment({
                     id: expenseId,
                     descriptions: descriptionValue,
                     amount: amountValue,
                 }).unwrap()
-                if (isUpdated) {
+                if (isUpdatedReplenishment) {
                     notify('success', 'Replenishment updated')
                 }
                 setAmountValue(0)
@@ -86,18 +84,16 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
             }
         }
     }
-
-    const canCreateExpense = [amountValue, descriptionValue, groupId, categoryId].every(Boolean) && !isReplenishmentUpdating
     const onCreateExpense = async () => {
-        if (canCreateExpense) {
+        if (amountValue && descriptionValue && groupId && categoryId && !isReplenishmentUpdating) {
             try {
-                const isUpdated = await createExpense({
+                const isExpenseCreated = await createExpense({
                     descriptions: descriptionValue,
                     amount: amountValue,
                     category_id: categoryId,
                     group_id: groupId,
                 }).unwrap()
-                if (isUpdated) {
+                if (isExpenseCreated) {
                     notify('success', 'Expense added')
                 }
                 setAmountValue(0)

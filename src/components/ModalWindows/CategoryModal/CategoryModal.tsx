@@ -6,6 +6,7 @@ import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
+import { notify } from "src/App";
 
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
@@ -64,25 +65,57 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
 
     const [isInputError, setIsInputError] = useState<boolean>(false);
 
-    const handleSubmit = () => {
-        if(isSubmitted && nameValue.replace(/\s/gm, '').length > 0) {
-            setIsInputError(false);
-            if(mode === 'create'){
-                createCategory({
+    const onCreateCategory = async () => {
+        if (groupId && nameValue && icon && pickedColor && !isCategoryCreating) {
+            try {
+                const isRemovedUser = await createCategory({
                     group_id: groupId,
                     title: nameValue,
                     icon_url: icon,
                     color_code: pickedColor,
-                })
-                closeModalHandler();
-            } else if(mode === 'edit' && categoryId){
-                updateCategory({
+                }).unwrap()
+                if (isRemovedUser) {
+                    notify('success', `You created ${nameValue} category`)
+                }
+            } catch (err) {
+                console.error('Failed to create category: ', err)
+                notify('error', `You haven't created ${nameValue} category`)
+            }
+        }
+    }
+    const onUpdateCategory = async () => {
+        if (groupId && nameValue && categoryId && icon && pickedColor && !isCategoryUpdating) {
+            try {
+                const isRemovedUser = await updateCategory({
                     group_id: groupId,
                     category_id: categoryId,
                     title: nameValue,
                     icon_url: icon,
                     color_code: pickedColor,
-                })
+                }).unwrap()
+                if (isRemovedUser) {
+                    notify('success', `You updated ${nameValue} category`)
+                }
+            } catch (err) {
+                console.error('Failed to create category: ', err)
+                notify('error', `You haven't updated ${nameValue} category`)
+            }
+        }
+    }
+
+    const handleSubmit = () => {
+        if(isSubmitted && nameValue.replace(/\s/gm, '').length > 0) {
+            setIsInputError(false);
+            if(mode === 'create'){
+                onCreateCategory();
+                closeModalHandler();
+            } else if(mode === 'edit' && categoryId){
+                if (!(nameValue === getSelectedCategory?.category.title && getSelectedCategory?.color_code === pickedColor 
+                    && getSelectedCategory?.icon_url === icon && !isCategoryUpdating)) {
+                    onUpdateCategory();
+                } else {
+                    notify('info', 'Category not updated')
+                }
                 closeModalHandler();
             }
         } else if (isSubmitted && nameValue.replace(/\s/gm, '').length < 1) {
@@ -97,31 +130,6 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
         setIsInputError(false);
     }
 
-    const showToolTip = useCallback(() => {
-        if(mode === 'create'){
-            if (isCategoryCreated) {
-                return <StatusTooltip
-                type="success" 
-                title={`Category ${nameValue} successfully added`}/>
-            } else if(isCategoryCreatingError) {
-                return <StatusTooltip
-                type="error" 
-                title={`Category ${nameValue} not added`}/>
-            }
-        } else {
-            if (isCategoryUpdated) {
-                return <StatusTooltip
-                type="success" 
-                title={`Category ${nameValue} successfully updated`}/>
-            } else if(isCategoryUpdatingError) {
-                return <StatusTooltip
-                type="error" 
-                title={`Category ${nameValue} not updated`}/>
-            }
-        }
-    }, [createCategory, isCategoryCreating, isCategoryCreatingError, isCategoryCreated,
-        updateCategory, isCategoryUpdating, isCategoryUpdatingError, isCategoryUpdated])
-
     let labelText = 'Name of the category:';
 
     useEffect(() => initializeModalInputs(), [initializeModalInputs])
@@ -129,7 +137,6 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
     return <>
-    {showToolTip()}
     <UsePortal
         callback={() => {}}
         setIsModalOpen={setIsCategoryModalOpen}
