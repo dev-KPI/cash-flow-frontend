@@ -182,7 +182,8 @@ export const UserApiSlice = api.injectEndpoints({
             },
             providesTags: [
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
-                { type: 'GroupsController' as const, id: 'GROUPS' },
+                { type: 'ExpensesController', id: 'DELETE_EXPENSE_BY_GROUP' },
+                { type: 'GroupsController' as const, id: 'GROUPS_DELETE' },
             ]
         }),
         getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
@@ -209,7 +210,8 @@ export const UserApiSlice = api.injectEndpoints({
             ) => response.status,
             providesTags: [
                 { type: 'UserController' as const, id: 0 },
-                { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' }]
+                { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         })
     }),
     overrideExisting: false,

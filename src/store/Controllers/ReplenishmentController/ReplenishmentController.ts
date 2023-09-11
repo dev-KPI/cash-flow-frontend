@@ -24,11 +24,9 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             providesTags: (result) => result ? [...result.map(item => ({ type: 'ReplenishmentsController' as const, id: item.amount})),
-                { type: 'ReplenishmentsController', id: 'REPLENISHMENTS' },
-                { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENTS' }]
+            { type: 'ReplenishmentsController', id: 'REPLENISHMENTS' }]
                 :
-                [{ type: 'ReplenishmentsController', id: 'REPLENISHMENTS' },
-                { type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENTS' }],
+            [{ type: 'ReplenishmentsController', id: 'REPLENISHMENTS' }],
         }),
         createReplenishment: builder.mutation<ICreateReplenishmentResponse, ICreateReplenishmentBody>({
             query: (body) => ({
@@ -52,7 +50,10 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: (result, arg, body) => [{ type: 'ReplenishmentsController', id: body.id }]
+            invalidatesTags: (result, arg, body) => result ? [
+            { type: 'ReplenishmentsController', id: body.id }, 
+            { type: 'ReplenishmentsController', id: 'REPLENISHMENTS' }] :
+            [{ type: 'ReplenishmentsController', id: 'REPLENISHMENTS' }],
         }),
         deleteReplenishmentById: builder.mutation<null, IDeleteReplenishmentBody>({
             query: ({id}) => ({
@@ -63,7 +64,7 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'DELETE_REPLENISHMENTS' }],
+            invalidatesTags: [{ type: 'ReplenishmentsController', id: 'REPLENISHMENTS' }],
         })
     }),
     overrideExisting: false,
