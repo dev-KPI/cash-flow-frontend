@@ -11,8 +11,6 @@ import classes from './GroupListItem.module.css'
 import userIcon from '@assets/user-icon.svg';
 import GroupListItemLoader from './GroupListItemLoader';
 
-
-
 interface IGroupItemProps {
     id: number;
     isAdmin: boolean;
@@ -28,6 +26,8 @@ interface IGroupItemProps {
     isGroupLoading: boolean,
     setGroupId: React.Dispatch<SetStateAction<number>>
 }
+
+
 const GroupItem: FC<IGroupItemProps> = ({ id, 
     title, description, icon, adminName, isAdmin,
     adminEmail, color, isEditGroupModal, setIsEditGroupModal, setGroupId, setIsConfirmationModal

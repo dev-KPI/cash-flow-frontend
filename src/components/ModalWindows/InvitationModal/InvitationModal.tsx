@@ -7,9 +7,9 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import IGroup from "@models/IGroup";
 import { useCreateInvitationMutation } from "@store/Controllers/InvitationController/InvitationController";
+import { notify } from "src/App";
 
 
 interface IInvitationModalProps {
@@ -25,7 +25,7 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
     let titleModal: string = 'Invite user'
     const [selectedGroup, setSelectedGroup] = useState<{ id: number, title: string }>({ id: -1, title: '' })
 
-    const [createInvitation, { isLoading: isInvitationCreating, isError: isInvitationError, isSuccess: isInvitationCreated }] = useCreateInvitationMutation()
+    const [createInvitation, { isLoading: isInvitationCreating }] = useCreateInvitationMutation()
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const id = +event.target.value;
         setSelectedGroup({ id: id, title: findTitleById(id) });
@@ -34,25 +34,28 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
         const foundGroup = groupsObject.find((group) => group.id === id);
         return foundGroup ? foundGroup.title : '';
     }
+
+    const onCreateInvitation = async () => {
+        if (userId && selectedGroup.id && !isInvitationCreating) {
+            try {
+                const isInvitationCreated = await createInvitation({
+                    recipient_id: userId,
+                    group_id: selectedGroup.id,
+                }).unwrap()
+                if (isInvitationCreated) {
+                    notify('success', `${userName} invited to ${selectedGroup.title} group`)
+                }
+            } catch (err) {
+                console.error('Failed to invite user: ', err)
+                notify('error', `${userName} haven't invited to ${selectedGroup.title} group`)
+            }
+        }
+    }
+
     const handleSubmit = async () => {
-        if(selectedGroup.id !== -1)
-            createInvitation({
-                recipient_id: userId,
-                group_id: selectedGroup.id,
-            })
+        onCreateInvitation()
         setIsInvitationModalOpen(false)
     }
-    const showToolTip = useCallback(() => {
-        if (isInvitationCreated) {
-            return <StatusTooltip
-                type="success"
-                title={<p>{userName} successfully invited to <span>{selectedGroup.title}</span> group</p>} />
-        } else if (isInvitationError) {
-            return <StatusTooltip
-                type="error"
-                title={<p>{userName} not added to <span>{selectedGroup.title}</span> group</p>} />
-        }
-    }, [createInvitation, isInvitationCreating, isInvitationError, isInvitationCreated])
     
     const groupsObject: {id:number, title:string}[] = groups.map((group) => {
         return {
@@ -61,7 +64,6 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
         };
     });
     return <>
-        {showToolTip()}
         <UsePortal
             callback={() => {}}
             setIsModalOpen={setIsInvitationModalOpen}

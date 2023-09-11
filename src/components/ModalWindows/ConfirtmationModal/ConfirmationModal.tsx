@@ -3,6 +3,7 @@ import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, 
 //UI
 import classes from './ConfirmationModal.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
+import { toast } from "react-toastify";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import IGroup from "@models/IGroup";
@@ -10,13 +11,13 @@ import { useLeaveGroupMutation, useRemoveUserMutation } from "@store/Controllers
 import { useNavigate } from "react-router-dom";
 import IUser from "@models/IUser";
 import { useActionCreators } from "@hooks/storeHooks/useAppStore";
-import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 import { useDeleteExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
 import { useDeleteReplenishmentByIdMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
+import { notify } from "src/App";
 
 type IContfirmationModalProps = {
-    title?: string
-    isConfirmationModalOpen: boolean
+    title?: string;
+    isConfirmationModalOpen: boolean;
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
 } & (
     | {mode: 'kick', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
@@ -31,30 +32,14 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     callback, replenishmentId}) => {
 
     const navigate = useNavigate();
-    const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
-    const [removeUser, { isLoading: isRemovingUser, isSuccess: isRemoveUserSuccess, isError: isRemoveUserError}] = useRemoveUserMutation();
-    const [removeExpense, {isError: isRemovingExpenseError, isLoading: isRemovingExpenseLoading, isSuccess: isRemovingExpenseSuccess}] = useDeleteExpenseByGroupMutation();
-    const [removeReplenishment, {isError: isRemovingReplenishmentError, isLoading: isRemovingReplenishmentLoading, isSuccess: isRemovingReplenishmentSuccess}] = useDeleteReplenishmentByIdMutation();
-    const TooltipDispatch = useActionCreators(TooltipSliceActions)
+    const [leaveGroup, { isLoading: isLeavingGroupLoading}] = useLeaveGroupMutation();
+    const [removeUser, { isLoading: isRemovingUser}] = useRemoveUserMutation();
+    const [removeExpense, {isLoading: isRemovingExpenseLoading}] = useDeleteExpenseByGroupMutation();
+    const [removeReplenishment, {isLoading: isRemovingReplenishmentLoading}] = useDeleteReplenishmentByIdMutation();
     
     let headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let titleModal: string = ''
     let modalText: ReactNode = '';
-
-    const handleSubmit = () => {
-        if(mode === 'kick' && kickedUser){
-            setIsConfirmationModalOpen(false)
-            removeUser({group_id: groupId, user_id: kickedUser.id})
-        } else if (mode === 'leave' || mode === 'disband') {
-            leaveGroup(groupId)
-        } else if (mode === 'remove_expense') {
-            setIsConfirmationModalOpen(false)
-            removeExpense({group_id: groupId, expense_id: expenseId})
-        } else if (mode === 'remove_replenishment') {
-            setIsConfirmationModalOpen(false)
-            removeReplenishment({id: replenishmentId})
-        }
-    }
 
     if (mode === 'leave') {
         headerIcon = <i className= "bi bi-box-arrow-right" ></i>
@@ -78,107 +63,84 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
         modalText = <p>Are you sure you want to remove <span>{title}</span> replenishment?</p>
     }
 
-    const showToolTip = useCallback(() => {
-        if(mode === 'disband'){
-            if (isLeavingGroupSuccess) {
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'disband',
-                    textTooltip: 'You have successfully disbanded the group',
-                    status: 'success'
-                })
-                navigate('/groups')
-                setIsConfirmationModalOpen(false)
-            } else if(isLeavingGroupError) {
-                setIsConfirmationModalOpen(false)
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'disband',
-                    textTooltip: "You haven't disbanded the group",
-                    status: 'error'
-                })
-            } 
-        } else if (mode === 'leave'){
-            if (isLeavingGroupSuccess) {
-                navigate('/groups')
-                setIsConfirmationModalOpen(false)
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'leave',
-                    textTooltip: "You have successfully left from group",
-                    status: 'success'
-                })
-            } else if(isLeavingGroupError) {
-                setIsConfirmationModalOpen(false)
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'leave',
-                    textTooltip: "You haven't left from group",
-                    status: 'error'
-                })
-            }
-        } else if(mode === 'kick'){
-            if (isRemoveUserSuccess) {
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'kick',
-                    textTooltip: "You have successfully removed user",
-                    status: 'success'
-                })
-            } else if(isRemoveUserError) {
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'kick',
-                    textTooltip: "You haven't removed user",
-                    status: 'error'
-                })
-            }
-        } else if(mode === 'remove_expense'){
-            if (isRemovingExpenseSuccess) {
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'kick',
-                    textTooltip: "You have successfully removed expense",
-                    status: 'success'
-                })
-                callback()
-            } else if(isRemovingExpenseError) {
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'kick',
-                    textTooltip: "You haven't removed expense",
-                    status: 'error'
-                })
-                callback()
-            }
-        } else if(mode === 'remove_replenishment'){
-            if (isRemovingReplenishmentSuccess) {
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'kick',
-                    textTooltip: "You have successfully removed replenishment",
-                    status: 'success'
-                })
-                callback()
-            } else if(isRemovingReplenishmentError) {
-                TooltipDispatch.setTooltip({
-                    shouldShowTooltip: true,
-                    modeTooltip: 'kick',
-                    textTooltip: "You haven't removed replenishment",
-                    status: 'error'
-                })
-                callback()
+    const onLeaveGroup = async () => {
+        if (groupId && !isLeavingGroupLoading && (mode === 'disband' || 'leave')) {
+            try {
+                const isLeavedGroup = await leaveGroup(groupId || 0).unwrap()
+                if (isLeavedGroup) {
+                    if (mode === 'disband') {
+                        notify('success', `You disbanded the ${title} group`)
+                    } else if (mode === 'leave') {
+                        notify('success', `You left from the ${title} group`)
+                    }
+                    navigate('/groups')
+                }
+            } catch (err) {
+                if (mode === 'disband') {
+                    console.error(`Failed to disband the ${title} group: `, err)
+                    notify('error', `You haven't disbanded the ${title} group`)
+                } else if (mode === 'leave') {
+                    console.error(`Failed to leave from the ${title} group: `, err)
+                    notify('error', `You haven't left from the ${title} group`)
+                }
             }
         }
-    }, [mode, leaveGroup, isLeavingGroupError, isLeavingGroupSuccess,
-        removeUser, isRemoveUserSuccess, isRemoveUserError, removeExpense,
-        isRemovingExpenseSuccess, isRemovingExpenseLoading, isRemovingExpenseError,
-        removeReplenishment, isRemovingReplenishmentError, isRemovingReplenishmentLoading,
-        isRemovingReplenishmentSuccess])
+    }
+    const onRemoveUser = async () => {
+        if (groupId && kickedUser && !isRemovingUser && mode === 'kick') {
+            try {
+                const isRemovedUser = await removeUser({group_id: groupId, user_id: kickedUser.id}).unwrap()
+                if (isRemovedUser) {
+                    notify('success', `You removed ${kickedUser.first_name + kickedUser.last_name ? (' ' + kickedUser.last_name) : ''} from the group`)
+                }
+            } catch (err) {
+                console.error('Failed to remove user from the group: ', err)
+                notify('error', `You haven't removed ${kickedUser.first_name + kickedUser.last_name ? (' ' + kickedUser.last_name) : ''}`)
+            }
+        }
+    }
+    const onRemoveExpense = async () => {
+        if (groupId && expenseId && !isRemovingExpenseLoading && mode === 'remove_expense') {
+            try {
+                const isRemovedExpense = await removeExpense({group_id: groupId, expense_id: expenseId}).unwrap()
+                if (isRemovedExpense) {
+                    notify('success', `You removed expense`)
+                }
+            } catch (err) {
+                console.error('Failed to remove expense: ', err)
+                notify('error', `You haven't removed expense`)
+            }
+        }
+    }
+    const onRemoveReplenishment = async () => {
+        if (replenishmentId && !isRemovingReplenishmentLoading && mode === 'remove_replenishment') {
+            try {
+                const isRemovedReplenishment = await removeReplenishment({id: replenishmentId})
+                if (isRemovedReplenishment) {
+                    notify('success', `You removed replenishment`)
+                }
+            } catch (err) {
+                console.error('Failed to remove replenishment: ', err)
+                notify('error', `You haven't removed replenishment`)
+            }
+        }
+    }
 
-    useEffect(() => {
-        showToolTip()
-    }, [showToolTip])
+    const handleSubmit = () => {
+        if(mode === 'kick' && kickedUser){
+            setIsConfirmationModalOpen(false)
+            onRemoveUser()
+        } else if (mode === 'leave' || mode === 'disband') {
+            setIsConfirmationModalOpen(false)
+            onLeaveGroup()
+        } else if (mode === 'remove_expense') {
+            setIsConfirmationModalOpen(false)
+            onRemoveExpense()
+        } else if (mode === 'remove_replenishment') {
+            setIsConfirmationModalOpen(false)
+            onRemoveReplenishment()
+        }
+    }
 
     return <div>
         <UsePortal

@@ -4,10 +4,10 @@ import React, { FC, ReactNode, useState, Dispatch, SetStateAction, useCallback }
 import classes from './SalaryModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateReplenishmentMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
+import { notify } from "src/App";
 
 interface IOperationModalProps{
     isSalaryModalOpen: boolean
@@ -28,28 +28,31 @@ const SalaryModal: FC<IOperationModalProps> = ({
     const [operationValue, setOperationValue] = useState<number>(0);
     const [descriptionValue, setDescriptionValue] = useState<string>('');
 
-    const [createReplenishment, {isLoading: isReplenishmentLoading, isError: isReplenishmentError, isSuccess: isReplenishmentCreated}] = useCreateReplenishmentMutation()
+    const [createReplenishment, {isLoading: isReplenishmentLoading}] = useCreateReplenishmentMutation()
+
+    const onCreateReplenishment = async () => {
+        if (operationValue && descriptionValue && !isReplenishmentLoading) {
+            try {
+                const isReplenishmentCreated = await createReplenishment({
+                    amount: operationValue,
+                    descriptions: descriptionValue
+                }).unwrap()
+                if (isReplenishmentCreated) {
+                    notify('success', `You created ${descriptionValue} replenishment`)
+                }
+            } catch (err) {
+                console.error('Failed to create replenishment: ', err)
+                notify('error', `You haven't created {descriptionValue} replenishment`)
+            }
+        }
+    }
 
     const handleSubmit = async () => {
-        createReplenishment({
-            amount: operationValue,
-            descriptions: descriptionValue
-        })
+        onCreateReplenishment()
         setIsSalaryModalOpen(false);
     }
-    const showToolTip = useCallback(() => {
-        if (isReplenishmentCreated) {
-            return <StatusTooltip
-                type="success"
-                title="Salary successfully added" />
-        } else if (isReplenishmentError) {
-            return <StatusTooltip
-                type="error"
-                title={`Salary not added`} />
-        }
-    }, [createReplenishment, isReplenishmentLoading, isReplenishmentError, isReplenishmentCreated])
+
     return <>
-        {showToolTip()}
         <UsePortal
             callback={() => {}}
             setIsModalOpen={setIsSalaryModalOpen}
