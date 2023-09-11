@@ -4,11 +4,11 @@ import './styles/style.css';
 
 // UI
 import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
-// Router
+  // Router
 import Router from './router/router';
 // Store
 import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/UserController';
-import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { useActionCreators } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
 import { ToastContainer, toast } from 'react-toastify';

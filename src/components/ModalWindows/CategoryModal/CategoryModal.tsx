@@ -67,13 +67,13 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     const onCreateCategory = async () => {
         if (groupId && nameValue && icon && pickedColor && !isCategoryCreating) {
             try {
-                const isRemovedUser = await createCategory({
+                const isCreatedCategory = await createCategory({
                     group_id: groupId,
                     title: nameValue,
                     icon_url: icon,
                     color_code: pickedColor,
                 }).unwrap()
-                if (isRemovedUser) {
+                if (isCreatedCategory) {
                     notify('success', `You created ${nameValue} category`)
                 }
             } catch (err) {
@@ -85,14 +85,14 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     const onUpdateCategory = async () => {
         if (groupId && nameValue && categoryId && icon && pickedColor && !isCategoryUpdating) {
             try {
-                const isRemovedUser = await updateCategory({
+                const isUpdatedCategory = await updateCategory({
                     group_id: groupId,
                     category_id: categoryId,
                     title: nameValue,
                     icon_url: icon,
                     color_code: pickedColor,
                 }).unwrap()
-                if (isRemovedUser) {
+                if (isUpdatedCategory) {
                     notify('success', `You updated ${nameValue} category`)
                 }
             } catch (err) {

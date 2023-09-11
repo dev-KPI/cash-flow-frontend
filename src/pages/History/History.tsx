@@ -38,7 +38,6 @@ const History: React.FC = () => {
     const [isReplenishment, setIsReplenishment] = useState<boolean>(false);
     const [isRemoveExpenseModal, setIsRemoveExpenseModal] = useState<boolean>(false);
     const [isRemoveReplenishmentModal, setIsRemoveReplenishmentModal] = useState<boolean>(false);
-
     const [ExpenseCredentials, setExpenseCredentials] = useState<{
         id: number,
         descriptions: string,
@@ -110,8 +109,9 @@ const History: React.FC = () => {
         },
         cell: info => <div className={classes.editRemove}>
             <button className={classes.editButton} onClick={(e) => {
+                const isExpense = (!!info.row.original?.group_id && (info.row.original?.group_id > 0))
                 e.preventDefault();
-                (!!info.row.original?.group_id && (info.row.original?.group_id > 0)) ? (setExpenseCredentials({
+                isExpense ? (setExpenseCredentials({
                     id: info.row.original.id,
                     descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
@@ -122,14 +122,15 @@ const History: React.FC = () => {
                     amount: info.row.original.amount,
                     description: info.row.original.descriptions
                 }));
-                setIsReplenishment(!(!!info.row.original?.group_id && (info.row.original?.group_id > 0)));
+                setIsReplenishment(!isExpense);
                 setIsEditExpenseModal(!isEditExpenseModal);
             }}>
                 <i className="bi bi-pencil"></i>
             </button>
             <button className={classes.removeButton} onClick={(e) => { 
                 e.preventDefault(); 
-                (!!info.row.original?.group_id && (info.row.original?.group_id > 0)) ? (setExpenseCredentials({
+                const isExpense = (!!info.row.original?.group_id && (info.row.original?.group_id > 0))
+                isExpense ? (setExpenseCredentials({
                     id: info.row.original.id,
                     descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
@@ -140,7 +141,7 @@ const History: React.FC = () => {
                     amount: info.row.original.amount,
                     description: info.row.original.descriptions
                 }));
-                setIsReplenishment(!(!!info.row.original?.group_id && (info.row.original?.group_id > 0)));
+                setIsReplenishment(!isExpense);
                 (!!info.row.original?.group_id && (info.row.original?.group_id > 0)) ? setIsRemoveExpenseModal(!isRemoveExpenseModal) : 
                 setIsRemoveReplenishmentModal(!isRemoveReplenishmentModal) }}>
                 <i className="bi bi-trash"></i>
