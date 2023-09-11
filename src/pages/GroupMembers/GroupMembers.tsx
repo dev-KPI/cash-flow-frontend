@@ -183,8 +183,6 @@ const History: React.FC = () => {
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex === pageCount - 1 ? data.length : (pageIndex + 1) * pageSize;
 
-    
-
     return (
         <main id='GroupMembersPage' className="no-padding">
             {

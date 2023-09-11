@@ -6,12 +6,11 @@ import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
 import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
-import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
-import ITooltipState from "@store/UI_store/TooltipSlice/TooltipSliceInterfaces";
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
-import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
+import { notify } from "src/App";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
+import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
+import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 
@@ -25,8 +24,6 @@ interface IGroupModalProps{
 }
 
 const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
-    
-    const TooltipDispatch = useActionCreators(TooltipSliceActions);
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
@@ -46,7 +43,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
 
     const [createGroup, { isLoading: isGroupCreating, isSuccess: isGroupCreated, isError: isGroupCreatingError},] = useCreateGroupMutation();
     const [updateGroup, { isLoading: isGroupUpdating, isSuccess: isGroupUpdated, isError: isGroupUpdatingError},] = useUpdateGroupMutation();
-    const [leaveGroup, { isLoading: isGroupDisbanding, isSuccess: isGroupDisbanded, isError: isGroupDisbandingError},] = useLeaveGroupMutation();
+    const [leaveGroup, { isLoading: isGroupLeaving }] = useLeaveGroupMutation();
 
     const initializeModalInputs = useCallback(() => {
         if(group){
@@ -74,40 +71,82 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     }, [isGroupUpdatingError, isGroupUpdating, isGroupUpdated,
         isGroupCreatingError, isGroupCreating, isGroupCreated])
 
-    const handleSubmit = () => {
-        if(isSubmitted && nameValue.replace(/\s/gm, '').length > 0) {
-            setIsInputError(false);
-            if(mode === 'create'){
-                createGroup({
+    const onCreateGroup = async () => {
+        if (descValue && nameValue && icon && pickedColor && !isGroupCreating) {
+            try {
+                const isGroupCreated = await createGroup({
                     title: nameValue,
                     description: descValue,
                     icon_url: icon,
                     color_code: pickedColor,
-                })
+                }).unwrap()
+                if (isGroupCreated) {
+                    notify('success', `You created ${nameValue} group`)
+                }
+            } catch (err) {
+                console.error('Failed to create group: ', err)
+                notify('error', `You haven't created ${nameValue} group`)
+            }
+        }
+    }
+    const onUpdateGroup = async () => {
+        if (descValue && groupId && nameValue && icon && pickedColor && !isGroupUpdating) {
+            try {
+                const isGroupUpdated = await updateGroup({
+                    id: groupId,
+                    title: nameValue,
+                    description: descValue,
+                    icon_url: icon,
+                    color_code: pickedColor,
+                }).unwrap()
+                if (isGroupUpdated) {
+                    notify('success', `You updated ${nameValue} group`)
+                }
+            } catch (err) {
+                console.error('Failed to create group: ', err)
+                notify('error', `You haven't update the ${nameValue} group`)
+            }
+        }
+    }
+    const onLeaveGroup = async () => {
+        if (groupId && !isGroupLeaving) {
+            try {
+                const isGroupLeft = await leaveGroup(groupId).unwrap()
+                if (isGroupLeft) {
+                    if (mode === 'disband') {
+                        notify('success', `You disbanded the ${nameValue} group`)
+                    } else if (mode === 'leave') {
+                        notify('success', `You left from ${nameValue} group`)
+                    }
+                }
+            } catch (err) {
+                if (mode === 'disband') {
+                    console.error('Failed to disband the group: ', err)
+                    notify('error', `You haven't dibanded ${nameValue} group`)
+                } else if (mode === 'leave') {
+                    console.error('Failed to left from the group: ', err)
+                    notify('error', `You haven't left from ${nameValue} group`)
+                }
+            }
+        }
+    }
+
+    const handleSubmit = () => {
+        if(isSubmitted && nameValue.replace(/\s/gm, '').length > 0) {
+            setIsInputError(false);
+            if(mode === 'create'){
+                onCreateGroup();
                 closeModalHandler();
             } else if(mode === 'edit'){
-                if (groupId) {
-                    if (group?.title === nameValue && group?.description === descValue &&
-                        group?.icon_url === icon && group?.color_code === pickedColor) {
-                        setIsGroupModalOpen(false)
-                        }
-                    else {
-                        updateGroup({
-                            id: groupId,
-                            title: nameValue,
-                            description: descValue,
-                            icon_url: icon,
-                            color_code: pickedColor,
-                        })
-                        closeModalHandler();
-                    }
-                    
+                if (!(nameValue === group?.title && descValue === group.description && icon === group.icon_url && pickedColor === group.color_code)) {
+                    onUpdateGroup()
+                } else {
+                    notify('info', 'Expense not updated')
                 }
+                closeModalHandler();
             } else if(mode === 'disband' || mode === 'leave'){
-                if(groupId){
-                    leaveGroup(groupId)
-                    closeModalHandler();
-                }
+                onLeaveGroup()
+                closeModalHandler();
             } 
         } else if (isSubmitted && nameValue.replace(/\s/gm, '').length < 1) {
             setIsInputError(true)
@@ -115,45 +154,10 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
         }
     }
 
-    const initTooltip = useCallback(() => {
-        if (isGroupCreated) {
-            TooltipDispatch.setTooltip({
-                shouldShowTooltip: true,
-                modeTooltip: 'create',
-                textTooltip: `Group ${nameValue} successfully added`,
-                status: 'success'
-            })
-        } else if(isGroupCreatingError) {
-            TooltipDispatch.setTooltip({
-                shouldShowTooltip: true,
-                modeTooltip: 'create',
-                textTooltip: `Group ${nameValue} not added`,
-                status: 'error'
-            })
-        }
-        else if (isGroupUpdated) {
-            TooltipDispatch.setTooltip({
-                shouldShowTooltip: true,
-                modeTooltip: 'update',
-                textTooltip: `Group ${nameValue} successfully updated`,
-                status: 'success'
-            })
-        } else if(isGroupUpdatingError) {
-            TooltipDispatch.setTooltip({
-                shouldShowTooltip: true,
-                modeTooltip: 'update',
-                textTooltip: `Group ${nameValue} not updated`,
-                status: 'error'
-            })
-        }
-    }, [createGroup, isGroupCreating, isGroupCreated, isGroupCreatingError, 
-        updateGroup, isGroupUpdating, isGroupUpdated, isGroupUpdatingError])
-
     let labelText = 'Name of the group:';
  
     useEffect(() => closeModalHandler(), [closeModalHandler])
     useEffect(() => initializeModalInputs(), [initializeModalInputs])
-    useEffect(() => initTooltip(), [initTooltip])
     useEffect(() => handleSubmit(), [handleSubmit])
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
@@ -238,7 +242,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     <div className={classes.btnWrapper}
                         style={{ justifyContent: mode === 'edit' ? 'space-between' : 'center' }}>
                         {mode === 'edit' && groupId && <CustomButton
-                            isPending={isGroupDisbanding}
+                            isPending={isGroupLeaving}
                             children="Disband"
                             btnWidth={170}
                             btnHeight={36}

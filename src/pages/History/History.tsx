@@ -38,7 +38,6 @@ const History: React.FC = () => {
     const [isReplenishment, setIsReplenishment] = useState<boolean>(false);
     const [isRemoveExpenseModal, setIsRemoveExpenseModal] = useState<boolean>(false);
     const [isRemoveReplenishmentModal, setIsRemoveReplenishmentModal] = useState<boolean>(false);
-
     const [ExpenseCredentials, setExpenseCredentials] = useState<{
         id: number,
         descriptions: string,
@@ -110,39 +109,40 @@ const History: React.FC = () => {
         },
         cell: info => <div className={classes.editRemove}>
             <button className={classes.editButton} onClick={(e) => {
+                const isExpense = (!!info.row.original?.group_id && (info.row.original?.group_id > 0))
                 e.preventDefault();
-                console.log(info.row.original)
-                !!info.row.original?.group_id && (info.row.original?.group_id > 0) ? (setExpenseCredentials({
+                isExpense ? (setExpenseCredentials({
                     id: info.row.original.id,
                     descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
                     category_id: info.row.original.category_id,
                     group_id: info.row.original.group_id,
-                })) : setReplenishmentCredentials({
+                })) : (setReplenishmentCredentials({
                     id: info.row.original.id,
                     amount: info.row.original.amount,
                     description: info.row.original.descriptions
-                })
-                setIsReplenishment(!(!!info.row.original?.group_id && (info.row.original?.group_id > 0)))
+                }));
+                setIsReplenishment(!isExpense);
                 setIsEditExpenseModal(!isEditExpenseModal);
             }}>
                 <i className="bi bi-pencil"></i>
             </button>
             <button className={classes.removeButton} onClick={(e) => { 
                 e.preventDefault(); 
-                !!info.row.original?.group_id && (info.row.original?.group_id > 0) ? setExpenseCredentials({
+                const isExpense = (!!info.row.original?.group_id && (info.row.original?.group_id > 0))
+                isExpense ? (setExpenseCredentials({
                     id: info.row.original.id,
                     descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
                     category_id: info.row.original.category_id,
                     group_id: info.row.original.group_id,
-                }) : setReplenishmentCredentials({
+                })) : (setReplenishmentCredentials({
                     id: info.row.original.id,
                     amount: info.row.original.amount,
                     description: info.row.original.descriptions
-                })
-                setIsReplenishment(!(!!info.row.original?.group_id && (info.row.original?.group_id > 0)))
-                !!info.row.original?.group_id && (info.row.original?.group_id > 0) ? setIsRemoveExpenseModal(!isRemoveExpenseModal) : 
+                }));
+                setIsReplenishment(!isExpense);
+                (!!info.row.original?.group_id && (info.row.original?.group_id > 0)) ? setIsRemoveExpenseModal(!isRemoveExpenseModal) : 
                 setIsRemoveReplenishmentModal(!isRemoveReplenishmentModal) }}>
                 <i className="bi bi-trash"></i>
             </button>
@@ -289,7 +289,7 @@ const History: React.FC = () => {
         isConfirmationModalOpen={isRemoveExpenseModal}
         setIsConfirmationModalOpen={setIsRemoveExpenseModal}
         groupId={ExpenseCredentials.group_id}
-        expenseId={ExpenseCredentials.id}
+        expenseId={isReplenishment ? ReplenishmentCredentials.id : ExpenseCredentials.id}
         callback={() => {
             setExpenseCredentials({
                 id: 0,
@@ -298,7 +298,6 @@ const History: React.FC = () => {
                 category_id: 0,
                 group_id: 0,
             })
-            setIsReplenishment(false)
         }}
         />
         <ConfirmationModal
@@ -313,7 +312,6 @@ const History: React.FC = () => {
                 amount: 0,
                 description: ''
             })
-            setIsReplenishment(false)
         }}
         />
         <ExpenseModal
@@ -326,7 +324,7 @@ const History: React.FC = () => {
             groupId={ExpenseCredentials.group_id}
             expenseId={isReplenishment ? ReplenishmentCredentials.id : ExpenseCredentials.id}
             categoryId={ExpenseCredentials.category_id}
-            callback={() => {
+            setActionCredentials={() => {
                 setExpenseCredentials({
                     id: 0,
                     descriptions: '',

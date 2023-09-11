@@ -18,14 +18,11 @@ interface IViewMoreModalProps{
 const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModalOpen, isAddModalOpen, setIsAddModalOpen, data, type }) => {
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     let title = ''
-    let modalName = ''
     
     if (type === 'categories') {
         title = 'Categories'
-        modalName = 'ViewMoreCategoriesModal'
     } else if (type === 'groups') {
         title = 'Groups'
-        modalName = 'ViewMoreGroupsModal'
     }
 
     const handleClick = (e: React.MouseEvent<HTMLUListElement>) => {

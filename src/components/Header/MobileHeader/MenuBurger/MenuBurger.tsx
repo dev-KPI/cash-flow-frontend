@@ -57,7 +57,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
             ))
             return Groups.user_groups.length < 3 ? userGroups : userGroups.slice(0,3)
         }
-    }, [])
+    }, [Groups])
 
     return <>
         <nav className={classes.burgernav}>

@@ -1,44 +1,44 @@
-import {FC, ReactNode, useCallback, useState} from "react";
+import {FC, ReactNode, useState} from "react";
 //logic
 import IInvitation from "@models/IInvitation";
 import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 //UI
 import classes from './MobileNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
-import StatusTooltip from "@components/StatusTooltip/StatusTooltip";
 import PreLoader from "@components/PreLoader/PreLoader";
+import { notify } from "src/App";
 
 
 const MobileNotifications: FC = () => {
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
-    const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
     const [buttonClicked, setButtonClicked] = useState<'accept' | 'reject' | 'none'>('none')
+
+    const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
+    const onResponseInvitation = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
+        if (invitationId && response && !isResponseCreating) {
+            try {
+                const isGroupCreated = await makeResponse({
+                    invitation_id: invitationId,
+                    response: response
+                }).unwrap()
+                if (isGroupCreated) {
+                    if (response === 'ACCEPTED') {
+                        notify('success', `You accepted the invitation to ${ResponseData?.group.title} group`)
+                    } else {
+                        notify('success', `You denied the invitation to ${ResponseData?.group.title} group`)
+                    }
+                }
+            } catch (err) {
+                console.error('Failed to response invitation group: ', err)
+                notify('error', `You haven't response the invitation`)
+            }
+        }
+    }
+
     const handleSumbit = (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
-        makeResponse({
-            invitation_id: invitationId,
-            response: response
-        })
+        onResponseInvitation(invitationId, response)
         setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
     }
-    const showToolTip = useCallback(() => {
-        if (isResponseCreated && ResponseData) {
-            if (ResponseData.status === 'DENIED') {
-                return <StatusTooltip
-                    type="error"
-                    title={<p>You have successfully denied the invitation to <span>{ResponseData.group.title}</span></p>} />
-
-            } else {
-                return <StatusTooltip
-                    type="success"
-                    title={<p>You have successfully accepted the invitation to <span>{ResponseData.group.title}</span></p>} />
-
-            }
-        } else if (isResponseError) {
-            return <StatusTooltip
-                type="error"
-                title={`Invitation not accepted`} />
-        }
-    }, [makeResponse, isResponseCreating, isResponseError, isResponseCreated])
 
     const getInvites = (invites: IInvitation[]): ReactNode[] => {
         return invites.map((el, i) => {
@@ -96,7 +96,6 @@ const MobileNotifications: FC = () => {
         <main>
             <div className={classes.MobileNotifications__container}>
                 <h3 className={classes.title}>Notifications</h3>
-                {showToolTip()}
                 <ul className={classes.invitesUl}>
                     {notificationsContent}
                 </ul> 
