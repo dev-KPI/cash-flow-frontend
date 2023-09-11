@@ -63,10 +63,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result, err, body) => 
-            result ? [{ type: 'GroupsController' as const, id: body.group_id },
-            { type: 'GroupsController', id: 'GROUPS' }] : 
-            [{ type: 'GroupsController', id: 'GROUPS' }]
+            providesTags: (result, err, body) => [{ type: 'GroupsController' as const, id: body.group_id }]
         }),
         getMemberInfoByGroup: builder.query<IGetUserByGroupInfoResponse, IGetUserByGroupInfoBody>({
             query: ({member_id, group_id, period}) => ({
