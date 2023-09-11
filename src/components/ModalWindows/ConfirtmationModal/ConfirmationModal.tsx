@@ -1,17 +1,13 @@
-import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction, useEffect, useMemo } from "react";
+import React, { FC, ReactNode, Dispatch, SetStateAction } from "react";
 
 //UI
 import classes from './ConfirmationModal.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
-import { toast } from "react-toastify";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
-import IGroup from "@models/IGroup";
 import { useLeaveGroupMutation, useRemoveUserMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { useNavigate } from "react-router-dom";
 import IUser from "@models/IUser";
-import { useActionCreators } from "@hooks/storeHooks/useAppStore";
-import { TooltipSliceActions } from "@store/UI_store/TooltipSlice/TooltipSlice";
 import { useCreateInvitationMutation } from "@store/Controllers/InvitationController/InvitationController";
 
 import { useDeleteExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";

@@ -22,9 +22,10 @@ interface IDesktopNotifications {
 
 
 const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive, buttonRef }) => {
-    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess, refetch} = useGetInvitationsByCurrentUserQuery(null)
-    
-    const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
+    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess, refetch} = useGetInvitationsByCurrentUserQuery(null)    
+    const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation();
+    const [buttonClicked, setButtonClicked] = useState<'accept' | 'reject' | 'none'>('none');
+
     const onResponseInvitation = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
         if (invitationId && response && !isResponseCreating) {
             try {
@@ -43,10 +44,11 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                 console.error('Failed to response invitation group: ', err)
                 notify('error', `You haven't response the invitation`)
             }
+            setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         }
     }
     const handleSumbit = (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
-        onResponseInvitation(invitationId, response)
+        onResponseInvitation(invitationId, response);
         setIsActive(false)
     }
 
