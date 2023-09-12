@@ -122,6 +122,7 @@
 }
 .amount{
     width: 70px;
+    white-space: nowrap;
 }
 .itemTitle {
     display: inline-block;

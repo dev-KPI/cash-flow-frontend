@@ -4,6 +4,8 @@ import React, { useMemo, useRef, useState} from 'react';
 import classes from './History.module.css';
 import Light from '@components/Light/Light';
 import PreLoader from '@components/PreLoader/PreLoader';
+import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 //logic
 import DateService from '@services/DateService/DateService';
 import {
@@ -18,15 +20,12 @@ import {
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import IHistoryItem from '@models/IHistoryItem';
 import { useGetUserHistoryQuery } from '@store/Controllers/UserController/UserController';
-import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
-import { useDeleteExpenseByGroupMutation } from '@store/Controllers/ExpensesController/ExpensesController';
-import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
-import { Omiter } from '@services/UsefulMethods/ObjectMethods';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 
 interface IColumnsHistory extends IHistoryItem {edit_remove?: string}
 
 const History: React.FC = () => {
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency);
     const [{ pageIndex, pageSize }, setPagination] =
         useState<PaginationState>({
             pageIndex: 0,
@@ -100,7 +99,7 @@ const History: React.FC = () => {
             width: '100px'
         },
         cell: info =>
-            <p className={classes.amount} style={{ color: info.row.original.category_id !== null ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.category_id !== null ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
+            <p className={classes.amount} style={{ color: info.row.original.category_id !== null ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.category_id !== null ? "-" : "+"}{currency}{numberWithCommas(info.getValue())}</p>,
     }),
     columnHelper.accessor('edit_remove', {
         header: () => '',
