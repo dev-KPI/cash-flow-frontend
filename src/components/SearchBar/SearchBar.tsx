@@ -178,15 +178,13 @@ const SearchBar: FC<{ groupId: number }> = ({ groupId }) => {
                     </NavLink>
                 </div>
             </div>
-            {
-                <ConfirmationModal
-                    groupId={Number(groupId)}
-                    title={'title'}
-                    kickedUser={invitedUser}
-                    setIsConfirmationModalOpen={setIsConfirmationModal}
-                    isConfirmationModalOpen={isConfirmationModal}
-                    mode={'invite'} />
-            }
+            <ConfirmationModal
+                groupId={Number(groupId)}
+                title={'title'}
+                kickedUser={invitedUser}
+                setIsConfirmationModalOpen={setIsConfirmationModal}
+                isConfirmationModalOpen={isConfirmationModal}
+                mode={'invite'} />
         </div>
     );
 };

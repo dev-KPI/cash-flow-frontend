@@ -185,15 +185,13 @@ const History: React.FC = () => {
 
     return (
         <main id='GroupMembersPage' className="no-padding">
-            {
-                <ConfirmationModal 
-                groupId={Number(groupId)} 
-                title={GroupInfo?.title}
-                kickedUser={kickedUser}
-                setIsConfirmationModalOpen={setIsConfirmationModal} 
-                isConfirmationModalOpen={isConfirmationModal} 
-                mode={confirmationMode}/>
-            }
+            <ConfirmationModal 
+            groupId={Number(groupId)} 
+            title={GroupInfo?.title}
+            kickedUser={kickedUser}
+            setIsConfirmationModalOpen={setIsConfirmationModal} 
+            isConfirmationModalOpen={isConfirmationModal} 
+            mode={confirmationMode}/>
             <div className={classes.page__container}>
                 <table className={classes.recentOperations__table}>
                     <thead className={classes.tableTitle}>

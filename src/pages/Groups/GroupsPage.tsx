@@ -70,38 +70,28 @@ const Groups: FC = () => {
             <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>
             <p className={classes.noItems__text}>Tap the button above to create group.</p>
         </div>)
-    }     
-    
-    const editGroupModal = useMemo(() => {
-        return <GroupModal
-        group={GroupById}
-        groupId={groupId}
-        setGroupId={setGroupId}
-        setIsGroupModalOpen={setIsEditGroupModal}
-        isGroupModalOpen={isEditGroupModal}
-        mode='edit'/>
-    
-    }, [GroupById, isEditGroupModal])
-    
-    const confirmationModal = useMemo(() => {
-        return <ConfirmationModal
+    }
+
+    return (<>
+        <GroupModal
+            group={GroupById}
+            groupId={groupId}
+            setGroupId={setGroupId}
+            setIsGroupModalOpen={setIsEditGroupModal}
+            isGroupModalOpen={isEditGroupModal}
+            mode='edit' />
+        <GroupModal
+            setGroupId={setGroupId}
+            setIsGroupModalOpen={setIsCreateGroupModal}
+            isGroupModalOpen={isCreateGroupModal}
+            mode='create'
+        />
+        <ConfirmationModal
             groupId={groupId}
             title={groupTitle}
             isConfirmationModalOpen={isConfirmationModal}
             setIsConfirmationModalOpen={setIsConfirmationModal}
             mode={mode} />
-    }, [groupId, isConfirmationModal, mode])
-
-
-    return (<>
-        {editGroupModal}
-        {<GroupModal
-            setGroupId={setGroupId}
-            setIsGroupModalOpen={setIsCreateGroupModal}
-            isGroupModalOpen={isCreateGroupModal}
-            mode='create'
-        />}
-        {confirmationModal}
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>

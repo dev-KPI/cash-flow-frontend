@@ -162,14 +162,12 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
     return <>
-    {
         <ConfirmationModal 
             groupId={groupId ?? 0}
             title={group?.title}
             setIsConfirmationModalOpen={setIsConfirmationModal} 
             isConfirmationModalOpen={isConfirmationModal} 
             mode={mode === 'leave' ? "leave" : 'disband'}/>
-    }
         <UsePortal
             callback={() => {}}
             isModalOpen={isGroupModalOpen}
