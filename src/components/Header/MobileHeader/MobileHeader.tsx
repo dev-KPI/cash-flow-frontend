@@ -4,15 +4,14 @@ import React, { FC } from "react";
 import {useMemo, useRef, useState, useEffect} from 'react';
 import { Link } from "react-router-dom";
 import IHeaderProps from "../HeaderInterfaces";
+import useClickOutsideRef from "@hooks/layoutHooks/useClickOutsideRef";
 //UI
 import classes from './MobileHeader.module.css'
 import userIcon from '@assets/user-icon.svg';
 import MenuBurger from "./MenuBurger/MenuBurger";
-import useClickOutsideRef from "@hooks/layoutHooks/useClickOutsideRef";
 
 
 const MobileHeader: FC<IHeaderProps> = ({User}) => {
-
     const BurgerNavRef = useRef<HTMLDivElement>(null);
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
