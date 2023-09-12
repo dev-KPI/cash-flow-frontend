@@ -6,10 +6,14 @@
 .MobileNotifications__container {
     margin-top: 22px;
 }
-
+.invitesUl{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 .inviteLi{
     width: 100%;
-    height: 60px;
+    padding: 3px 0;
     display: flex;
     align-items: center;
 }
@@ -38,6 +42,14 @@
     align-items: center;
     gap: 5px;
     margin-left: auto;
+}
+.buttonGroup button,
+.buttonGroup > div {
+    width: 100px;
+    height: 30px;
+}
+.buttonGroup i {
+    display: none;
 }
 .Promo{
     composes: largeItemTitle from '@styles/style.css'
@@ -94,5 +106,18 @@
 @media only screen and (max-width: 768px) {
     .MobileNotifications__container {
         margin-top: 14px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .buttonGroup button {
+        width: 32px;
+        height: 32px;
+    }
+    .buttonGroup i {
+        display: block;
+    }
+    .buttonGroup p{
+        display: none;
     }
 }

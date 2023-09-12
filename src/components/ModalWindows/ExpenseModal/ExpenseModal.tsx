@@ -44,7 +44,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const [updateReplenishment, { isLoading: isReplenishmentUpdating, isError: isReplenishmentUpdatingError, isSuccess: isReplenishmentUpdated }] = useUpdateReplenishmentByIdMutation();
 
     const onUpdateExpense = async () => {
-        if (amountValue && descriptionValue && groupId && expenseId && categoryId && !isExpenseUpdating) {
+        if (groupId && expenseId && categoryId && !isExpenseUpdating) {
             try {
                 const isExpenseUpdated = await updateExpense({
                     expense_id: expenseId,
@@ -65,7 +65,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
         }
     }
     const onUpdateReplenishment = async () => {
-        if (amountValue && descriptionValue && expenseId && !isReplenishmentUpdating) {
+        if (expenseId && !isReplenishmentUpdating) {
             try {
                 const isUpdatedReplenishment = await updateReplenishment({
                     id: expenseId,
@@ -84,7 +84,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
         }
     }
     const onCreateExpense = async () => {
-        if (amountValue && descriptionValue && groupId && categoryId && !isReplenishmentUpdating) {
+        if (groupId && categoryId && !isReplenishmentUpdating) {
             try {
                 const isExpenseCreated = await createExpense({
                     descriptions: descriptionValue,

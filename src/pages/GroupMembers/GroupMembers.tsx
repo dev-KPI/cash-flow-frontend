@@ -57,18 +57,7 @@ const History: React.FC = () => {
         }),
         [pageIndex, pageSize]
     )
-    const [data, setData] = useState<GroupMember[]>([{
-        user: {
-            id: 0,
-            login: '0',
-            first_name: '0',
-            last_name: '0',
-            picture: '0'
-        },
-        status: '0',
-        date_join: '0',
-        role: 'Member'
-    }])
+    const [data, setData] = useState<GroupMember[]>([])
 
     const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError, isSuccess: isUsersByGroupSuccess } = useGetUsersByGroupQuery({  group_id: Number(groupId),
         page: pageIndex + 1,
@@ -78,18 +67,10 @@ const History: React.FC = () => {
 
     const initializeData = useCallback(() => {
         if(UsersByGroup && isUsersByGroupSuccess && GroupInfo && isGroupInfoSuccess){
-            const data: GroupMember[] = UsersByGroup.items[0].users_group.map(el => {
+            const data: GroupMember[] = UsersByGroup.items[0].users_group.map(member => {
                 return {
-                    user: {
-                        id: el.user.id,
-                        login: el.user.login,
-                        first_name: el.user.first_name,
-                        last_name: el.user.last_name,
-                        picture: el.user.picture
-                    },
-                    status: el.status,
-                    date_join: el.date_join,
-                    role: GroupInfo.admin.id === el.user.id ? 'Owner' : 'Member'
+                    ...member,
+                    role: GroupInfo.admin.id === member.user.id ? 'Owner' : 'Member'
                 }
             })
             setData(data)
@@ -124,26 +105,19 @@ const History: React.FC = () => {
                 }
                 const email = info.row.original.user.login
                 return info.renderValue() ?
-                    <div className={classes.memberWrapper}>
-                        <div className={classes.details}>
-                            <div className={classes.icon}>
-                                <img className={classes.photo}
-                                    style={{borderRadius: '50%'}}
-                                    alt={'user icon'}
-                                    src={isUrl(picture) ? picture : userIcon} />
-                            </div>
-                            <div className={classes.memberInfo}>
-                                <h6 className={classes.name}>{full_name()}</h6>
-                                <p className={classes.email}>{email}</p>
-                            </div>
+                    <div className={classes.details}>
+                        <div className={classes.icon}>
+                            <img className={classes.photo}
+                                style={{borderRadius: '50%'}}
+                                alt={'user icon'}
+                                src={isUrl(picture) ? picture : userIcon} />
+                        </div>
+                        <div className={classes.memberInfo}>
+                            <h6 className={classes.name}>{full_name()}</h6>
+                            <p className={classes.email}>{email}</p>
                         </div>
                     </div> : '-'
             }
-        }),
-        columnHelper.accessor('status', {
-            header: () => 'Status',
-            cell: info => info.getValue().charAt(0).toUpperCase() + info.getValue().slice(1)
-            
         }),
         columnHelper.accessor('role', {
             header: () => 'Role',
@@ -212,9 +186,9 @@ const History: React.FC = () => {
     return (
         <main id='GroupMembersPage' className="no-padding">
             <ConfirmationModal 
-            groupId={Number(groupId)}
+            groupId={Number(groupId)} 
             title={GroupInfo?.title}
-            kickedUser={kickedUser}
+            user={kickedUser}
             setIsConfirmationModalOpen={setIsConfirmationModal} 
             isConfirmationModalOpen={isConfirmationModal} 
             mode={confirmationMode}/>

@@ -1,5 +1,5 @@
 import React, { FC, useMemo, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import useEscapeKey from '@hooks/layoutHooks/useEscapeKey';
 import { useOnClickOutside } from 'usehooks-ts'
@@ -13,16 +13,27 @@ import { useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/Gro
 import classes from './SearchBar.module.css'
 import userIcon from '@assets/user-icon.svg';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 
 
 
-const SearchBar: FC<{groupId:number}> = ({groupId}) => {
+const SearchBar: FC<{ groupId: number }> = ({ groupId }) => {
+    const navigate = useNavigate();
+    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
+    const [invitedUser, setInvitedUser] = useState<IUser>({
+        id: 0,
+        login: '',
+        first_name: '',
+        last_name: '',
+        picture: ''
+    });
     const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError, isSuccess: isUsersByGroupSuccess } = useGetUsersByGroupQuery({ group_id: Number(groupId), size: 500, page: 1 });
     const { data: Users, isLoading: isUsersLoading, isError: isUsersError, isSuccess: isUsersSuccess } = useGetUsersQuery({ page: 1, size: 500 });
-
+    
+    
     const filteredUsersInGroup = useMemo(() => {
         if (UsersByGroup && isUsersByGroupSuccess) {
-            return UsersByGroup.items[0].users_group.filter(el => el.status === 'ACTIVE')
+            return UsersByGroup.items[0].users_group
         } else 
             return []
     }, [UsersByGroup, isUsersByGroupLoading, isUsersByGroupSuccess, isUsersByGroupError])
@@ -89,7 +100,7 @@ const SearchBar: FC<{groupId:number}> = ({groupId}) => {
                     icon={'none'}
                     type={'white'}
                     background={'outline'}
-                    callback={() => { }}
+                    callback={() => { navigate(`./member/${user.id}`) }}
                     isPending={false}
                     disableScale={true}
                     children={
@@ -106,10 +117,13 @@ const SearchBar: FC<{groupId:number}> = ({groupId}) => {
                     icon={'add'}
                     type={'primary'}
                     background={'outline'}
-                    callback={() => { }}
+                    callback={() => {
+                        setInvitedUser(user);
+                        setIsConfirmationModal(true)
+                    }}
                     isPending={false}
                     disableScale={true}
-                    children={'Add'}
+                    children={'Send'}
                     className={classes.btn} />
             }
            
@@ -164,7 +178,13 @@ const SearchBar: FC<{groupId:number}> = ({groupId}) => {
                     </NavLink>
                 </div>
             </div>
-            
+            <ConfirmationModal
+                groupId={Number(groupId)}
+                title={'title'}
+                user={invitedUser}
+                setIsConfirmationModalOpen={setIsConfirmationModal}
+                isConfirmationModalOpen={isConfirmationModal}
+                mode={'invite'} />
         </div>
     );
 };

@@ -18,6 +18,9 @@
 .textAreaWrapper{
     margin-top: 10px;
 }
+.textAreaGroup textarea {
+    line-height: 27px;
+}
 .pickBody {
     padding: 14px;
     display: grid;

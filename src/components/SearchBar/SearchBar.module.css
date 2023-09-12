@@ -1,6 +1,6 @@
 .searchBar, .searchForm{
     position: relative;
-    z-index: 8000;
+    z-index: 1000;
 }
 .searchBtn {
     background-color: rgba(0, 0, 0, 0);
