@@ -1,16 +1,14 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useMemo } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
-import IHeaderProps from "@components/Header/HeaderInterfaces";
 import { IGetCurrentUserInfo } from "@store/Controllers/UserController/UserControllerInterfaces";
 import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
 import { useGetCurrentUserBalanceQuery } from "@store/Controllers/UserController/UserController";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore"; import { UserSliceActions } from "@store/User/UserSlice";
 import { useGetInvitationsByCurrentUserQuery } from "@store/Controllers/InvitationController/InvitationController";
-import { CurrencyActions } from "@store/UI_store/CurrencySlice/CurrencySlice";
 //UI
 import classes from "./MenuBurger.module.css";
 import userIcon from '@assets/user-icon.svg';
@@ -31,8 +29,6 @@ interface IPropsMenuBurger {
 const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User }) => {
     
     const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
-    const CurrencyDispatch = useActionCreators(CurrencyActions);
-    const [isCurrencyToggled, setIsCurrencyToggled] = useState<boolean>(currency === '$');
 
     const { data: Groups,  isLoading: isGroupsLoading, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null)
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
@@ -156,7 +152,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User })
                 </ul>
             </div>
             <div className={classes.buttons}>
-                <div><ToggleCurrencyButton isToggle={isCurrencyToggled} onToggle={() => { setIsCurrencyToggled(!isCurrencyToggled); CurrencyDispatch.setCurrency(); }} /></div>
+                <div><ToggleCurrencyButton/></div>
                 <div><ThemeButton ThemeButtonType="extra" /></div>
             </div>
             <div className={classes.burgernav__downside}>

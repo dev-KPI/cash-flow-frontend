@@ -1,16 +1,14 @@
-import React, { FC, MouseEvent, ReactNode, useState, SetStateAction, Dispatch } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import React, { FC, SetStateAction, Dispatch } from "react";
+import { Link } from 'react-router-dom';
 
 //store
-import { useActionCreators, useAppDispatch, useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { useActionCreators} from "@hooks/storeHooks/useAppStore";
 import { UserSliceActions } from "@store/User/UserSlice";
 //logic
 //UI
 import classes from './ContextUser.module.css'
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
-import  ToggleButton, { ToggleCurrencyButton } from "@components/Buttons/ToggleButton/ToggleButton";
-import { CurrencyActions } from "@store/UI_store/CurrencySlice/CurrencySlice";
-
+import { ToggleCurrencyButton } from "@components/Buttons/ToggleButton/ToggleButton";
 interface IContenxtUserProps {
     isActive: boolean,
     setIsActive: Dispatch<SetStateAction<boolean>>;
@@ -18,11 +16,8 @@ interface IContenxtUserProps {
 }
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     const UserSliceDispatch = useActionCreators(UserSliceActions);
-    
-    const CurrencyDispatch = useActionCreators(CurrencyActions);
-    const [isCurrencyToggled, setIsCurrencyToggled] = useState<boolean>(currency === '$');
+
     const LogOut = () => {
         UserSliceDispatch.setIsAuth(false)
     }
@@ -48,7 +43,7 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
                         </Link>
                     </li> */}
                     <li className={classes.item}>
-                        <ToggleCurrencyButton isToggle={isCurrencyToggled} onToggle={() => { setIsCurrencyToggled(!isCurrencyToggled); CurrencyDispatch.setCurrency(); }} />
+                        <ToggleCurrencyButton/>
                     </li>
                     <li className={classes.item}>
                         <button onClick={LogOut}>
