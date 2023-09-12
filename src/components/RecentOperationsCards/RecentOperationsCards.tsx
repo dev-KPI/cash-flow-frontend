@@ -10,14 +10,8 @@ import en from 'javascript-time-ago/locale/en'
 import { isUrl, numberWithCommas } from "@services/UsefulMethods/UIMethods";
 import IUser from "@models/IUser";
 import IHistoryItem from "@models/IHistoryItem";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 
-// export interface IRecentOperationDashboardCard {
-//     ColorBtn: string,
-//     title: string,
-//     time: string,
-//     amount: number,
-//     type: 'expense' | 'replenishment'
-// }
 interface IRecentOperationDashboardCard {
     item: IHistoryItem
 }
@@ -31,6 +25,7 @@ export interface IRecentOperationGroupCard {
 }
 
 export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ item }) => {
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     const isExpense = item.category_id !== null;
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
@@ -48,14 +43,14 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
             </div>
             <p style={{ color: isExpense ? "#FF2D55" : "#80D667" }}
                 className={classes.amount}>
-                {`${isExpense ? "-" : "+"}$${numberWithCommas(item.amount)}`}</p>
+                {`${isExpense ? "-" : "+"}${currency}${numberWithCommas(item.amount)}`}</p>
         </li>
     )
 }
 
 
 export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ categoryColor, categoryTitle, time, amount, member, type }) => {
-
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
 
@@ -86,7 +81,7 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ catego
             </div>
             <p style={{ color: type === 'expense' ? "#FF2D55" : "#80D667" }}
                 className={classes.amount}>
-                {`${type === 'expense' ? "-" : "+"}$${numberWithCommas(amount)}`}</p>
+                {`${type === 'expense' ? "-" : "+"}${currency}${numberWithCommas(amount)}`}</p>
         </li>
     )
 }

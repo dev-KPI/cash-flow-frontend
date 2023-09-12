@@ -36,18 +36,8 @@ type IStackedGraphProps = (
 
 const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) => {
     //store
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    function findMaxAmount(existingData: IGraphGroupMembers[]) {
-        let maxAmount = 0;
-
-        existingData.forEach((item) => {
-            if (item.amount > maxAmount) {
-                maxAmount = item.amount;
-            }
-        });
-
-        return maxAmount;
-    }
 
     const textColor = (context: Context): string => {
         return ThemeStore.textColor
@@ -267,12 +257,8 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                         }
                     },
                     label: function (tooltipItem: TooltipItem<"bar">) {
-                        const amount = (new Intl.NumberFormat('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                        })).format(tooltipItem.raw as number)
                         const name = tooltipItem.dataset.label
-                        return `${name} ${amount}`
+                        return `${name} ${currency }${numberWithCommas(tooltipItem.raw as number)}`
                     }
                 }
             },
@@ -292,7 +278,6 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                 },
                 ticks: {
                     color: textColor,
-                    // stepSize: getXParams().step,
                     font: {
                         family: 'Inter',
                         size: 12,
@@ -321,13 +306,12 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                         size: 14,
                         weight: "300",
                     },
-                    // stepSize: getYParams().step,
                     callback: (value: string | number, index: number, ticks: Tick[]): string => {
                         const resValue = +(value);
                         if (window.innerWidth < 440 && resValue >= 1000) {
-                            return numberWithCommas(resValue / 1000) + 'k$'
+                            return numberWithCommas(resValue / 1000) + 'k'+ currency
                         }
-                        return numberWithCommas(resValue) + '$';
+                        return numberWithCommas(resValue) + currency;
                     }
                 }
             },

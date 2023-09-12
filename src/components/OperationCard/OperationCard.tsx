@@ -1,11 +1,8 @@
 import { useState, FC, useEffect, useMemo, useCallback } from 'react';
 //store
-import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 //logic
-import { isSameDay, format, lastDayOfMonth, subDays } from 'date-fns'
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import DateService from '@services/DateService/DateService';
 import { fomatFloatNumber, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { IGetTotalExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
 //UI
@@ -27,7 +24,7 @@ interface OperactionCardProps {
 }
 
 const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError, offPreloader = false }) => {
-
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const [amount, setAmount] = useState<number | string>(0);
     const [percents, setPercents] = useState<number>(0);
@@ -86,7 +83,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
                     <div className={classes.top}>
                         <div className={classes.info}>
                             <h3 className={classes.title}>{cardTitle}</h3>
-                            <p className={classes.amount}>{amount}$</p>
+                            <p className={classes.amount}>{amount}{currency}</p>
                         </div>
                         <div
                             className={classes.icon}

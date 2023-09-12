@@ -8,6 +8,8 @@ import { UserSliceActions } from "@store/User/UserSlice";
 //UI
 import classes from './ContextUser.module.css'
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
+import  ToggleButton, { ToggleCurrencyButton } from "@components/Buttons/ToggleButton/ToggleButton";
+import { CurrencyActions } from "@store/UI_store/CurrencySlice/CurrencySlice";
 
 interface IContenxtUserProps {
     isActive: boolean,
@@ -16,9 +18,11 @@ interface IContenxtUserProps {
 }
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
-
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     const UserSliceDispatch = useActionCreators(UserSliceActions);
     
+    const CurrencyDispatch = useActionCreators(CurrencyActions);
+    const [isCurrencyToggled, setIsCurrencyToggled] = useState<boolean>(currency === '$');
     const LogOut = () => {
         UserSliceDispatch.setIsAuth(false)
     }
@@ -43,6 +47,9 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
                             <h4 className={classes.Link}>Personal information</h4>
                         </Link>
                     </li> */}
+                    <li className={classes.item}>
+                        <ToggleCurrencyButton isToggle={isCurrencyToggled} onToggle={() => { setIsCurrencyToggled(!isCurrencyToggled); CurrencyDispatch.setCurrency(); }} />
+                    </li>
                     <li className={classes.item}>
                         <button onClick={LogOut}>
                             <Link to={"https://api.cash-money.store/logout"} style={{cursor: 'pointer'}}>

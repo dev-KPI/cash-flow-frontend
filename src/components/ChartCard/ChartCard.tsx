@@ -7,6 +7,7 @@ import Chart from '@components/ChartCard/Chart';
 import { numberWithCommas, shaffledColors } from '@services/UsefulMethods/UIMethods';
 import { ICategoryAmount } from '@models/ICategory';
 import { IExtendedUser } from '@models/IUser';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 
 
 type IChartCardProps = { title: string, messageType?: 'user' | 'group'} & (
@@ -16,6 +17,7 @@ type IChartCardProps = { title: string, messageType?: 'user' | 'group'} & (
 
 
 const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageType = 'user' }) => {
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     
     const [id, setId] = useState<number>(categories ? categories[0]?.id : members[0]?.id || 0 );
     const [isExtended, setIsExtended] = useState<boolean>(false);
@@ -118,7 +120,7 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageTyp
                         <div className={classes.expenseInfo}>
                             <h5 className={classes.expenseTitle}>{itemTitle?.slice(0,16)}</h5>
                             <p className={classes.expensePercent}>{itemPercentage}%</p>
-                            <span className={classes.expenseAmount}>{numberWithCommas(itemAmount)}$</span>
+                            <span className={classes.expenseAmount}>{numberWithCommas(itemAmount)}{currency}</span>
                         </div>
                         {isExtended ?
                             <ul className={classes.popupList} onClick={(e) => (e.stopPropagation())}>

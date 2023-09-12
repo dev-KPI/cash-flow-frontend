@@ -26,7 +26,7 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
         groupId: string,
         memberId: string
     }>();
-    
+    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
 
     const getSpenders = () => {
@@ -50,7 +50,7 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
                                     />
                                     <p className={classes.name}>{name}</p>
                                 </div>
-                                <p className={classes.amount}>{numberWithCommas(item.amount)}$</p>
+                                <p className={classes.amount}>{numberWithCommas(item.amount)}{currency}</p>
                             </div>
                         </NavLink>
                 
