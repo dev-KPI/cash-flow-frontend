@@ -19,16 +19,16 @@ type IContfirmationModalProps = {
     isConfirmationModalOpen: boolean;
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
 } & (
-    | {mode: 'kick', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
-    | {mode: 'leave' | 'disband', kickedUser?: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
-    | {mode: 'remove_expense', kickedUser?: never, groupId: number, expenseId: number, callback: () => void, replenishmentId?: never}
-    | {mode: 'remove_replenishment', kickedUser?: never, groupId?: never, expenseId?: never, callback: () => void, replenishmentId: number }
-    | {mode: 'invite', kickedUser: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never }
+    | {mode: 'kick', user: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
+    | {mode: 'leave' | 'disband', user?: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
+    | {mode: 'remove_expense', user?: never, groupId: number, expenseId: number, callback: () => void, replenishmentId?: never}
+    | {mode: 'remove_replenishment', user?: never, groupId?: never, expenseId?: never, callback: () => void, replenishmentId: number }
+    | {mode: 'invite', user: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never }
 )
 
 const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     expenseId, title, isConfirmationModalOpen,
-    setIsConfirmationModalOpen, mode, kickedUser,
+    setIsConfirmationModalOpen, mode, user,
     callback, replenishmentId}) => {
 
     const navigate = useNavigate();
@@ -51,7 +51,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'kick') {
         headerIcon = <i className="bi bi-person-dash"></i>
         titleModal = 'Remove user'
-        modalText = <p>Are you sure you want to remove  <span>{kickedUser?.first_name} {kickedUser?.last_name}</span> from the group?</p>
+        modalText = <p>Are you sure you want to remove  <span>{user?.first_name} {user?.last_name}</span> from the group?</p>
     } else if (mode === 'disband') {
         headerIcon = <i className="bi bi-people"></i>
         titleModal = 'Disband group'
@@ -59,7 +59,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'invite') {
         headerIcon = <i className="bi bi-person-add"></i>
         titleModal = 'Invite user'
-        modalText = <p>Are you sure you want to send <span>{kickedUser?.first_name} {kickedUser?.last_name}</span> an invitation to the group?</p>
+        modalText = <p>Are you sure you want to send <span>{user?.first_name} {user?.last_name}</span> an invitation to the group?</p>
     } else if (mode === 'remove_expense') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove expense'
@@ -94,28 +94,28 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     }
     
   const onCreateInvitation = async () => {
-        if (groupId && kickedUser && !isInvitationCreating && mode === 'invite') {
+      if (groupId && user && !isInvitationCreating && mode === 'invite') {
             try {
-                const isInvitationCreated = await createInvitation({recipient_id: kickedUser.id, group_id: groupId}).unwrap()
+                const isInvitationCreated = await createInvitation({recipient_id: user.id, group_id: groupId}).unwrap()
                 if (isInvitationCreated) {
-                    notify('success', `You have successfully invited ${kickedUser.first_name + kickedUser.last_name ? (' ' + kickedUser.last_name) : ''} to the group`)
+                    notify('success', `You have successfully invited ${user.first_name} ${user.last_name ? (' ' + user.last_name) : ''} to the group`)
                 }
             } catch (err) {
                 console.error('Failed to invite user to the group: ', err)
-                notify('error', `You haven't invited ${kickedUser.first_name + kickedUser.last_name ? (' ' + kickedUser.last_name) : ''} to the group`)
+                notify('error', `You haven't invited ${user.first_name} ${user.last_name ? (' ' + user.last_name) : ''} to the group`)
             }
         }
     }
     const onRemoveUser = async () => {
-        if (groupId && kickedUser && !isRemovingUser && mode === 'kick') {
+        if (groupId && user && !isRemovingUser && mode === 'kick') {
             try {
-                const isRemovedUser = await removeUser({group_id: groupId, user_id: kickedUser.id}).unwrap()
+                const isRemovedUser = await removeUser({group_id: groupId, user_id: user.id}).unwrap()
                 if (isRemovedUser) {
-                    notify('success', `You removed ${kickedUser.first_name + kickedUser.last_name ? (' ' + kickedUser.last_name) : ''} from the group`)
+                    notify('success', `You removed ${user.first_name}  ${user.last_name ? (' ' + user.last_name) : ''} from the group`)
                 }
             } catch (err) {
                 console.error('Failed to remove user from the group: ', err)
-                notify('error', `You haven't removed ${kickedUser.first_name + kickedUser.last_name ? (' ' + kickedUser.last_name) : ''}`)
+                notify('error', `You haven't removed ${user.first_name} ${user.last_name ? (' ' + user.last_name) : ''}`)
             }
         }
     }
@@ -147,7 +147,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     }
 
     const handleSubmit = () => {
-        if(mode === 'kick' && kickedUser){
+        if(mode === 'kick' && user){
             setIsConfirmationModalOpen(false)
             onRemoveUser()
         } else if (mode === 'leave' || mode === 'disband') {
