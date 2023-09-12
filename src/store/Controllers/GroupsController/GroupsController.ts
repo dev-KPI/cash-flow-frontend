@@ -95,6 +95,9 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
+            transformResponse: (response: IGetUsersFromGroupResponse): IGetUsersFromGroupResponse => {
+                return { ...response, items: [{ users_group: response.items[0].users_group.filter(member => member.status !== 'INACTIVE') }] }
+            },
             providesTags: (result, err, body) => result?.items ?
                 [...result.items[0].users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
                 { type: 'UserController' as const, id: 'Users' }]
