@@ -51,11 +51,11 @@ class DateServiceClass {
         const year = date.getFullYear();
         return `${year}-${month < 10 ? '0' + month : month + ''}-${day < 10 ? '0' + day : day + ''}`
     }
-    getTime(date: Date): string {
+    getTime(date: Date, short?: boolean): string {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year} ${
+        return `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${short ? String(year).slice(2) : year} ${
             date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${
             date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`
     }

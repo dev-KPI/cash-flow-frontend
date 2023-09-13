@@ -26,7 +26,8 @@ import {
     IGroupMemberExpensesDailyResponse,
     IGroupMemberExpensesByCategoryDailyResponse,
     IGroupMemberExpensesByCategoryDailyBody,
-    IGetGroupMemberHistoryResponse
+    IGetGroupMemberHistoryResponse,
+    IGetGroupMemberExpensesByCategoryBody
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import { IPeriods } from '@models/IPeriod';
@@ -62,10 +63,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            providesTags: (result, err, body) => 
-            result ? [{ type: 'GroupsController' as const, id: body.group_id },
-            { type: 'GroupsController', id: 'GROUPS' }] : 
-            [{ type: 'GroupsController', id: 'GROUPS' }]
+            providesTags: (result, err, body) => [{ type: 'GroupsController' as const, id: body.group_id }]
         }),
         getMemberInfoByGroup: builder.query<IGetUserByGroupInfoResponse, IGetUserByGroupInfoBody>({
             query: ({member_id, group_id, period}) => ({
@@ -97,6 +95,9 @@ export const GroupsApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
+            transformResponse: (response: IGetUsersFromGroupResponse): IGetUsersFromGroupResponse => {
+                return { ...response, items: [{ users_group: response.items[0].users_group.filter(member => member.status !== 'INACTIVE') }] }
+            },
             providesTags: (result, err, body) => result?.items ?
                 [...result.items[0].users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
                 { type: 'UserController' as const, id: 'Users' }]
@@ -311,6 +312,22 @@ export const GroupsApiSlice = api.injectEndpoints({
                 [{ type: 'GroupsController', id: 'GROUPS' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }), 
+        getGroupMemberExpensesByCategory: builder.query<IGetGroupExpensesByCategoryResponse[], IGetGroupMemberExpensesByCategoryBody>({
+            query: ({ group_id, member_id, period }) => ({
+                url: `/groups/${group_id}/member/${member_id}/category-expenses`,
+                credentials: 'include',
+                params: period
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            transformResponse: (response: IGetGroupExpensesByCategoryResponse[], arg, body: IGetGroupExpensesByCategoryBody): IGetGroupExpensesByCategoryResponse[] => {
+                return response.filter((category) => category.amount !== null)
+            },
+            providesTags:
+                [{ type: 'GroupsController', id: 'GROUPS' },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
+        }), 
         getGroupMemberExpensesDaily: builder.query<IGroupMemberExpensesDailyResponse[], IGroupMemberExpensesDailyBody>({
             query: ({ group_id, member_id, period }) => ({
                 url: `/groups/${group_id}/member/${member_id}/daily-expenses/`,
@@ -500,6 +517,7 @@ export const {
     useGetGroupExpensesByMemberDailyQuery,
     useRemoveUserMutation,
     useGetGroupUsersHistoryQuery,
+    useGetGroupMemberExpensesByCategoryQuery,
     useGetGroupMemberExpensesDailyQuery,
     useGetGroupMemberHistoryQuery,
     useGetGroupMemberExpensesByCategoryDailyQuery,

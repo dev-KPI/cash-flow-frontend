@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, SetStateAction, Dispatch, useCallback, useState } from "react";
-
+import { Link } from "react-router-dom";
 //UI
 import classes from './DesktopNotifications.module.css';
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
@@ -7,9 +7,8 @@ import { ReactComponent as ArrowRight } from '@assets/arrow-right.svg';
 import PreLoader from "@components/PreLoader/PreLoader";
 import { notify } from "src/App";
 //logic
-import { Link } from "react-router-dom";
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
-import { useGetInvitationsByCurrentUserQuery, useLazyGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
+import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 import IInvitation from "@models/IInvitation";
 
 
@@ -46,6 +45,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                 console.error('Failed to response invitation group: ', err)
                 notify('error', `You haven't response the invitation`)
             }
+            setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         }
     }
     const handleSumbit = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {

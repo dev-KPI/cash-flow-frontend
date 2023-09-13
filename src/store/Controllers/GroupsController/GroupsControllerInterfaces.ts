@@ -5,8 +5,8 @@ import { IPeriodYearMonth, IPeriodRangeDates } from "@models/IPeriod"
 import IListResponse from "@models/IListResponse"
 import IMember from "@models/IMember"
 
-export interface IGetCurrentUserGroups { 
-    user_groups: IGroup[] 
+export interface IGetCurrentUserGroups {
+    user_groups: IGroup[]
 }
 
 
@@ -26,7 +26,7 @@ export interface IUpdateGroupBody {
     icon_url: string,
     color_code: string
 }
-export interface IUpdateGroupResponse extends Omit<Omit<IGroup, 'icon_url'>, 'date_join'>  {}
+export interface IUpdateGroupResponse extends Omit<Omit<IGroup, 'icon_url'>, 'date_join'> { }
 
 
 export interface IGetInfoFromGroupResponse {
@@ -67,7 +67,9 @@ export interface IGetGroupExpensesByCategoryBody {
     group_id: number,
     period: IPeriodYearMonth | IPeriodRangeDates
 }
-
+export interface IGetGroupMemberExpensesByCategoryBody extends IGetGroupExpensesByCategoryBody {
+    member_id: number
+}
 export interface IGetGroupExpensesDailyResponse {
     date: string,
     amount: number
@@ -98,18 +100,18 @@ export interface IGetCategoriesByGroupResponse {
     ]
 }
 
-export interface IGetUserByGroupInfoResponse extends IUser{
+export interface IGetUserByGroupInfoResponse extends IUser {
     count_expenses: 0,
     total_expenses: {
-      amount: 0,
-      percentage_increase: 0
+        amount: 0,
+        percentage_increase: 0
     },
     best_category: ICategoryAmount
 }
 
 export interface IGetUserByGroupInfoBody {
-    group_id: number, 
-    member_id: number, 
+    group_id: number,
+    member_id: number,
     period: IPeriodYearMonth | IPeriodRangeDates
 }
 
@@ -133,7 +135,7 @@ export interface IGroupMemberExpensesDailyResponse {
     date: string,
     amount: number,
 }
-export interface IGroupMemberExpensesDailyBody extends IGetUserByGroupInfoBody{}
+export interface IGroupMemberExpensesDailyBody extends IGetUserByGroupInfoBody { }
 
 
 export interface IGroupMemberExpensesByCategoryDailyResponse {
@@ -141,7 +143,7 @@ export interface IGroupMemberExpensesByCategoryDailyResponse {
     amount: number,
     categories: ICategoryAmount[]
 }
-export interface IGroupMemberExpensesByCategoryDailyBody extends IGetUserByGroupInfoBody{}
+export interface IGroupMemberExpensesByCategoryDailyBody extends IGetUserByGroupInfoBody { }
 
 export interface IGetGroupMemberHistoryResponse {
     items: [

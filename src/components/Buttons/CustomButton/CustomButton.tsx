@@ -76,7 +76,7 @@ const CustomButton: FC<ICustomButtonProps> = ({ icon, btnWidth, btnHeight, callb
                 height: btnHeight + 'px',
                 transition: 'all 0.3s ease',
             }}
-            className={`${classes.loadingButton} ${className}`}>
+            className={`${classes.loadingButton} ${classList}`}>
             {children}
             <PreLoader type="confirmButton" preLoaderSize={20}/>
         </div>

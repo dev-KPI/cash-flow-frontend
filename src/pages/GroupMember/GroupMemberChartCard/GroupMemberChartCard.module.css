@@ -1,4 +1,4 @@
-.Chart {
+.ChartCard {
     composes: cardComponent from "@styles/style.css";
     width: 510px;
     height: 300px;
@@ -9,20 +9,19 @@
 }
 
 @media only screen and (max-width: 1440px) {
-    .Chart {
+    .ChartCard {
         width: unset;
         min-width: 400px;
     }
 }
 
 @media only screen and (max-width: 1028px) {
-    .Chart {
+    .ChartCard {
         min-width: unset;
-        /* height: 100%; */
     }
 }
 @media only screen and (max-width: 768px) {
-    .Chart {
+    .ChartCard {
         height: 250px;
     }
 }

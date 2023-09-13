@@ -72,7 +72,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
         isGroupCreatingError, isGroupCreating, isGroupCreated])
 
     const onCreateGroup = async () => {
-        if (descValue && nameValue && icon && pickedColor && !isGroupCreating) {
+        if (nameValue && icon && pickedColor && !isGroupCreating) {
             try {
                 const isGroupCreated = await createGroup({
                     title: nameValue,
@@ -90,7 +90,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
         }
     }
     const onUpdateGroup = async () => {
-        if (descValue && groupId && nameValue && icon && pickedColor && !isGroupUpdating) {
+        if (groupId && nameValue && icon && pickedColor && !isGroupUpdating) {
             try {
                 const isGroupUpdated = await updateGroup({
                     id: groupId,
@@ -162,13 +162,12 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
     return <>
-    {
         <ConfirmationModal 
-        groupId={groupId ?? 0} 
-        setIsConfirmationModalOpen={setIsConfirmationModal} 
-        isConfirmationModalOpen={isConfirmationModal} 
-        mode={mode === 'disband' ? "disband" : 'leave'}/>
-    }
+            groupId={groupId ?? 0}
+            title={group?.title}
+            setIsConfirmationModalOpen={setIsConfirmationModal} 
+            isConfirmationModalOpen={isConfirmationModal} 
+            mode={mode === 'leave' ? "leave" : 'disband'}/>
         <UsePortal
             callback={() => {}}
             isModalOpen={isGroupModalOpen}

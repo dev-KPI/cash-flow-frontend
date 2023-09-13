@@ -1,20 +1,16 @@
 import React, { useMemo } from 'react';
 //logic
-import { useGetInfoByGroupQuery, useGetMemberInfoByGroupQuery, useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
-import { NavLink, useParams } from 'react-router-dom';
-import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
-import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
-import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import DateService from '@services/DateService/DateService';
+import { useGetInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { useParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 //UI
 import GroupMemberUserCard from '@pages/GroupMember/GroupMemberUserCard/GroupMemberUserCard';
-import GroupMemberChartCard from '@pages/GroupMember/GroupMemberChartCard/GroupMemberChartCard';
 import GroupMemberGraphCard from '@pages/GroupMember/GroupMemberGraphCard/GroupMemberGraphCard';
 import GroupMemberHistoryCard from '@pages/GroupMember/GroupMemberHistoryCard/GroupMemberHistoryCard';
 import classes from './GroupMember.module.css';
 import GroupInfoCard from '@pages/Group/GroupInfoCard/GroupInfoCard';
 import MonthPicker from '@components/MonthPicker/MonthPicker';
+import GroupMemberChartCard from './GroupMemberChartCard/GroupMemberChartCard';
 
 
 

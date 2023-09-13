@@ -47,7 +47,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
 
     const getMemberIcons = useMemo(() => {
         if (UsersByGroup && isUsersByGroupSuccess) {
-            return UsersByGroup.items[0].users_group.filter(el => el.status === 'ACTIVE').map((el, i) =>
+            return UsersByGroup.items[0].users_group.map((el, i) =>
                 <div key={i} className={classes.avatar}>
                     <img className={classes.photo}
                         alt={'user icon'}

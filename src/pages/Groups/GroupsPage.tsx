@@ -25,6 +25,16 @@ const Groups: FC = () => {
     const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess } = useGetCurrentUserInfoQuery(null);
     const { data: GroupById, isFetching: isGroupByIdFetching, isLoading: isGroupByIdLoading, isError: isGroupByIdError, isSuccess: isGroupByIdSuccess} = useGetInfoByGroupQuery({group_id: groupId}, { skip: groupId === 0 })
 
+    const groupTitle = useMemo(() => {
+        if(GroupById)
+            return GroupById.title
+    }, [GroupById, groupId])
+    const mode = useMemo(() => {
+        if (CurrentUser && GroupById)
+            return GroupById.admin.id === CurrentUser.id ? 'disband' : 'leave'
+        else return 'leave'
+    }, [CurrentUser, GroupById])
+
     const groups = useMemo(() => {
         if (isGroupsSuccess && isCurrentUserSuccess && Groups.user_groups.length > 0) {
             return Groups.user_groups.map((el, i) =>
@@ -60,35 +70,28 @@ const Groups: FC = () => {
             <h5 className={classes.noItems__title}>Your groups list currently is empty!</h5>
             <p className={classes.noItems__text}>Tap the button above to create group.</p>
         </div>)
-    }     
-    
-    const editGroupModal = useMemo(() => {
-        if (GroupById) {
-            return <GroupModal
+    }
+
+    return (<>
+        <GroupModal
             group={GroupById}
             groupId={groupId}
             setGroupId={setGroupId}
             setIsGroupModalOpen={setIsEditGroupModal}
             isGroupModalOpen={isEditGroupModal}
-            mode='edit'/>
-        }
-    }, [GroupById, isEditGroupModal])
-    
-    return (<>
-        {editGroupModal}
-        {<GroupModal
+            mode='edit' />
+        <GroupModal
             setGroupId={setGroupId}
             setIsGroupModalOpen={setIsCreateGroupModal}
             isGroupModalOpen={isCreateGroupModal}
             mode='create'
-        />}
-        {<ConfirmationModal 
-            groupId={groupId} 
-            title={GroupById?.title}
-            isConfirmationModalOpen={isConfirmationModal} 
-            setIsConfirmationModalOpen={setIsConfirmationModal} 
-            mode={(GroupById?.admin.id === CurrentUser?.id) ? 'disband' : 'leave'}
-        />}
+        />
+        <ConfirmationModal
+            groupId={groupId}
+            title={groupTitle}
+            isConfirmationModalOpen={isConfirmationModal}
+            setIsConfirmationModalOpen={setIsConfirmationModal}
+            mode={mode} />
         <main id='GroupsPage'>
             <div className={classes.page__container}>
                 <div className={classes.pageTop}>

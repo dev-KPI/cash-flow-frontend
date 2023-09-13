@@ -162,6 +162,11 @@
     .grid {
         grid-template-columns: minmax(0,500px)
     }
+    .search {
+        display: block;
+        order: 1;
+        margin-left: 0;
+    }
 }
 
 @media only screen and (max-width: 400px) {

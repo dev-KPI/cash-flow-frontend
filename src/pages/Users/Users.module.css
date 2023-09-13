@@ -52,11 +52,10 @@
     padding: 0px 30px;
     text-align: center;
 
-    width: 600px
 }
 
-.recentOperations__table tbody td:last-child {
-    width: 90px;
+.recentOperations__table tbody td:first-child {
+    width: 100%;
 }
 
 .recentOperations__table tbody tr:last-child td {
@@ -250,14 +249,17 @@
     .page__container {
         margin-top: 14px;
     }
-
+    .recentOperations__table thead th:first-child>div {
+        width: 200px;
+    }
     .recentOperations__table tbody td {
-        width: 150px;
         padding: 0 7px;
     }
-
-    .recentOperations__table tbody td:last-child {
-        width: 50px;
+    .recentOperations__table tbody td:first-child {
+        max-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .recentOperations__table {
@@ -283,13 +285,6 @@
         padding-left: 0px;
     }
 
-    .recentOperations__table thead :nth-child(3) {
-        display: none;
-    }
-
-    .recentOperations__table tbody td:nth-child(3) {
-        display: none;
-    }
     /* member */
     .icon {
         width: 40px;
@@ -322,19 +317,15 @@
 }
 
 @media only screen and (max-width: 400px) {
-    .recentOperations__table {
+    .page__container {
         overflow-x: auto;
-        display: block;
     }
-
-    .recentOperations__table thead :nth-child(3) {
-        display: none;
+    .recentOperations__table thead th:first-child>div {
+        width: unset;
     }
-
-    .recentOperations__table tbody td:nth-child(3) {
-        display: none;
+    .name, .email {
+        font-size: 13px;
     }
-
     .pagination {
         padding: 10px;
     }

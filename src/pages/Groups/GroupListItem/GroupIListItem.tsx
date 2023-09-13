@@ -40,7 +40,7 @@ const GroupItem: FC<IGroupItemProps> = ({ id,
 
     const filteredUsersInGroup = useMemo(() => {
         if(isUsersInGroupSuccess){
-            return UsersInGroup.items[0].users_group.filter(el => el.status === 'ACTIVE')
+            return UsersInGroup.items[0].users_group
         }
         else return []
     }, [UsersInGroup, isUsersInGroupFetching, isUsersInGroupError, isUsersInGroupSuccess])

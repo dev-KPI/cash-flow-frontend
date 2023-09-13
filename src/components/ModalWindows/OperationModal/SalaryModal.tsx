@@ -31,7 +31,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
     const [createReplenishment, {isLoading: isReplenishmentLoading}] = useCreateReplenishmentMutation()
 
     const onCreateReplenishment = async () => {
-        if (operationValue && descriptionValue && !isReplenishmentLoading) {
+        if (!isReplenishmentLoading) {
             try {
                 const isReplenishmentCreated = await createReplenishment({
                     amount: operationValue,
@@ -42,7 +42,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
                 }
             } catch (err) {
                 console.error('Failed to create replenishment: ', err)
-                notify('error', `You haven't created {descriptionValue} replenishment`)
+                notify('error', `You haven't created ${descriptionValue} replenishment`)
             }
         }
     }

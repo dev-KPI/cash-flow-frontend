@@ -1,6 +1,5 @@
 import {FC, ReactNode, useState} from "react";
 //logic
-import { Link } from "react-router-dom";
 import IInvitation from "@models/IInvitation";
 import { useGetInvitationsByCurrentUserQuery, useResponseInvitationByIdMutation } from "@store/Controllers/InvitationController/InvitationController";
 //UI
@@ -50,25 +49,21 @@ const MobileNotifications: FC = () => {
             return <li className={classes.inviteLi}
                 key={admin.id + group.title + i}>
                 <form className={classes.inviteForm}>
-                    <img src={admin.picture} alt={admin.first_name + 'avatar'} />
+                    <img src={admin.picture} alt={admin.first_name + '_avatar'} />
                     <p className={classes.Promo}>
                         <span style={{ fontWeight: 600 }}>{userName}
-                        </span> has invited you to the group <Link to={`/group/${group.id}`} className={classes.InviteGroupRef}>
-                            {group.title}</Link>
+                        </span> has invited you to the group <span className={classes.InviteGroupRef}>
+                            {group.title}</span>
                     </p>
                     <div className={classes.buttonGroup}>
                         <CustomButton
-                            btnWidth={100}
-                            btnHeight={30}
-                            icon="none"
+                            icon="submit"
                             type="primary"
                             isPending={isResponseCreating && buttonClicked === 'accept' && el.id === clickedButtonId}
                             children="Accept"
                             callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'ACCEPTED') }} />
                         <CustomButton
-                            btnWidth={100}
-                            btnHeight={30}
-                            icon="none"
+                            icon="refuse"
                             type="danger"
                             background="outline"
                             isPending={isResponseCreating && buttonClicked === 'reject' && el.id === clickedButtonId}
@@ -98,7 +93,7 @@ const MobileNotifications: FC = () => {
         <main>
             <div className={classes.MobileNotifications__container}>
                 <h3 className={classes.title}>Notifications</h3>
-                <ul>
+                <ul className={classes.invitesUl}>
                     {notificationsContent}
                 </ul> 
             </div>     
