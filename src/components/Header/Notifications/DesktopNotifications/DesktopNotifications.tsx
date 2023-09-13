@@ -22,10 +22,11 @@ interface IDesktopNotifications {
 
 
 const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive, buttonRef }) => {
-    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess, refetch} = useGetInvitationsByCurrentUserQuery(null)    
-    const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation();
-    const [buttonClicked, setButtonClicked] = useState<'accept' | 'reject' | 'none'>('none');
-
+    const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess, refetch} = useGetInvitationsByCurrentUserQuery(null)
+    const [buttonClicked, setButtonClicked] = useState<'accept' | 'reject' | 'none'>('none')
+    const [clickedButtonId, setClickedButtonId] = useState<number>(0);
+    
+    const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
     const onResponseInvitation = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
         if (invitationId && response && !isResponseCreating) {
             try {
@@ -47,8 +48,9 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
             setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         }
     }
-    const handleSumbit = (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
-        onResponseInvitation(invitationId, response);
+    const handleSumbit = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
+        await onResponseInvitation(invitationId, response)
+        setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
         setIsActive(false)
     }
 
@@ -64,7 +66,7 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                     <p className={classes.Promo}>
                         <span style={{ fontWeight: 600 }}>{userName}
                         </span> has invited you to the group <span className={classes.InviteGroupRef}>
-                            {group.title}</span>
+                        {group.title}</span>
                     </p>
                     <div className={classes.buttonGroup}>
                         <CustomButton
@@ -72,19 +74,19 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                             btnHeight={25}
                             icon="none"
                             type="primary"
-                            isPending={isResponseCreating && buttonClicked === 'accept'}
+                            isPending={isResponseCreating && buttonClicked === 'accept' && el.id === clickedButtonId}
                             children="Accept"
-                            callback={() => { handleSumbit(el.id, 'ACCEPTED') } } />
+                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'ACCEPTED') } } />
                         <CustomButton
                             btnWidth={60}
                             btnHeight={25}
                             icon="none"
                             type="danger"
                             background="outline"
-                            isPending={isResponseCreating && buttonClicked === 'reject'}
+                            isPending={isResponseCreating && buttonClicked === 'reject' && el.id === clickedButtonId}
                             children="Reject"
                             disableScale={true}
-                            callback={() => { handleSumbit(el.id, 'DENIED') } } />
+                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'DENIED') } } />
                     </div>
                 </form>
             </li>

@@ -97,19 +97,20 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
         return amounts;
     }
 
-    const getColorByCategoryId = (data: IGroupMemberExpensesByCategoryDailyResponse[], categoryId: number): string  => {
+    const getBarColor = (
+        data: IGroupMemberExpensesByCategoryDailyResponse[],
+        Id: number
+    ): string => {
         let color: string = '#ff2500';
-        data.forEach((item) => {
-            const details = item.categories.find((category) => categoryId === category.id);
-            if (details) {
-                color = details.color_code;
-            } else {
-                color = '#ff2500';
-            }
-        });
+            data.forEach((item) => {
+                const details = item.categories.find((category) => Id === category.id);
+                if (details) {
+                    color = details.color_code;
+                } 
+            });
         return color;
-    }
-
+    };
+      
     const findAllUsers = (data: IGraphGroupMembers[]) => {
         const idUserMap: { [key: number]: string } = {}; 
 
@@ -151,7 +152,7 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                     maxBarThickness: 24,
                     borderRadius: 20,
                     data: getAmountsByCategoryId(dataUserCategories, +categoryId),
-                    backgroundColor: getColorByCategoryId(dataUserCategories, +categoryId)
+                    backgroundColor: getBarColor(dataUserCategories, +categoryId)
                 };
             });
         } else if(dataUsers){

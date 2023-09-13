@@ -12,6 +12,7 @@ import { notify } from "src/App";
 const MobileNotifications: FC = () => {
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
     const [buttonClicked, setButtonClicked] = useState<'accept' | 'reject' | 'none'>('none')
+    const [clickedButtonId, setClickedButtonId] = useState<number>(0);
 
     const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
     const onResponseInvitation = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
@@ -58,21 +59,17 @@ const MobileNotifications: FC = () => {
                         <CustomButton
                             icon="submit"
                             type="primary"
-                            isPending={isResponseCreating && buttonClicked === 'accept' }
-                            callback={() => { handleSumbit(el.id, 'ACCEPTED') }}
-                        >
-                                <p>Accept</p>
-                            </CustomButton>
+                            isPending={isResponseCreating && buttonClicked === 'accept' && el.id === clickedButtonId}
+                            children="Accept"
+                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'ACCEPTED') }} />
                         <CustomButton
                             icon="refuse"
                             type="danger"
                             background="outline"
-                            isPending={isResponseCreating && buttonClicked === 'reject'}
+                            isPending={isResponseCreating && buttonClicked === 'reject' && el.id === clickedButtonId}
+                            children="Reject"
                             disableScale={true}
-                            callback={() => { handleSumbit(el.id, 'DENIED') }}
-                        >
-                                <p>Reject</p>
-                            </CustomButton>
+                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'DENIED') }} />
                     </div>
                 </form>
             </li>
