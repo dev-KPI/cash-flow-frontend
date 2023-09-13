@@ -32,10 +32,6 @@
     composes: cardComponent from "@styles/style.css";
 }
 
-.recentOperations__table tbody td:first-child {
-    word-break: break-word;
-}
-
 .recentOperations__table thead th {
     height: 50px;
     vertical-align: middle;
@@ -73,18 +69,19 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 24px;
+    gap: 10px;
     font-size: 20px;
+    max-width: 50px;
+}
+.editRemove button{
+    cursor: pointer;
+    transition: all ease-in-out .3s;
 }
 .editButton:hover{
     color: var(--main-green);
-    cursor: pointer;
-    transition: all ease-in-out .3s;
 }
 .removeButton:hover{
     color: var(--main-red);
-    cursor: pointer;
-    transition: all ease-in-out .3s;
 }
 /* empty state */
 .noItems {
@@ -109,19 +106,29 @@
     vertical-align: middle;
     padding: 0px 30px;
     text-align: center;
-
-    width: 200px
+    width: 250px;
+}
+.recentOperations__table tbody tr:not(:last-child) td:first-child {
+    height: 3rem;
+    line-height: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
 }
 
-.recentOperations__table tbody td:last-child{
-    width: 120px;
+.recentOperations__table tbody td:nth-child(5){
+    width: 70px;
+}
+.recentOperations__table tbody td:last-child {
+    width: 50px;
 }
 
 .recentOperations__table tbody tr:last-child td {
     border: none;
 }
 .amount{
-    width: 70px;
+    white-space: nowrap;
+    text-align: left;
 }
 .itemTitle {
     display: inline-block;
@@ -195,7 +202,7 @@
 
 @media only screen and (max-width: 1028px) {
     .recentOperations__table tbody td {
-        padding: 0 15px;
+        padding: 0 5px;
     }
 
     .tableText {
@@ -217,12 +224,12 @@
     .page__container {
         margin-top: 14px;
     }
+    .recentOperations__table tbody tr:not(:last-child) td:first-child{
+        max-width: 150px;
+    }
     .recentOperations__table tbody td {
         width: 150px;
-        padding: 0 7px;
-    }
-    .recentOperations__table tbody td:last-child {
-        width: 50px;
+        padding: 0 4px;
     }
 
     .recentOperations__table {
@@ -263,7 +270,10 @@
         width: 100%;
         justify-content: space-between;
     }
-
+    .editRemove{
+        font-size: 18px;
+        justify-content: unset;
+    }
     .nav {
         gap: 15px;
     }
@@ -277,20 +287,21 @@
     }
 }
 
-@media only screen and (max-width: 400px) {
-    .page__container {
-        overflow-x: auto;
-    }
-    .recentOperations__table tbody td {
-        width: 90px;
-        padding: 0 4px;
-    }
-    .recentOperations__table thead :nth-child(3) {
+@media only screen and (max-width: 450px) {
+    .recentOperations__table thead :nth-child(4) {
         display: none;
     }
 
-    .recentOperations__table tbody td:nth-child(3) {
+    .recentOperations__table tbody td:nth-child(4) {
         display: none;
+    }
+}
+@media only screen and (max-width: 400px) {
+    .recentOperations__table tbody td {
+        width: 90px;
+    }
+    .recentOperations__table tbody tr:not(:last-child) td:first-child {
+        max-width: 100px;
     }
     .tableText {
         font-size: 13px;

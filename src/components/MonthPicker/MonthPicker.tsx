@@ -1,17 +1,15 @@
-import React, { useEffect, useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 
 //UI
 import classes from './MonthPicker.module.css';
 import DateRangePickerCard from '@components/DateRangePicker/DateRangePicker';
-import ToggleButton from '@components/Buttons/ToggleButton/ToggleButton';
 //store
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import DateService from '@services/DateService/DateService';
 import { MonthPickerActions } from '@UI_store/MonthPickerSlice/MonthPickerSlice'
 import { IMonthPickerState } from '@UI_store/MonthPickerSlice/MonthPickerInterfaces';
 //logic
-import { format, addDays, isSameMonth, lastDayOfMonth, subDays, 
-    isLastDayOfMonth, isFirstDayOfMonth, subMonths, isSameDay } from 'date-fns';
+import { format, lastDayOfMonth, subDays, isSameDay } from 'date-fns';
 
 const MonthPicker: React.FC = () => {
 

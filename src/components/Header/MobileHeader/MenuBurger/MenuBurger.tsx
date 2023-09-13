@@ -3,11 +3,14 @@ import { Link, NavLink } from "react-router-dom";
 
 //logic
 import { numberWithCommas } from "@services/UsefulMethods/UIMethods";
-import IHeaderProps from "@components/Header/HeaderInterfaces";
 import { IGetCurrentUserInfo } from "@store/Controllers/UserController/UserControllerInterfaces";
+import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
+import { useGetCurrentUserBalanceQuery } from "@store/Controllers/UserController/UserController";
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore"; import { UserSliceActions } from "@store/User/UserSlice";
 import { useGetInvitationsByCurrentUserQuery } from "@store/Controllers/InvitationController/InvitationController";
+import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
+import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 //UI
 import classes from "./MenuBurger.module.css";
 import userIcon from '@assets/user-icon.svg';
@@ -16,19 +19,24 @@ import Logo from "@assets/Header/logo.svg";
 import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import { useGetCurrentUserGroupsQuery } from "@store/Controllers/GroupsController/GroupsController";
-import { useGetCurrentUserBalanceQuery } from "@store/Controllers/UserController/UserController";
+import { ToggleCurrencyButton } from "@components/Buttons/ToggleButton/ToggleButton";
+
+
+
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
     isMenuActive: boolean,
     User: IGetCurrentUserInfo
 }
 
-const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) => {
+const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User }) => {
+    
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
+
     const { data: Groups,  isLoading: isGroupsLoading, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null)
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
     const { data: UserBalance = { balance: 0 }, isError: isUserBalanceError, isFetching: isUserBalanceFetching } = useGetCurrentUserBalanceQuery(null)
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {
@@ -73,7 +81,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
                 <div className={classes.account__info}>
                     <h2 className={classes.title}>{User.first_name}</h2>
                     <h2 className={classes.title}>{User.last_name}</h2>
-                    <p className={classes.balance + ' ' + (UserBalance.balance < 0 ? classes.red : classes.green)}>${numberWithCommas(UserBalance.balance)}</p>
+                    <p className={classes.balance + ' ' + (UserBalance.balance < 0 ? classes.red : classes.green)}>{currency}{numberWithCommas(UserBalance.balance)}</p>
                 </div>
             </div>
             <div className={classes.burgernav__line}></div>
@@ -146,8 +154,9 @@ const MenuBurger: FC<IPropsMenuBurger> = ({setMenuActive, isMenuActive, User}) =
                     {groupsList}          
                 </ul>
             </div>
-            <div className={classes.themeButton}>
-                <ThemeButton ThemeButtonType="extra" />
+            <div className={classes.buttons}>
+                <div><ToggleCurrencyButton/></div>
+                <div><ThemeButton ThemeButtonType="extra" /></div>
             </div>
             <div className={classes.burgernav__downside}>
                 <ul className={classes.list}>

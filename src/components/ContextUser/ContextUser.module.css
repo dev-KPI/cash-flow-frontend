@@ -16,7 +16,7 @@
     color: var(--main-text);
     composes: smallItemText from '@styles/style.css';
 }
-.item a{
+.item a, .item div{
     padding: 10px;
     border-radius: 7px;
     display: flex;

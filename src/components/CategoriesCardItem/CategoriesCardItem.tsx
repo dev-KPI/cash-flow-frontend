@@ -3,8 +3,12 @@ import { FC, MouseEvent} from 'react';
 //logic
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { ICategoryAmount } from '@models/ICategory';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 //UI
 import classes from './CategoriesCardItem.module.css';
+
+
 
 interface IUserCategoriesCardProps{
     category: ICategoryAmount,
@@ -12,7 +16,8 @@ interface IUserCategoriesCardProps{
     setIsModalOpen: (value: boolean) => void,
 }
 
-const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({category, setIdModalOpen, setIsModalOpen }) => {
+const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ category, setIdModalOpen, setIsModalOpen }) => {
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const amount: number = category.amount || 0;
     const color = category.color_code || '#80D667';
     const icon = category.icon_url || "bi bi-bag"
@@ -32,7 +37,7 @@ const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({category, setIdMod
             <div className={classes.icon} style={{ background: color, opacity: '0.7'}}>
                 <i className={icon}></i>
             </div>
-            <p className={classes.expenseAmount} style={{ color: color }}>{`${numberWithCommas(amount)}$`}</p>
+            <p className={classes.expenseAmount} style={{ color: color }}>{`${numberWithCommas(amount)}${currency}`}</p>
         </li>
     );
 };

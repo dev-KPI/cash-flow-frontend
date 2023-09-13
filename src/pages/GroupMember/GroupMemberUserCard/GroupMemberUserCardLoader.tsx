@@ -3,10 +3,10 @@ import ContentLoader from 'react-content-loader';
 import classes from "./GroupMemberUserCard.module.css";
 import { useMemo } from 'react';
 import { useWindowSize } from 'usehooks-ts';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 const GroupMemberUserCardLoader = () => {
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
-
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const {width} = useWindowSize();
 
     const loader = useMemo(() => {

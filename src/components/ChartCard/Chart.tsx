@@ -8,6 +8,8 @@ import { AnyObject } from 'chart.js/dist/types/basic';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { ICategoryAmount } from '@models/ICategory';
 import { IExtendedUser } from '@models/IUser';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 interface DoughnutProps {
     options: ChartOptions<'doughnut'>;
@@ -27,7 +29,8 @@ type IChartProps = { setId: (Dispatch<SetStateAction<number>>), total: number; }
 )
 
 const UserExpenseChart: FC<IChartProps> = ({ categories, members, total, setId }) => {
-    const { mainTextColor } = useAppSelector(state => state.persistedThemeSlice);
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
+    const { mainTextColor } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     let dataAmount: number[] = [];
     let backgroundColor: string[] = [];
 
@@ -63,7 +66,8 @@ const UserExpenseChart: FC<IChartProps> = ({ categories, members, total, setId }
             },
             doughnutLabel: {
                 color: mainTextColor,
-                total: total.toFixed(2)
+                total: total.toFixed(2),
+                currency
             },
         },
         onHover: (e: ChartEvent) => {
@@ -96,7 +100,7 @@ const UserExpenseChart: FC<IChartProps> = ({ categories, members, total, setId }
             ctx.fillStyle = pluginOptions.color
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(`${numberWithCommas(pluginOptions.total)}$`, xCoor, yCoor);
+            ctx.fillText(`${numberWithCommas(pluginOptions.total)}${pluginOptions.currency}`, xCoor, yCoor);
         },
     }
 

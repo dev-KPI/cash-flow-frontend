@@ -4,103 +4,30 @@ import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import classes from './GroupHistory.module.css';
 import userIcon from '@assets/user-icon.svg'
 import PreLoader from '@components/PreLoader/PreLoader';
+import Light from '@components/Light/Light';
 //logic
-import ICategory from '@models/ICategory';
-import IUser from '@models/IUser';
 import DateService from '@services/DateService/DateService';
 import {
     createColumnHelper,
     flexRender,
     getCoreRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     PaginationState,
     SortingState,
     useReactTable,
 } from '@tanstack/react-table'
-import Light from '@components/Light/Light';
+import { IGroupHistoryItem } from '@models/IHistoryItem';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';
 import { useGetGroupUsersHistoryQuery } from '@store/Controllers/GroupsController/GroupsController';
-
-
-
-interface GroupHistory {
-    id: number;
-    amount: number;
-    time: string;
-    description: string;
-    category_group?: {
-        category?: ICategory
-    },
-    user: IUser
-    type: string
-}
-
-
-
-const columnHelper = createColumnHelper<GroupHistory>()
-const columns = [
-    columnHelper.accessor(`user.first_name`, {
-        header: () =>'Member',
-        cell: info => { 
-            const picture = info.row.original.user.picture ?? '' 
-            const full_name = () => {
-                if(info?.row?.original?.user?.last_name){
-                    return info.row.original.user.first_name + ' ' + info.row.original.user.last_name
-                } else {
-                    return info.row.original.user.first_name
-                }
-            }
-            const email = info.row.original.user.login
-            return info.renderValue() ?
-                <div className={classes.memberWrapper}>
-                    <div className={classes.details}>
-                        <div className={classes.icon}>
-                            <img className={classes.photo}
-                                style={{borderRadius: '50%'}}
-                                alt={'user icon'}
-                                src={isUrl(picture) ? picture : userIcon} />
-                        </div>
-                        <div className={classes.memberInfo}>
-                            <h6 className={classes.name}>{full_name()}</h6>
-                            <p className={classes.email}>{email}</p>
-                        </div>
-                    </div>
-                </div> : '-'
-            }
-    }),
-    columnHelper.accessor('category_group.category.category.title', {
-        header: () => 'Category',
-        cell: info => info.renderValue() ? <div className={classes.wrapItem}>
-            <Light
-                className={classes.dotLight}
-                style={{ display: info.row.original.type === 'expense' ? 'inline-block' : 'none' }}
-                color={info.row.original.category_group?.category?.color_code || 'var(--main-green)'}
-                type='solid' />
-            <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
-        </div> : '-',
-    }),
-    columnHelper.accessor('time', {
-        header: () => 'Time',
-        cell: info => DateService.getTime(new Date(info.getValue())),
-    }),
-    columnHelper.accessor('amount', {
-        header: () => 'Amount',
-        meta: {
-            width: '100px'
-        },
-        cell: info =>
-            <p className={classes.amount} style={{ color: info.row.original.type === 'expense' ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.type === 'expense' ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
-    }),
-]
-
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 
 const History: React.FC = () => {
-
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const { groupId } = useParams();
-    
+
     const [{ pageIndex, pageSize }, setPagination] =
         useState<PaginationState>({
             pageIndex: 0,
@@ -121,51 +48,66 @@ const History: React.FC = () => {
         page: pageIndex + 1,
         size: pageSize
     });
-
-    const initData = useCallback(() => {
-        if(GroupRecentHistory && isGroupRecentHistorySuccess){
-            const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
-            const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
-            const HistoryArray: GroupHistory[] = GroupRecentHistory.items.map(el => {
-                return {
-                    id: el.id,
-                    amount: el.amount,
-                    time: new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString(),
-                    description: el.descriptions,
-                    category_group: {
-                        category: {
-                            category: {
-                                id: el.category_id,
-                                title: el.title_category,
-                            },
-                            icon_url: '',
-                            color_code: el.color_code_category
-                        }
-                    },
-                    user: {
-                        id: el.user_id,
-                        login: el.user_login,
-                        first_name: el.user_first_name,
-                        last_name: el.user_last_name,
-                        picture: el.user_picture,
-                    },
-                    type: 'expense'
+    
+    const columnHelper = createColumnHelper<IGroupHistoryItem>()
+    const columns = [
+        columnHelper.accessor(`user_first_name`, {
+            header: () => 'Member',
+            cell: info => {
+                const picture = info.row.original.user_picture ?? ''
+                const full_name = () => {
+                    if (info?.row?.original?.user_last_name) {
+                        return info.row.original.user_first_name + ' ' + info.row.original.user_last_name
+                    } else {
+                        return info.row.original.user_first_name
+                    }
                 }
-            })
-            setData(HistoryArray)
-        } else {
-            setData([])
-        }
-    }, [GroupRecentHistory, isGroupRecentHistoryLoading, isGroupRecentHistoryError, isGroupRecentHistoryFetching, isGroupRecentHistorySuccess])
-
-    useEffect(() => {
-        initData()
-    }, [initData])
-
-    const [data, setData] = useState<GroupHistory[]>([])
+                const email = info.row.original.user_login
+                return info.renderValue() ?
+                    <div className={classes.memberWrapper}>
+                        <div className={classes.details}>
+                            <div className={classes.icon}>
+                                <img className={classes.photo}
+                                    style={{ borderRadius: '50%' }}
+                                    alt={'user icon'}
+                                    src={isUrl(picture) ? picture : userIcon} />
+                            </div>
+                            <div className={classes.memberInfo}>
+                                <h6 className={classes.name}>{full_name()}</h6>
+                                <p className={classes.email}>{email}</p>
+                            </div>
+                        </div>
+                    </div> : '-'
+            }
+        }),
+        columnHelper.accessor('title_category', {
+            header: () => 'Category',
+            cell: info => info.renderValue() ? <div className={classes.wrapItem}>
+                <Light
+                    className={classes.dotLight}
+                    style={{ display: 'inline-block'}}
+                    color={info.row.original.color_code_category || 'var(--main-green)'}
+                    type='solid' />
+                <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
+            </div> : '-',
+        }),
+        columnHelper.accessor('time', {
+            header: () => 'Time',
+            cell: info => DateService.getTime(new Date(info.getValue())),
+        }),
+        columnHelper.accessor('amount', {
+            header: () => 'Amount',
+            meta: {
+                width: '100px'
+            },
+            cell: info =>
+                <p className={classes.amount} style={{ color:  "#FF2D55", textAlign: "left" }}>{"-"}{currency}{numberWithCommas(info.getValue())}</p>,
+        }),
+    ];
+    
 
     const table = useReactTable({
-        data,
+        data: GroupRecentHistory?.items || [],
         columns,
         pageCount: GroupRecentHistory?.pages,
         onSortingChange: setSorting,

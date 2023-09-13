@@ -1,9 +1,10 @@
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
 const UserCategoriesCardLoader = () => {
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const getCategories = () => {
         let res = [];
         for (let i = 0; i < 6; i++) {

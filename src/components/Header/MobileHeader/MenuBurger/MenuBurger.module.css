@@ -200,10 +200,12 @@
     margin-top: 24px;
 }
 
-.themeButton{
+.buttons{
     margin-top: 56px;
     display: flex;
-    justify-content: center;
+    gap: 20px;
+    flex-direction: column;
+    align-items: center;
 }
 .burgernav__downside{
     padding-top: 16px;

@@ -1,9 +1,10 @@
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import React from 'react';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import ContentLoader from 'react-content-loader';
 import classes from './OperationCard.module.css'
+
 const OperationCardLoader = () => {
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     return (
         <ContentLoader

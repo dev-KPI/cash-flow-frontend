@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode, MouseEvent } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 
 //logic
 import DateService from '@services/DateService/DateService';
@@ -7,15 +7,14 @@ import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import classes from './GraphCard.module.css'
 import { Bar, Chart } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale,
-    BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction,
-    ChartType, TooltipModel, Element } from "chart.js/auto";
+    BarElement, Title, Tooltip, Legend, ChartData,Tick } from "chart.js/auto";
 import { Context } from 'vm';
 
 //store
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import { IGetCurrentUserDailyExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 
 
@@ -29,8 +28,8 @@ interface IGraphProps {
 const Graph: FC<IGraphProps> = ({data}) => {
 
     //store
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     
     const getYParams = useCallback((): { high: number, step: number } => {
         let highValue = Math.max(...data.map(el => el.amount));
@@ -62,7 +61,7 @@ const Graph: FC<IGraphProps> = ({data}) => {
             borderRadius: 20,
             backgroundColor: "#80D667",
             hoverBackgroundColor: "#80EE67",
-        }],
+        }]
     };
     
     const [priceTooltip, setPriceTooltip] = useState<number>(0);
@@ -78,7 +77,7 @@ const Graph: FC<IGraphProps> = ({data}) => {
         return `${monthTooltip} ${dateTooltip}, ${yearTooltip}`
     }
     const PriceTooltip = (context: Context): string => {
-        return  priceTooltip + '$'
+        return  priceTooltip + currency
     }
     const footerTooltip = (context: Context): string => {
         return 'Total expenses'
@@ -182,9 +181,9 @@ const Graph: FC<IGraphProps> = ({data}) => {
                     callback: (value: string | number, index: number, ticks: Tick[]): string => {
                         const resValue = +(value);
                         if (window.innerWidth < 440 && resValue >= 1000) {
-                            return numberWithCommas(resValue / 1000)  + 'k$'
+                            return numberWithCommas(resValue / 1000) + 'k' + currency
                         }
-                        return numberWithCommas(resValue) + '$';
+                        return numberWithCommas(resValue) + currency
                     }
                 },
             }

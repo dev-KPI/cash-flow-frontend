@@ -12,6 +12,7 @@ import PreLoader from '@components/PreLoader/PreLoader';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IGetCurrentGroupSpendersResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 interface IGroupSpendersCardProps {
     data: IGetCurrentGroupSpendersResponse[] | undefined,
@@ -26,7 +27,7 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
         groupId: string,
         memberId: string
     }>();
-    
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
 
     const getSpenders = () => {
@@ -50,7 +51,7 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
                                     />
                                     <p className={classes.name}>{name}</p>
                                 </div>
-                                <p className={classes.amount}>{numberWithCommas(item.amount)}$</p>
+                                <p className={classes.amount}>{numberWithCommas(item.amount)}{currency}</p>
                             </div>
                         </NavLink>
                 

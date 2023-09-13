@@ -5,6 +5,7 @@ import classes from './ThemeButtons.module.css'
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ThemeActions } from "@UI_store/ThemeSlice/ThemeSlice";
+import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 
 export interface IThemeButtonProps{
     ThemeButtonType?: string
@@ -12,15 +13,15 @@ export interface IThemeButtonProps{
 
 export const ThemeButton: FC<IThemeButtonProps> = ({ThemeButtonType, ...props}) => {   
 
-    const Theme = useAppSelector(state => state.persistedThemeSlice.theme)
+    const { theme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice)
     const ThemeDispatch = useActionCreators(ThemeActions);
 
     useEffect(() => {
         ThemeDispatch.initializeTheme();
     }, [])
 
-    const lightToggle = Theme === 'light' ? classes.active : '';
-    const darkToggle = Theme === 'light' ? '' : classes.active;
+    const lightToggle = theme === 'light' ? classes.active : '';
+    const darkToggle = theme === 'light' ? '' : classes.active;
 
     const LightTitle = () => {return ThemeButtonType ? <div className={classes.extra}><i className="bi bi-moon" style={{fontSize: '12px'}}></i><h3 className={classes.title__extra}>Dark</h3></div> : <i className="bi bi-moon"></i>}
     const DarkTitle = () => {return ThemeButtonType ? <div className={classes.extra}><i className="bi bi-brightness-high"style={{fontSize: '12px'}}></i><h3 className={classes.title__extra}>Light</h3></div> : <i className="bi bi-brightness-high"></i>}

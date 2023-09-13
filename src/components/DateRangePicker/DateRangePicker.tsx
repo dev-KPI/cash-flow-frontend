@@ -1,16 +1,14 @@
 //UI
 import React, { useCallback, useEffect, useState } from 'react';
-import { ClassNames, DateRangePicker, Range, RangeFocus, defaultStaticRanges } from 'react-date-range';
+import { ClassNames, DateRangePicker, Range, RangeFocus } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import classes from './DateRangePicker.module.css';
-import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
 //logic
 import UsePortal from '@hooks/layoutHooks/usePortal/usePortal';
 import { useWindowSize } from 'usehooks-ts';
 import { format, isWeekend, isSameDay, subWeeks, subDays, addDays, startOfWeek, endOfWeek, 
     startOfMonth, endOfMonth, parseISO} from 'date-fns';
-import DateService from '@services/DateService/DateService';
 //store
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';

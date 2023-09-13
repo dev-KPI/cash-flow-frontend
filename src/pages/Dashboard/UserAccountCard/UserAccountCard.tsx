@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
-
+import { FC } from 'react';
 
 //store
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { useGetCurrentUserBalanceQuery, useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 //UI
 import classes from './UserAccountCard.module.css';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
@@ -11,9 +11,10 @@ import userIcon from '@assets/user-icon.svg';
 import UserAccountCardLoader from './UserAccountLoader';
 
 
-const UserAccountCard: FC = () => {
 
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+
+const UserAccountCard: FC = () => {
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
 
     const {data: User, isError: isUserError, isFetching: isUserFetching} = useGetCurrentUserInfoQuery(null)
     const {data: UserBalance = {balance: 0}, isError: isUserBalanceError, isFetching: isUserBalanceFetching} = useGetCurrentUserBalanceQuery(null)
@@ -38,7 +39,7 @@ const UserAccountCard: FC = () => {
                             </div>
                             <div className={classes.balance}>
                                 <h5>Current Balance</h5>
-                                <p className={classes.value + ' ' + (UserBalance.balance < 0 ? classes.red : classes.green)}>${numberWithCommas(UserBalance.balance)}</p>
+                                <p className={classes.value + ' ' + (UserBalance.balance < 0 ? classes.red : classes.green)}>{currency}{numberWithCommas(UserBalance.balance)}</p>
                             </div>
                         </div>
                     </div>

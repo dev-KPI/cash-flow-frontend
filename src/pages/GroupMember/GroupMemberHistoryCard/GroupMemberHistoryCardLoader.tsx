@@ -1,10 +1,11 @@
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import classes from "./GroupMemberHistoryCard.module.css";
 
 const GroupMemberHistoryCardLoader = () => {
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const getHistories = () => {
         let res = [];
 

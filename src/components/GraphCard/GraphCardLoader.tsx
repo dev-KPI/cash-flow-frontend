@@ -1,4 +1,5 @@
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 import React, { FC } from "react"
 import ContentLoader, { IContentLoaderProps } from "react-content-loader"
 
@@ -53,7 +54,7 @@ const getBars = () => {
 
 
 const GraphCardLoader: FC<IContentLoaderProps> = () => {
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     return (
         <ContentLoader
             speed={2}

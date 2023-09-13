@@ -4,6 +4,8 @@ import React, { useMemo, useRef, useState} from 'react';
 import classes from './History.module.css';
 import Light from '@components/Light/Light';
 import PreLoader from '@components/PreLoader/PreLoader';
+import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 //logic
 import DateService from '@services/DateService/DateService';
 import {
@@ -18,15 +20,13 @@ import {
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import IHistoryItem from '@models/IHistoryItem';
 import { useGetUserHistoryQuery } from '@store/Controllers/UserController/UserController';
-import SmallModal from '@components/ModalWindows/SmallModal/SmallModal';
-import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
-import { useDeleteExpenseByGroupMutation } from '@store/Controllers/ExpensesController/ExpensesController';
-import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
-import { Omiter } from '@services/UsefulMethods/ObjectMethods';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 interface IColumnsHistory extends IHistoryItem {edit_remove?: string}
 
 const History: React.FC = () => {
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const [{ pageIndex, pageSize }, setPagination] =
         useState<PaginationState>({
             pageIndex: 0,
@@ -96,17 +96,11 @@ const History: React.FC = () => {
     }),
     columnHelper.accessor('amount', {
         header: () => 'Amount',
-        meta: {
-            width: '100px'
-        },
         cell: info =>
-            <p className={classes.amount} style={{ color: info.row.original.category_id !== null ? "#FF2D55" : "#80D667", textAlign: "left" }}>{info.row.original.category_id !== null ? "-" : "+"}${numberWithCommas(info.getValue())}</p>,
+            <p className={classes.amount} style={{ color: info.row.original.category_id !== null ? "#FF2D55" : "#80D667" }}>{info.row.original.category_id !== null ? "-" : "+"}{currency}{numberWithCommas(info.getValue())}</p>,
     }),
     columnHelper.accessor('edit_remove', {
         header: () => '',
-        meta: {
-            width: '100px'
-        },
         cell: info => <div className={classes.editRemove}>
             <button className={classes.editButton} onClick={(e) => {
                 const isExpense = (!!info.row.original?.group_id && (info.row.original?.group_id > 0))
@@ -142,8 +136,9 @@ const History: React.FC = () => {
                     description: info.row.original.descriptions
                 }));
                 setIsReplenishment(!isExpense);
-                (!!info.row.original?.group_id && (info.row.original?.group_id > 0)) ? setIsRemoveExpenseModal(!isRemoveExpenseModal) : 
-                setIsRemoveReplenishmentModal(!isRemoveReplenishmentModal) }}>
+                isExpense ? setIsRemoveExpenseModal(!isRemoveExpenseModal) : 
+                    setIsRemoveReplenishmentModal(!isRemoveReplenishmentModal)
+            }}>
                 <i className="bi bi-trash"></i>
             </button>
         </div>
@@ -227,7 +222,7 @@ const History: React.FC = () => {
                     </tr>
                 ))}
                 <tr>
-                    <td colSpan={5}>
+                    <td colSpan={6}>
                         <div className={classes.pagination}>
                             <div className={classes.selector}>
                                 <span>Rows per page: </span>
