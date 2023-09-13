@@ -1,4 +1,5 @@
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 import { CurrencyActions } from '@store/UI_store/CurrencySlice/CurrencySlice';
 import React, { FC, useState } from 'react';
 
@@ -22,7 +23,7 @@ export default ToggleButton;
 
 
 export const ToggleCurrencyButton: FC = () => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice)
     const CurrencyDispatch = useActionCreators(CurrencyActions);
     const [isCurrencyToggled, setIsCurrencyToggled] = useState<boolean>(currency === '$');
 

@@ -4,8 +4,10 @@ import { FC, MouseEvent} from 'react';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { ICategoryAmount } from '@models/ICategory';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 //UI
 import classes from './CategoriesCardItem.module.css';
+
 
 
 interface IUserCategoriesCardProps{
@@ -15,7 +17,7 @@ interface IUserCategoriesCardProps{
 }
 
 const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ category, setIdModalOpen, setIsModalOpen }) => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const amount: number = category.amount || 0;
     const color = category.color_code || '#80D667';
     const icon = category.icon_url || "bi bi-bag"

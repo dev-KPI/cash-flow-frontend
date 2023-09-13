@@ -8,6 +8,7 @@ import { numberWithCommas, shaffledColors } from '@services/UsefulMethods/UIMeth
 import { ICategoryAmount } from '@models/ICategory';
 import { IExtendedUser } from '@models/IUser';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 
 type IChartCardProps = { title: string, messageType?: 'user' | 'group'} & (
@@ -17,7 +18,7 @@ type IChartCardProps = { title: string, messageType?: 'user' | 'group'} & (
 
 
 const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageType = 'user' }) => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     
     const [id, setId] = useState<number>(categories ? categories[0]?.id : members[0]?.id || 0 );
     const [isExtended, setIsExtended] = useState<boolean>(false);

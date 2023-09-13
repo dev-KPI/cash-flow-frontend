@@ -1,4 +1,4 @@
-import React, { FC, Dispatch, SetStateAction, ReactNode, useState, useCallback, useEffect, useMemo} from "react";
+import React, { FC, Dispatch, SetStateAction, ReactNode, useState, useCallback, useEffect } from "react";
 
 //UI
 import classes from './GroupModal.module.css';
@@ -10,7 +10,6 @@ import { notify } from "src/App";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
-import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
 import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
 

@@ -15,10 +15,10 @@ import { Context } from 'vm';
 
 //store
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import { IExtendedUser } from '@models/IUser';
 import { IGroupMemberExpensesByCategoryDailyResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -36,7 +36,7 @@ type IStackedGraphProps = (
 
 const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) => {
     //store
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     const textColor = (context: Context): string => {

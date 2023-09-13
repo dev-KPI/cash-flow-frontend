@@ -1,10 +1,8 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 
 //UI
 import classes from './GroupInfoCard.module.css';
-import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import userIcon from '@assets/user-icon.svg';
-import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import GroupInfoCardLoader from './GroupInfoCardLoader';
 import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
@@ -16,8 +14,6 @@ interface IGroupInfoCard {
 }
 
 const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) => {
-
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
 
     const [isEditGroupModal, setIsEditGroupModal] = useState<boolean>(false);
 

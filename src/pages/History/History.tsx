@@ -21,11 +21,12 @@ import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import IHistoryItem from '@models/IHistoryItem';
 import { useGetUserHistoryQuery } from '@store/Controllers/UserController/UserController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 interface IColumnsHistory extends IHistoryItem {edit_remove?: string}
 
 const History: React.FC = () => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency);
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const [{ pageIndex, pageSize }, setPagination] =
         useState<PaginationState>({
             pageIndex: 0,

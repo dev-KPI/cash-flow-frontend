@@ -1,6 +1,8 @@
 import { useState, FC, useEffect, useMemo, useCallback } from 'react';
 //store
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
+
 //logic
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { fomatFloatNumber, numberWithCommas } from '@services/UsefulMethods/UIMethods';
@@ -24,7 +26,7 @@ interface OperactionCardProps {
 }
 
 const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError, offPreloader = false }) => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const [amount, setAmount] = useState<number | string>(0);
     const [percents, setPercents] = useState<number>(0);

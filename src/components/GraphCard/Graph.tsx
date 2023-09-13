@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback, useRef, useMemo, ReactNode, MouseEvent } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 
 //logic
 import DateService from '@services/DateService/DateService';
@@ -7,15 +7,14 @@ import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import classes from './GraphCard.module.css'
 import { Bar, Chart } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale,
-    BarElement, Title, Tooltip, Legend, ChartData,Tick, TooltipPositionerFunction,
-    ChartType, TooltipModel, Element } from "chart.js/auto";
+    BarElement, Title, Tooltip, Legend, ChartData,Tick } from "chart.js/auto";
 import { Context } from 'vm';
 
 //store
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import { IGetCurrentUserDailyExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 
 
@@ -29,9 +28,8 @@ interface IGraphProps {
 const Graph: FC<IGraphProps> = ({data}) => {
 
     //store
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     
     const getYParams = useCallback((): { high: number, step: number } => {
         let highValue = Math.max(...data.map(el => el.amount));

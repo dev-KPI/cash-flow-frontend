@@ -9,6 +9,8 @@ import { useGetCurrentUserBalanceQuery } from "@store/Controllers/UserController
 //store
 import { useActionCreators, useAppSelector } from "@hooks/storeHooks/useAppStore"; import { UserSliceActions } from "@store/User/UserSlice";
 import { useGetInvitationsByCurrentUserQuery } from "@store/Controllers/InvitationController/InvitationController";
+import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
+import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 //UI
 import classes from "./MenuBurger.module.css";
 import userIcon from '@assets/user-icon.svg';
@@ -20,6 +22,7 @@ import CloseButton from "@components/Buttons/CloseButton/CloseButton";
 import { ToggleCurrencyButton } from "@components/Buttons/ToggleButton/ToggleButton";
 
 
+
 interface IPropsMenuBurger {
     setMenuActive: (value: boolean) => void
     isMenuActive: boolean,
@@ -28,12 +31,12 @@ interface IPropsMenuBurger {
 
 const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User }) => {
     
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
 
     const { data: Groups,  isLoading: isGroupsLoading, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null)
     const { data: Invitations, isLoading: isInvitationsLoading, isFetching: isInvitationsFetching, isError: isInvitationsError, isSuccess: isInvitationsSuccess } = useGetInvitationsByCurrentUserQuery(null)
     const { data: UserBalance = { balance: 0 }, isError: isUserBalanceError, isFetching: isUserBalanceFetching } = useGetCurrentUserBalanceQuery(null)
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     const closeMenu = () => setMenuActive(false)
     const setActiveLinkClasses = (isActive: boolean) => {

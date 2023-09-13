@@ -21,10 +21,11 @@ import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { useParams } from 'react-router-dom';
 import { useGetGroupUsersHistoryQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 
 const History: React.FC = () => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency);
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const { groupId } = useParams();
 
     const [{ pageIndex, pageSize }, setPagination] =

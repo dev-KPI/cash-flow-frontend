@@ -11,6 +11,7 @@ import { isUrl, numberWithCommas } from "@services/UsefulMethods/UIMethods";
 import IUser from "@models/IUser";
 import IHistoryItem from "@models/IHistoryItem";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
 
 interface IRecentOperationDashboardCard {
     item: IHistoryItem
@@ -25,7 +26,7 @@ export interface IRecentOperationGroupCard {
 }
 
 export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ item }) => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const isExpense = item.category_id !== null;
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
@@ -50,7 +51,7 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
 
 
 export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ categoryColor, categoryTitle, time, amount, member, type }) => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
 

@@ -1,9 +1,11 @@
 
-import React, {FC} from 'react';
-//UI
-import classes from './Breadcrumbs.module.css'
+import React, { FC } from 'react';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { NavLink } from 'react-router-dom';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
+//UI
+import classes from './Breadcrumbs.module.css'
+
 
 interface IBreadcrumbsProps {
     breadcrumbs: IBreadcrumb[]
@@ -15,7 +17,7 @@ interface IBreadcrumb {
 }
 
 const Breadcrumbs:FC<IBreadcrumbsProps> = ({breadcrumbs}) => {
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme} = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     const setActiveLinkClasses = (isActive: boolean) => {
         let res = isActive ? classes.active : classes.item;

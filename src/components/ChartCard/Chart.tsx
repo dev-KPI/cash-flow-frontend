@@ -8,6 +8,8 @@ import { AnyObject } from 'chart.js/dist/types/basic';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { ICategoryAmount } from '@models/ICategory';
 import { IExtendedUser } from '@models/IUser';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 interface DoughnutProps {
     options: ChartOptions<'doughnut'>;
@@ -27,8 +29,8 @@ type IChartProps = { setId: (Dispatch<SetStateAction<number>>), total: number; }
 )
 
 const UserExpenseChart: FC<IChartProps> = ({ categories, members, total, setId }) => {
-    const currency = useAppSelector(state => state.persistedCurrencySlice.currency)
-    const { mainTextColor } = useAppSelector(state => state.persistedThemeSlice);
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
+    const { mainTextColor } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     let dataAmount: number[] = [];
     let backgroundColor: string[] = [];
 

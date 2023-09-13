@@ -1,9 +1,10 @@
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 import ContentLoader from 'react-content-loader';
 import classes from "./UserAccountCard.module.css";
 
 const UserAccountCardLoader = () => {
-    const actualTheme = useAppSelector(state => state.persistedThemeSlice.theme);
+    const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     if (window.matchMedia("screen and (min-width: 863px) and (max-width: 1440px)").matches) {
         return (
             <ContentLoader
