@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useParams } from 'react-router-dom';
 //logic
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
@@ -10,16 +11,17 @@ import ChartCard from '@components/ChartCard/ChartCard';
 import ChartCardLoader from '@components/ChartCard/ChartCardLoader';
 
 
-const GroupChartsCard:FC<{groupId:number}> = ({groupId}) => {
+const GroupChartsCard: FC = () => {
+    const { groupId } = useParams<{groupId: string}>();
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const { data: GroupExpensesByCategory, isLoading: isExpensesByCategoryLoading } = useGetGroupExpensesByCategoryQuery({
-        group_id: groupId,
+        group_id: Number(groupId),
         period: MonthPickerStore.type === 'year-month' ?
             { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
             { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
     })
     const { data: GroupExpensesByMember, isLoading: isExpensesByMemberLoading } = useGetCurrentGroupSpendersQuery({
-        group_id: groupId,
+        group_id: Number(groupId),
         period: MonthPickerStore.type === 'year-month' ?
             { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
             { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
