@@ -4,7 +4,8 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import IUserState from './UserInterfaces';
 
 const initialState: IUserState = {
-    isAuth: false
+    isAuth: false,
+    isAdmin: false
 }
 
 export const UserSlice = createSlice({
@@ -12,6 +13,9 @@ export const UserSlice = createSlice({
     initialState,
     reducers: {
         setIsAuth: (initialState, action: PayloadAction<boolean>): void => {
+            initialState.isAuth = action.payload
+        },
+        setIsAdmin: (initialState, action: PayloadAction<boolean>): void => {
             initialState.isAuth = action.payload
         },
     },
