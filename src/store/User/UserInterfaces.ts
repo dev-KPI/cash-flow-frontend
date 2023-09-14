@@ -1,3 +1,4 @@
 export default interface IUserState { 
-    isAuth: boolean
+    isAuth: boolean,
+    isAdmin: boolean
 }
