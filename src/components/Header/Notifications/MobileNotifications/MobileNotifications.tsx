@@ -16,23 +16,25 @@ const MobileNotifications: FC = () => {
 
     const [makeResponse, { data: ResponseData, isLoading: isResponseCreating, isError: isResponseError, isSuccess: isResponseCreated }] = useResponseInvitationByIdMutation()
     const onResponseInvitation = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
-        if (invitationId && response && !isResponseCreating) {
+        if (invitationId && response) {
             try {
-                const isGroupCreated = await makeResponse({
+                const isInvitationResponse = await makeResponse({
                     invitation_id: invitationId,
                     response: response
-                }).unwrap()
-                if (isGroupCreated) {
-                    if (response === 'ACCEPTED') {
-                        notify('success', `You accepted the invitation to ${ResponseData?.group.title} group`)
-                    } else {
-                        notify('success', `You denied the invitation to ${ResponseData?.group.title} group`)
+                }).unwrap().then((responsedInvitation) => {
+                    if (responsedInvitation) {
+                        if (response === 'ACCEPTED') {
+                            notify('success', `You accepted the invitation to ${responsedInvitation.group.title} group`)
+                        } else {
+                            notify('success', `You denied the invitation to ${responsedInvitation.group.title} group`)
+                        }
                     }
-                }
+                })
             } catch (err) {
                 console.error('Failed to response invitation group: ', err)
                 notify('error', `You haven't response the invitation`)
             }
+            setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         }
     }
 
