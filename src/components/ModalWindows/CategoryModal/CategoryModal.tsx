@@ -12,6 +12,10 @@ import { notify } from "src/App";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateCategoryByGroupMutation, useUpdateCategoryByGroupMutation } from "@store/Controllers/CategoriesController/CategoriesController";
 import { IGetCategoriesByGroupResponse } from "@store/Controllers/CategoriesController/CategoriesControllerInterfaces";
+import { useGetInfoByGroupQuery } from "@store/Controllers/GroupsController/GroupsController";
+import { useGetCurrentUserInfoQuery } from "@store/Controllers/UserController/UserController";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import IUserState from "@store/User/UserInterfaces";
 
 interface ICategoryModalProps{
     isCategoryModalOpen: boolean
@@ -22,8 +26,9 @@ interface ICategoryModalProps{
     categoryId?: number
 }
 
-const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCategoryModalOpen, mode, groupId, Categories, categoryId }) => {
+const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCategoryModalOpen, mode, groupId, Categories, categoryId }) => {
 
+    const UserSliceStore = useAppSelector<IUserState>(state => state.persistedUserSlice)
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Category'
 
@@ -40,7 +45,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
 
     const [createCategory, {isLoading: isCategoryCreating, isError: isCategoryCreatingError, isSuccess: isCategoryCreated}] = useCreateCategoryByGroupMutation();
     const [updateCategory, {isLoading: isCategoryUpdating, isError: isCategoryUpdatingError, isSuccess: isCategoryUpdated}] = useUpdateCategoryByGroupMutation();
-    
+
     const getSelectedCategory = useMemo(() => {
         if(Categories){
             return Categories.categories_group.filter(el => el.category.id === categoryId)[0]
@@ -65,7 +70,9 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
     const [isInputError, setIsInputError] = useState<boolean>(false);
 
     const onCreateCategory = async () => {
-        if (groupId && nameValue && icon && pickedColor && !isCategoryCreating) {
+        if (!UserSliceStore.isAdmin) {
+            notify('error', `You're not admin of this group`) 
+        } else if (groupId && nameValue && icon && pickedColor && !isCategoryCreating) {
             try {
                 const isCreatedCategory = await createCategory({
                     group_id: groupId,
@@ -83,7 +90,9 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
         }
     }
     const onUpdateCategory = async () => {
-        if (groupId && nameValue && categoryId && icon && pickedColor && !isCategoryUpdating) {
+        if (!UserSliceStore.isAdmin) {
+            notify('error', `You're not admin of this group`) 
+        } else if (groupId && nameValue && categoryId && icon && pickedColor && !isCategoryUpdating) {
             try {
                 const isUpdatedCategory = await updateCategory({
                     group_id: groupId,
@@ -97,7 +106,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({ isCategoryModalOpen, setIsCate
                 }
             } catch (err) {
                 console.error('Failed to create category: ', err)
-                notify('error', `You haven't updated ${nameValue} category`)
+                notify('error', `You haven't created ${nameValue} category`)
             }
         }
     }
