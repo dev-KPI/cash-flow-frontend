@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 //UI
 import classes from './RecentOperationsCards.module.css';
@@ -8,21 +8,15 @@ import userIcon from '@assets/user-icon.svg';
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import { isUrl, numberWithCommas } from "@services/UsefulMethods/UIMethods";
-import IUser from "@models/IUser";
-import IHistoryItem from "@models/IHistoryItem";
+import IHistoryItem, { IGroupHistoryItem } from "@models/IHistoryItem";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
 
 interface IRecentOperationDashboardCard {
     item: IHistoryItem
 }
-export interface IRecentOperationGroupCard {
-    categoryColor: string,
-    categoryTitle: string,
-    time: string,
-    amount: number,
-    member: IUser,
-    type: 'expense' | 'replenishment'
+export interface IRecentOperationGroupCard  {
+    item: IGroupHistoryItem
 }
 
 export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ item }) => {
@@ -50,7 +44,7 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
 }
 
 
-export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ categoryColor, categoryTitle, time, amount, member, type }) => {
+export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ item }) => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
@@ -58,10 +52,10 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ catego
     const getAdminIcon = () => {
         return <img className={classes.photo}
                 alt={'user icon'}
-                src={isUrl(member.picture) ? member.picture : userIcon}/>   
+            src={isUrl(item.user_picture) ? item.user_picture : userIcon}/>   
     }
 
-    const name = member.first_name + ' ' + member.last_name
+    const name = item.user_first_name + ' ' + item.user_last_name 
     
     return (
         <li className={classes.RecentOperationGroupCard}>
@@ -70,19 +64,19 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ catego
                     >{getAdminIcon()}</div>
                     <div className={classes.memberInfo}>
                         <h6 className={classes.name}>{name}</h6>
-                        <p className={classes.time}>{timeAgo.format(new Date(time))}</p>
+                        <p className={classes.time}>{timeAgo.format(new Date(item.time))}</p>
                     </div>
             </div>
             <div className={classes.category}>
                 <Light
-                    color={categoryColor}
+                    color={item.color_code_category}
                     type={'hollow'}
                     className={classes.categoryColor} />
-                <h5 className={classes.title}>{categoryTitle}</h5>
+                <h5 className={classes.title}>{item.title_category}</h5>
             </div>
-            <p style={{ color: type === 'expense' ? "#FF2D55" : "#80D667" }}
+            <p style={{ color: "#FF2D55"  }}
                 className={classes.amount}>
-                {`${type === 'expense' ? "-" : "+"}${currency}${numberWithCommas(amount)}`}</p>
+                {`${"-"}${currency}${numberWithCommas(item.amount)}`}</p>
         </li>
     )
 }
