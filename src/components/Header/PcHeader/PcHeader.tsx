@@ -13,6 +13,7 @@ import ContextUser from '@components/ContextUser/ContextUser';
 //logic
 import IHeaderProps from '../HeaderInterfaces';
 import { useGetInvitationsByCurrentUserQuery } from '@store/Controllers/InvitationController/InvitationController';
+import { Link } from 'react-router-dom';
 
 
 const HeaderSite: FC<IHeaderProps> = ({User}) => {
@@ -40,9 +41,9 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
                     <div className={classes.header__logo}>
-                        <div className={classes.logo__wrapper}>
+                        <Link to='/' className={classes.logo__wrapper}>
                             <img src={Logo} alt="logo" />
-                        </div>
+                        </Link>
                         <h1 className={classes.title}>Cash<span>Flow</span></h1>
                     </div>
                     <div className={classes.header__menu}>
