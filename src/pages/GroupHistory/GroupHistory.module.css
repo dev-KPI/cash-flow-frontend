@@ -82,6 +82,10 @@
 /* member */
 .memberWrapper{
     display: flex;
+    transition: all .3s ease;
+}
+.memberWrapper:hover{
+    text-decoration: underline;
 }
 .memberInfo{
     display: flex;
