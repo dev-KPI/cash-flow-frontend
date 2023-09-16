@@ -10,6 +10,8 @@ import { useCreateExpenseByGroupMutation, useUpdateExpenseByGroupMutation } from
 import { useUpdateReplenishmentByIdMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
 import { toast } from "react-toastify";
 import { notify } from "src/App"; 
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
 
 type IExpenseModalProps = {
     isExpenseModalOpen: boolean
@@ -28,7 +30,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     amount, description, type, isReplenishment = false, 
     setActionCredentials = () => {}, expenseId = 0 }) => {
 
-    const dollarIcon: ReactNode = <i className="bi bi-currency-dollar"></i>
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const headerIcon: ReactNode = isReplenishment ? <i className="bi bi-graph-up-arrow"></i> : <i className="bi bi-graph-down-arrow"></i>
     const titleModal = isReplenishment ? 'Replenishment' : 'Expense'
     const amountTitle = `Amount of ${isReplenishment ? 'replenishment' : 'expense'}`
@@ -164,7 +166,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                             isError={isInputError}
                             setFormValue={{type: 'cash', callback: setAmountValue}}
                             isInputMustClear={!isExpenseModalOpen} 
-                            Icon={dollarIcon} inputType="cash" id="salary" 
+                            Icon={currency} inputType="cash" id="salary" 
                             name="salary" placeholder="00.00"/>
                         </div>
                     </li>
