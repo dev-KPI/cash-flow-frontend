@@ -97,3 +97,11 @@
       display: block;
   }
 }
+@media only screen and (max-width: 400px) {
+    .menuBurger {
+        left: -250px;
+    }
+    .menuBurgerOpen {
+        left: 0;
+    }
+}
