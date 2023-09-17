@@ -40,10 +40,10 @@ const Users: React.FC = () => {
             cell: info => {
                 const picture = info.row.original.picture ?? ''
                 const full_name = () => {
-                    if(info?.row?.original?.last_name){
-                        return info.row.original.first_name + ' ' + info.row.original.last_name
+                    if (info?.row?.original?.last_name) {
+                        return (info.row.original.first_name + ' ' + info.row.original.last_name).slice(0, 40)
                     } else {
-                        return info.row.original.first_name
+                        return info.row.original.first_name.slice(0,40)
                     }
                 }
                 const email = info.row.original.login
@@ -67,7 +67,7 @@ const Users: React.FC = () => {
             cell: info => {
                 if (info.row.original.id === CurrentUser?.id)
                     return null
-                const userName = info.row.original.first_name + ' ' + info.row.original.last_name
+                const userName = (info.row.original.first_name + ' ' + info.row.original.last_name).slice(0,40)
                 const userId = info.row.original.id
                 const groups = isGroupsSuccess ? Groups.user_groups : []
                 return <Button
