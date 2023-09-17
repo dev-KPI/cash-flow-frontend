@@ -62,16 +62,20 @@ const MobileNotifications: FC = () => {
                             icon="submit"
                             type="primary"
                             isPending={isResponseCreating && buttonClicked === 'accept' && el.id === clickedButtonId}
-                            children="Accept"
-                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'ACCEPTED') }} />
+                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'ACCEPTED') }}
+                        >
+                            <p>Accept</p>
+                        </CustomButton>
                         <CustomButton
                             icon="refuse"
                             type="danger"
                             background="outline"
                             isPending={isResponseCreating && buttonClicked === 'reject' && el.id === clickedButtonId}
-                            children="Reject"
                             disableScale={true}
-                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'DENIED') }} />
+                            callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'DENIED') }}
+                        >
+                            <p>Reject</p>
+                        </CustomButton>
                     </div>
                 </form>
             </li>

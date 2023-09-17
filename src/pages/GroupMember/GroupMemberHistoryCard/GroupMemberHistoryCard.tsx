@@ -1,4 +1,4 @@
-import React, { FC, useState, ReactNode, useCallback, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useWindowSize } from "usehooks-ts";
 //UI
@@ -8,29 +8,9 @@ import { RecentOperationGroupCard } from "@components/RecentOperationsCards/Rece
 import GroupMemberHistoryCardLoader from "./GroupMemberHistoryCardLoader";
 
 
-//logic
-import { Omiter, addFieldToObject } from "@services/UsefulMethods/ObjectMethods";
-import { MembersHistoryObj } from "@pages/MembersHistoryObj";
-
-import ICategory from "@models/ICategory";
-import IUser from "@models/IUser";
-import IGroup from "@models/IGroup";
+//logic;
 import { useGetGroupMemberHistoryQuery } from "@store/Controllers/GroupsController/GroupsController";
 
-
-
-interface GroupTransaction {
-    id: number;
-    amount: number;
-    time: string;
-    description: string;
-    category_group?: {
-        group?: IGroup 
-        category?: ICategory
-    },
-    user: IUser
-    type: string
-}
 
 const GroupHistoryCard: FC = () => {
 
@@ -50,19 +30,10 @@ const GroupHistoryCard: FC = () => {
             if (memberId) {
                 let recentOperations = MemberHistory.items.map((el, i) =>
                     <RecentOperationGroupCard
-                    key={i}
-                    type={'expense'}
-                    categoryColor={el.color_code_category || '#80D667'}
-                    categoryTitle={el.title_category || 'Salary'}
-                    member={{
-                        id: el.user_id,
-                        login: el.user_login,
-                        first_name: el.user_first_name,
-                        last_name: el.user_last_name,
-                        picture: el.user_picture,
-                    }}
-                    amount={el.amount}
-                    time={new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()}></RecentOperationGroupCard>
+                        item={{
+                            ...el,
+                            time: new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()
+                        }}></RecentOperationGroupCard>
                 )
                 if (width > 1440)
                     return recentOperations.slice(0, 4)

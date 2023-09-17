@@ -110,7 +110,8 @@
 }
 
 @media only screen and (max-width: 400px) {
-    .buttonGroup button {
+    .buttonGroup button,
+    .buttonGroup>div {
         width: 32px;
         height: 32px;
     }
