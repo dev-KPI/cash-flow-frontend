@@ -20,7 +20,7 @@ import {
 } from '@tanstack/react-table'
 import { IGroupHistoryItem } from '@models/IHistoryItem';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useGetGroupUsersHistoryQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
@@ -81,6 +81,7 @@ const History: React.FC = () => {
                 }
                 const email = info.row.original.user_login
                 return info.renderValue() ?
+                    <Link to={`/group/${groupId}/member/${info?.row?.original?.user_id}`} className={classes.memberWrapper}>
                         <div className={classes.details}>
                             <div className={classes.icon}>
                                 <img className={classes.photo}
@@ -92,7 +93,8 @@ const History: React.FC = () => {
                                 <h6 className={classes.name}>{full_name()}</h6>
                                 <p className={classes.email}>{email}</p>
                             </div>
-                        </div> : '-'
+                        </div>
+                    </Link> : '-'
             }
         }),
         columnHelper.accessor('title_category', {

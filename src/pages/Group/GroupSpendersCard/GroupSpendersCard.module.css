@@ -15,6 +15,22 @@
     justify-content: space-between;
 }
 
+.emptyList {
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    color: var(--main-text);
+}
+.emptyList i {
+    font-size: 32px;
+}
+.emptyTitle {
+    margin-top: 10px;
+    composes: largeItemTitle from "@styles/style.css";
+    color: var(--main-text);
+}
+
 .spendersLink {
     font-weight: 600;
     composes: largeItemTitle from "@styles/style.css";

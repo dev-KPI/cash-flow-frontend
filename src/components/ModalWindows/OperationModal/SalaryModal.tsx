@@ -8,6 +8,8 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateReplenishmentMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
 import { notify } from "src/App";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
 
 interface IOperationModalProps{
     isSalaryModalOpen: boolean
@@ -19,7 +21,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
     isSalaryModalOpen = false, 
     setIsSalaryModalOpen }) => {
 
-    const dollarIcon: ReactNode = <i className="bi bi-currency-dollar"></i>
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const headerIcon: ReactNode = <i className="bi bi-credit-card-2-front"></i>
     const titleModal = 'Salary'
     const amountTitle = 'Amount of salary'
@@ -70,7 +72,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
                             <Input
                                 setFormValue={{ type: 'cash', callback: setOperationValue }}
                                 isInputMustClear={!isSalaryModalOpen}
-                                Icon={dollarIcon} inputType="cash" id="salary"
+                                Icon={currency} inputType="cash" id="salary"
                                 name="salary" placeholder="00.00" />
                         </div>
                     </li>

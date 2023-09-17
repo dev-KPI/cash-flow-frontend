@@ -95,7 +95,7 @@ const Input: FC<IInputProps> = ({
             setInputStringValue(e.currentTarget.value);
         }} 
         min={3}
-        maxLength={16}
+        maxLength={32}
         style={{
             height: '50px',
             maxHeight: '50px',
