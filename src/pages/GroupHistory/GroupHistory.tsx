@@ -1,10 +1,12 @@
-import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
+import React, { useMemo, useState} from 'react';
 
 //UI
 import classes from './GroupHistory.module.css';
 import userIcon from '@assets/user-icon.svg'
 import PreLoader from '@components/PreLoader/PreLoader';
 import Light from '@components/Light/Light';
+import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 //logic
 import DateService from '@services/DateService/DateService';
 import {
@@ -23,6 +25,8 @@ import { useGetGroupUsersHistoryQuery } from '@store/Controllers/GroupsControlle
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
+
+interface IColumnsHistory extends IGroupHistoryItem { edit_remove?: string }
 
 const History: React.FC = () => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
@@ -48,8 +52,21 @@ const History: React.FC = () => {
         page: pageIndex + 1,
         size: pageSize
     });
-    
-    const columnHelper = createColumnHelper<IGroupHistoryItem>()
+    const [isEditExpenseModal, setIsEditExpenseModal] = useState<boolean>(false);
+    const [isRemoveExpenseModal, setIsRemoveExpenseModal] = useState<boolean>(false);
+    const [ExpenseCredentials, setExpenseCredentials] = useState<{
+        id: number,
+        descriptions: string,
+        amount: number,
+        category_id: number,
+    }>({
+        id: 0,
+        descriptions: '',
+        amount: 0,
+        category_id: 0
+    });
+
+    const columnHelper = createColumnHelper<IColumnsHistory>()
     const columns = [
         columnHelper.accessor(`user_first_name`, {
             header: () => 'Member',
@@ -64,7 +81,6 @@ const History: React.FC = () => {
                 }
                 const email = info.row.original.user_login
                 return info.renderValue() ?
-                    <div className={classes.memberWrapper}>
                         <div className={classes.details}>
                             <div className={classes.icon}>
                                 <img className={classes.photo}
@@ -76,8 +92,7 @@ const History: React.FC = () => {
                                 <h6 className={classes.name}>{full_name()}</h6>
                                 <p className={classes.email}>{email}</p>
                             </div>
-                        </div>
-                    </div> : '-'
+                        </div> : '-'
             }
         }),
         columnHelper.accessor('title_category', {
@@ -103,6 +118,35 @@ const History: React.FC = () => {
             cell: info =>
                 <p className={classes.amount} style={{ color:  "#FF2D55", textAlign: "left" }}>{"-"}{currency}{numberWithCommas(info.getValue())}</p>,
         }),
+        columnHelper.accessor('edit_remove', {
+            header: () => '',
+            cell: info => <div className={classes.editRemove}>
+                <button className={classes.editButton} onClick={(e) => {
+                    e.preventDefault();
+                    setExpenseCredentials({
+                        id: info.row.original.id,
+                        descriptions: info.row.original.descriptions,
+                        amount: info.row.original.amount,
+                        category_id: info.row.original.category_id
+                    })
+                    setIsEditExpenseModal(!isEditExpenseModal);
+                }}>
+                    <i className="bi bi-pencil"></i>
+                </button>
+                <button className={classes.removeButton} onClick={(e) => {
+                    e.preventDefault();
+                    setExpenseCredentials({
+                        id: info.row.original.id,
+                        descriptions: info.row.original.descriptions,
+                        amount: info.row.original.amount,
+                        category_id: info.row.original.category_id
+                    })
+                    setIsRemoveExpenseModal(!isRemoveExpenseModal)
+                }}>
+                    <i className="bi bi-trash"></i>
+                </button>
+            </div>
+        })
     ];
     
 
@@ -225,12 +269,49 @@ const History: React.FC = () => {
             <PreLoader preLoaderSize={50} type='auto' />
         </div>
     }
-    return (
+    return (<>
+        <ConfirmationModal
+        mode='remove_expense'
+        title={ExpenseCredentials.descriptions}
+        isConfirmationModalOpen={isRemoveExpenseModal}
+        setIsConfirmationModalOpen={setIsRemoveExpenseModal}
+        groupId={Number(groupId)}
+        expenseId={ExpenseCredentials.id}
+        callback={() => {
+            setExpenseCredentials({
+                id: 0,
+                descriptions: '',
+                amount: 0,
+                category_id: 0
+            })
+        }}
+        />
+        <ExpenseModal
+            type='edit'
+            isReplenishment={false}
+            amount={ExpenseCredentials.amount}
+            description={ExpenseCredentials.descriptions}
+            isExpenseModalOpen={isEditExpenseModal}
+            setIsExpenseModalOpen={setIsEditExpenseModal}
+            groupId={Number(groupId)}
+            expenseId={ExpenseCredentials.id}
+            categoryId={ExpenseCredentials.category_id}
+            setActionCredentials={() => {
+                setExpenseCredentials({
+                    id: 0,
+                    descriptions: '',
+                    amount: 0,
+                    category_id: 0
+                })
+            }}
+        />
         <main id='GroupHistoryPage' className="no-padding">
             <div className={classes.page__container}>
                 {historyContent}
             </div>
         </main>
+    </>
+       
     )
 }
 

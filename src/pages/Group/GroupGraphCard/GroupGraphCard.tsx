@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from "react";
-
+import { useParams } from 'react-router-dom';
 //UI
 import classes from './GroupGraphCard.module.css';
 import ToggleButton from "@components/Buttons/ToggleButton/ToggleButton";
@@ -15,7 +15,8 @@ import { subDays, isSameDay } from 'date-fns'
 import { useGetGroupExpensesByMemberDailyQuery, useGetGroupExpensesDailyQuery } from "@store/Controllers/GroupsController/GroupsController";
 
 
-const GroupGraphCard: FC<{ groupId: number }> = ({ groupId }) => {
+const GroupGraphCard: FC= () => {
+    const { groupId } = useParams<{ groupId: string }>();
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     const MonthPickerRange = useMemo(() => {
         if(MonthPickerStore.type === 'date-range'){
@@ -33,9 +34,9 @@ const GroupGraphCard: FC<{ groupId: number }> = ({ groupId }) => {
         }
     }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
     
-    const { data: GroupExpenses, isFetching: isGroupExpensesFetching, isLoading: isGroupExpensesLoading, isError: isGroupExpensesError, isSuccess: isGroupExpensesSuccess } = useGetGroupExpensesDailyQuery({ group_id: groupId, period: MonthPickerRange.period });
+    const { data: GroupExpenses, isFetching: isGroupExpensesFetching, isLoading: isGroupExpensesLoading, isError: isGroupExpensesError, isSuccess: isGroupExpensesSuccess } = useGetGroupExpensesDailyQuery({ group_id: Number(groupId), period: MonthPickerRange.period });
 
-    const { data: GroupExpensesByMember, isFetching: isGroupExpensesByMemberFetching, isLoading: isGroupExpensesByMemberLoading, isError: isGroupExpensesByMemberError, isSuccess: isGroupExpensesByMemberSuccess } = useGetGroupExpensesByMemberDailyQuery({ group_id: groupId, period: MonthPickerRange.period });
+    const { data: GroupExpensesByMember, isFetching: isGroupExpensesByMemberFetching, isLoading: isGroupExpensesByMemberLoading, isError: isGroupExpensesByMemberError, isSuccess: isGroupExpensesByMemberSuccess } = useGetGroupExpensesByMemberDailyQuery({ group_id: Number(groupId), period: MonthPickerRange.period });
 
     const [isToggled, setIsToggled] = useState<boolean>(false);
     

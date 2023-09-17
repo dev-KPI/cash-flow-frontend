@@ -104,8 +104,8 @@ const Group = () => {
                         isInfoLoading={isGroupInfoLoading} 
                         groupInfo={GroupInfo}
                     />
-                    <GroupChartsCard groupId={Number(groupId)} />
-                    <GroupGraphCard groupId={Number(groupId)}/>
+                    <GroupChartsCard />
+                    <GroupGraphCard/>
                     <GroupHistoryCard/>
                 </div>
             </div>

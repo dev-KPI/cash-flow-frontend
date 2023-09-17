@@ -83,11 +83,6 @@
     padding-left: 5px;
 }
 
-/* member */
-.memberWrapper {
-    display: flex;
-}
-
 .pending{
     /* filter: brightness(0.7); */
     filter: opacity(0.5);
@@ -303,7 +298,7 @@
         padding-left: 0px;
     }
 
-    .recentOperations__table tbody td:first-child {
+    .recentOperations__table tbody tr:not(:last-child) td:first-child {
         max-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
