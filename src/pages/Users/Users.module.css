@@ -125,6 +125,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    max-width: 280px;
 }
 
 .email {
@@ -328,10 +330,6 @@
     }
     .pagination {
         padding: 10px;
-    }
-
-    .memberWrapper {
-        width: unset;
     }
 
     /* pagination */

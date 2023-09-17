@@ -36,6 +36,7 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
     const notificationsClass = useMemo(() => {
        return [classes.header__notifications, isInvitationsSuccess && Invitations.length > 0 ? classes.notificationsVisible : ''].join(' ');
     }, [isInvitationsLoading, isInvitationsFetching])
+    const name = (User.first_name + ' ' + User.last_name).slice(0, 40);
     return (<>
         <header className={classes.header}>
             <div className={classes.header__container}>
@@ -69,7 +70,7 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
                             <img style={{borderRadius: '50%'}} src={User.picture} alt="icon" />
                             <div className={classes.profile__inner}>
                                 <div className={classes.profile__main}>
-                                    <h4 className={classes.profile__name}>{User.first_name} {User.last_name}</h4>
+                                    <h4 className={classes.profile__name}>{name}</h4>
                                     <p className={classes.profile__email}>{User.login}</p>
                                 </div>
                                 <i className={`bi bi-chevron-down ${classes.chevron} ${getChevronClass}`}></i>

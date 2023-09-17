@@ -177,21 +177,17 @@
     composes: largeItemTitle from "@styles/style.css";
 }
 
-.name {
+.name, .email{
     composes: mediumItemTitle from '@styles/style.css';
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+}
+
+.name {
     font-weight: 600;
     color: var(--main-text);
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.email {
-    composes: mediumItemTitle from "@styles/style.css";
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* pagination */

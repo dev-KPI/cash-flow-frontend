@@ -54,16 +54,30 @@
     display: flex;
     align-items: center;
     column-gap: 20px;
-}   
+} 
+.profile__main{
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    min-width: 0;
+    text-align: left;
+    max-width: 260px;
+}  
 .profile__name{
     composes: largeItemTitle from "@styles/style.css";
     color: var(--main-text);
     font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
     
 } 
 .profile__email {
     composes: mediumItemTitle from "@styles/style.css";
-    letter-spacing: -0.4633px
+    letter-spacing: -0.4633px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
 }
 
 .profile__wrapper{
