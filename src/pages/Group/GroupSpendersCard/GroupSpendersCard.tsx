@@ -33,31 +33,38 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
     const getSpenders = () => {
         if(data && !isError && !isLoading){
             let spenders: IGetCurrentGroupSpendersResponse[] = data.slice(0,3);
-            return spenders.map((item, i) => {
-                const photo = item.picture
-                const name = item.first_name + " " + item.last_name
-                return (
-                    <li key={`${i} + ${item.amount}`}>
-                        <NavLink
-                            to={`./member/${item.id}`}
-                            className={classes.spender}
-                            >
-                            <p className={classes.order}>{i + 1}.</p>
-                            <div className={classes.details}>
-                                <div className={classes.info}>
-                                    <img className={classes.photo}
-                                        alt={'user icon'}
-                                        src={isUrl(photo) ? photo : userIcon}
-                                    />
-                                    <p className={classes.name}>{name}</p>
+            if (spenders.length > 0) {
+                return spenders.map((item, i) => {
+                    const photo = item.picture
+                    const name = item.first_name + " " + item.last_name
+                    return (
+                        <li key={`${i} + ${item.amount}`}>
+                            <NavLink
+                                to={`./member/${item.id}`}
+                                className={classes.spender}
+                                >
+                                <p className={classes.order}>{i + 1}.</p>
+                                <div className={classes.details}>
+                                    <div className={classes.info}>
+                                        <img className={classes.photo}
+                                            alt={'user icon'}
+                                            src={isUrl(photo) ? photo : userIcon}
+                                        />
+                                        <p className={classes.name}>{name}</p>
+                                    </div>
+                                    <p className={classes.amount}>{numberWithCommas(item.amount)}{currency}</p>
                                 </div>
-                                <p className={classes.amount}>{numberWithCommas(item.amount)}{currency}</p>
-                            </div>
-                        </NavLink>
-                
-                    </li>)
-                }
-            )
+                            </NavLink>
+                    
+                        </li>)
+                    }
+                )
+            } else {
+                return <div className={classes.emptyList}>
+                    <i className="bi bi-people"></i>
+                    <p className={classes.emptyTitle}>Spenders list is empty!</p>
+                </div> 
+            }
         } else if (isLoading || isFetching) {
             return (<div className={classes.loaderWrapper}><PreLoader preLoaderSize={25} type='auto'/></div>)
         } else {

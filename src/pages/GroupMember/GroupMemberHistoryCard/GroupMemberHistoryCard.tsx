@@ -66,12 +66,12 @@ const GroupHistoryCard: FC = () => {
                     }
                     {
                         getRecentActivities?.length === 0 ?
-                            <div className={classes.emptyList}>
-                                <i className="bi bi-clock-history"></i>
-                                <p className={classes.emptyTitle}>Activity list is empty!</p>
-                            </div> 
-                            :
-                            null
+                        <div className={classes.emptyList}>
+                            <i className="bi bi-clock-history"></i>
+                            <p className={classes.emptyTitle}>Activity list is empty!</p>
+                        </div> 
+                        :
+                        null
                     }
                 </div>
             }
