@@ -70,9 +70,6 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
     const [isInputError, setIsInputError] = useState<boolean>(false);
 
     const onCreateCategory = async () => {
-        // if (!UserSliceStore.isAdmin) {
-        //     notify('error', `You're not admin of this group`) 
-        // } else
         if (groupId && nameValue && icon && pickedColor && !isCategoryCreating) {
             try {
                 const isCreatedCategory = await createCategory({
@@ -91,9 +88,6 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
         }
     }
     const onUpdateCategory = async () => {
-        // if (!UserSliceStore.isAdmin) {
-        //     notify('error', `You're not admin of this group`) 
-        // } else
         if (groupId && nameValue && categoryId && icon && pickedColor && !isCategoryUpdating) {
             try {
                 const isUpdatedCategory = await updateCategory({
