@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, Dispatch } from "react";
+import React, { FC, SetStateAction, Dispatch, useState } from "react";
 import { Link } from 'react-router-dom';
 
 //store
@@ -17,10 +17,10 @@ interface IContenxtUserProps {
 
 const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef }) => {
     const UserSliceDispatch = useActionCreators(UserSliceActions);
-
     const LogOut = () => {
         UserSliceDispatch.setIsAuth(false)
     }
+
 
     return (
         <SmallModal
@@ -32,16 +32,11 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
             disableHeader={true}
             children={
                 <ul className={classes.List}>
-                    {/* <li className={classes.item}>
-                        <Link to={'/'}>
-                            <h4 className={classes.Link}>Settings</h4>
+                    <li className={classes.item}>
+                        <Link to={'/faq'}>
+                            <h4 className={classes.Link}>FAQ</h4>
                         </Link>
                     </li>
-                    <li className={classes.item}>
-                        <Link to={'/'}>
-                            <h4 className={classes.Link}>Personal information</h4>
-                        </Link>
-                    </li> */}
                     <li className={classes.item}>
                         <ToggleCurrencyButton/>
                     </li>

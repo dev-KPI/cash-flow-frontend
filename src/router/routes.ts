@@ -5,12 +5,12 @@ import Groups from "@pages/Groups/GroupsPage";
 import Group from "@pages/Group/Group";
 import History from "@pages/History/History";
 import Login from "@pages/Login/Login";
+import FAQ from "@pages/FAQ/FAQ";
 import MobileNotifications from "@components/Header/Notifications/MobileNotifications/MobileNotifications";
 import GroupMember from "@pages/GroupMember/GroupMember";
 import GroupMembers from "@pages/GroupMembers/GroupMembers";
 import GroupHistory from "@pages/GroupHistory/GroupHistory";
 import Users from "@pages/Users/Users";
-import MonthPicker from "@components/MonthPicker/MonthPicker";
 
 
 export const DASHBOARD_PAGE = '/dashboard';
@@ -25,6 +25,7 @@ export const GROUP_MEMBER_PAGE = '/group/:groupId/member/:memberId';
 export const HISTORY_PAGE = '/history';
 export const LOG_IN_PAGE = '/login';
 export const LOG_OUT = '/logout';
+export const FAQ_PAGE = '/faq';
 
 
 export const routesNotAuth = [
@@ -54,6 +55,10 @@ export const routesAuth = [
     {
         path: HISTORY_PAGE,
         component: History
+    },
+    {
+        path: FAQ_PAGE,
+        component: FAQ
     }
 ];
 export const routesMobileNavigation = [
