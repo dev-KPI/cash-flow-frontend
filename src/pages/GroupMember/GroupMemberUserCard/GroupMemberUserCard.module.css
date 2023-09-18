@@ -58,9 +58,9 @@
 
 .name {
     composes: largeText from "@styles/style.css";
-    white-space: nowrap;
+    max-width: 300px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis
 }
 
 .email {

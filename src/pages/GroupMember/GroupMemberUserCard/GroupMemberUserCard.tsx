@@ -91,7 +91,7 @@ const GroupMemberUserCard: React.FC = () => {
                     </div>
                     <div className={classes.personal__data}>
                         <h4 className={classes.name}>{fullname}</h4>
-                        <p className={classes.email}>{login}</p>
+                        {/* <p className={classes.email}>{login}</p> */}
                     </div>
                 </div>
                 <div className={classes.cardsWrapper}>
