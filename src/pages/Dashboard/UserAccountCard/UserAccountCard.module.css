@@ -46,7 +46,7 @@
 }
 .name{
     composes: largeText from "@styles/style.css";
-    max-height: 110px;
+    max-height: 72px;
     word-break: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -138,16 +138,14 @@
         font-size: 22px;
         line-height: 27px;
     }
-    /* .name{
-        max-width: 235px;
-    } */
     .personal__data {
         margin-left: 0;
-        flex: 1 0 50%;
-        row-gap: 20px;
-       
+        flex: 1 0 50%;   
+        row-gap: 10px;
     }
-
+    .avatar{
+        margin-bottom: 10px;
+    }
     .user{
         justify-content: center;
         text-align: center;
@@ -160,9 +158,6 @@
     .loader {
         height: 380px;
     }
-    /* .name {
-        max-width: 350px;
-    } */
 }
 @media only screen and (max-width: 768px) {
     .AccountCard{
