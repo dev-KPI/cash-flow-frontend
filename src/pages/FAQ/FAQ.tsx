@@ -44,11 +44,14 @@ const FAQ: FC = () => {
                     <h2 className={classes.title}>FAQ</h2>
                     <div className={classes.faq__list}>
                         <Accordion>
-                            <AccordionTab title="Lorem">
-                                <p className={classes.faq__text}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <AccordionTab title="Why can't I record an expense using the expenses card, near the income card?">
+                                <p className={classes.faq__text}>Because this card defines the total costs of the user and serves only for information.</p>
                             </AccordionTab>
-                            <AccordionTab title="Lorem">
-                                <p className={classes.faq__text}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                            <AccordionTab title="How can I record an expense?">
+                                <p className={classes.faq__text}>You must create a group and a category for the group to be able to record the expense. This can be done on the group page or on the dashboard page by selecting the group and category to which the expenses will be allocated.</p>
+                            </AccordionTab>
+                            <AccordionTab title="Can I use a group for one person?">
+                                <p className={classes.faq__text}>Yes, because it is the only way to track the expenses. You can't interact with expenses without creating a group and categories.</p>
                             </AccordionTab>
                         </Accordion>
                     </div>
