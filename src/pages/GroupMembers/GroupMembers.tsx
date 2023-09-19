@@ -114,7 +114,7 @@ const History: React.FC = () => {
                         </div>
                         <div className={classes.memberInfo}>
                             <h6 className={classes.name}>{full_name()}</h6>
-                            <p className={classes.email}>{email}</p>
+                            {/* <p className={classes.email}>{email}</p> */}
                         </div>
                     </div> : '-'
             }
