@@ -72,7 +72,7 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ item }
                     color={item.color_code_category}
                     type={'hollow'}
                     className={classes.categoryColor} />
-                <h5 className={classes.title}>{item.title_category}</h5>
+                <h5 className={[classes.title, classes.group].join(' ')}>{item.title_category}</h5>
             </div>
             <p style={{ color: "#FF2D55"  }}
                 className={classes.amount}>
