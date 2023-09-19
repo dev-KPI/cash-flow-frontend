@@ -27,7 +27,6 @@ const ChartCardDot: FC<IChartCardDotProps> = ({ category, member, setId }) => {
         title = member.first_name + ' ' + member.last_name || '';
     }
 
-    title = title.length > 13 ? title.slice(0,12) + '..' : title
     return (
         <li className={classes.item} onClick={onClick}>
             <Light type={'solid'} color={color}></Light>

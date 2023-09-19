@@ -12,6 +12,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    flex: 1;
+    min-width: 0;
 }
 
 .wrapper {
@@ -32,11 +34,16 @@
 .expenseInfo {
     color: var(--main-text);
     margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
 }
 
 .expenseTitle {
     composes: mediumItemTitle from "@styles/style.css";
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .expensePercent {
@@ -52,6 +59,10 @@
 
 .info {
     margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0
 }
 
 
@@ -72,19 +83,19 @@
 }
 
 .chartList{
-    width: 146px;
+    margin-right: 16px;
 }
 
 .popupList{
-    width: 162px;
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: 96px;
-    margin: -4px -8px;
-    padding: 4px 8px;
+    height: 92px;
     margin-bottom: 15px;
 }
-
+.popupList::-webkit-scrollbar {
+    position: absolute;
+    right: 0;
+}
 /* no expenses */
 .noExpenses {
     text-align: center;
@@ -146,7 +157,7 @@
         line-height: 16px;
     }
     .info {
-        max-width: 121px;
+        /* max-width: 121px; */
     }
 }
 

@@ -1,7 +1,6 @@
 .item {
     display: flex;
     gap: 10px;
-    width: fit-content;
     align-items: center;
 }
 .item:hover{
@@ -17,6 +16,8 @@
 .itemTitle {
     composes: largeItemTitle from "@styles/style.css";
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 @media only screen and (max-width: 768px) {

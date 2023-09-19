@@ -1,9 +1,10 @@
+import React, { FC } from 'react';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
-import React from 'react';
+
 import ContentLoader from 'react-content-loader';
 
-const ChartCardLoader = () => {
+const ChartCardLoader: FC<{ className?: string }> = ({ className }) => {
     const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const getItems = () => {
         let res = [];
@@ -23,6 +24,7 @@ const ChartCardLoader = () => {
             viewBox="0 0 510 300"
             width={'100%'}
             height={'100%'}
+            className={className ? className : ''}
             backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
             foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
         >
