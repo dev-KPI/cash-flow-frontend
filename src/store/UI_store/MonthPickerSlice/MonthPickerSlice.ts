@@ -24,6 +24,7 @@ export const MonthPickerSlice = createSlice({
     initialState,
     reducers: {
         prevMonth: (initialState: IMonthPickerState): void => {
+            initialState.rangeType = 'month'
             const {currentMonth, months} = initialState
             if(!months[months.indexOf(currentMonth) - 1]){ 
                 initialState.currentYear -= 1;
@@ -33,6 +34,7 @@ export const MonthPickerSlice = createSlice({
             initialState.currentMonth = months[months.indexOf(currentMonth) - 1]
         },
         nextMonth: (initialState: IMonthPickerState): void => {
+            initialState.rangeType = 'month'
             const {currentMonth, months} = initialState
             if(!months[months.indexOf(currentMonth) + 1]){ 
                 initialState.currentYear += 1;

@@ -19,21 +19,22 @@ const GroupGraphCard: FC= () => {
     const { groupId } = useParams<{ groupId: string }>();
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     const MonthPickerRange = useMemo(() => {
-        if(MonthPickerStore.type === 'date-range'){
+        if (MonthPickerStore.type === 'date-range') {
             return {
                 period: {
-                    start_date: addDays(new Date(MonthPickerStore.startDate), 1).toISOString().slice(0,10),
-                    end_date: addDays(new Date(MonthPickerStore.endDate), 2).toISOString().slice(0,10)
+                    start_date: new Date(MonthPickerStore.startDate).toISOString().slice(0, 10),
+                    end_date: new Date(MonthPickerStore.endDate).toISOString().slice(0, 10)
                 }
             }
         } else {
             return {
                 period: {
-                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`} 
+                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`
+                }
             }
         }
     }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
-    
+
     const { data: GroupExpenses, isFetching: isGroupExpensesFetching, isLoading: isGroupExpensesLoading, isError: isGroupExpensesError, isSuccess: isGroupExpensesSuccess } = useGetGroupExpensesDailyQuery({ group_id: Number(groupId), period: MonthPickerRange.period });
 
     const { data: GroupExpensesByMember, isFetching: isGroupExpensesByMemberFetching, isLoading: isGroupExpensesByMemberLoading, isError: isGroupExpensesByMemberError, isSuccess: isGroupExpensesByMemberSuccess } = useGetGroupExpensesByMemberDailyQuery({ group_id: Number(groupId), period: MonthPickerRange.period });
@@ -41,23 +42,26 @@ const GroupGraphCard: FC= () => {
     const [isToggled, setIsToggled] = useState<boolean>(false);
     
     const RangeTitle = useMemo(() => {
-        if (MonthPickerStore.rangeType === 'month' || MonthPickerStore.type === 'year-month') {
+        if (MonthPickerStore.rangeType === 'month') {
+            return `${MonthPickerStore.currentMonth} ${MonthPickerStore.currentYear}`
+        }
+        else if (MonthPickerStore.type === 'year-month') {
             return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
             ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } 
-        else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
-            isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
+
+        }
+        else if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' ||
+            isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))) {
             return `${new Date(MonthPickerStore.startDate).getDate()} 
             ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
             ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } else if (MonthPickerStore.rangeType === 'alltime'){
+        } else if (MonthPickerStore.rangeType === 'alltime') {
             return 'All time'
         } else {
-            return `From ${
-                new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
-            } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.startDate), 1)).getMonth()).slice(0, 3)}`
+            return `From ${new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
+                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
         }
-    }, [MonthPickerStore.rangeType, MonthPickerStore.type])
+    }, [MonthPickerStore.currentMonth, MonthPickerStore.rangeType, MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate])
 
     return (
         <div className={classes.GroupGraph}>
