@@ -1,3 +1,6 @@
+.item{
+    min-width: 0;
+}
 .CategoriesCard{
     display: flex;
     flex-direction: row;
@@ -17,6 +20,7 @@
 
 .CategoriesCard .tooltip{
     width: 4px;
+    min-width: 4px;
     height: 100%;
 }
 .CategoriesCardBody{
@@ -24,8 +28,10 @@
     flex-direction: row;
     align-items: center;
     gap: 16px;
+    min-width: 0;
 }
 .CategoriesCard .IconMix{
+    min-width: 40px;
     width: 40px;
     height: 40px;
     border-radius: 100%;
@@ -39,6 +45,8 @@
     font-size: 14px;
     line-height: 17px;
     color: var(--main-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 @keyframes fadeIn {
