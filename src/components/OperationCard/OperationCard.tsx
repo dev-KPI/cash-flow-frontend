@@ -1,4 +1,4 @@
-import { useState, FC, useEffect, useMemo, useCallback } from 'react';
+import { useState, FC, useEffect, useMemo, useCallback, ReactNode, isValidElement } from 'react';
 //store
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
@@ -15,7 +15,7 @@ import OperationCardLoader from './OperationCardLoader';
 
 interface OperactionCardProps {
     operation: "Income" | 'Expenses';
-    title?: string;
+    title?: ReactNode | string;
     icon?: string;
     data: IGetTotalExpensesResponse | undefined;
     offPreloader?: boolean
@@ -66,7 +66,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     }, [data])
     
     useEffect(() => initializeTotalVars(), [initializeTotalVars])
-    const cardTitle = title ? title : operation;
+    const cardTitle = title ? isValidElement(title) ? title : <h3 className={classes.title}>{title}</h3> : <h3 className={classes.title}>{operation}</h3>;
 
     return (<>
         {operation === 'Income' ?
@@ -84,7 +84,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <div className={classes.info}>
-                            <h3 className={classes.title}>{cardTitle}</h3>
+                            {cardTitle}
                             <p className={classes.amount}>{amount}{currency}</p>
                         </div>
                         <div

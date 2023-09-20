@@ -25,18 +25,12 @@
     height: 180px;
     display: block;
     margin: 0 auto;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .photo {
     height: 100%;
     width: 100%;
     border-radius: 50%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .user {
@@ -44,21 +38,21 @@
     flex-direction: column;
     width: 50%;
 
-    flex: 1;
     min-width: 0;
 }
 
 .personal__data {
     margin-top: 10px;
     flex: 1;
-    min-width: 0;
+    min-width: 140px;
     text-align: center;
 }
 
 
 .name {
     composes: largeText from "@styles/style.css";
-    max-width: 300px;
+    line-height: 31px;
+    max-height: 62px;
     overflow: hidden;
     text-overflow: ellipsis
 }
@@ -81,7 +75,13 @@
     composes: smallItemTitle from "@styles/style.css";
     margin-bottom: 4px;
 }
-
+.titleName{
+    display: inline-flex;
+    max-width: 46px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .subtitle{
     composes: smallItemTitle from "@styles/style.css";
     font-weight: 500;
@@ -91,7 +91,6 @@
     font-weight: 600;
     font-size: 20px;
     line-height: 26px;
-    min-width: 120px;
     color: var(--main-text);
 }
 
@@ -147,13 +146,14 @@
  @media only screen and (max-width: 1440px) {
     .infoCard{
         width: unset;
+        min-width: 360px;
     }
 }
 
- @media only screen and (max-width: 1028px) {
+@media only screen and (max-width: 1028px) {
     .avatar {
         width: unset;
-        height: 150px;
+        height: 140px;
     }
     .name {
         font-size: 28px;
@@ -162,7 +162,13 @@
     .numberTitle{
         min-width: 0;
     }
+}
+ @media only screen and (max-width: 728px) {
+    .infoCard {
+        min-width: unset;
+    }
  }
+
 
   @media only screen and (max-width: 400px) {
     .inner{
