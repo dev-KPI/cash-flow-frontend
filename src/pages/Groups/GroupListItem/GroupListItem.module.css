@@ -1,6 +1,6 @@
 .group {
     composes: cardComponent from '@styles/style.css';
-    transition: all 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
     position: relative;
     
 }

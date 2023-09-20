@@ -5,7 +5,9 @@
     display: flex;
     justify-content: space-between;
 }
-
+.loader{
+    max-width: 510px;
+}
 @media only screen and (max-width: 768px) {
     .ChartsCard {
         grid-column-start: span 1;

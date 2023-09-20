@@ -119,7 +119,7 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageTyp
                     </div>
                     <div className={classes.info}>
                         <div className={classes.expenseInfo}>
-                            <h5 className={classes.expenseTitle}>{itemTitle?.slice(0,16)}</h5>
+                            <h5 className={classes.expenseTitle}>{itemTitle}</h5>
                             <p className={classes.expensePercent}>{itemPercentage}%</p>
                             <span className={classes.expenseAmount}>{numberWithCommas(itemAmount)}{currency}</span>
                         </div>

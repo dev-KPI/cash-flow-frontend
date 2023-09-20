@@ -32,7 +32,7 @@ const ContextUser: FC<IContenxtUserProps> = ({ isActive, setIsActive, buttonRef 
             disableHeader={true}
             children={
                 <ul className={classes.List}>
-                    <li className={classes.item}>
+                    <li className={classes.item} onClick={()=> setIsActive(!isActive)}>
                         <Link to={'/faq'}>
                             <h4 className={classes.Link}>FAQ</h4>
                         </Link>

@@ -20,25 +20,22 @@
 
 .contact__list{
     margin-top: 50px;
-    display: grid;
+    display: flex;
     gap: 20px;
-    grid-template-columns: repeat(3, 1fr);
+    justify-content: space-evenly;
 }
 .contact__item {
     composes: cardComponent from '@styles/style.css';
     max-width: 350px;
+    width: 100%;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
-.contact__item:nth-child(odd) {
-    transform: translateY(40px);
-}
-.contact__item:nth-child(2) {
-    height: fit-content;
+.contact__item:hover{
+    box-shadow: rgba(0, 0, 0, 0.22) 0px 15px 15px;
+    transform: translate3d(1px, -2px, 0px);
 }
 .contact__inner{
     padding: 24px;
-}
-
-.contact__block{
 }
 
 .contact__title {
@@ -75,6 +72,9 @@
     max-width: 700px;
     margin: 20px auto 0;
 }
+.faq__list ul li div {
+    background-color: var(--cardbg);
+}
 .faq__text{
     composes: largeItemTitle from "@styles/style.css";
     padding: 14px;
@@ -83,12 +83,9 @@
 }
 @media only screen and (max-width: 768px) {
     .contact__list{
-        grid-template-columns: repeat(1, 1fr);
+        flex-direction: column;
     }
     .contact__item{
         max-width: unset;
-    }
-    .contact__item:nth-child(odd) { 
-        transform: unset;
     }
 }

@@ -1,6 +1,7 @@
 .HistoryCard{
     margin-left: 30px;
     position: relative;
+    min-width: 0;
 }
 .inner{
     padding: 0 16px;

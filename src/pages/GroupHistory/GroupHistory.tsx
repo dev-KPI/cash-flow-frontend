@@ -24,6 +24,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useGetGroupUsersHistoryQuery } from '@store/Controllers/GroupsController/GroupsController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
+import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 
 
 interface IColumnsHistory extends IGroupHistoryItem { edit_remove?: string }
@@ -46,7 +47,7 @@ const History: React.FC = () => {
         }),
         [pageIndex, pageSize]
     )
-
+    const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess } = useGetCurrentUserInfoQuery(null);
     const {data: GroupRecentHistory, isError: isGroupRecentHistoryError, isLoading: isGroupRecentHistoryLoading, isFetching: isGroupRecentHistoryFetching, isSuccess: isGroupRecentHistorySuccess} = useGetGroupUsersHistoryQuery({
         group_id: Number(groupId),
         page: pageIndex + 1,
@@ -122,32 +123,36 @@ const History: React.FC = () => {
         }),
         columnHelper.accessor('edit_remove', {
             header: () => '',
-            cell: info => <div className={classes.editRemove}>
-                <button className={classes.editButton} onClick={(e) => {
-                    e.preventDefault();
-                    setExpenseCredentials({
-                        id: info.row.original.id,
-                        descriptions: info.row.original.descriptions,
-                        amount: info.row.original.amount,
-                        category_id: info.row.original.category_id
-                    })
-                    setIsEditExpenseModal(!isEditExpenseModal);
-                }}>
-                    <i className="bi bi-pencil"></i>
-                </button>
-                <button className={classes.removeButton} onClick={(e) => {
-                    e.preventDefault();
-                    setExpenseCredentials({
-                        id: info.row.original.id,
-                        descriptions: info.row.original.descriptions,
-                        amount: info.row.original.amount,
-                        category_id: info.row.original.category_id
-                    })
-                    setIsRemoveExpenseModal(!isRemoveExpenseModal)
-                }}>
-                    <i className="bi bi-trash"></i>
-                </button>
-            </div>
+            cell: info => {
+                if (info.row.original.user_id !== CurrentUser?.id)
+                    return null
+                return (<div className={classes.editRemove}>
+                    <button className={classes.editButton} onClick={(e) => {
+                        e.preventDefault();
+                        setExpenseCredentials({
+                            id: info.row.original.id,
+                            descriptions: info.row.original.descriptions,
+                            amount: info.row.original.amount,
+                            category_id: info.row.original.category_id
+                        })
+                        setIsEditExpenseModal(!isEditExpenseModal);
+                    }}>
+                        <i className="bi bi-pencil"></i>
+                    </button>
+                    <button className={classes.removeButton} onClick={(e) => {
+                        e.preventDefault();
+                        setExpenseCredentials({
+                            id: info.row.original.id,
+                            descriptions: info.row.original.descriptions,
+                            amount: info.row.original.amount,
+                            category_id: info.row.original.category_id
+                        })
+                        setIsRemoveExpenseModal(!isRemoveExpenseModal)
+                    }}>
+                        <i className="bi bi-trash"></i>
+                    </button>
+                </div>)
+            }
         })
     ];
     
@@ -175,7 +180,7 @@ const History: React.FC = () => {
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex === pageCount - 1 ? GroupRecentHistory?.total: (pageIndex + 1) * pageSize;
     let historyContent;
-    if (isGroupRecentHistorySuccess && GroupRecentHistory.items.length !== 0) {
+    if (isGroupRecentHistorySuccess && isCurrentUserSuccess && GroupRecentHistory.items.length !== 0) {
         historyContent = (<table className={classes.recentOperations__table}>
             <thead className={classes.tableTitle}>
                 {table.getHeaderGroups().map(headerGroup => (

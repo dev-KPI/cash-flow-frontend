@@ -32,12 +32,12 @@ const GroupChartsCard: FC = () => {
             {(!isExpensesByCategoryLoading && GroupExpensesByCategory) ? 
                 <ChartCard categories={GroupExpensesByCategory} title={'Expenses by categories'} messageType={'group'} />
                 :
-                <ChartCardLoader />
+                <ChartCardLoader className={classes.loader} />
             }
             {(!isExpensesByMemberLoading && GroupExpensesByMember) ? 
                 <ChartCard members={GroupExpensesByMember?.filter(item => item.amount !== 0)} title={'Expenses by members'} messageType={'group'} />
                 :
-                <ChartCardLoader />
+                <ChartCardLoader className={classes.loader} />
             }
         </div>        
     );
