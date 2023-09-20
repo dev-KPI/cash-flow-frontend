@@ -28,18 +28,6 @@
     justify-content: center;
     align-items: center;
 }
-@media only screen and (max-width: 840px) {
-    .MonthPicker{
-        margin-top: 20px;
-        margin-left: 0px;
-    }
-}
-@media only screen and (max-width: 768px) {
-    .MonthPicker{
-        width: 100%;
-        max-width: unset;
-    }
-}
 
 .members {
     display: flex;
@@ -149,6 +137,18 @@
         gap: 20px;
     }
 }
+@media only screen and (max-width: 900px) {
+    .operations > div > div > div:nth-child(2) {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 840px) {
+    .MonthPicker {
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+}
 
 
 @media only screen and (max-width: 768px) {
@@ -166,6 +166,14 @@
         display: block;
         order: 1;
         margin-left: 0;
+    }
+    .MonthPicker {
+        width: 100%;
+        max-width: unset;
+    }
+
+    .operations > div > div > div:nth-child(2) {
+        display: flex;
     }
 }
 

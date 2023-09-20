@@ -80,13 +80,15 @@ const Group = () => {
                     <div className={classes.grid__operation}>
                         <OperationCard 
                         operation={'Expenses'}
+                        className={classes.operations} 
                         title='Total group expenses' icon='bi bi-people'
                         data={GroupTotalExpenses}
                         isSuccess={isGroupTotalExpensesSuccess}
                         isLoading={isGroupTotalExpensesLoading}
                         isError={isGroupTotalExpensesError} />
                         <OperationCard 
-                        operation={'Expenses'} 
+                        operation={'Expenses'}
+                        className={classes.operations} 
                         data={GroupCurrentUserTotalExpenses}
                         isSuccess={isGroupCurrentUserTotalExpensesSuccess}
                         isLoading={isGroupCurrentUserTotalExpensesLoading}
