@@ -77,7 +77,7 @@ const Graph: FC<IGraphProps> = ({data}) => {
         return `${monthTooltip} ${dateTooltip}, ${yearTooltip}`
     }
     const PriceTooltip = (context: Context): string => {
-        return  priceTooltip + currency
+        return  numberWithCommas(priceTooltip) + currency
     }
     const footerTooltip = (context: Context): string => {
         return 'Total expenses'

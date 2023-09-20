@@ -63,12 +63,8 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
             const totalSum = (total: number, values: number): number => total + values
             sum.push(datasetArray.reduce(totalSum, 0))
         })
-        const amount = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            currencyDisplay: 'symbol',
-        }).format(sum[context[0].dataIndex])
-        return amount
+        const amount = numberWithCommas(sum[context[0].dataIndex])
+        return amount + currency;
     }
 
     const getAmountsByUserId = (data: IGraphGroupMembers[], userId: number): number[]  => {
@@ -258,8 +254,9 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                         }
                     },
                     label: function (tooltipItem: TooltipItem<"bar">) {
-                        const name = tooltipItem.dataset.label
-                        return `${name} ${currency }${numberWithCommas(tooltipItem.raw as number)}`
+                        const name = tooltipItem.dataset.label;
+                        const formatedName = name?.replace(/\u2012|\u2013|\u2014|\u2015|\u2E3A|\u2E3B/g, "-");
+                        return `${formatedName?.slice(0,24)} ${currency }${numberWithCommas(tooltipItem.raw as number)}`
                     }
                 }
             },
