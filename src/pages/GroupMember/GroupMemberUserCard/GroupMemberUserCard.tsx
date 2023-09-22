@@ -74,12 +74,9 @@ const GroupMemberUserCard: React.FC = () => {
             </>
         }
     }, [Member, isMemberSuccess])
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    setTimeout(() => {
-        setIsLoading(!isLoading)
-    }, 10000);
+
     return (<>
-        {isMemberLoading || isLoading ? (
+        {isMemberLoading ? (
         <div className={classes.infoCard}>
             <GroupMemberUserCardLoader/> 
         </div>
