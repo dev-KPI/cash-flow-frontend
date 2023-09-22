@@ -20,7 +20,7 @@ const Breadcrumbs:FC<IBreadcrumbsProps> = ({breadcrumbs}) => {
     const { theme: actualTheme} = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
 
     const setActiveLinkClasses = (isActive: boolean) => {
-        let res = isActive ? classes.active : classes.item;
+        let res = isActive ? classes.active : '';
         res += (actualTheme === 'dark' && isActive) ? ' ' + classes.shadowLink : ' ';
         return res
     }

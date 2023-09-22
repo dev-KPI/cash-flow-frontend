@@ -1,9 +1,13 @@
 .navbar {
     display: flex;
-    margin-bottom: 16px;
+}
+.navbar li {
+    height: 32px;
 }
 
 .navbar a {
+    display: inline-block;
+    height: 100%;
     margin-left: 20px;
     font-size: 14px;
     line-height: 17px;
@@ -23,15 +27,13 @@
 
 .navbar .active {
     position: relative;
-    /* font-weight: 500; */
-    /* font-size: 16px; */
     transition: .2s ease-in-out;
 }
 
 .navbar .active::after {
     position: absolute;
     content: "";
-    bottom: -16px;
+    bottom: 0px;
     left: 0;
     right: 0;
     box-shadow: 0px 0px 8px var(--main-green);
@@ -54,6 +56,5 @@
 }
 
 .shadowLink {
-    color: var(--main-green);
     text-shadow: 0px 0px 8px var(--main-text);
 }
