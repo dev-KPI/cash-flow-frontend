@@ -62,7 +62,8 @@ const History: React.FC = () => {
         amount: 0,
         description: ''
     });
-
+    const [tooltipActive, setTooltipActive] = useState(false);
+    const [time, setTime] = useState<string>('');
     const columnHelper = createColumnHelper<IColumnsHistory>()
     const columns = [
     columnHelper.accessor('descriptions', {
@@ -181,16 +182,13 @@ const History: React.FC = () => {
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex + 1 === pageCount ? totalCount : (pageIndex + 1) * pageSize;
 
-    const [active, setActive] = useState(false);
-    const [time, setTime] = useState<string>('');
-
     const hideTip = () => {
-        setActive(false);
+        setTooltipActive(false);
     };
 
     useOnClickOutside(tooltipRef, hideTip);
     const showTooltip = (e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
-        if (width < 450) {
+        if (width <= 450) {
             const el = e.target as HTMLElement;
             const rowEl = el.closest('tr') as HTMLElement;
             const elRect: DOMRect = rowEl.getBoundingClientRect();
@@ -202,7 +200,7 @@ const History: React.FC = () => {
             }
             
             if (!el.closest('button'))
-                setActive(true);
+                setTooltipActive(true);
         }   
     }
 
@@ -305,12 +303,12 @@ const History: React.FC = () => {
     }
 
     return (<>
-        {<div id="tooltip" className={classes.tooltipWrapper} ref={tooltipRef} onMouseLeave={hideTip} >
-            {active && <div className={classes.tooltip}>
+        <div id="tooltip" className={classes.tooltipWrapper} ref={tooltipRef} onMouseLeave={hideTip} >
+            {tooltipActive && <div className={classes.tooltip}>
                 <p className={classes.tooltipHeader}>Time</p>
                 <p className={classes.tooltipText}>{time}</p>
             </div>}
-        </div>}
+        </div>
         <ConfirmationModal
         mode='remove_expense'
         title={ExpenseCredentials.descriptions}
