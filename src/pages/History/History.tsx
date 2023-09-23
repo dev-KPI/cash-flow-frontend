@@ -17,6 +17,7 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table'
+import { useWindowSize, useOnClickOutside } from 'usehooks-ts';
 import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import IHistoryItem from '@models/IHistoryItem';
 import { useGetUserHistoryQuery } from '@store/Controllers/UserController/UserController';
@@ -32,7 +33,8 @@ const History: React.FC = () => {
             pageIndex: 0,
             pageSize: 8,
         })
-
+    const tooltipRef = useRef<HTMLDivElement>(null);
+    const { width, height } = useWindowSize();
     const { data: History, isLoading: isHistoryLoading, isError: isHistoryError, isSuccess: isHistorySuccess } = useGetUserHistoryQuery({ page: pageIndex, size: pageSize });
     const [isEditExpenseModal, setIsEditExpenseModal] = useState<boolean>(false);
     const [isReplenishment, setIsReplenishment] = useState<boolean>(false);
@@ -179,6 +181,31 @@ const History: React.FC = () => {
     const startIndex = pageIndex * pageSize + 1;
     const endIndex = pageIndex + 1 === pageCount ? totalCount : (pageIndex + 1) * pageSize;
 
+    const [active, setActive] = useState(false);
+    const [time, setTime] = useState<string>('');
+    const showTip = (e: React.MouseEvent<HTMLTableRowElement>) => {
+        if (width < 450) {
+            const element = e.target as HTMLElement;
+            if (!element.closest('button'))
+                setActive(true);
+        }
+    };
+
+    const hideTip = () => {
+        setActive(false);
+    };
+    useOnClickOutside(tooltipRef, hideTip);
+    const showTooltip = (e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
+        const el = e.target as HTMLElement;
+        const elRect: DOMRect = el.getBoundingClientRect();
+        showTip(e);
+        setTime(DateService.getTime(new Date(context.row.original.time), true))
+        if (tooltipRef.current) {
+            tooltipRef.current.style.left = `${elRect.left + 100}px`;
+            tooltipRef.current.style.top = `${elRect.top + 10}px`;
+        }
+    }
+
     let historyContent;
     if (isHistorySuccess && History.items.length > 0) {
         historyContent = (<table className={classes.recentOperations__table}>
@@ -213,7 +240,7 @@ const History: React.FC = () => {
             </thead>
             <tbody className={classes.tableText}>
                 {table.getRowModel().rows.map(row => (
-                    <tr key={row.id} className={classes['in']}>
+                    <tr key={row.id} className={classes['in']} onClick={(e) => showTooltip(e, row.getVisibleCells()[4].getContext())}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -278,6 +305,12 @@ const History: React.FC = () => {
     }
 
     return (<>
+        {<div id="tooltip" className={classes.tooltipWrapper} ref={tooltipRef} onMouseLeave={hideTip} >
+            {active && <div className={classes.tooltip}>
+                <p className={classes.tooltipHeader}>Time</p>
+                <p className={classes.tooltipText}>{time}</p>
+            </div>}
+        </div>}
         <ConfirmationModal
         mode='remove_expense'
         title={ExpenseCredentials.descriptions}
