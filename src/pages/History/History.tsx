@@ -183,27 +183,27 @@ const History: React.FC = () => {
 
     const [active, setActive] = useState(false);
     const [time, setTime] = useState<string>('');
-    const showTip = (e: React.MouseEvent<HTMLTableRowElement>) => {
-        if (width < 450) {
-            const element = e.target as HTMLElement;
-            if (!element.closest('button'))
-                setActive(true);
-        }
-    };
 
     const hideTip = () => {
         setActive(false);
     };
+
     useOnClickOutside(tooltipRef, hideTip);
     const showTooltip = (e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
-        const el = e.target as HTMLElement;
-        const elRect: DOMRect = el.getBoundingClientRect();
-        showTip(e);
-        setTime(DateService.getTime(new Date(context.row.original.time), true))
-        if (tooltipRef.current) {
-            tooltipRef.current.style.left = `${elRect.left + 100}px`;
-            tooltipRef.current.style.top = `${elRect.top + 10}px`;
-        }
+        if (width < 450) {
+            const el = e.target as HTMLElement;
+            const rowEl = el.closest('tr') as HTMLElement;
+            const elRect: DOMRect = rowEl.getBoundingClientRect();
+
+            setTime(DateService.getTime(new Date(context.row.original.time), true))
+            if (tooltipRef.current) {
+                tooltipRef.current.style.left = `${elRect.left + 100}px`;
+                tooltipRef.current.style.top = `${elRect.top + 10}px`;
+            }
+            
+            if (!el.closest('button'))
+                setActive(true);
+        }   
     }
 
     let historyContent;
