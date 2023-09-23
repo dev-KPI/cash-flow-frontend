@@ -65,15 +65,15 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
                     <p className={classes.emptyTitle}>Spenders list is empty!</p>
                 </div> 
             }
-        } else if (isLoading || isFetching) {
-            return (<div className={classes.loaderWrapper}><PreLoader preLoaderSize={25} type='auto'/></div>)
-        } else {
+        } else if (data && !isLoading && data.length === 0) { 
             return (<div className={classes.noNotifications}>
                 <i className="bi bi-person-x"></i>
                 <h5 className={classes.noNotifications__title}>Something went wrong</h5>
                 <p className={classes.noNotifications__text}>Try to refresh the page</p>
             </div>)
-        } 
+        }  else {
+            return (<div className={classes.loaderWrapper}><PreLoader preLoaderSize={25} type='auto'/></div>)
+        }
     }
     return (
         <div className={classes.SpendersCard}>
