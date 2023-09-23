@@ -1,4 +1,4 @@
-import React, { useMemo, useState} from 'react';
+import React, { useMemo, useRef, useState} from 'react';
 
 //UI
 import classes from './GroupHistory.module.css';
@@ -18,6 +18,7 @@ import {
     SortingState,
     useReactTable,
 } from '@tanstack/react-table'
+import { useWindowSize, useOnClickOutside } from 'usehooks-ts';
 import { IGroupHistoryItem } from '@models/IHistoryItem';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { Link, useParams } from 'react-router-dom';
@@ -32,7 +33,8 @@ interface IColumnsHistory extends IGroupHistoryItem { edit_remove?: string }
 const History: React.FC = () => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const { groupId } = useParams();
-
+    const tooltipRef = useRef<HTMLDivElement>(null);
+    const { width, height } = useWindowSize();
     const [{ pageIndex, pageSize }, setPagination] =
         useState<PaginationState>({
             pageIndex: 0,
@@ -66,7 +68,8 @@ const History: React.FC = () => {
         amount: 0,
         category_id: 0
     });
-
+    const [tooltipActive, setTooltipActive] = useState(false);
+    const [time, setTime] = useState<string>('');
     const columnHelper = createColumnHelper<IColumnsHistory>()
     const columns = [
         columnHelper.accessor(`user_first_name`, {
@@ -92,7 +95,7 @@ const History: React.FC = () => {
                             </div>
                             <div className={classes.memberInfo}>
                                 <h6 className={classes.name}>{full_name()}</h6>
-                                <p className={classes.email}>{email}</p>
+                                {/* <p className={classes.email}>{email}</p> */}
                             </div>
                         </div>
                     </Link> : '-'
@@ -178,7 +181,30 @@ const History: React.FC = () => {
     })
     const pageCount  = table.getPageCount()
     const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? GroupRecentHistory?.total: (pageIndex + 1) * pageSize;
+    const endIndex = pageIndex === pageCount - 1 ? GroupRecentHistory?.total : (pageIndex + 1) * pageSize;
+    
+    const hideTip = () => {
+        setTooltipActive(false);
+    };
+
+    useOnClickOutside(tooltipRef, hideTip);
+    const showTooltip = (e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
+        if (width <= 768) {
+            const el = e.target as HTMLElement;
+            const rowEl = el.closest('tr') as HTMLElement;
+            const elRect: DOMRect = rowEl.getBoundingClientRect();
+
+            setTime(DateService.getTime(new Date(context.row.original.time), true))
+            if (tooltipRef.current) {
+                tooltipRef.current.style.left = `${elRect.left + 150}px`;
+                tooltipRef.current.style.top = `${elRect.top + 10}px`;
+            }
+            
+            if (!el.closest('button'))
+                setTooltipActive(true);
+        }   
+    }
+
     let historyContent;
     if (isGroupRecentHistorySuccess && isCurrentUserSuccess && GroupRecentHistory.items.length !== 0) {
         historyContent = (<table className={classes.recentOperations__table}>
@@ -213,7 +239,7 @@ const History: React.FC = () => {
             </thead>
             <tbody className={classes.tableText}>
                 {table.getRowModel().rows.map(row => (
-                    <tr key={row.id} className={classes['in']}>
+                    <tr key={row.id} className={classes['in']} onClick={(e) => showTooltip(e, row.getVisibleCells()[2].getContext())}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -277,6 +303,12 @@ const History: React.FC = () => {
         </div>
     }
     return (<>
+        <div id="tooltip" className={classes.tooltipWrapper} ref={tooltipRef} onMouseLeave={hideTip} >
+            {tooltipActive && <div className={classes.tooltip}>
+                <p className={classes.tooltipHeader}>Time</p>
+                <p className={classes.tooltipText}>{time}</p>
+            </div>}
+        </div>
         <ConfirmationModal
         mode='remove_expense'
         title={ExpenseCredentials.descriptions}

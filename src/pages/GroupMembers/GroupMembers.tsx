@@ -27,6 +27,7 @@ import { SortingState } from '@tanstack/react-table';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import IUser from '@models/IUser';
 import ButtonContent from './ButtonContent';
+import PreLoader from '@components/PreLoader/PreLoader';
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends unknown> {
@@ -35,7 +36,7 @@ declare module '@tanstack/react-table' {
 }
 
 interface GroupMember extends IMember {
-    role: 'Owner' | 'Member'
+    role?: 'Owner' | 'Member'
 }
 
 const columnHelper = createColumnHelper<GroupMember>()
@@ -57,29 +58,12 @@ const History: React.FC = () => {
         }),
         [pageIndex, pageSize]
     )
-    const [data, setData] = useState<GroupMember[]>([])
 
     const { data: UsersByGroup, isLoading: isUsersByGroupLoading, isError: isUsersByGroupError, isSuccess: isUsersByGroupSuccess } = useGetUsersByGroupQuery({  group_id: Number(groupId),
         page: pageIndex + 1,
         size: pageSize });
     const { data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError, isSuccess: isGroupInfoSuccess } = useGetInfoByGroupQuery({ group_id: Number(groupId)});
     const { data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError, isSuccess: isCurrentUserSuccess} = useGetCurrentUserInfoQuery(null);
-
-    const initializeData = useCallback(() => {
-        if(UsersByGroup && isUsersByGroupSuccess && GroupInfo && isGroupInfoSuccess){
-            const data: GroupMember[] = UsersByGroup.items[0].users_group.map(member => {
-                return {
-                    ...member,
-                    role: GroupInfo.admin.id === member.user.id ? 'Owner' : 'Member'
-                }
-            })
-            setData(data)
-        }
-    }, [UsersByGroup, isUsersByGroupLoading, isUsersByGroupSuccess, isUsersByGroupError, GroupInfo, isGroupInfoSuccess])
-
-    useEffect(() => {
-        initializeData()
-    }, [initializeData])
     
     const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     const [kickedUser, setKickedUser] = useState<IUser>({
@@ -154,7 +138,7 @@ const History: React.FC = () => {
     ]
 
     const table = useReactTable({
-        data,
+        data: UsersByGroup?.items[0].users_group || [],
         columns,
         pageCount: UsersByGroup?.pages,
         onSortingChange: setSorting,
@@ -181,8 +165,103 @@ const History: React.FC = () => {
     })
     const pageCount = table.getPageCount()
     const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? data.length : (pageIndex + 1) * pageSize;
-
+    const endIndex = pageIndex === pageCount - 1 ? UsersByGroup?.items[0].users_group.length : (pageIndex + 1) * pageSize;
+    let membersContent;
+    if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items[0].users_group.length > 0)
+        membersContent = <table className={classes.recentOperations__table}>
+            <thead className={classes.tableTitle}>
+                {table.getHeaderGroups().map(headerGroup => (
+                    <tr key={headerGroup.id}>
+                        {headerGroup.headers.map(header => (
+                            <th key={header.id} colSpan={header.colSpan}>
+                                {header.isPlaceholder ? null : (
+                                    <div
+                                        {...{
+                                            className: header.column.getCanSort()
+                                                ? classes.headerHover
+                                                : '',
+                                            onClick: header.column.getToggleSortingHandler(),
+                                        }}
+                                    >
+                                        {flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                        )}
+                                        {{
+                                            asc: <i id={classes.sortBtn} className="bi bi-caret-up-fill" style={{ fontSize: 16, position: 'absolute' }}></i>,
+                                            desc: <i id={classes.sortBtn} className="bi bi-caret-down-fill" style={{ fontSize: 16, position: 'absolute' }}></i>
+                                        }[header.column.getIsSorted() as string] ?? null}
+                                    </div>
+                                )}
+                            </th>
+                        ))}
+                    </tr>
+                ))}
+            </thead>
+            <tbody className={classes.tableText}>
+                {table.getRowModel().rows.map(row => (
+                    <tr key={row.id}
+                        className={[classes['in'], table.options.meta?.getClass(row)].join(' ')}>
+                        {row.getVisibleCells().map(cell => (
+                            <td key={cell.id}>
+                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+                <tr>
+                    <td colSpan={5}>
+                        <div className={classes.pagination}>
+                            <div className={classes.selector}>
+                                <span>Rows per page: </span>
+                                <select
+                                    value={pageSize}
+                                    className={classes.select}
+                                    onChange={e => {
+                                        table.setPageSize(Number(e.target.value))
+                                    }}
+                                >
+                                    {[4, 6, 8, 16, 24].map(pageSize => (
+                                        <option key={pageSize} value={pageSize}>
+                                            {pageSize}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <span className={classes.counter}>
+                                {`${startIndex} - ${endIndex}`} of{' '}
+                                {UsersByGroup?.items[0].users_group.length}
+                            </span>
+                            <div className={classes.nav}>
+                                <button
+                                    className={classes.btn}
+                                    onClick={() => table.previousPage()}
+                                    disabled={!table.getCanPreviousPage()}
+                                >
+                                    <i id='chevron' className="bi bi-chevron-left"></i>
+                                </button>
+                                <button
+                                    className={classes.btn}
+                                    onClick={() => table.nextPage()}
+                                    disabled={!table.getCanNextPage()}
+                                >
+                                    <i id='chevron' className="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    else if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items[0].users_group.length === 0)
+        membersContent = (<div className={classes.noItems}>
+            <i className="bi bi-person-exclamation"></i>
+            <h5 className={classes.noItems__title}>Group doesn't have any members :(</h5>
+        </div>)
+    else
+        membersContent = <div className={classes.loaderWrapper}>
+            <PreLoader preLoaderSize={50} type='auto' />
+        </div>
     return (
         <main id='GroupMembersPage' className="no-padding">
             <ConfirmationModal 
@@ -193,91 +272,7 @@ const History: React.FC = () => {
             isConfirmationModalOpen={isConfirmationModal} 
             mode={confirmationMode}/>
             <div className={classes.page__container}>
-                <table className={classes.recentOperations__table}>
-                    <thead className={classes.tableTitle}>
-                        {table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id}>
-                                {headerGroup.headers.map(header => (
-                                    <th key={header.id} colSpan={header.colSpan}>
-                                        {header.isPlaceholder ? null : (
-                                            <div
-                                                {...{
-                                                    className: header.column.getCanSort()
-                                                        ? classes.headerHover
-                                                        : '',
-                                                    onClick: header.column.getToggleSortingHandler(),
-                                                }}
-                                            >
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                                {{
-                                                    asc: <i id={classes.sortBtn} className="bi bi-caret-up-fill" style={{ fontSize: 16, position: 'absolute' }}></i>,
-                                                    desc: <i id={classes.sortBtn} className="bi bi-caret-down-fill" style={{ fontSize: 16, position: 'absolute' }}></i>
-                                                }[header.column.getIsSorted() as string] ?? null}
-                                            </div>
-                                        )}
-                                    </th>
-                                ))}
-                            </tr>
-                        ))}
-                    </thead>
-                    <tbody className={classes.tableText}>
-                        {table.getRowModel().rows.map(row => (
-                            <tr key={row.id}
-                                className={[classes['in'], table.options.meta?.getClass(row)].join(' ')}>
-                                {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id}>      
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                        <tr>
-                            <td colSpan={5}>
-                                <div className={classes.pagination}>
-                                    <div className={classes.selector}>
-                                        <span>Rows per page: </span>
-                                        <select
-                                            value={pageSize}
-                                            className={classes.select}
-                                            onChange={e => {
-                                                table.setPageSize(Number(e.target.value))
-                                            }}
-                                        >
-                                            {[4, 6, 8, 16, 24].map(pageSize => (
-                                                <option key={pageSize} value={pageSize}>
-                                                    {pageSize}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                    <span className={classes.counter}>
-                                        {`${startIndex} - ${endIndex}`} of{' '}
-                                        {data.length}
-                                    </span>
-                                    <div className={classes.nav}>
-                                        <button
-                                            className={classes.btn}
-                                            onClick={() => table.previousPage()}
-                                            disabled={!table.getCanPreviousPage()}
-                                        >
-                                            <i id='chevron' className="bi bi-chevron-left"></i>
-                                        </button>
-                                        <button
-                                            className={classes.btn}
-                                            onClick={() => table.nextPage()}
-                                            disabled={!table.getCanNextPage()}
-                                        >
-                                            <i id='chevron' className="bi bi-chevron-right"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                {membersContent}
             </div>
         </main>
     )

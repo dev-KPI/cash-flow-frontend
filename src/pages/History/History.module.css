@@ -72,8 +72,10 @@
     gap: 10px;
     font-size: 20px;
     max-width: 50px;
+    height: 100%;
 }
 .editRemove button{
+    height: 100%;
     cursor: pointer;
     transition: all ease-in-out .3s;
 }
@@ -197,6 +199,31 @@
     border: none;
     outline: none
 }
+/* tooltip */
+.tooltipWrapper {
+    display: none;
+    position: absolute;
+}
+
+.tooltip {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 8px;
+    border-radius: 10px;
+    transition: all 0.1s ease;
+    pointer-events: none;
+}
+
+.tooltipHeader {
+    font-size: 14px;
+    font-weight: 300;
+    color: #AFAFC6;
+    margin-bottom: 5px;
+}
+
+.tooltipText {
+    font-size: 16px;
+    color: white;
+}
 
 /* media */
 
@@ -288,6 +315,9 @@
 }
 
 @media only screen and (max-width: 450px) {
+    .tooltipWrapper{
+        display: block;
+    }
     .recentOperations__table thead :nth-child(4) {
         display: none;
     }
