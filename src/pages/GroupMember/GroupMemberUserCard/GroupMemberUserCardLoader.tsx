@@ -10,7 +10,7 @@ const GroupMemberUserCardLoader = () => {
     const {width} = useWindowSize();
 
     const loader = useMemo(() => {
-        if (window.matchMedia("screen and (min-width: 1440px)").matches) {
+        if (window.matchMedia("screen and (min-width: 768px)").matches) {
         return (
             <ContentLoader
                 speed={2}

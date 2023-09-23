@@ -1,16 +1,18 @@
+import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { isUrl } from '@services/UsefulMethods/UIMethods'
+import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods'
 
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
 import { useGetMemberInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
+
 //UI
 import classes from './GroupMemberUserCard.module.css'
 import userIcon from '@assets/user-icon.svg';
 import OperationCard from '@components/OperationCard/OperationCard';
 import GroupMemberUserCardLoader from './GroupMemberUserCardLoader';
-import { useMemo } from 'react';
 
 
 const GroupMemberUserCard: React.FC = () => {
@@ -18,6 +20,7 @@ const GroupMemberUserCard: React.FC = () => {
         groupId: string,
         memberId: string
     }>();
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const MonthPickerRange = useMemo(() => {
         if(MonthPickerStore.type === 'date-range'){
@@ -45,7 +48,6 @@ const GroupMemberUserCard: React.FC = () => {
     let picture = Member?.picture ? Member.picture : userIcon
     let name = Member?.first_name ? Member.first_name : '';
     let fullname = (Member?.first_name || Member?.last_name) ? Member.first_name + (Member.last_name ? (' ' + Member.last_name) : '') : ''
-    let login = Member?.login ? Member.login : '';
 
     const memberExpenses = useMemo(() => {
         if(Member?.best_category && isMemberSuccess) {
@@ -53,8 +55,8 @@ const GroupMemberUserCard: React.FC = () => {
                 <div className={classes.cardInner}>
                     <div className={classes.top}>
                         <div className={classes.info}>
-                            <h3 className={classes.title}>{`${name}'s top category`}</h3>
-                            <p className={classes.numberTitle}>{Member.best_category.amount}$</p>
+                            <h3 className={classes.title}><span className={classes.titleName}>{name}</span>'s top category</h3>
+                            <p className={classes.numberTitle}>{numberWithCommas(Member.best_category.amount)}{currency}</p>
                         </div>
                         <div className={classes.icon}>
                             <i className={Member.best_category.icon_url}></i>
@@ -86,18 +88,16 @@ const GroupMemberUserCard: React.FC = () => {
                         <img className={classes.photo}
                             alt={'user icon'}
                             src={isUrl(picture) ? picture : userIcon}
-                            // style={{ filter: picture ? (actualTheme === 'light' ? 'invert(0)' : 'invert(1)') : '' }}
                         />
                     </div>
                     <div className={classes.personal__data}>
                         <h4 className={classes.name}>{fullname}</h4>
-                        {/* <p className={classes.email}>{login}</p> */}
                     </div>
                 </div>
                 <div className={classes.cardsWrapper}>
                     <OperationCard
                     operation={'Expenses'}
-                    title={`${name}'s expenses`}
+                    title={<h3 className={classes.title}><span className={classes.titleName}>{name}</span>'s expenses</h3>}
                     offPreloader={true}
                     className={classes.expensesCard}
                     data={Member?.total_expenses}
@@ -105,10 +105,10 @@ const GroupMemberUserCard: React.FC = () => {
                     isSuccess={isMemberSuccess}
                     isLoading={isMemberLoading}
                     />
-                    {<div className={classes.cardInner}>
-                        <h3 className={classes.title}>{`${name}'s total count of expenses`}</h3>
+                    <div className={classes.cardInner}>
+                        <h3 className={classes.title}><span className={classes.titleName}>{name}</span>'s total count of expenses</h3>
                         <p className={classes.numberTitle}>{Member?.count_expenses ? Member?.count_expenses : 0}</p>
-                    </div>}
+                    </div>
                     {memberExpenses}
                 </div>
             </div>

@@ -31,7 +31,7 @@
 .icon{
     display: flex;
     height: 46px;
-    width: 46px;
+    flex: 0  1 46px;
     margin-left: auto;
     justify-content: center;
     align-items: center;
@@ -92,6 +92,9 @@
     }
     .amount{
         min-width: 0
+    }
+    .bottom {
+        margin-top: auto;
     }
 }
 @media only screen and (max-width: 768px) {

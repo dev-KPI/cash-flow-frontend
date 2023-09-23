@@ -44,7 +44,7 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
     const handleLeave = () => {
         setIsLeaveModalOpen(!isLeaveModalOpen);
     }
-
+    const memberLength = UsersByGroup?.items[0].users_group.length || 0;
     const getMemberIcons = useMemo(() => {
         if (UsersByGroup && isUsersByGroupSuccess) {
             return UsersByGroup.items[0].users_group.map((el, i) =>
@@ -109,13 +109,13 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
                     <div className={classes.header__right}>
                         <div className={classes.members}>
                             {getMemberIcons}
-                            {getMemberIcons.length > 3 ?
+                            {memberLength > 3 ?
                                 <div className={classes.avatar}>
                                     <div className={classes.avatarLeftMembers}
-                                        style={{ backgroundColor: 'var(--main-green)' }}></div>
+                                        style={{ backgroundColor: groupInfo.color_code }}></div>
                                     <p className={classes.leftMembers}
-                                        style={{ color: 'var(--main-green)' }}
-                                    >+{getMemberIcons.length - 3}
+                                        style={{ color: groupInfo.color_code }}
+                                    >+{memberLength - 3}
                                     </p>
                                 </div>
                                 : null

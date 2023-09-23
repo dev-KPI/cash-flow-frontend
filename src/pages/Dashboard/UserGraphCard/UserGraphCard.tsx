@@ -32,25 +32,27 @@ const UserGraphCard = () => {
     const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess, refetch} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
 
     const RangeTitle = useMemo(() => {
-        if(userDailyExpenses){
-            if (MonthPickerStore.rangeType === 'month' || MonthPickerStore.type === 'year-month') {
-                return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-                ${new Date(MonthPickerStore.startDate).getFullYear()}`
-            } 
-            else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
-                isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
-                return `${new Date(MonthPickerStore.startDate).getDate()} 
-                ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-                ${new Date(MonthPickerStore.startDate).getFullYear()}`
-            } else if (MonthPickerStore.rangeType === 'alltime'){
-                return 'All time'
-            }  else {
-                return `From ${
-                    new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
-                } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
-            }
+        if (MonthPickerStore.rangeType === 'month') {
+            return `${MonthPickerStore.currentMonth} ${MonthPickerStore.currentYear}`
         }
-    }, [userDailyExpenses, MonthPickerStore.rangeType, MonthPickerStore.type])
+        else if (MonthPickerStore.type === 'year-month') {
+            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+            ${new Date(MonthPickerStore.startDate).getFullYear()}`
+           
+        } 
+        else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
+            isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
+            return `${new Date(MonthPickerStore.startDate).getDate()} 
+            ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+            ${new Date(MonthPickerStore.startDate).getFullYear()}`
+        } else if (MonthPickerStore.rangeType === 'alltime'){
+            return 'All time'
+        }  else {
+            return `From ${
+                new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
+            } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
+        }
+    }, [MonthPickerStore.currentMonth, MonthPickerStore.rangeType, MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate])
 
     return (
         <div className={classes.UserGraph}>
