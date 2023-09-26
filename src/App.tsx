@@ -45,9 +45,12 @@ const App: React.FC = () => {
     }, [AuthStatus, isAuthError, isAuthLoading]);
 
     useEffect(() => {
-        ThemeDispatch.initializeTheme();
         initializeAuth();
     }, [initializeAuth]);
+
+    useEffect(() => {
+        ThemeDispatch.initializeTheme();
+    }, [])
 
     const [showPreloader, setShowPreloader] = useState(true);
 

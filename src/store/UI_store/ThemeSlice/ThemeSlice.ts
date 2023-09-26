@@ -5,10 +5,10 @@ import { IThemeState } from './ThemeInterfaces';
 
 const initialState: IThemeState = {
     theme: new Date().getHours() > 19 ? 'dark' : 'light',
-    cardBackgroundColor:'0F0F0F',
-    backgroundColor: '#151515',
-    mainTextColor:'#333333',
-    textColor:'#7A7A9D',
+    cardBackgroundColor: new Date().getHours() > 19 ? '#FFFFFF' : '0F0F0F',
+    backgroundColor: new Date().getHours() > 19 ? '#151515' : '#F8F8FF',
+    mainTextColor: new Date().getHours() > 19 ? '#EAEAEA' : '#333333',
+    textColor: new Date().getHours() > 19 ? '#9BABC5' : '#7A7A9D'
 }
 
 export const ThemeSlice = createSlice({
