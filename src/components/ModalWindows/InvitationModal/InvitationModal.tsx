@@ -43,11 +43,11 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                     group_id: selectedGroup.id,
                 }).unwrap()
                 if (isInvitationCreated) {
-                    notify('success', `${userName} invited to ${selectedGroup.title} group`)
+                    notify('success', `${userName} invited to ${selectedGroup.title} group`);
                 }
             } catch (err) {
-                console.error('Failed to invite user: ', err)
-                notify('error', `${userName} haven't invited to ${selectedGroup.title} group`)
+                const error = err as { data: { detail: string }, status: string | number };
+                notify('error', `${userName} haven't invited to ${selectedGroup.title} group.${error.data.detail}`)
             }
         }
     }

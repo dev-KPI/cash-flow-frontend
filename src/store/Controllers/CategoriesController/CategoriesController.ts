@@ -33,9 +33,9 @@ export const CategoryApiSlice = api.injectEndpoints({
                 credentials: 'include',
                 body: Omiter(['group_id'], body)
             }),
-            transformErrorResponse: (
-                response: { status: string | number },
-            ) => response.status,
+            // transformErrorResponse: (
+            //     response: { status: string | number },
+            // ) => response,
             invalidatesTags: [{ type: 'CategoryController', id: 'CATEGORIES' }],
         }),
         updateCategoryByGroup: builder.mutation<IUpdateCategoryResponse, IUpdateCategoryBody>({

@@ -82,8 +82,8 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
                     notify('success', `You created ${nameValue} category`)
                 }
             } catch (err) {
-                console.error('Failed to create category: ', err)
-                notify('error', `You haven't created ${nameValue} category`)
+                const error = err as { data: { detail: string }, status: string | number };
+                notify('error', error.data.detail);
             }
         }
     }
