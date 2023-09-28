@@ -42,14 +42,13 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
             } catch (err) {
                 console.error('Failed to response invitation group: ', err)
                 notify('error', `You haven't responded the invitation`)
-            }
-            setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
+            }   
         }
     }
     const handleSumbit = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
+        setIsActive(false);
+        setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         await onResponseInvitation(invitationId, response)
-        setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
-        setIsActive(false)
     }
 
     const getInvites = (invites: IInvitation[]): ReactNode[] => {
@@ -70,16 +69,18 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                     </div>
                     <div className={classes.buttonGroup}>
                         <CustomButton
-                            btnWidth={60}
+                            btnWidth={70}
                             btnHeight={25}
+                            preloaderSize={10}
                             icon="none"
                             type="primary"
                             isPending={isResponseCreating && buttonClicked === 'accept' && el.id === clickedButtonId}
                             children="Accept"
                             callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'ACCEPTED') } } />
                         <CustomButton
-                            btnWidth={60}
+                            btnWidth={70}
                             btnHeight={25}
+                            preloaderSize={10}
                             icon="none"
                             type="danger"
                             background="outline"

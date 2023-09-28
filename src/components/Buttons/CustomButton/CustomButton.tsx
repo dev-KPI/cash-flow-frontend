@@ -16,9 +16,10 @@ interface ICustomButtonProps {
     isPending: boolean
     className?: string
     disableScale?: boolean
+    preloaderSize?: number
 }
 
-const CustomButton: FC<ICustomButtonProps> = ({ icon, btnWidth, btnHeight, callback, isPending, type, background, children, className, disableScale = false}) => {
+const CustomButton: FC<ICustomButtonProps> = ({ icon, btnWidth, btnHeight, callback, isPending, type, background, children, className, disableScale = false, preloaderSize = 20}) => {
     const [isAnimation, setIsAnimation] = useState<boolean>(false);
 
     const setStartHover = () => setIsAnimation(!disableScale)
@@ -78,7 +79,7 @@ const CustomButton: FC<ICustomButtonProps> = ({ icon, btnWidth, btnHeight, callb
             }}
             className={`${classes.loadingButton} ${classList}`}>
             {children}
-            <PreLoader type="confirmButton" preLoaderSize={20}/>
+            <PreLoader type="confirmButton" preLoaderSize={preloaderSize}/>
         </div>
     }
     </>

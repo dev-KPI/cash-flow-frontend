@@ -18,7 +18,7 @@ const MobileNotifications: FC = () => {
     const onResponseInvitation = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
         if (invitationId && response) {
             try {
-                const isInvitationResponse = await makeResponse({
+                await makeResponse({
                     invitation_id: invitationId,
                     response: response
                 }).unwrap().then((responsedInvitation) => {
@@ -34,7 +34,6 @@ const MobileNotifications: FC = () => {
                 console.error('Failed to response invitation group: ', err)
                 notify('error', `You haven't responded the invitation`)
             }
-            setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         }
     }
 
