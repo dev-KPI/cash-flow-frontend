@@ -138,7 +138,7 @@ const History: React.FC = () => {
     ]
 
     const table = useReactTable({
-        data: UsersByGroup?.items[0].users_group || [],
+        data: UsersByGroup?.items || [],
         columns,
         pageCount: UsersByGroup?.pages,
         onSortingChange: setSorting,
@@ -163,11 +163,12 @@ const History: React.FC = () => {
             ),
         }
     })
+    const totalCount = UsersByGroup?.total;
     const pageCount = table.getPageCount()
     const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? UsersByGroup?.items[0].users_group.length : (pageIndex + 1) * pageSize;
+    const endIndex = pageIndex === pageCount - 1 ? totalCount : (pageIndex + 1) * pageSize;
     let membersContent;
-    if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items[0].users_group.length > 0)
+    if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items.length > 0)
         membersContent = <table className={classes.recentOperations__table}>
             <thead className={classes.tableTitle}>
                 {table.getHeaderGroups().map(headerGroup => (
@@ -230,7 +231,7 @@ const History: React.FC = () => {
                             </div>
                             <span className={classes.counter}>
                                 {`${startIndex} - ${endIndex}`} of{' '}
-                                {UsersByGroup?.items[0].users_group.length}
+                                {totalCount}
                             </span>
                             <div className={classes.nav}>
                                 <button
@@ -253,7 +254,7 @@ const History: React.FC = () => {
                 </tr>
             </tbody>
         </table>
-    else if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items[0].users_group.length === 0)
+    else if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items.length === 0)
         membersContent = (<div className={classes.noItems}>
             <i className="bi bi-person-exclamation"></i>
             <h5 className={classes.noItems__title}>Group doesn't have any members :(</h5>

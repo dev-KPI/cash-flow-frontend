@@ -41,10 +41,7 @@ export interface IGetInfoFromGroupResponse {
     expenses: number
 }
 
-export interface IGetUsersFromGroupResponse extends IListResponse<{
-    users_group: IMember[];
-}> {
-}
+export interface IGetUsersFromGroupResponse extends IListResponse<IMember> {}
 
 export interface IGetTotalExpensesBody {
     group_id: number,

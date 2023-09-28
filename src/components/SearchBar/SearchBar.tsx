@@ -33,7 +33,7 @@ const SearchBar: FC<{ groupId: number }> = ({ groupId }) => {
     
     const filteredUsersInGroup = useMemo(() => {
         if (UsersByGroup && isUsersByGroupSuccess) {
-            return UsersByGroup.items[0].users_group
+            return UsersByGroup.items
         } else 
             return []
     }, [UsersByGroup, isUsersByGroupLoading, isUsersByGroupSuccess, isUsersByGroupError])

@@ -44,10 +44,10 @@ const GroupHeader: FC<IPropsGroupHeader> = ({ groupInfo }) => {
     const handleLeave = () => {
         setIsLeaveModalOpen(!isLeaveModalOpen);
     }
-    const memberLength = UsersByGroup?.items[0].users_group.length || 0;
+    const memberLength = UsersByGroup?.total || 0;
     const getMemberIcons = useMemo(() => {
         if (UsersByGroup && isUsersByGroupSuccess) {
-            return UsersByGroup.items[0].users_group.map((el, i) =>
+            return UsersByGroup.items.map((el, i) =>
                 <div key={i} className={classes.avatar}>
                     <img className={classes.photo}
                         alt={'user icon'}
