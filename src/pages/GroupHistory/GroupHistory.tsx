@@ -83,7 +83,6 @@ const History: React.FC = () => {
                         return info.row.original.user_first_name
                     }
                 }
-                const email = info.row.original.user_login
                 return info.renderValue() ?
                     <Link to={`/group/${groupId}/member/${info?.row?.original?.user_id}`} className={classes.memberWrapper}>
                         <div className={classes.details}>
@@ -95,7 +94,6 @@ const History: React.FC = () => {
                             </div>
                             <div className={classes.memberInfo}>
                                 <h6 className={classes.name}>{full_name()}</h6>
-                                {/* <p className={classes.email}>{email}</p> */}
                             </div>
                         </div>
                     </Link> : '-'

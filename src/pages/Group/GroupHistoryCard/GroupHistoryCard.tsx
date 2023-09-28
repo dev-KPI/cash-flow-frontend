@@ -12,7 +12,7 @@ import { useGetGroupUsersHistoryQuery } from "@store/Controllers/GroupsControlle
 
 const GroupHistoryCard: FC = () => {
 
-    const { groupId } = useParams();
+    const { groupId } = useParams<{ groupId: string }>();
     
     const {data: GroupRecentHistory, isError: isGroupRecentHistoryError, isLoading: isGroupRecentHistoryLoading, isFetching: isGroupRecentHistoryFetching, isSuccess: isGroupRecentHistorySuccess} = useGetGroupUsersHistoryQuery({
         group_id: Number(groupId),
@@ -26,7 +26,8 @@ const GroupHistoryCard: FC = () => {
             const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
             let res: ReactNode[] = GroupRecentHistory.items.slice(0, 7).map((el, i) =>
             <RecentOperationGroupCard
-                key={i}
+                    key={i}
+                    groupId={Number(groupId)}
                     item={{
                         ...el,
                         time:  new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()

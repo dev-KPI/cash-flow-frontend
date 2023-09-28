@@ -1,5 +1,5 @@
 import { FC } from "react";
-
+import { Link } from "react-router-dom";
 //UI
 import classes from './RecentOperationsCards.module.css';
 import Light from "@components/Light/Light";
@@ -12,11 +12,13 @@ import IHistoryItem, { IGroupHistoryItem } from "@models/IHistoryItem";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
 
+
 interface IRecentOperationDashboardCard {
     item: IHistoryItem
 }
 export interface IRecentOperationGroupCard  {
     item: IGroupHistoryItem
+    groupId: number
 }
 
 export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = ({ item }) => {
@@ -44,7 +46,7 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
 }
 
 
-export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ item }) => {
+export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ groupId, item }) => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     TimeAgo.addLocale(en)
     const timeAgo = new TimeAgo('en-US')
@@ -59,14 +61,13 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ item }
     
     return (
         <li className={classes.RecentOperationGroupCard}>
-                <div className={classes.details}>
-                    <div className={classes.icon}
-                    >{getAdminIcon()}</div>
-                    <div className={classes.memberInfo}>
-                        <h6 className={classes.name}>{name}</h6>
-                        <p className={classes.time}>{timeAgo.format(new Date(item.time))}</p>
-                    </div>
-            </div>
+            <Link to={`/group/${groupId}/member/${item.user_id}`} className={classes.details}>
+                <div className={classes.icon}>{getAdminIcon()}</div>
+                <div className={classes.memberInfo}>
+                    <h6 className={classes.name}>{name}</h6>
+                    <p className={classes.time}>{timeAgo.format(new Date(item.time))}</p>
+                </div>
+            </Link>
             <div className={classes.category}>
                 <Light
                     color={item.color_code_category}

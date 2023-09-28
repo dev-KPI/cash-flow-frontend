@@ -12,10 +12,13 @@
 .title{
     composes: cardTitle from "@styles/style.css";
 }
-.HistoryCard ul{
+.activityList{
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+.activityList li a{
+    pointer-events: none;
 }
 .HistoryCard li:first-child{
     margin-top: 24px;

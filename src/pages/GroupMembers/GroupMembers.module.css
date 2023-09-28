@@ -88,6 +88,11 @@
     filter: opacity(0.5);
 }
 
+/* member */
+.memberWrapper {
+    display: flex;
+    transition: all .3s ease;
+}
 
 .memberInfo {
     display: flex;

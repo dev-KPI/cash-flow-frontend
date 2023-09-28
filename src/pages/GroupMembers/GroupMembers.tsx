@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 //UI
 import classes from './GroupMembers.module.css';
 import userIcon from '@assets/user-icon.svg'
@@ -87,20 +87,20 @@ const History: React.FC = () => {
                         return info.row.original.user.first_name
                     }
                 }
-                const email = info.row.original.user.login
                 return info.renderValue() ?
-                    <div className={classes.details}>
-                        <div className={classes.icon}>
-                            <img className={classes.photo}
-                                style={{borderRadius: '50%'}}
-                                alt={'user icon'}
-                                src={isUrl(picture) ? picture : userIcon} />
+                    <Link to={`/group/${groupId}/member/${info?.row?.original?.user.id}`} className={classes.memberWrapper}>
+                        <div className={classes.details}>
+                            <div className={classes.icon}>
+                                <img className={classes.photo}
+                                    style={{ borderRadius: '50%' }}
+                                    alt={'user icon'}
+                                    src={isUrl(picture) ? picture : userIcon} />
+                            </div>
+                            <div className={classes.memberInfo}>
+                                <h6 className={classes.name}>{full_name()}</h6>
+                            </div>
                         </div>
-                        <div className={classes.memberInfo}>
-                            <h6 className={classes.name}>{full_name()}</h6>
-                            {/* <p className={classes.email}>{email}</p> */}
-                        </div>
-                    </div> : '-'
+                    </Link> : '-'
             }
         }),
         columnHelper.accessor('role', {
