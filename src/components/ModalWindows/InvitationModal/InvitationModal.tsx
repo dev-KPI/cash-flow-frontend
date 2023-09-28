@@ -75,8 +75,9 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
             <form
                 onSubmit={handleSubmit}>
                 <div className={classes.modal__wrapper}>
-                    <p className={classes.text}>Do you want to invite <span>{userName}
-                    </span> to <div className={classes.selectorWrapper}>
+                    <div className={classes.text}>
+                        Do you want to invite <span className={classes.name}> {userName}</span> to
+                        <div className={classes.selectorWrapper}>
                             <select className={classes.select} onChange={handleChange}>
                                 <option style={{backgroundColor: 'var(--cardbg)'}} key={'none'} value='None'>
                                     none
@@ -86,7 +87,7 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                                 ))}
                             </select> 
                         </div> group?
-                    </p>
+                    </div>
                 </div>
                 <div className={classes.btnWrapper}>
                     <CustomButton

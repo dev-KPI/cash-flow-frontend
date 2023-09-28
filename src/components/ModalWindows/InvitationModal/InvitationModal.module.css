@@ -10,9 +10,15 @@
     text-align: center;
 }
 
-.text span{
+.name {
     color: var(--main-text);
     font-weight: 700;
+    display: inline-flex;
+    line-height: 29px;
+    max-height: 29px;
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis
 }
 .selectorWrapper{
     display: inline-block;

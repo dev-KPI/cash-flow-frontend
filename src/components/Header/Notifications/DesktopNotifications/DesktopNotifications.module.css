@@ -38,10 +38,23 @@
     align-items: center;
     gap: 5px;
 }
-.Promo{
-    font-weight: 400;
-    font-size: 16px;
-    color: var(--text);
+.promo {
+    composes: largeItemTitle from '@styles/style.css'
+}
+
+.promoName {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-flex;
+    word-break: break-word;
+    max-height: 17px;
+}
+
+.inviteWrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .noNotifications {
     text-align: center;

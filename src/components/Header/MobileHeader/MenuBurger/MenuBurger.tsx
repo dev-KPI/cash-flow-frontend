@@ -79,8 +79,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User })
             <div className={classes.burgernav__account}>
                 <img alt="Avatar" src={User.picture} width="46px" style={{borderRadius: '50%'}}/>
                 <div className={classes.account__info}>
-                    <h2 className={classes.title}>{User.first_name}</h2>
-                    <h2 className={classes.title}>{User.last_name}</h2>
+                    <h2 className={classes.title}>{User.first_name} {User.last_name}</h2>
                     <p className={classes.balance + ' ' + (UserBalance.balance < 0 ? classes.red : classes.green)}>{currency}{numberWithCommas(UserBalance.balance)}</p>
                 </div>
             </div>

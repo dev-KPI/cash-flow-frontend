@@ -42,21 +42,23 @@ const MobileNotifications: FC = () => {
         onResponseInvitation(invitationId, response)
         setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
     }
-
+    
     const getInvites = (invites: IInvitation[]): ReactNode[] => {
         return invites.map((el, i) => {
             const group = el.group;
             const admin = el.group.admin;
-            const userName = admin.first_name + ' ' + admin.last_name
+            const userName = admin.first_name + ' ' + admin.last_name;
             return <li className={classes.inviteLi}
                 key={admin.id + group.title + i}>
                 <form className={classes.inviteForm}>
-                    <img src={admin.picture} alt={admin.first_name + '_avatar'} />
-                    <p className={classes.Promo}>
-                        <span style={{ fontWeight: 600 }}>{userName}
-                        </span> has invited you to the group <span className={classes.InviteGroupRef}>
-                            {group.title}</span>
-                    </p>
+                    <div className={classes.inviteWrapper}>
+                        <img src={admin.picture} alt={admin.first_name + '_avatar'} />
+                        <div className={classes.promo}>
+                            <span className={classes.promoName}>{userName}</span>
+                            <span> has invited you to the group </span>
+                            <span className={classes.InviteGroupRef}>{group.title}</span>
+                        </div>
+                    </div>
                     <div className={classes.buttonGroup}>
                         <CustomButton
                             icon="submit"

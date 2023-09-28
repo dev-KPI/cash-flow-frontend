@@ -31,7 +31,7 @@
 .icon {
     display: flex;
     height: 46px;
-    width: 46px;
+    flex: 0 0 46px;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
@@ -43,10 +43,16 @@
     font-size: 18px;
 }
 
+.info{
+    min-width: 0;
+}
 .ownerName{
     composes: largeItemTitle from '@styles/style.css';
     font-weight: 600;
-    color: var(--main-text)
+    color: var(--main-text);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .ownerEmail {
@@ -59,6 +65,8 @@
     line-height: 21px;
     margin-bottom: 11px;
     height: 63px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .contentBottom{

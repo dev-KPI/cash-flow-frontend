@@ -51,8 +51,21 @@
 .buttonGroup i {
     display: none;
 }
-.Promo{
+.promo{
     composes: largeItemTitle from '@styles/style.css'
+}
+.promoName{
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-flex;
+    word-break: break-word;
+    max-height: 17px;
+}
+.inviteWrapper{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .ViewMore {
     margin-top: 10px;

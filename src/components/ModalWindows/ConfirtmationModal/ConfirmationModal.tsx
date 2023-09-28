@@ -177,7 +177,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
             <form
                 onSubmit={handleSubmit}>
                 <div className={classes.modal__wrapper}>
-                    <p className={classes.text}>{modalText}</p>
+                    <div className={classes.text}>{modalText}</div>
                 </div>
                 <div className={classes.confirmBtnWrapper}>
                     <CustomButton

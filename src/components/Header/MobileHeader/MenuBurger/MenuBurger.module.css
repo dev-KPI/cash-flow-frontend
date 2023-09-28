@@ -51,11 +51,14 @@
 .account__info{
     /* display:  */
     margin-left: 15px;
+    min-width: 0;
 }
 .burgernav__account .title{
     font-weight: 700;
     font-size: 16px;
     color: var(--main-text);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .balance {
     font-size: 17px;
