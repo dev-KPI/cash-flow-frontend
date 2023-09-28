@@ -333,14 +333,6 @@ const History: React.FC = () => {
             groupId={Number(groupId)}
             expenseId={ExpenseCredentials.id}
             categoryId={ExpenseCredentials.category_id}
-            setActionCredentials={() => {
-                setExpenseCredentials({
-                    id: 0,
-                    descriptions: '',
-                    amount: 0,
-                    category_id: 0
-                })
-            }}
         />
         <main id='GroupHistoryPage' className="no-padding">
             <div className={classes.page__container}>

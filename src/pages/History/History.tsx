@@ -316,15 +316,7 @@ const History: React.FC = () => {
         setIsConfirmationModalOpen={setIsRemoveExpenseModal}
         groupId={ExpenseCredentials.group_id}
         expenseId={isReplenishment ? ReplenishmentCredentials.id : ExpenseCredentials.id}
-        callback={() => {
-            setExpenseCredentials({
-                id: 0,
-                descriptions: '',
-                amount: 0,
-                category_id: 0,
-                group_id: 0,
-            })
-        }}
+        callback={() => {}}
         />
         <ConfirmationModal
         mode='remove_replenishment'
@@ -332,13 +324,7 @@ const History: React.FC = () => {
         title={ReplenishmentCredentials.description}
         isConfirmationModalOpen={isRemoveReplenishmentModal}
         setIsConfirmationModalOpen={setIsRemoveReplenishmentModal}
-        callback={() => {
-            setReplenishmentCredentials({
-                id: 0,
-                amount: 0,
-                description: ''
-            })
-        }}
+        callback={() => { }}
         />
         <ExpenseModal
             type='edit'
@@ -350,21 +336,6 @@ const History: React.FC = () => {
             groupId={ExpenseCredentials.group_id}
             expenseId={isReplenishment ? ReplenishmentCredentials.id : ExpenseCredentials.id}
             categoryId={ExpenseCredentials.category_id}
-            setActionCredentials={() => {
-                setExpenseCredentials({
-                    id: 0,
-                    descriptions: '',
-                    amount: 0,
-                    category_id: 0,
-                    group_id: 0,
-                })
-                setReplenishmentCredentials({
-                    id: 0,
-                    amount: 0,
-                    description: ''
-                })
-                setIsReplenishment(false)
-            }}
         />
         <main id='HistoryPage'>
             <div className={classes.page__container}>

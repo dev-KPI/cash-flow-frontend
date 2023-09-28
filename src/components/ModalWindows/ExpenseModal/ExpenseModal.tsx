@@ -17,7 +17,6 @@ type IExpenseModalProps = {
     setIsExpenseModalOpen: Dispatch<SetStateAction<boolean>>;
     groupId: number,
     categoryId: number,
-    setActionCredentials?: () => void
 } & (
     | {type: 'create', amount?: never, description?: never, isReplenishment?: never, expenseId?: never}
     | {type: 'edit', amount: number, description: string, isReplenishment: boolean, expenseId: number}
@@ -26,8 +25,7 @@ type IExpenseModalProps = {
 const ExpenseModal: FC<IExpenseModalProps> = ({ 
     isExpenseModalOpen = false, 
     setIsExpenseModalOpen, groupId, categoryId,
-    amount, description, type, isReplenishment = false, 
-    setActionCredentials = () => {}, expenseId = 0 }) => {
+    amount, description, type, isReplenishment = false, expenseId = 0 }) => {
 
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const headerIcon: ReactNode = isReplenishment ? <i className="bi bi-graph-up-arrow"></i> : <i className="bi bi-graph-down-arrow"></i>
@@ -43,7 +41,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const [createExpense, { isLoading: isExpenseCreating, isError: isExpenseCreatingError, isSuccess: isExpenseCreated }] = useCreateExpenseByGroupMutation();
     const [updateExpense, { isLoading: isExpenseUpdating, isError: isExpenseUpdatingError, isSuccess: isExpenseUpdated }] = useUpdateExpenseByGroupMutation();
     const [updateReplenishment, { isLoading: isReplenishmentUpdating, isError: isReplenishmentUpdatingError, isSuccess: isReplenishmentUpdated }] = useUpdateReplenishmentByIdMutation();
-
     const onUpdateExpense = async () => {
         if (groupId && expenseId && categoryId && !isExpenseUpdating) {
             try {
@@ -57,8 +54,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 if (isExpenseUpdated) {
                     notify('success', 'Expense updated successfully')
                 }
-                setAmountValue(0)
-                setDescriptionValue('')
             } catch (err) {
                 console.error('Failed to update expense: ', err)
                 notify('error', 'Expense not updated')
@@ -76,8 +71,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 if (isUpdatedReplenishment) {
                     notify('success', 'Replenishment updated successfully')
                 }
-                setAmountValue(0)
-                setDescriptionValue('')
             } catch (err) {
                 console.error('Failed to update replenishment: ', err)
                 notify('error', 'Replenishment not updated')
@@ -96,8 +89,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                 if (isExpenseCreated) {
                     notify('success', 'Expense created successfully')
                 }
-                setAmountValue(0)
-                setDescriptionValue('')
             } catch (err) {
                 console.error('Failed to update replenishment: ', err)
                 notify('error', 'Expense not created')
@@ -164,7 +155,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                             cashValue={amount}
                             isError={isInputError}
                             setFormValue={{type: 'cash', callback: setAmountValue}}
-                            isInputMustClear={!isExpenseModalOpen} 
+                            isInputMustClear={false} 
                             Icon={currency} inputType="cash" id="salary" 
                             name="salary" placeholder="00.00"/>
                         </div>
@@ -175,7 +166,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                             <Input 
                             value={description}
                             setFormValue={{type: 'text', callback: setDescriptionValue}}
-                            isInputMustClear={!isExpenseModalOpen} 
+                            isInputMustClear={false} 
                             inputType="text" id="description" 
                             name="description"/>
                         </div>
