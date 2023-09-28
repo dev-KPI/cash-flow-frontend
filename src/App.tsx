@@ -1,5 +1,5 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import './styles/style.css';
 
 // UI
@@ -14,9 +14,16 @@ import { UserSliceActions } from '@store/User/UserSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const notify = (type: 'success'|'error'|'info', msg: string) => {
-    const toastStyles = {paddingLeft: '16px', borderRadius: '20px', backgroundColor: 'var(--cardbg)', color: 'var(--main-text)', 
-    fontFamily: 'Inter', fontSize: '16px', fontWeight: '500', }
+export const notify = (type: 'success'|'error'|'info', msg: string | ReactNode) => {
+    const toastStyles = {
+        paddingLeft: '16px',
+        borderRadius: '20px',
+        backgroundColor: 'var(--cardbg)',
+        color: 'var(--main-text)', 
+        fontFamily: 'Inter',
+        fontSize: '16px',
+        fontWeight: '500',
+    }
     if(type === 'success') {
         toast.success(msg, {
             style: toastStyles

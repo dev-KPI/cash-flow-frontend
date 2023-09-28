@@ -79,7 +79,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
                     color_code: pickedColor,
                 }).unwrap()
                 if (isCreatedCategory) {
-                    notify('success', `You created ${nameValue} category`)
+                    notify('success', <p>You created <span style={{ fontWeight: 700 }}>{nameValue}</span> category</p>)
                 }
             } catch (err) {
                 const error = err as { data: { detail: string }, status: string | number };
@@ -98,11 +98,11 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
                     color_code: pickedColor,
                 }).unwrap()
                 if (isUpdatedCategory) {
-                    notify('success', `You updated ${nameValue} category`)
+                    notify('success', <p>You updated <span style={{ fontWeight: 700 }}>{nameValue}</span> category</p>)
                 }
             } catch (err) {
                 console.error('Failed to create category: ', err)
-                notify('error', `You haven't created ${nameValue} category`)
+                notify('error', <p>You haven't updated <span style={{ fontWeight: 700 }}>{nameValue}</span> category</p>)
             }
         }
     }

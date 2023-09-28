@@ -40,11 +40,11 @@ const SalaryModal: FC<IOperationModalProps> = ({
                     descriptions: descriptionValue
                 }).unwrap()
                 if (isReplenishmentCreated) {
-                    notify('success', `You created ${descriptionValue} replenishment`)
+                    notify('success', `Replenishment created successfully`)
                 }
             } catch (err) {
                 console.error('Failed to create replenishment: ', err)
-                notify('error', `You haven't created ${descriptionValue} replenishment`)
+                notify('error', `Replenishment not created`)
             }
         }
     }

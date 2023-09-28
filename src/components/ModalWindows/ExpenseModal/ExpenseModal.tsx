@@ -8,7 +8,6 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateExpenseByGroupMutation, useUpdateExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
 import { useUpdateReplenishmentByIdMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
-import { toast } from "react-toastify";
 import { notify } from "src/App"; 
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
@@ -56,7 +55,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     amount: amountValue,
                 }).unwrap()
                 if (isExpenseUpdated) {
-                    notify('success', 'Expense updated')
+                    notify('success', 'Expense updated successfully')
                 }
                 setAmountValue(0)
                 setDescriptionValue('')
@@ -75,7 +74,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     amount: amountValue,
                 }).unwrap()
                 if (isUpdatedReplenishment) {
-                    notify('success', 'Replenishment updated')
+                    notify('success', 'Replenishment updated successfully')
                 }
                 setAmountValue(0)
                 setDescriptionValue('')
@@ -95,13 +94,13 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     group_id: groupId,
                 }).unwrap()
                 if (isExpenseCreated) {
-                    notify('success', 'Expense added')
+                    notify('success', 'Expense created successfully')
                 }
                 setAmountValue(0)
                 setDescriptionValue('')
             } catch (err) {
                 console.error('Failed to update replenishment: ', err)
-                notify('error', 'Expense not added')
+                notify('error', 'Expense not created')
             }
         }
     }

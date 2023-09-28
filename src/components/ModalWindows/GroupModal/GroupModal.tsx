@@ -80,11 +80,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     color_code: pickedColor,
                 }).unwrap()
                 if (isGroupCreated) {
-                    notify('success', `You created ${nameValue} group`)
+                    notify('success', <p>You created the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
             } catch (err) {
                 console.error('Failed to create group: ', err)
-                notify('error', `You haven't created ${nameValue} group`)
+                notify('error', <p>You haven't created the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
             }
         }
     }
@@ -99,11 +99,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     color_code: pickedColor,
                 }).unwrap()
                 if (isGroupUpdated) {
-                    notify('success', `You updated ${nameValue} group`)
+                    notify('success', <p>You updated the<span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
             } catch (err) {
-                console.error('Failed to create group: ', err)
-                notify('error', `You haven't update the ${nameValue} group`)
+                console.error('Failed to update group: ', err)
+                notify('error', <p>You haven't update the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
             }
         }
     }
@@ -113,18 +113,18 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 const isGroupLeft = await leaveGroup(groupId).unwrap()
                 if (isGroupLeft) {
                     if (mode === 'disband') {
-                        notify('success', `You disbanded the ${nameValue} group`)
+                        notify('success', <p>You disbanded the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                     } else if (mode === 'leave') {
-                        notify('success', `You left from ${nameValue} group`)
+                        notify('success', <p>You have left the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                     }
                 }
             } catch (err) {
                 if (mode === 'disband') {
                     console.error('Failed to disband the group: ', err)
-                    notify('error', `You haven't dibanded ${nameValue} group`)
+                    notify('error', <p>You haven't disbanded the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 } else if (mode === 'leave') {
                     console.error('Failed to left from the group: ', err)
-                    notify('error', `You haven't left from ${nameValue} group`)
+                    notify('error', <p>You haven't left the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
             }
         }
@@ -140,7 +140,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 if (!(nameValue === group?.title && descValue === group.description && icon === group.icon_url && pickedColor === group.color_code)) {
                     onUpdateGroup()
                 } else {
-                    notify('info', 'Expense not updated')
+                    notify('error', <p>You haven't update the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
                 closeModalHandler();
             } else if(mode === 'disband' || mode === 'leave'){

@@ -75,19 +75,19 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 const isLeavedGroup = await leaveGroup(groupId || 0).unwrap()
                 if (isLeavedGroup) {
                     if (mode === 'disband') {
-                        notify('success', `You disbanded the ${title} group`)
+                        notify('success', <p>You disbanded the <span>{title}</span> group</p>)
                     } else if (mode === 'leave') {
-                        notify('success', `You left the ${title} group`)
+                        notify('success', <p>You left the <span>{title}</span> group</p>)
                     }
                     navigate('/groups')
                 }
             } catch (err) {
                 if (mode === 'disband') {
                     console.error(`Failed to disband the ${title} group: `, err)
-                    notify('error', `You haven't disbanded the ${title} group`)
+                    notify('error', <p>You haven't disbanded the <span>{title}</span> group</p>)
                 } else if (mode === 'leave') {
                     console.error(`Failed to leave from the ${title} group: `, err)
-                    notify('error', `You haven't left the ${title} group`)
+                    notify('error', <p>You haven't left the <span style={{fontWeight: 700}}>{title}</span> group</p>)
                 }
             }
         }
@@ -98,11 +98,11 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
             try {
                 const isInvitationCreated = await createInvitation({recipient_id: user.id, group_id: groupId}).unwrap()
                 if (isInvitationCreated) {
-                    notify('success', `You have successfully invited ${user.first_name} ${user.last_name ? (' ' + user.last_name) : ''} to the group`)
+                    notify('success', <p>You have successfully invited <span style={{ fontWeight: 700 }}>{user.first_name} {user.last_name ? (' ' + user.last_name) : ''}</span> to the group</p>)
                 }
             } catch (err) {
                 console.error('Failed to invite user to the group: ', err)
-                notify('error', `You haven't invited ${user.first_name} ${user.last_name ? (' ' + user.last_name) : ''} to the group`)
+                notify('error', <p>You haven't invited <span style={{ fontWeight: 700 }}>{user.first_name} {user.last_name ? (' ' + user.last_name) : ''}</span> to the group</p>)
             }
         }
     }
@@ -111,11 +111,11 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
             try {
                 const isRemovedUser = await removeUser({group_id: groupId, user_id: user.id}).unwrap()
                 if (isRemovedUser) {
-                    notify('success', `You removed ${user.first_name}  ${user.last_name ? (' ' + user.last_name) : ''} from the group`)
+                    notify('success', <p>You have successfully removed <span style={{ fontWeight: 700 }}>{user.first_name} {user.last_name ? (' ' + user.last_name) : ''}</span> from the group</p>)
                 }
             } catch (err) {
                 console.error('Failed to remove user from the group: ', err)
-                notify('error', `You haven't removed ${user.first_name} ${user.last_name ? (' ' + user.last_name) : ''}`)
+                notify('error', <p>You haven't removed <span style={{ fontWeight: 700 }}>{user.first_name} {user.last_name ? (' ' + user.last_name) : ''}</span> from the group</p>)
             }
         }
     }
@@ -124,7 +124,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
             try {
                 const isRemovedExpense = await removeExpense({group_id: groupId, expense_id: expenseId}).unwrap()
                 if (isRemovedExpense) {
-                    notify('success', `You removed expense`)
+                    notify('success', `You have successfully removed expense`)
                 }
             } catch (err) {
                 console.error('Failed to remove expense: ', err)
@@ -137,7 +137,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
             try {
                 const isRemovedReplenishment = await removeReplenishment({id: replenishmentId})
                 if (isRemovedReplenishment) {
-                    notify('success', `You removed replenishment`)
+                    notify('success', `You have successfully removed replenishment`)
                 }
             } catch (err) {
                 console.error('Failed to remove replenishment: ', err)

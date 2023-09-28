@@ -24,15 +24,15 @@ const MobileNotifications: FC = () => {
                 }).unwrap().then((responsedInvitation) => {
                     if (responsedInvitation) {
                         if (response === 'ACCEPTED') {
-                            notify('success', `You accepted the invitation to ${responsedInvitation.group.title} group`)
+                            notify('success', <p>You accepted the invitation to <span style={{ fontWeight: 700 }}>{responsedInvitation.group.title}</span> group</p>)
                         } else {
-                            notify('success', `You denied the invitation to ${responsedInvitation.group.title} group`)
+                            notify('success', <p>You denied the invitation to <span style={{ fontWeight: 700 }}>{responsedInvitation.group.title}</span> group</p>)
                         }
                     }
                 })
             } catch (err) {
                 console.error('Failed to response invitation group: ', err)
-                notify('error', `You haven't response the invitation`)
+                notify('error', `You haven't responded the invitation`)
             }
             setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         }
