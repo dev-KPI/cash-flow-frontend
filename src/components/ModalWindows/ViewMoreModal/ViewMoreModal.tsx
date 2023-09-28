@@ -33,7 +33,6 @@ const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModa
     }
 
     return <UsePortal
-        callback={() => {}}
         setIsModalOpen={setIsModalOpen}
         isModalOpen={isModalOpen}
         headerIcon={headerIcon}

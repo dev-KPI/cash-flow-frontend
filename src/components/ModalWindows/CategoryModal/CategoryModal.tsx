@@ -142,7 +142,6 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
 
     return <>
     <UsePortal
-        callback={() => {}}
         setIsModalOpen={setIsCategoryModalOpen}
         isModalOpen={isCategoryModalOpen}
         headerIcon={headerIcon}

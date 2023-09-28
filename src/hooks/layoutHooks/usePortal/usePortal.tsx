@@ -1,12 +1,12 @@
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
-import { FC, useEffect, Dispatch, useRef, SetStateAction, memo, ReactNode, useState, useMemo, VoidFunctionComponent, useCallback } from "react";
+import { FC, useEffect, Dispatch, useRef, SetStateAction, memo, ReactNode, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import useEscapeKey from "../useEscapeKey";
 
 import classes from './usePortal.module.css';
 interface IPortalProps {
     isModalOpen: boolean
-    callback: Function,
+    callback?: Function,
     setIsModalOpen: Dispatch<SetStateAction<boolean>>;
     children: ReactNode,
     headerIcon?: ReactNode
@@ -15,7 +15,7 @@ interface IPortalProps {
     className?: string
 }
 
-const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, callback, headerIcon, title = 'Title', containerWidth, className }) => {
+const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, callback = ()=>{}, headerIcon, title = 'Title', containerWidth, className }) => {
     const [isVisible, setIsVisible] = useState<boolean>(isModalOpen)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const el = useRef<HTMLDivElement | null>(null);

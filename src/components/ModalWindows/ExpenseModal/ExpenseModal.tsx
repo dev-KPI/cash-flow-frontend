@@ -138,7 +138,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
 
     return <>
     <UsePortal
-        callback={() => {}}
         setIsModalOpen={setIsExpenseModalOpen}
         isModalOpen={isExpenseModalOpen}
         headerIcon={headerIcon}

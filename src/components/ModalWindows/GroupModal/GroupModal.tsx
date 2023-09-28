@@ -168,7 +168,6 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
             isConfirmationModalOpen={isConfirmationModal} 
             mode={mode === 'leave' ? "leave" : 'disband'}/>
         <UsePortal
-            callback={() => {}}
             isModalOpen={isGroupModalOpen}
             setIsModalOpen={setIsGroupModalOpen}
             headerIcon={headerIcon}

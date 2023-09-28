@@ -65,7 +65,6 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
     });
     return <>
         <UsePortal
-            callback={() => {}}
             setIsModalOpen={setIsInvitationModalOpen}
             isModalOpen={isInvitationModalOpen}
             headerIcon={headerIcon}
