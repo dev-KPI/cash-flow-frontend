@@ -13,9 +13,8 @@ import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces
 import { IThemeState } from "@store/UI_store/ThemeSlice/ThemeInterfaces";
 //UI
 import classes from "./MenuBurger.module.css";
-import userIcon from '@assets/user-icon.svg';
-import usersPeopleIcon from '@assets/users-people-icon.svg';
-import Logo from "@assets/Header/logo.svg";
+import darkLogo from '@assets/logo/dark-logo.svg';
+import lightLogo from '@assets/logo/light-logo.svg';
 import Light from "@components/Light/Light";
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
 import CloseButton from "@components/Buttons/CloseButton/CloseButton";
@@ -30,7 +29,7 @@ interface IPropsMenuBurger {
 }
 
 const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User }) => {
-    
+    const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
 
     const { data: Groups,  isLoading: isGroupsLoading, isFetching: isGroupsFetching, isError: isGroupsError, isSuccess: isGroupsSuccess } = useGetCurrentUserGroupsQuery(null)
@@ -69,12 +68,12 @@ const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User })
 
     return <>
         <nav className={classes.burgernav}>
-            <div className={classes.burgernav__title}>
-                <div className={classes.burgernav__titleLink}>
-                    <img alt="LogoSite" width="42px" height="42px" src={Logo} className={classes.logo}/>
-                    <h1 className={classes.title}>Cash <span className={classes.title__span}>Flow</span></h1>
-                    <CloseButton size={32} closeHandler={()=>{setMenuActive(false)}}/>    
-                </div>
+            <div className={classes.burgernav__top}>
+                <Link to="/dashboard" onClick={closeMenu} className={classes.burgernav__titleLink}>
+                    <img className={classes.devices} width='42px' height='42px' src={ThemeStore.theme === 'light' ? lightLogo : darkLogo} alt="devices dark" />
+                    <h1 className={classes.title}>Cash <span className={classes.title__span}>Flow</span></h1>   
+                </Link>
+                <CloseButton size={32} closeHandler={() => { setMenuActive(false) }} /> 
             </div>
             <div className={classes.burgernav__account}>
                 <img alt="Avatar" src={User.picture} width="46px" style={{borderRadius: '50%'}}/>
