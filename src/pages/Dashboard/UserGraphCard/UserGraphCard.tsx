@@ -3,7 +3,7 @@ import {  useMemo } from 'react';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
-import {addDays, subDays, isSameDay} from 'date-fns'
+import { isSameDay, startOfMonth, endOfMonth } from 'date-fns';
 //UI
 import classes from './UserGraphCard.module.css'
 import GraphCardLoader from '@components/GraphCard/GraphCardLoader';
@@ -15,44 +15,36 @@ const UserGraphCard = () => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     const MonthPickerRange = useMemo(() => {
-        if(MonthPickerStore.type === 'date-range'){
-            return {
-                period: {
-                    start_date: new Date(MonthPickerStore.startDate).toISOString().slice(0,10),
-                    end_date: new Date(MonthPickerStore.endDate).toISOString().slice(0,10)
-                }
-            }
-        } else {
-            return {
-                period: {
-                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`} 
+        return {
+            period: {
+                start_date: new Date(MonthPickerStore.startDate),
+                end_date: new Date(MonthPickerStore.endDate)
             }
         }
-    }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
     const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess, refetch} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
 
+    const getStartDateForTitle = useMemo(() => {
+        return `${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth()).slice(0, 3)} ${new Date(MonthPickerStore.startDate).getFullYear()}`
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
+    const getEndDateForTitle = useMemo(() => {
+        return `${new Date(MonthPickerStore.endDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.endDate).getMonth()).slice(0, 3)} ${new Date(MonthPickerStore.endDate).getFullYear()}`
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
+
     const RangeTitle = useMemo(() => {
-        if (MonthPickerStore.rangeType === 'month') {
-            return `${MonthPickerStore.currentMonth} ${MonthPickerStore.currentYear}`
-        }
-        else if (MonthPickerStore.type === 'year-month') {
-            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
-           
-        } 
-        else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
-            isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
-            return `${new Date(MonthPickerStore.startDate).getDate()} 
-            ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } else if (MonthPickerStore.rangeType === 'alltime'){
+        if (isSameDay(new Date(MonthPickerStore.startDate), new Date(2023, 5, 1)) && isSameDay(new Date(MonthPickerStore.endDate), new Date())) {
             return 'All time'
-        }  else {
-            return `From ${
-                new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
-            } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
+        } else if (isSameDay(startOfMonth(new Date(MonthPickerStore.startDate)), new Date(MonthPickerStore.startDate)) &&
+            isSameDay(endOfMonth(new Date(MonthPickerStore.endDate)), new Date(MonthPickerStore.endDate))) {
+            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} ${new Date(MonthPickerStore.startDate).getFullYear()}`
+        } else if (isSameDay(new Date(MonthPickerStore.startDate), new Date(MonthPickerStore.endDate))) {
+            return `${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
+            ${new Date(MonthPickerStore.startDate).getFullYear()}`
         }
-    }, [MonthPickerStore.currentMonth, MonthPickerStore.rangeType, MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate])
+        else {
+            return (`${getStartDateForTitle} - ${getEndDateForTitle}`)
+        }
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
     return (
         <div className={classes.UserGraph}>

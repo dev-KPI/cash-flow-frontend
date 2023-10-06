@@ -22,13 +22,11 @@ const Dashboard = () => {
     
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
 
-    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery(MonthPickerStore.type === 'year-month' ? 
-    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
-    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
+    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery( 
+        { period: { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) } })
         
-    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(MonthPickerStore.type === 'year-month' ? 
-    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
-    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
+    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(
+        { period: { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) } })
 
     return (<>
         <main id='DashboardPage'>

@@ -49,7 +49,7 @@ const UserCategoriesCard = () => {
         group_id: selectedGroup,
         period: MonthPickerStore.type === 'year-month' ?
             { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
-            { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
+            { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) }
     }, { skip: !isGroupsSuccess || selectedGroup === 0 })
 
     requestAnimationFrame(_ => {

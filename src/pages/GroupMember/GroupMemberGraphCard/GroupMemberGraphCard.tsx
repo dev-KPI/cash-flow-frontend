@@ -25,8 +25,7 @@ const GroupMemberGraphCard: FC = () => {
         if(MonthPickerStore.type === 'date-range'){
             return {
                 period: {
-                    start_date: MonthPickerStore.startDate.split('T')[0],
-                    end_date: MonthPickerStore.endDate.split('T')[0]
+                    start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10)
                 }
             }
         } else {

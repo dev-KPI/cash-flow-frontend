@@ -35,7 +35,7 @@ const GroupCategoriesCard = () => {
         group_id: Number(groupId), 
         period: MonthPickerStore.type === 'year-month' ? 
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+        {start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10)} 
     })
     useEffect(()=>{
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);

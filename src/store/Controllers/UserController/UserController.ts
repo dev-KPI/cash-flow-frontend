@@ -132,53 +132,34 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
-        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IPeriods>({
+        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], { period: { start_date: Date, end_date: Date } }>({
             query: ({ period }) => ({
                 url: `users/daily-expenses`,
-                params: period,
+                params: { period: { start_date: period.start_date.toISOString().slice(0, 10), endDate: period.end_date.toISOString().slice(0, 10) } },
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: IPeriods): IGetCurrentUserDailyExpensesResponse[] => {
-                if ('start_date' in body.period && 'end_date' in body.period) {
-                    const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
-                    response.forEach(expense => {
-                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
-                    });
+            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: { period: { start_date: Date, end_date: Date}}): IGetCurrentUserDailyExpensesResponse[] => {
+                const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
+                response.forEach(expense => {
+                    expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
+                });
 
-                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
-                    dateRange.shift();
+                const dateRange = DateService.getDatesInRange(body.period.start_date!, body.period.end_date!);
 
-                    return dateRange.map(date => {
-                        const dateISOString = date.toISOString().split('T')[0];
-                        if (expenseMap[dateISOString]) {
-                            return expenseMap[dateISOString];
-                        } else {
-                            return {
-                                date: dateISOString,
-                                amount: 0,
-                            };
-                        }
-                    });
-                } else {
-                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
-                    const startDate = new Date(body.period.year_month + '-01');
-
-                    return Array.from({ length: daysInMonth }, (_, i) => {
-                        const currentDate = addDays(startDate, i);
-                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
-                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
-
-                        const existingExpense = response.find(expense => expense.date === dateKey);
-
-                        return existingExpense || {
-                            date: dateKey,
+                return dateRange.map(date => {
+                    const dateISOString = DateService.getLocalISOString(date).split('T')[0];
+                    if (expenseMap[dateISOString]) {
+                        return expenseMap[dateISOString];
+                    } else {
+                        return {
+                            date: dateISOString,
                             amount: 0,
                         };
-                    });
-                }
+                    }
+                });
             },
             providesTags: [
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },

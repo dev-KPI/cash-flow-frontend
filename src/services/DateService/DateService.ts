@@ -73,6 +73,28 @@ class DateServiceClass {
     
         return dates;
     }
+    getLocalISOString(date: Date): string {
+        let t: Date = new Date(date);
+        let z: number = t.getTimezoneOffset() * 60 * 1000;
+        let tLocal: Date = new Date(t.getTime() - z);
+        tLocal = new Date(tLocal);
+        return  tLocal.toISOString();
+    }
+    getLocalDate(date: Date): Date {
+        let t: Date = new Date(date);
+        let z: number = t.getTimezoneOffset() * 60 * 1000;
+        let tLocal: Date = new Date(t.getTime() - z);
+        return new Date(tLocal)
+    }
+    isSameDay<DateType extends Date>(
+        dateLeft: DateType | number,
+        dateRight: DateType | number
+    ): boolean {
+        const dateLeftStartOfDay = startOfDay(new Date(this.getLocalISOString((new Date(dateLeft)))))
+        const dateRightStartOfDay = startOfDay(new Date(this.getLocalISOString((new Date(dateRight)))))
+
+        return +dateLeftStartOfDay === +dateRightStartOfDay
+    }
 }
 const DateService = new DateServiceClass();
 export default DateService

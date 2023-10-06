@@ -39,7 +39,7 @@ const Graph: FC<IGraphProps> = ({data}) => {
     }, [data])
 
     const getXParams = useCallback((): { high: number, step: number } => {
-        return { high: new Date(data[data.length - 1].date).getDate(), step: 1 }
+        return { high: new Date(data[data.length - 1].date || 0).getDate(), step: 1 }
     }, [data])
     
     const getChartData = useCallback((): { key: string; value: number }[] => {

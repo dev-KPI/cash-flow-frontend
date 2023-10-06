@@ -30,19 +30,19 @@ const Group = () => {
         group_id: Number(groupId),
         period: MonthPickerStore.type === 'year-month' ? 
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+        {start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10)} 
     })
     const {data: GroupCurrentUserTotalExpenses, isLoading: isGroupCurrentUserTotalExpensesLoading, isError: isGroupCurrentUserTotalExpensesError, isSuccess: isGroupCurrentUserTotalExpensesSuccess} = useGetCurrentUserInGroupTotalExpensesQuery({
         group_id: Number(groupId),
         period: MonthPickerStore.type === 'year-month' ? 
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+        {start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10)} 
     })
     const {data: GroupSpenders, isLoading: isGroupSpendersLoading, isError: isGroupSpendersError, isSuccess: isGroupSpendersSuccess} = useGetCurrentGroupSpendersQuery({
         group_id: Number(groupId),
         period: MonthPickerStore.type === 'year-month' ? 
         {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+        {start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10)} 
     })
     const {data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError} = useGetInfoByGroupQuery({group_id: Number(groupId)})
     const {data: CurrentUser, isLoading: isCurrentUserLoading, isError: isCurrentUserError} = useGetCurrentUserInfoQuery(null)    

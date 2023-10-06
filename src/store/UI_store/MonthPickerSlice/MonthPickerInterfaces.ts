@@ -6,8 +6,8 @@ export interface IMonthPickerState {
     isChangedRange: boolean,
     isChangedRangeFromMount: boolean,
     rangesFromFastNav: boolean,
-    startDate: string, 
-    endDate: string, 
+    startDate: Date, 
+    endDate: Date, 
     currentMonth: string
     currentYear: number
 }
