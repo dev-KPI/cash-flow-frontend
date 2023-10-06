@@ -15,13 +15,12 @@ import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerI
 import { useActionCreators, useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { MonthPickerActions } from '@store/UI_store/MonthPickerSlice/MonthPickerSlice';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton'
-import DateService from '@services/DateService/DateService';
+
 export interface ITimeRangePickerProps {
     isDateRangePicker: boolean,
     setIsDateRangePicker: React.Dispatch<React.SetStateAction<boolean>>,
     offRangePicker: () => void
 }
-
 
 const defineds = {
     startOfWeek: startOfWeek(new Date(), { weekStartsOn: 1 }),
@@ -38,8 +37,6 @@ const defineds = {
     endOfLastMonth: endOfMonth(addMonths(new Date(), -1)),
 };
 
-
-
 const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker, setIsDateRangePicker, offRangePicker}) => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice)
@@ -48,22 +45,22 @@ const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker
     const [focusedRange, setFocusedRange] = useState<RangeFocus | undefined>(undefined);
     const [range, setRange] = useState<{ startDate: Date, endDate: Date }>(
         {
-            startDate: new Date(MonthPickerStore.startDate),
-            endDate: new Date(MonthPickerStore.endDate)
+            startDate: MonthPickerStore.startDate,
+            endDate: MonthPickerStore.endDate
         });
     useEffect(() => {
         setRange({
-            startDate: new Date(MonthPickerStore.startDate),
-            endDate: new Date(MonthPickerStore.endDate)
+            startDate: MonthPickerStore.startDate,
+            endDate: MonthPickerStore.endDate
         })
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
     const checkRange = {
-        isThisMonth: DateService.isSameDay(range.startDate, defineds.startOfMonth) && DateService.isSameDay(range.endDate, defineds.endOfMonth),
-        isLastWeek: DateService.isSameDay(range.startDate, defineds.startOfLastWeek) && DateService.isSameDay(range.endDate, defineds.endOfLastWeek),
-        isThisWeek: DateService.isSameDay(range.startDate, defineds.startOfWeek) && DateService.isSameDay(range.endDate, defineds.endOfWeek),
-        isYesterday: DateService.isSameDay(range.startDate, defineds.startOfYesterday) && DateService.isSameDay(range.endDate, defineds.endOfYesterday),
-        isToday: DateService.isSameDay(range.startDate, defineds.startOfToday) && DateService.isSameDay(range.endDate, defineds.endOfToday),
-        isAllTime: DateService.isSameDay(new Date(2023, 5, 1), range.startDate) && DateService.isSameDay(new Date(), range.endDate)
+        isThisMonth: isSameDay(range.startDate, defineds.startOfMonth) && isSameDay(range.endDate, defineds.endOfMonth),
+        isLastWeek: isSameDay(range.startDate, defineds.startOfLastWeek) && isSameDay(range.endDate, defineds.endOfLastWeek),
+        isThisWeek: isSameDay(range.startDate, defineds.startOfWeek) && isSameDay(range.endDate, defineds.endOfWeek),
+        isYesterday: isSameDay(range.startDate, defineds.startOfYesterday) && isSameDay(range.endDate, defineds.endOfYesterday),
+        isToday: isSameDay(range.startDate, defineds.startOfToday) && isSameDay(range.endDate, defineds.endOfToday),
+        isAllTime: isSameDay(new Date(2023, 5, 1), range.startDate) && isSameDay(new Date(), range.endDate)
     }
     const classnamesDateRangePicker: ClassNames = {
         definedRangesWrapper: classes.DefinedRangesWrapper,
@@ -99,15 +96,12 @@ const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker
     }
     const closeWithInitialRange = () => {
         setRange({
-            startDate: new Date(MonthPickerStore.startDate),
-            endDate: new Date(MonthPickerStore.endDate)
+            startDate: MonthPickerStore.startDate,
+            endDate: MonthPickerStore.endDate
         })
         setIsDateRangePicker(false);
     }
-    console.log(MonthPickerStore.startDate);
-    console.log(new Date(MonthPickerStore.startDate));
-    console.log(DateService.getLocalDate(new Date(MonthPickerStore.startDate)));
-    console.log(range);
+
     return (
     <UsePortal
     className={classes.wrapperModal}
@@ -180,8 +174,8 @@ const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker
                     showMonthAndYearPickers={false}
                     onChange={(item) => {
                         setRange({
-                            startDate: new Date(item.selection.startDate || 0),
-                            endDate: new Date(item.selection.endDate || 0)
+                            startDate:item.selection.startDate || new Date(),
+                            endDate: item.selection.endDate || new Date()
                         })
                     }}
                     maxDate={new Date()}

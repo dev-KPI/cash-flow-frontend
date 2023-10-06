@@ -86,14 +86,8 @@ class DateServiceClass {
         let tLocal: Date = new Date(t.getTime() - z);
         return new Date(tLocal)
     }
-    isSameDay<DateType extends Date>(
-        dateLeft: DateType | number,
-        dateRight: DateType | number
-    ): boolean {
-        const dateLeftStartOfDay = startOfDay(new Date(this.getLocalISOString((new Date(dateLeft)))))
-        const dateRightStartOfDay = startOfDay(new Date(this.getLocalISOString((new Date(dateRight)))))
-
-        return +dateLeftStartOfDay === +dateRightStartOfDay
+    getFormattedRangeTitle(date: Date): string {
+        return `${date.getDate()} ${this.getMonthNameByIdx(date.getMonth()).slice(0, 3)} ${date.getFullYear()}`
     }
 }
 const DateService = new DateServiceClass();

@@ -17,32 +17,26 @@ const UserGraphCard = () => {
     const MonthPickerRange = useMemo(() => {
         return {
             period: {
-                start_date: new Date(MonthPickerStore.startDate),
-                end_date: new Date(MonthPickerStore.endDate)
+                start_date: MonthPickerStore.startDate,
+                end_date: MonthPickerStore.endDate
             }
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
     const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess, refetch} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
 
-    const getStartDateForTitle = useMemo(() => {
-        return `${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth()).slice(0, 3)} ${new Date(MonthPickerStore.startDate).getFullYear()}`
-    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
-    const getEndDateForTitle = useMemo(() => {
-        return `${new Date(MonthPickerStore.endDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.endDate).getMonth()).slice(0, 3)} ${new Date(MonthPickerStore.endDate).getFullYear()}`
-    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
-
     const RangeTitle = useMemo(() => {
-        if (isSameDay(new Date(MonthPickerStore.startDate), new Date(2023, 5, 1)) && isSameDay(new Date(MonthPickerStore.endDate), new Date())) {
+        if (isSameDay(MonthPickerStore.startDate, new Date(2023, 5, 1))
+            && isSameDay(MonthPickerStore.endDate, new Date())) {
             return 'All time'
-        } else if (isSameDay(startOfMonth(new Date(MonthPickerStore.startDate)), new Date(MonthPickerStore.startDate)) &&
-            isSameDay(endOfMonth(new Date(MonthPickerStore.endDate)), new Date(MonthPickerStore.endDate))) {
-            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } else if (isSameDay(new Date(MonthPickerStore.startDate), new Date(MonthPickerStore.endDate))) {
-            return `${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
+        } else if (isSameDay(startOfMonth(MonthPickerStore.startDate), MonthPickerStore.startDate)
+            && isSameDay(endOfMonth(MonthPickerStore.endDate), MonthPickerStore.endDate)) {
+            return `${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} ${MonthPickerStore.startDate.getFullYear()}`
+        } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `${MonthPickerStore.startDate.getDate()} ${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} 
+            ${MonthPickerStore.startDate.getFullYear()}`
         }
         else {
-            return (`${getStartDateForTitle} - ${getEndDateForTitle}`)
+            return (`${DateService.getFormattedRangeTitle(MonthPickerStore.startDate)} - ${DateService.getFormattedRangeTitle(MonthPickerStore.endDate)}`)
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 

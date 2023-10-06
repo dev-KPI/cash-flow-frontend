@@ -25,26 +25,19 @@ const MonthPicker: React.FC = () => {
         else if (type === 'next') MonthPickerDispatch.nextMonth();
     }, [])
 
-    const getStartDateForTitle = useMemo(() => {
-        return `${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth()).slice(0,3)} ${new Date(MonthPickerStore.startDate).getFullYear()}`
-    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
-    const getEndDateForTitle = useMemo(() => {
-        return `${new Date(MonthPickerStore.endDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.endDate).getMonth()).slice(0,3)} ${new Date(MonthPickerStore.endDate).getFullYear()}`
-    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
-
     const getMonthPickerTitle = useMemo(() => {
-        if (isSameDay(new Date(MonthPickerStore.startDate), new Date(DateService.getLocalISOString(new Date(2023, 5, 1))))
-            && isSameDay(new Date(MonthPickerStore.endDate), new Date(DateService.getLocalISOString(new Date())))) {
+        if (isSameDay(MonthPickerStore.startDate, new Date(2023, 5, 1))
+            && isSameDay(MonthPickerStore.endDate, new Date())) {
             return 'All time'
-        } else if (DateService.isSameDay(startOfMonth(new Date(MonthPickerStore.startDate)), new Date(MonthPickerStore.startDate))
-            && DateService.isSameDay(endOfMonth(new Date(MonthPickerStore.startDate)), new Date(MonthPickerStore.endDate))) {
-            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } else if (isSameDay(new Date(MonthPickerStore.startDate), new Date(MonthPickerStore.endDate))) {
-            return `${new Date(MonthPickerStore.startDate).getDate()} ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
+        } else if (isSameDay(startOfMonth(MonthPickerStore.startDate),MonthPickerStore.startDate)
+            && isSameDay(endOfMonth(MonthPickerStore.endDate),MonthPickerStore.endDate)) {
+            return `${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} ${MonthPickerStore.startDate.getFullYear() }`
+        } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `${MonthPickerStore.startDate.getDate()} ${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} 
+            ${MonthPickerStore.startDate.getFullYear()}`
         }
         else {
-            return (`${getStartDateForTitle} - ${getEndDateForTitle}`)
+            return (`${DateService.getFormattedRangeTitle(MonthPickerStore.startDate)} - ${DateService.getFormattedRangeTitle(MonthPickerStore.endDate) }`)
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
@@ -58,7 +51,7 @@ const MonthPicker: React.FC = () => {
                 <h4 className={classes.title}>{getMonthPickerTitle}</h4>
             </button>
         </>)
-    }, [MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
     return (<div className={classes.monthPickerWrapper}>
         {<DateRangePickerCard

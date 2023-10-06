@@ -6,7 +6,7 @@ import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetTotalExpensesBody, IGe
 import IHistoryItem from '@models/IHistoryItem';
 import IListResponse from '@models/IListResponse';
 import IUser from '@models/IUser';
-import { IPeriods } from '@models/IPeriod';
+
 
 export const UserApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -135,20 +135,19 @@ export const UserApiSlice = api.injectEndpoints({
         getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], { period: { start_date: Date, end_date: Date } }>({
             query: ({ period }) => ({
                 url: `users/daily-expenses`,
-                params: { period: { start_date: period.start_date.toISOString().slice(0, 10), endDate: period.end_date.toISOString().slice(0, 10) } },
+                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: { period: { start_date: Date, end_date: Date}}): IGetCurrentUserDailyExpensesResponse[] => {
+            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: { period: { start_date: Date, end_date: Date } }): IGetCurrentUserDailyExpensesResponse[] => {
                 const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
                 response.forEach(expense => {
                     expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
                 });
 
-                const dateRange = DateService.getDatesInRange(body.period.start_date!, body.period.end_date!);
-
+                const dateRange = DateService.getDatesInRange(body.period.start_date, body.period.end_date);
                 return dateRange.map(date => {
                     const dateISOString = DateService.getLocalISOString(date).split('T')[0];
                     if (expenseMap[dateISOString]) {
