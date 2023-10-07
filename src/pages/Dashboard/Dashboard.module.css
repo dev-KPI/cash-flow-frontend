@@ -55,6 +55,12 @@
     .grid__operation {
         flex-wrap: wrap;
     }
+    .operations svg {
+        height: 102px;
+    }
+    .operations svg > rect {
+        height: 98px;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -82,5 +88,12 @@
 
     .grid__topright {
         order: 3;
+    }
+    .operations svg {
+        height: 110px;
+    }
+
+    .operations svg>rect {
+        height: 110px;
     }
 }

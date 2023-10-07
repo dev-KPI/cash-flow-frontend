@@ -50,9 +50,9 @@
 }
 
 .percent{
-    display: inline-block;
+    display: flex;
     border-radius: 6px;
-    padding: 3px 10px;
+    padding: 4px 10px;
 }
 
 .percent span {

@@ -38,12 +38,14 @@ const Dashboard = () => {
                         <div className={classes.grid__operation}>
                             <OperationCard 
                             operation={'Income'}
+                            className={classes.operations} 
                             data={Replenishments}
                             isSuccess={isReplenishmentsSuccess}
                             isLoading={isReplenishmentsLoading}
                             isError={isReplenishmentsError} />
                             <OperationCard 
                             operation={'Expenses'} 
+                            className={classes.operations} 
                             data={Expenses}
                             isSuccess={isExpensesSuccess}
                             isLoading={isExpensesLoading}
