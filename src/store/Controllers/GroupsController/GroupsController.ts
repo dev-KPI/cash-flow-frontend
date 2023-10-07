@@ -219,17 +219,17 @@ export const GroupsApiSlice = api.injectEndpoints({
                 const { start_date, end_date } = body.period;
                 const expenseMap: Record<string, IGetGroupExpensesDailyResponse> = {};
                 response.forEach(expense => {
-                    expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
+                    expenseMap[expense.date] = expense;
                 });
 
                 const dateRange = DateService.getDatesInRange(start_date, end_date);
                 return dateRange.map(date => {
-                    const dateISOString = DateService.getLocalISOString(date).split('T')[0];
-                    if (expenseMap[dateISOString]) {
-                        return expenseMap[dateISOString];
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
                     } else {
                         return {
-                            date: dateISOString,
+                            date: formattedDate,
                             amount: 0,
                         };
                     }
@@ -252,17 +252,17 @@ export const GroupsApiSlice = api.injectEndpoints({
                 const { start_date, end_date } = body.period;
                 const expenseMap: Record<string, IGetGroupExpensesByMemberDailyResponse> = {};
                 response.forEach(expense => {
-                    expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
+                    expenseMap[expense.date] = expense;
                 });
 
                 const dateRange = DateService.getDatesInRange(start_date, end_date);
                 return dateRange.map(date => {
-                    const dateISOString = DateService.getLocalISOString(date).split('T')[0];
-                    if (expenseMap[dateISOString]) {
-                        return expenseMap[dateISOString];
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
                     } else {
                         return {
-                            date: dateISOString,
+                            date: formattedDate,
                             amount: 0,
                             users: []
                         };
@@ -302,17 +302,17 @@ export const GroupsApiSlice = api.injectEndpoints({
                 const { start_date, end_date } = body.period;
                 const expenseMap: Record<string, IGroupMemberExpensesDailyResponse> = {};
                 response.forEach(expense => {
-                    expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
+                    expenseMap[expense.date] = expense;
                 });
 
                 const dateRange = DateService.getDatesInRange(start_date, end_date);
                 return dateRange.map(date => {
-                    const dateISOString = DateService.getLocalISOString(date).split('T')[0];
-                    if (expenseMap[dateISOString]) {
-                        return expenseMap[dateISOString];
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
                     } else {
                         return {
-                            date: dateISOString,
+                            date: formattedDate,
                             amount: 0,
                         };
                     }
@@ -336,17 +336,17 @@ export const GroupsApiSlice = api.injectEndpoints({
                 const { start_date, end_date } = body.period;
                 const expenseMap: Record<string, IGroupMemberExpensesByCategoryDailyResponse> = {};
                 response.forEach(expense => {
-                    expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
+                    expenseMap[expense.date] = expense;
                 });
 
                 const dateRange = DateService.getDatesInRange(start_date, end_date);
                 return dateRange.map(date => {
-                    const dateISOString = DateService.getLocalISOString(date).split('T')[0];
-                    if (expenseMap[dateISOString]) {
-                        return expenseMap[dateISOString];
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
                     } else {
                         return {
-                            date: dateISOString,
+                            date: formattedDate,
                             amount: 0,
                             categories: [{
                                 id: 0,

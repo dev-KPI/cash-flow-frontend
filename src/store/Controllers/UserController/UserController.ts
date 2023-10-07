@@ -145,18 +145,17 @@ export const UserApiSlice = api.injectEndpoints({
             transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: IPeriods): IGetCurrentUserDailyExpensesResponse[] => {
                 const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
                 response.forEach(expense => {
-                    expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
+                    expenseMap[expense.date] = expense;
                 });
 
                 const dateRange = DateService.getDatesInRange(body.start_date, body.end_date);
-                
                 return dateRange.map(date => {
-                    const dateISOString = DateService.getLocalISOString(date).split('T')[0];
-                    if (expenseMap[dateISOString]) {
-                        return expenseMap[dateISOString];
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
                     } else {
                         return {
-                            date: dateISOString,
+                            date: formattedDate,
                             amount: 0,
                         };
                     }

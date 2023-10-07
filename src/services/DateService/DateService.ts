@@ -39,17 +39,17 @@ class DateServiceClass {
     getMonthNameByIdx(month: number): string {
         return this.months[month]
     }
-    getFormatedDate(date: number): string {
-        return date < 10 ? '0' + date : date + ''
+    getFormatedDay(day: number): string {
+        return day < 10 ? '0' + day : day + ''
     }
     getFormatedMonth(month: number): string {
         return month < 10 ? '0' + month : month + ''
     }
-    getFormatedDateForStore(date: Date): string {
+    getFormatedDate(date: Date): string {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return `${year}-${month < 10 ? '0' + month : month + ''}-${day < 10 ? '0' + day : day + ''}`
+        return `${year}-${this.getFormatedMonth(month)}-${this.getFormatedDay(day)}`
     }
     getTime(date: Date, short?: boolean): string {
         const day = date.getDate();
