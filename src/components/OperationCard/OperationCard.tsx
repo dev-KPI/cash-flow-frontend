@@ -7,6 +7,8 @@ import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { fomatFloatNumber, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { IGetTotalExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
+import { isSameDay } from "date-fns"
+import DateService from '@services/DateService/DateService';
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
@@ -32,7 +34,6 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     const [percents, setPercents] = useState<number>(0);
     const [sign, setSign] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
-
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
         percentColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
@@ -40,18 +41,18 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
         cursor: operation === "Income" ? "pointer" : "auto"
     }
 
-    // const getMonthPickerTitle = useMemo(() => {
-    //     if (MonthPickerStore.rangeType === 'default' || MonthPickerStore.rangeType === 'month' ) {
-    //         return 'since last month'
-    //     } else if (MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
-    //         return 'since last week'
-    //     } else if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday') {
-    //         return 'since last days'
-    //     } else if (MonthPickerStore.rangeType === 'alltime') {
-    //         return ``
-    //     }
-    //     return(`since last period`)
-    // }, [MonthPickerStore.rangeType])
+    const RangeTitle = useMemo(() => {
+        if (DateService.isAllTime(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return ''
+        } else if (DateService.isMonth(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `since previous month`
+        } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `since previous day`
+        }
+        else {
+            return `since previous same period`
+        }
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
     const initializeTotalVars = useCallback(() => {
         if(data){
@@ -67,7 +68,6 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     
     useEffect(() => initializeTotalVars(), [initializeTotalVars])
     const cardTitle = title ? isValidElement(title) ? title : <h3 className={classes.title}>{title}</h3> : <h3 className={classes.title}>{operation}</h3>;
-
     return (<>
         {operation === 'Income' ?
             <SalaryModal
@@ -103,7 +103,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
                         >
                         <span style={{ color: styles.percentColor }}>{percents}%</span>
                         </div>
-                        <p className={classes.time}>since last peiod</p>
+                        <p className={classes.time}>{RangeTitle}</p>
                     </div>
                 </div>
             }

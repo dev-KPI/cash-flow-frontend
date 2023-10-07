@@ -1,4 +1,4 @@
-import {startOfDay, addDays} from 'date-fns'
+import {startOfDay, addDays, startOfMonth, endOfMonth, isSameDay} from 'date-fns'
 
 class DateServiceClass {
 
@@ -88,6 +88,14 @@ class DateServiceClass {
     }
     getQueryEndDate(date: Date): string {
         return this.getQueryDate(addDays(date, 1));
+    }
+    isAllTime(startDate: Date, endDate: Date): boolean {
+        return isSameDay(startDate, new Date(2023, 5, 1))
+            && isSameDay(endDate, new Date())
+    }
+    isMonth(startDate: Date, endDate: Date): boolean {
+        return isSameDay(startOfMonth(startDate), startDate)
+            && isSameDay(endOfMonth(endDate), endDate)
     }
 }
 const DateService = new DateServiceClass();

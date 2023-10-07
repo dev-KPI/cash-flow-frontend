@@ -25,19 +25,17 @@ const MonthPicker: React.FC = () => {
         else if (type === 'next') MonthPickerDispatch.nextMonth();
     }, [])
 
-    const getMonthPickerTitle = useMemo(() => {
-        if (isSameDay(MonthPickerStore.startDate, new Date(2023, 5, 1))
-            && isSameDay(MonthPickerStore.endDate, new Date())) {
+    const RangeTitle = useMemo(() => {
+        if (DateService.isAllTime(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
             return 'All time'
-        } else if (isSameDay(startOfMonth(MonthPickerStore.startDate),MonthPickerStore.startDate)
-            && isSameDay(endOfMonth(MonthPickerStore.endDate),MonthPickerStore.endDate)) {
-            return `${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} ${MonthPickerStore.startDate.getFullYear() }`
+        } else if (DateService.isMonth(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} ${MonthPickerStore.startDate.getFullYear()}`
         } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
             return `${MonthPickerStore.startDate.getDate()} ${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} 
             ${MonthPickerStore.startDate.getFullYear()}`
         }
         else {
-            return (`${DateService.getFormattedRangeTitle(MonthPickerStore.startDate)} - ${DateService.getFormattedRangeTitle(MonthPickerStore.endDate) }`)
+            return (`${DateService.getFormattedRangeTitle(MonthPickerStore.startDate)} - ${DateService.getFormattedRangeTitle(MonthPickerStore.endDate)}`)
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
@@ -48,7 +46,7 @@ const MonthPicker: React.FC = () => {
             onClick={() => {
                 setIsDateRangePicker(true)
             }}>
-                <h4 className={classes.title}>{getMonthPickerTitle}</h4>
+                <h4 className={classes.title}>{RangeTitle}</h4>
             </button>
         </>)
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])

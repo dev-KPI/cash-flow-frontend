@@ -23,11 +23,9 @@ const UserGraphCard = () => {
     const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess, refetch} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
 
     const RangeTitle = useMemo(() => {
-        if (isSameDay(MonthPickerStore.startDate, new Date(2023, 5, 1))
-            && isSameDay(MonthPickerStore.endDate, new Date())) {
+        if (DateService.isAllTime(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
             return 'All time'
-        } else if (isSameDay(startOfMonth(MonthPickerStore.startDate), MonthPickerStore.startDate)
-            && isSameDay(endOfMonth(MonthPickerStore.endDate), MonthPickerStore.endDate)) {
+        } else if (DateService.isMonth(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
             return `${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} ${MonthPickerStore.startDate.getFullYear()}`
         } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
             return `${MonthPickerStore.startDate.getDate()} ${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} 
