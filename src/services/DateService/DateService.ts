@@ -80,14 +80,14 @@ class DateServiceClass {
         tLocal = new Date(tLocal);
         return  tLocal.toISOString();
     }
-    getLocalDate(date: Date): Date {
-        let t: Date = new Date(date);
-        let z: number = t.getTimezoneOffset() * 60 * 1000;
-        let tLocal: Date = new Date(t.getTime() - z);
-        return new Date(tLocal)
-    }
     getFormattedRangeTitle(date: Date): string {
         return `${date.getDate()} ${this.getMonthNameByIdx(date.getMonth()).slice(0, 3)} ${date.getFullYear()}`
+    }
+    getQueryDate(date: Date): string {
+        return this.getLocalISOString(date).slice(0, 10);
+    }
+    getQueryEndDate(date: Date): string {
+        return this.getQueryDate(addDays(date, 1));
     }
 }
 const DateService = new DateServiceClass();

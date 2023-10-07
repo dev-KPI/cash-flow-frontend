@@ -19,7 +19,7 @@ export const ReplenishmentsApiSlice = api.injectEndpoints({
             query: (body) => ({
                 url: `/replenishments/`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },

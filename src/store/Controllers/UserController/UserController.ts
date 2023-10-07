@@ -92,7 +92,7 @@ export const UserApiSlice = api.injectEndpoints({
             query: ({ group_id, period }) => ({
                 url: `/users/${group_id}/expenses`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -110,7 +110,7 @@ export const UserApiSlice = api.injectEndpoints({
             query: (body) => ({
                 url: `/users/category-expenses`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -136,7 +136,7 @@ export const UserApiSlice = api.injectEndpoints({
         getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[],IPeriods>({
             query: (body) => ({
                 url: `users/daily-expenses`,
-                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getLocalISOString(addDays((body.end_date),1)).slice(0, 10) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -149,6 +149,7 @@ export const UserApiSlice = api.injectEndpoints({
                 });
 
                 const dateRange = DateService.getDatesInRange(body.start_date, body.end_date);
+                
                 return dateRange.map(date => {
                     const dateISOString = DateService.getLocalISOString(date).split('T')[0];
                     if (expenseMap[dateISOString]) {
@@ -171,7 +172,7 @@ export const UserApiSlice = api.injectEndpoints({
             query: (body) => ({
                 url: `users/total-expenses`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -184,7 +185,7 @@ export const UserApiSlice = api.injectEndpoints({
             query: (body) => ({
                 url: `users/total-replenishments`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },

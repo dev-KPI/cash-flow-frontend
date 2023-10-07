@@ -69,7 +69,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({member_id, group_id, period}) => ({
                 url: `groups/${group_id}/member/${member_id}/info`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -107,7 +107,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         getGroupTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
             query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/total-expenses`,
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -123,7 +123,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         getCurrentUserInGroupTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
             query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/my-total-expenses`,
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -177,7 +177,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         getCurrentGroupSpenders: builder.query<IGetCurrentGroupSpendersResponse[], IGetCurrentGroupSpendersBody>({
             query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/users-spenders`,
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -194,7 +194,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({group_id, period}) => ({
                 url: `/groups/${group_id}/category-expenses`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -210,7 +210,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, period }) => ({
                 url: `/groups/${group_id}/group-daily-expenses`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -243,7 +243,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, period }) => ({
                 url: `/groups/${group_id}/group-daily-expenses-detail`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -277,7 +277,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, member_id, period }) => ({
                 url: `/groups/${group_id}/member/${member_id}/category-expenses`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -293,7 +293,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, member_id, period }) => ({
                 url: `/groups/${group_id}/member/${member_id}/daily-expenses/`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -327,7 +327,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, member_id, period }) => ({
                 url: `/groups/${group_id}/member/${member_id}/daily-expenses-detail/`,
                 credentials: 'include',
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },

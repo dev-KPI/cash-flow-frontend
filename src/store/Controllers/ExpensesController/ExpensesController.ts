@@ -19,7 +19,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
         getExpenses: builder.query<IExpense[], IGetExpensesBody>({
             query: (body) => ({
                 url: `groups/expenses`,
-                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -33,7 +33,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
         getExpensesByGroup: builder.query<IExpense[], IGetExpensesByGroupBody>({
             query: ({ group_id, period }) => ({
                 url: `groups/${group_id}/expenses`,
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
