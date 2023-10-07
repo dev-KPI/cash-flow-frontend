@@ -34,6 +34,10 @@
     gap: 30px;
 }
 
+.operations div > div:nth-child(2) p {
+    white-space: nowrap;
+}
+
 @media only screen and (max-width: 1440px) {
     .grid {
         max-width: 1090px;
