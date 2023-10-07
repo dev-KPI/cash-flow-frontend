@@ -9,7 +9,9 @@ import {  Chart } from "react-chartjs-2";
 import {
     Chart as ChartJS, CategoryScale, LinearScale,
     BarElement, Title, Tooltip, Legend, Tick,
-    TooltipItem
+    TooltipItem,
+    CoreScaleOptions,
+    Scale
 } from "chart.js/auto";
 import { Context } from 'vm';
 
@@ -42,14 +44,11 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
     const textColor = (context: Context): string => {
         return ThemeStore.textColor
     }
-
     const titleTooltip = (context: Context): string => {
-        const dateString = context[0].dataset.key[context[0].dataIndex]
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = DateService.getMonthNameByIdx(new Date(date).getMonth()).slice(0, 3);
-        const day = date.getDate();
-        return `${month} ${day}, ${year}`
+        console.log(context[0]);
+        const [year, month, day] = context[0].label.split('-');
+        const monthTitle = DateService.getMonthNameByIdx(+month-1).slice(0,3);
+        return `${monthTitle} ${day}, ${year}`
     }
     const PriceTooltip = (context: Context): string => {
         const { chart } = context[0];
@@ -144,7 +143,7 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                 const fullName = categories[+categoryId];
                 return {
                     label: fullName ?? '',
-                    key: dataUserCategories.map((el) => new Date(el.date).toISOString().split('T')[0]),
+                    key: dataUserCategories.map((el) => el.date),
                     maxBarThickness: 24,
                     borderRadius: 20,
                     data: getAmountsByCategoryId(dataUserCategories, +categoryId),
@@ -157,7 +156,7 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                 const fullName = users[+userId];
                 return {
                     label: fullName, 
-                    key: dataUsers.map((el) => new Date(el.date).toISOString().split('T')[0]),
+                    key: dataUsers.map((el) => el.date),
                     maxBarThickness: 24,
                     borderRadius: 20,
                     data: getAmountsByUserId(dataUsers, +userId),
@@ -177,8 +176,9 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
     }, [dataUsers, dataUserCategories]);
 
     const datasets = {
-        labels: dataUsers ? 
-        dataUsers.map((el, i) => new Date(el.date).getDate()) : dataUserCategories ? dataUserCategories.map((el) => new Date(el.date).getDate()) : [new Date()],
+        labels: dataUsers ? dataUsers.map((el, i) => el.date)
+            : dataUserCategories ? dataUserCategories.map((el) => el.date)
+            : [new Date()],
         datasets: getChartData(),
     };
 
@@ -280,6 +280,9 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                         family: 'Inter',
                         size: 12,
                         weight: "300",
+                    },
+                    callback: function (this: Scale<CoreScaleOptions>, tickValue: string | number, index: number, ticks: Tick[]): number {
+                        return +this.getLabelForValue(index).split('-')[2];
                     },
                 },
 
