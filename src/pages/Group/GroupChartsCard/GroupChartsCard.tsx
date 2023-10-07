@@ -16,15 +16,11 @@ const GroupChartsCard: FC = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const { data: GroupExpensesByCategory, isLoading: isExpensesByCategoryLoading } = useGetGroupExpensesByCategoryQuery({
         group_id: Number(groupId),
-        period: MonthPickerStore.type === 'year-month' ?
-            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
-            { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) }
+        period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
     })
     const { data: GroupExpensesByMember, isLoading: isExpensesByMemberLoading } = useGetCurrentGroupSpendersQuery({
         group_id: Number(groupId),
-        period: MonthPickerStore.type === 'year-month' ?
-            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
-            { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) }
+        period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
     })
 
     return (

@@ -47,9 +47,7 @@ const UserCategoriesCard = () => {
 
     const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess, isFetching: isExpensesFetching } = useGetUserExpensesByGroupQuery({
         group_id: selectedGroup,
-        period: MonthPickerStore.type === 'year-month' ?
-            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
-            { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) }
+        period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
     }, { skip: !isGroupsSuccess || selectedGroup === 0 })
 
     requestAnimationFrame(_ => {

@@ -10,15 +10,16 @@ import {
 } from './ExpensesControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import IExpense from '@models/IExpense';
+import DateService from '@services/DateService/DateService';
 
 
 
 export const ExpensesApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getExpenses: builder.query<IExpense[], IGetExpensesBody>({
-            query: ({ period }) => ({
+            query: (body) => ({
                 url: `groups/expenses`,
-                params: period,
+                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -32,7 +33,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
         getExpensesByGroup: builder.query<IExpense[], IGetExpensesByGroupBody>({
             query: ({ group_id, period }) => ({
                 url: `groups/${group_id}/expenses`,
-                params: period,
+                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
                 credentials: 'include',
             }),
             transformErrorResponse: (

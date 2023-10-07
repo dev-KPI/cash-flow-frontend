@@ -1,5 +1,3 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
-
 //Logic
 import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
@@ -23,10 +21,10 @@ const Dashboard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
 
     const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery( 
-        { period: { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) } })
+        { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate })
         
     const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(
-        { period: { start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10) } })
+        { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate})
 
     return (<>
         <main id='DashboardPage'>

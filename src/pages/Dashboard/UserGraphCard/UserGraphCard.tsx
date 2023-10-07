@@ -16,10 +16,8 @@ const UserGraphCard = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     const MonthPickerRange = useMemo(() => {
         return {
-            period: {
-                start_date: MonthPickerStore.startDate,
-                end_date: MonthPickerStore.endDate
-            }
+            start_date: MonthPickerStore.startDate,
+            end_date: MonthPickerStore.endDate
         }
     }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
     const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess, refetch} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);

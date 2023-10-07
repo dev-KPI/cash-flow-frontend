@@ -40,18 +40,18 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
         cursor: operation === "Income" ? "pointer" : "auto"
     }
 
-    const getMonthPickerTitle = useMemo(() => {
-        if (MonthPickerStore.rangeType === 'default' || MonthPickerStore.rangeType === 'month' ) {
-            return 'since last month'
-        } else if (MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
-            return 'since last week'
-        } else if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday') {
-            return 'since last days'
-        } else if (MonthPickerStore.rangeType === 'alltime') {
-            return ``
-        }
-        return(`since last period`)
-    }, [MonthPickerStore.rangeType])
+    // const getMonthPickerTitle = useMemo(() => {
+    //     if (MonthPickerStore.rangeType === 'default' || MonthPickerStore.rangeType === 'month' ) {
+    //         return 'since last month'
+    //     } else if (MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
+    //         return 'since last week'
+    //     } else if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday') {
+    //         return 'since last days'
+    //     } else if (MonthPickerStore.rangeType === 'alltime') {
+    //         return ``
+    //     }
+    //     return(`since last period`)
+    // }, [MonthPickerStore.rangeType])
 
     const initializeTotalVars = useCallback(() => {
         if(data){
@@ -103,7 +103,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
                         >
                         <span style={{ color: styles.percentColor }}>{percents}%</span>
                         </div>
-                        <p className={classes.time}>{getMonthPickerTitle}</p>
+                        <p className={classes.time}>since last peiod</p>
                     </div>
                 </div>
             }

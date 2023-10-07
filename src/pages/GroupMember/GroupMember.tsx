@@ -25,24 +25,15 @@ const GroupMember = () => {
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
     const { data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError, isSuccess: isGroupInfoSuccess } = useGetInfoByGroupQuery({ group_id: Number(groupId) })
     const MonthPickerRange = useMemo(() => {
-        if (MonthPickerStore.type === 'date-range') {
-            return {
-                period: {
-                    start_date: MonthPickerStore.startDate.toISOString().slice(0, 10), end_date: MonthPickerStore.endDate.toISOString().slice(0, 10)
-                }
-            }
-        } else {
-            return {
-                period: {
-                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`
-                }
-            }
+        return {
+            start_date: MonthPickerStore.startDate,
+            end_date: MonthPickerStore.endDate
         }
-    }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
     const { data: Member, isLoading: isMemberLoading, isError: isMemberError, isSuccess: isMemberSuccess } = useGetMemberInfoByGroupQuery({
         group_id: Number(groupId),
         member_id: Number(memberId),
-        period: MonthPickerRange.period
+        period: MonthPickerRange
     }, { skip: Number(groupId) === 0 || Number(memberId) === 0 })
    
     

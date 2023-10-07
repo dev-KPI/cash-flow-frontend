@@ -6,6 +6,7 @@ import { IGetCurrentUserBalance, IGetCurrentUserInfo, IGetTotalExpensesBody, IGe
 import IHistoryItem from '@models/IHistoryItem';
 import IListResponse from '@models/IListResponse';
 import IUser from '@models/IUser';
+import { IPeriods } from '@models/IPeriod';
 
 
 export const UserApiSlice = api.injectEndpoints({
@@ -91,7 +92,7 @@ export const UserApiSlice = api.injectEndpoints({
             query: ({ group_id, period }) => ({
                 url: `/users/${group_id}/expenses`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -106,10 +107,10 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }), 
         getUserExpensesByCategory: builder.query<IGetUserExpensesByCategoryResponse[], IGetUserExpensesByCategoryBody>({
-            query: (period) => ({
+            query: (body) => ({
                 url: `/users/category-expenses`,
                 credentials: 'include',
-                params: period.period
+                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -132,22 +133,22 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
-        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], { period: { start_date: Date, end_date: Date } }>({
-            query: ({ period }) => ({
+        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[],IPeriods>({
+            query: (body) => ({
                 url: `users/daily-expenses`,
-                params: { start_date: DateService.getLocalISOString(period.start_date).slice(0, 10), end_date: DateService.getLocalISOString(period.end_date).slice(0, 10) },
+                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: { period: { start_date: Date, end_date: Date } }): IGetCurrentUserDailyExpensesResponse[] => {
+            transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: IPeriods): IGetCurrentUserDailyExpensesResponse[] => {
                 const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
                 response.forEach(expense => {
                     expenseMap[DateService.getLocalISOString(new Date(expense.date)).split('T')[0]] = expense;
                 });
 
-                const dateRange = DateService.getDatesInRange(body.period.start_date, body.period.end_date);
+                const dateRange = DateService.getDatesInRange(body.start_date, body.end_date);
                 return dateRange.map(date => {
                     const dateISOString = DateService.getLocalISOString(date).split('T')[0];
                     if (expenseMap[dateISOString]) {
@@ -167,10 +168,10 @@ export const UserApiSlice = api.injectEndpoints({
             ]
         }),
         getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
-            query: ({period}) => ({
+            query: (body) => ({
                 url: `users/total-expenses`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -180,10 +181,10 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         getTotalReplenishments: builder.query<IGetTotalReplenishmentsResponse, IGetTotalReplenishmentsBody>({
-            query: ({period}) => ({
+            query: (body) => ({
                 url: `users/total-replenishments`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getLocalISOString(body.start_date).slice(0, 10), end_date: DateService.getLocalISOString(body.end_date).slice(0, 10) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },

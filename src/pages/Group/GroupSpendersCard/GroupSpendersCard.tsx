@@ -3,7 +3,6 @@ import { NavLink, useParams } from 'react-router-dom';
 import userIcon from '@assets/user-icon.svg';
 
 //logic
-import IUser from '@models/IUser';
 
 //UI
 import classes from './GroupSpendersCard.module.css';
@@ -79,7 +78,7 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
         <div className={classes.SpendersCard}>
             <div className={classes.inner}>
                 <div className={classes.top}>
-                    <h2 className={classes.title}>The spender of the {MonthPickerStore.rangeType === 'default' ? 'month' : MonthPickerStore.rangeType}</h2>
+                    <h2 className={classes.title}>The spender of the range</h2>
                 </div>
                 <ul className={classes.spenders}>
                     {getSpenders()}
