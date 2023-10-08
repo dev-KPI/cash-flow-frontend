@@ -9,7 +9,7 @@ export function numberWithCommas(x: number) {
     else
         return x
 }
-export const fomatFloatNumber = (inputNumber: number, numbersAfterComma: number) => {
+export const formatFloatNumber = (inputNumber: number, numbersAfterComma: number) => {
     if (inputNumber % 1 === 0) {
         return inputNumber.toString();
     } else {
