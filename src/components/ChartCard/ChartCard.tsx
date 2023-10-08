@@ -52,7 +52,7 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageTyp
         
         getItems = result.map((item, i) => <ChartCardDot key={i} category={item} setId={setId} />)
         dataLength = result.length;
-        chartItem = <Chart categories={result} total={total} setId={setId} /> 
+        chartItem = <Chart categories={result} total={total} setId={setId} />
  
     } else if (members) {
         const member = members.find(el => el.id === id)
@@ -62,8 +62,9 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageTyp
 
         const result = members.map((member, index) => ({
             ...member,
-            color_code: shaffledColors[index % shaffledColors.length]
-        }));
+            color_code: shaffledColors[member.id % shaffledColors.length]
+            })
+        );
         total = result
             .map((item) => item.amount || 0)
             .reduce((acc, curr) => acc + curr, 0);

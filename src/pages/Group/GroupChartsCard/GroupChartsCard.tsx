@@ -22,7 +22,6 @@ const GroupChartsCard: FC = () => {
         group_id: Number(groupId),
         period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
     })
-
     return (
         <div className={classes.ChartsCard}>
             {(!isExpensesByCategoryLoading && GroupExpensesByCategory) ? 
@@ -31,7 +30,7 @@ const GroupChartsCard: FC = () => {
                 <ChartCardLoader className={classes.loader} />
             }
             {(!isExpensesByMemberLoading && GroupExpensesByMember) ? 
-                <ChartCard members={GroupExpensesByMember?.filter(item => item.amount !== 0)} title={'Expenses by members'} messageType={'group'} />
+                <ChartCard members={GroupExpensesByMember} title={'Expenses by members'} messageType={'group'} />
                 :
                 <ChartCardLoader className={classes.loader} />
             }

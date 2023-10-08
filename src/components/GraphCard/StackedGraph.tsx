@@ -45,7 +45,6 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
         return ThemeStore.textColor
     }
     const titleTooltip = (context: Context): string => {
-        console.log(context[0]);
         const [year, month, day] = context[0].label.split('-');
         const monthTitle = DateService.getMonthNameByIdx(+month-1).slice(0,3);
         return `${monthTitle} ${day}, ${year}`
@@ -160,7 +159,7 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
                     maxBarThickness: 24,
                     borderRadius: 20,
                     data: getAmountsByUserId(dataUsers, +userId),
-                    backgroundColor: shaffledColors[i % shaffledColors.length]
+                    backgroundColor: shaffledColors[+userId % shaffledColors.length]
                 };
             });
         } else {
