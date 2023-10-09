@@ -43,7 +43,7 @@ export const GroupsApiSlice = api.injectEndpoints({
                 credentials: 'include',
             }),
             transformResponse: (response: IGetCurrentUserGroups): IGetCurrentUserGroups => {
-                return {user_groups: response.user_groups.filter(el => el.status !== 'INACTIVE')}
+                return { user_groups: response.user_groups ? response.user_groups.filter(el => el.status !== 'INACTIVE') : []}
             },
             transformErrorResponse: (
                 response: { status: string | number },
@@ -96,7 +96,7 @@ export const GroupsApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetUsersFromGroupResponse): IGetUsersFromGroupResponse => {
-                return { ...response, items: response.items.filter(member => member.status !== 'INACTIVE')  }
+                return { ...response, items: response.items ? response.items.filter(member => member.status !== 'INACTIVE') : [] }
             },
             providesTags: (result, err, body) => result?.items ?
                 [...result.items.map(item => ({ type: 'UserController' as const, id: item.user.id })),
@@ -200,7 +200,7 @@ export const GroupsApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetGroupExpensesByCategoryResponse[], arg, body: IGetGroupExpensesByCategoryBody): IGetGroupExpensesByCategoryResponse[] => { 
-                return response.filter((category)=> category.amount !== null)
+                return response ? response.filter((category) => category.amount !== null) : []
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
@@ -283,7 +283,7 @@ export const GroupsApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetGroupExpensesByCategoryResponse[], arg, body: IGetGroupExpensesByCategoryBody): IGetGroupExpensesByCategoryResponse[] => {
-                return response.filter((category) => category.amount !== null)
+                return response ? response.filter((category) => category.amount !== null) : []
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
