@@ -2,7 +2,6 @@ import React, { FC, ReactNode, useState, useCallback, Dispatch, SetStateAction }
 
 //UI
 import classes from './InvitationModal.module.css';
-import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 
 //logic
@@ -23,24 +22,24 @@ interface IInvitationModalProps {
 const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, setIsInvitationModalOpen, groups, userName, userId }) => {
     let headerIcon: ReactNode = <i className="bi bi-person-add"></i>
     let titleModal: string = 'Invite user'
-    const [selectedGroup, setSelectedGroup] = useState<{ id: number, title: string }>({ id: -1, title: '' })
+    const [selectedGroup, setSelectedGroup] = useState<{ id: number | string, title: string }>({ id: 'none', title: '' })
 
     const [createInvitation, { isLoading: isInvitationCreating }] = useCreateInvitationMutation()
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const id = +event.target.value;
         setSelectedGroup({ id: id, title: findTitleById(id) });
     }
-    const  findTitleById = (id: number) => {
+    const findTitleById = (id: number) => {
         const foundGroup = groupsObject.find((group) => group.id === id);
         return foundGroup ? foundGroup.title : '';
     }
 
     const onCreateInvitation = async () => {
-        if (userId && selectedGroup.id && !isInvitationCreating) {
+        if (userId && selectedGroup.id &&!isInvitationCreating) {
             try {
                 const isInvitationCreated = await createInvitation({
                     recipient_id: userId,
-                    group_id: selectedGroup.id,
+                    group_id: +selectedGroup.id,
                 }).unwrap()
                 if (isInvitationCreated) {
                     notify('success', <p><span style={{ fontWeight: 700 }}>{userName}</span> invited to <span style={{ fontWeight: 700 }}>{selectedGroup.title}</span> group</p>);
@@ -50,10 +49,13 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                 notify('error', <p><span style={{ fontWeight: 700 }}>{userName}</span> haven't invited to <span style={{ fontWeight: 700 }}>{selectedGroup.title}</span> group. {error.data.detail}</p>)
             }
         }
+        setSelectedGroup({ id: 'none', title: '' });
     }
 
     const handleSubmit = async () => {
-        onCreateInvitation()
+        if (selectedGroup.id !== 'none') {
+            onCreateInvitation()
+        }
         setIsInvitationModalOpen(false)
     }
     
@@ -75,14 +77,14 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                 onSubmit={handleSubmit}>
                 <div className={classes.modal__wrapper}>
                     <div className={classes.text}>
-                        Do you want to invite <span className={classes.name}> {userName}</span> to
-                        <div className={classes.selectorWrapper}>
+                        Do you want to invite <span className={classes.name}>{userName}
+                        </span> to <div className={classes.selectorWrapper}>
                             <select className={classes.select} onChange={handleChange}>
-                                <option style={{backgroundColor: 'var(--cardbg)'}} key={'none'} value='None'>
+                                <option className={classes.option} key={'none'} value='None'>
                                     none
                                 </option>
                                 {groupsObject.map((group) => (
-                                    <option value={group.id}>{group.title}</option>
+                                    <option className={classes.option} value={group.id}>{group.title.length > 15 ? group.title.slice(0, 12) + '...' : group.title}</option>
                                 ))}
                             </select> 
                         </div> group?
@@ -105,7 +107,10 @@ const InvitationModal: FC<IInvitationModalProps> = ({ isInvitationModalOpen, set
                         btnHeight={36}
                         icon="refuse"
                         type='danger'
-                        callback={() => { setIsInvitationModalOpen(false) }}
+                        callback={() => {
+                            setSelectedGroup({ id: 'none', title: '' });
+                            setIsInvitationModalOpen(false)
+                        }}
                     />
                 </div>
             </form>
