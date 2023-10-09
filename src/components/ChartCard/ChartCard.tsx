@@ -108,7 +108,7 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageTyp
             <div className={classes.noExpenses}>
                 <i className="bi bi-database-x"></i>
                 <h5 className={classes.noExpenses__title}>{emptyMessage}</h5>
-                <p className={classes.noExpenses__text}>Try creating a new expense</p>
+                <p className={classes.noExpenses__text}>Try to create a new expense</p>
             </div>
         </div>
     }
