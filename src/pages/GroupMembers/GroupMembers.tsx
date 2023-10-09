@@ -6,7 +6,6 @@ import userIcon from '@assets/user-icon.svg'
 
 //logic
 import IMember from '@models/IMember';
-
 import DateService from '@services/DateService/DateService';
 import {
     createColumnHelper,
@@ -18,16 +17,17 @@ import {
     PaginationState, 
     Row,
     useReactTable,
+    SortingState
 } from '@tanstack/react-table'
 import { isUrl } from '@services/UsefulMethods/UIMethods';
-
 import { useGetCurrentUserInfoQuery,  } from '@store/Controllers/UserController/UserController';
 import { useGetInfoByGroupQuery, useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
-import { SortingState } from '@tanstack/react-table';
-import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import IUser from '@models/IUser';
+// UI
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import ButtonContent from './ButtonContent';
 import PreLoader from '@components/PreLoader/PreLoader';
+import Pagination from '@components/Pagination/Pagination';
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends unknown> {
@@ -164,9 +164,7 @@ const History: React.FC = () => {
         }
     })
     const totalCount = UsersByGroup?.total;
-    const pageCount = table.getPageCount()
-    const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? totalCount : (pageIndex + 1) * pageSize;
+    
     let membersContent;
     if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items.length > 0)
         membersContent = <table className={classes.recentOperations__table}>
@@ -212,44 +210,18 @@ const History: React.FC = () => {
                 ))}
                 <tr>
                     <td colSpan={5}>
-                        <div className={classes.pagination}>
-                            <div className={classes.selector}>
-                                <span>Rows per page: </span>
-                                <select
-                                    value={pageSize}
-                                    className={classes.select}
-                                    onChange={e => {
-                                        table.setPageSize(Number(e.target.value))
-                                    }}
-                                >
-                                    {[4, 6, 8, 16, 24].map(pageSize => (
-                                        <option key={pageSize} value={pageSize}>
-                                            {pageSize}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <span className={classes.counter}>
-                                {`${startIndex} - ${endIndex}`} of{' '}
-                                {totalCount}
-                            </span>
-                            <div className={classes.nav}>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => table.previousPage()}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-left"></i>
-                                </button>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <Pagination
+                            totalCount={totalCount}
+                            pageIndex={pageIndex}
+                            getPageCount={table.getPageCount}
+                            pageSize={pageSize}
+                            setPageSize={table.setPageSize}
+                            previousPage={table.previousPage}
+                            nextPage={table.nextPage}
+                            getCanPreviousPage={table.getCanPreviousPage}
+                            getCanNextPage={table.getCanNextPage}
+                            
+                        />
                     </td>
                 </tr>
             </tbody>

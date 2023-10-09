@@ -4,6 +4,9 @@ import classes from './Users.module.css';
 import userIcon from '@assets/user-icon.svg'
 import InvitationModal from '@components/ModalWindows/InvitationModal/InvitationModal';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
+import PreLoader from '@components/PreLoader/PreLoader';
+import Pagination from '@components/Pagination/Pagination';
+
 //logic
 import IUser from '@models/IUser';
 import {
@@ -19,8 +22,6 @@ import { isUrl } from '@services/UsefulMethods/UIMethods';
 import { useGetCurrentUserInfoQuery, useGetUsersQuery } from '@store/Controllers/UserController/UserController';
 import { useGetCurrentUserGroupsQuery } from '@store/Controllers/GroupsController/GroupsController';
 import IGroup from '@models/IGroup';
-import PreLoader from '@components/PreLoader/PreLoader';
-
 
 const columnHelper = createColumnHelper<IUser>()
 
@@ -104,9 +105,7 @@ const Users: React.FC = () => {
         },
     })
     const totalCount = Users?.total;
-    const pageCount = Users?.pages
-    const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex + 1 === pageCount ? totalCount : (pageIndex + 1) * pageSize; 
+   
     let usersContent;
     if (isUsersSuccess && isCurrentUserSuccess && isGroupsSuccess && Users.items.length > 0)
         usersContent = <table className={classes.recentOperations__table}>
@@ -152,44 +151,18 @@ const Users: React.FC = () => {
                 ))}
                 <tr>
                     <td colSpan={5}>
-                        <div className={classes.pagination}>
-                            <div className={classes.selector}>
-                                <span>Rows per page: </span>
-                                <select
-                                    value={table.getState().pagination.pageSize}
-                                    className={classes.select}
-                                    onChange={e => {
-                                        table.setPageSize(Number(e.target.value))
-                                    }}
-                                >
-                                    {[4, 6, 8, 16, 24].map(pageSize => (
-                                        <option key={pageSize} value={pageSize}>
-                                            {pageSize}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <span className={classes.counter}>
-                                {`${startIndex} - ${endIndex}`} of{' '}
-                                {totalCount}
-                            </span>
-                            <div className={classes.nav}>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => table.previousPage()}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-left"></i>
-                                </button>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <Pagination
+                            totalCount={totalCount}
+                            pageIndex={pageIndex}
+                            getPageCount={table.getPageCount}
+                            pageSize={pageSize}
+                            setPageSize={table.setPageSize}
+                            previousPage={table.previousPage}
+                            nextPage={table.nextPage}
+                            getCanPreviousPage={table.getCanPreviousPage}
+                            getCanNextPage={table.getCanNextPage}
+
+                        />
                     </td>
                 </tr>
             </tbody>

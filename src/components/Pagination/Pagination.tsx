@@ -1,66 +1,64 @@
-import React, {ChangeEvent, MouseEvent} from 'react';
+import React, { FC } from 'react';
+import { Updater } from '@tanstack/react-table';
 //UI
 import classes from './Pagination.module.css'
 
-interface IPaginationProps{
-    rowsPerPage: number,
-    setRowsPerPage: (ctx: number) => void,
-    lastAction: number,
-    firstAction: number,
-    totalActions: number,
-    page: number,
-    setPage: (ctx: number) => void
+
+interface IPaginationProps {
+    pageSize: number,
+    setPageSize: (updater: Updater<number>) => void,
+    pageIndex: number,
+    totalCount: number | undefined,
+    previousPage: () => void,
+    nextPage: () => void,
+    getCanPreviousPage: () => boolean,
+    getCanNextPage: () => boolean,
+    getPageCount: () => number
 }
 
-const Pagination = ({rowsPerPage, setRowsPerPage, lastAction, firstAction, totalActions, page, setPage}: IPaginationProps) => {
+const Pagination: FC<IPaginationProps> = ({ pageSize, pageIndex, totalCount, setPageSize, nextPage, previousPage, getCanPreviousPage, getCanNextPage, getPageCount }) => {
 
-    const setRowsPerPageHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-        setRowsPerPage(+e.target.value)
-    } 
-    const updatePage = (e: MouseEvent<HTMLButtonElement>, option: 'prev' | 'next') => {
-        if(option === 'next') setPage(page + 1)
-        else setPage(page - 1)
-    }
-
+    const pageCount = getPageCount();
+    const startIndex = pageIndex * pageSize + 1;
+    const endIndex = pageIndex === pageCount - 1 ? totalCount : (pageIndex + 1) * pageSize;
     return (
-        <div className={classes.inner}>
+        <div className={classes.pagination}>
             <div className={classes.selector}>
                 <span>Rows per page: </span>
-                <select 
-                defaultValue={'6'}
-                className={classes.select} 
-                name="rowsPerPage"
-                onChange={setRowsPerPageHandler}>
-                    <option value={4}>4</option>
-                    <option value={6}>6</option>
-                    <option value={8}>8</option>
-                    <option value={16}>16</option>
-                    <option value={24}>24</option>
+                <select
+                    value={pageSize}
+                    className={classes.select}
+                    onChange={e => {
+                        setPageSize(Number(e.target.value))
+                    }}
+                >
+                    {[4, 6, 8, 16, 24].map(pageSize => (
+                        <option key={pageSize} value={pageSize}>
+                            {pageSize}
+                        </option>
+                    ))}
                 </select>
             </div>
-            <div className={classes.counter}>
-                <span>{firstAction}-{lastAction}</span>
-                <span> of {totalActions}</span>
-            </div>
+            <span className={classes.counter}>
+                {`${startIndex} - ${endIndex}`} of{' '}
+                {totalCount}
+            </span>
             <div className={classes.nav}>
                 <button
-                    disabled={page === 1}
-                    onClick={e => updatePage(e, 'prev')}
-                    type="submit"
-                    className={classes.btn + ' ' + classes.previous}
+                    className={classes.btn}
+                    onClick={() => previousPage()}
+                    disabled={!getCanPreviousPage()}
                 >
                     <i id='chevron' className="bi bi-chevron-left"></i>
                 </button>
                 <button
-                    disabled={lastAction === totalActions}
-                    onClick={e => updatePage(e, 'next')}
-                    type="submit"
-                    className={classes.btn + ' ' + classes.next}
+                    className={classes.btn}
+                    onClick={() => nextPage()}
+                    disabled={!getCanNextPage()}
                 >
                     <i id='chevron' className="bi bi-chevron-right"></i>
                 </button>
             </div>
-
         </div>
     );
 };

@@ -145,57 +145,6 @@
     font-weight: 500;
 }
 
-/* pagination */
-
-.pagination {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-    justify-content: flex-end;
-    padding: 30px;
-
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 30px;
-    color: var(--text);
-}
-
-.nav {
-    display: flex;
-    gap: 25px;
-}
-
-.btn {
-    cursor: pointer;
-    display: flex;
-}
-
-.btn:hover:not(:disabled) i {
-    color: var(--main-green)
-}
-
-.btn i {
-    font-size: 20px;
-    -webkit-text-stroke: 1.5px;
-    color: var(--text)
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.select {
-    background: transparent;
-    border: transparent;
-    color: inherit;
-    font-size: 24px;
-}
-
-.select:focus {
-    border: none;
-    outline: none
-}
 
 /* loader */
 .loaderWrapper {
@@ -240,10 +189,6 @@
     .tableTitle {
         font-size: 22px;
         line-height: 27px;
-    }
-
-    .pagination {
-        padding: 35px;
     }
 }
 
@@ -295,27 +240,6 @@
     .addToGroupBtn{
         padding: 3px 7px;
     }
-    /* pagination */
-    .pagination {
-        font-size: 18px;
-        line-height: 22px;
-        padding: 10px;
-        gap: 0;
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .nav {
-        gap: 15px;
-    }
-
-    .btn i {
-        font-size: 16px;
-    }
-
-    .select {
-        font-size: 18px;
-    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -327,14 +251,6 @@
     }
     .name, .email {
         font-size: 13px;
-    }
-    .pagination {
-        padding: 10px;
-    }
-
-    /* pagination */
-    .counter {
-        display: none;
     }
 }
 
