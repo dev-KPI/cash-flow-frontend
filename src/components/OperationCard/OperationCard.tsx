@@ -36,8 +36,14 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
-        percentColor: operation === "Income" && sign !== '+' || operation === 'Expenses' && sign === '+' ? "var(--main-red)" : "var(--main-green)",
-        percentBackground: operation === "Income" && sign !== '+' || operation === 'Expenses' && sign === '+' ? "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
+        percentColor:
+            (operation === "Income" && sign !== '+') ||
+            (operation === 'Expenses' && sign === '+') ?
+            "var(--main-red)" : "var(--main-green)",
+        percentBackground:
+            (operation === "Income" && sign !== '+') ||
+            (operation === 'Expenses' && sign === '+') ?
+            "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
 
