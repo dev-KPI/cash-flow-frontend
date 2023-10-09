@@ -15,14 +15,14 @@ export const MonthPickerSlice = createSlice({
     initialState,
     reducers: {
         prevMonth: (initialState: IMonthPickerState): void => {
-            const { startDate } = initialState;
-            initialState.startDate = startOfMonth(subMonths(new Date(startDate), 1));
-            initialState.endDate = endOfMonth(subMonths(new Date(startDate), 1));
+            const { endDate } = initialState;
+            initialState.startDate = startOfMonth(subMonths(new Date(endDate), 1));
+            initialState.endDate = endOfMonth(subMonths(new Date(endDate), 1));
         },
         nextMonth: (initialState: IMonthPickerState): void => {
-            const { startDate } = initialState;
-            initialState.startDate = startOfMonth(addMonths(new Date(startDate), 1))
-            initialState.endDate = endOfMonth(addMonths(new Date(startDate), 1)) 
+            const { endDate } = initialState;
+            initialState.startDate = startOfMonth(addMonths(new Date(endDate), 1))
+            initialState.endDate = endOfMonth(addMonths(new Date(endDate), 1)) 
         },
         setStartDate: (initialState: IMonthPickerState, action: PayloadAction<Date>): void => {
             initialState.startDate = action.payload;
