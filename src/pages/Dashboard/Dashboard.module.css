@@ -60,10 +60,13 @@
         flex-wrap: wrap;
     }
     .operations svg {
-        height: 102px;
+        height: 107px;
     }
     .operations svg > rect {
-        height: 98px;
+        height: 103px;
+    }
+    .operations div>div[class*="bottom"] {
+        margin-top: 5px;
     }
 }
 
@@ -92,6 +95,9 @@
 
     .grid__topright {
         order: 3;
+    }
+    .operations div>div[class*="bottom"]{
+        margin-top: 8px;
     }
     .operations svg {
         height: 110px;
