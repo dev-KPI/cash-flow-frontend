@@ -75,19 +75,19 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 const isLeavedGroup = await leaveGroup(groupId || 0).unwrap()
                 if (isLeavedGroup) {
                     if (mode === 'disband') {
-                        notify('success', <p>You disbanded the <span>{title}</span> group</p>)
+                        notify('success', <p>You disbanded the <span style={{ fontWeight: 700 }}>{title}</span> group</p>)
                     } else if (mode === 'leave') {
-                        notify('success', <p>You left the <span>{title}</span> group</p>)
+                        notify('success', <p>You left the <span style={{ fontWeight: 700 }}>{title}</span> group</p>)
                     }
                     navigate('/groups')
                 }
             } catch (err) {
                 if (mode === 'disband') {
                     console.error(`Failed to disband the ${title} group: `, err)
-                    notify('error', <p>You haven't disbanded the <span>{title}</span> group</p>)
+                    notify('error', <p>You haven't disbanded the <span style={{ fontWeight: 700 }}>{title}</span> group</p>)
                 } else if (mode === 'leave') {
                     console.error(`Failed to leave from the ${title} group: `, err)
-                    notify('error', <p>You haven't left the <span style={{fontWeight: 700}}>{title}</span> group</p>)
+                    notify('error', <p>You haven't left the <span style={{ fontWeight: 700 }}>{title}</span> group</p>)
                 }
             }
         }
