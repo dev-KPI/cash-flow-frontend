@@ -20,7 +20,8 @@ const Input: FC<IInputProps> = ({
     Icon, 
     name, 
     id, 
-    isInputMustClear
+    isInputMustClear,
+    errorMessage = 'This field is required'
     }) => {
 
     const [inputNumberValue, setInputNumberValue] = useState<number>(cashValue ?? 0);
@@ -134,7 +135,7 @@ const Input: FC<IInputProps> = ({
 
     const getInputError = useMemo(() => {
         return (isError) ? <div className={classes.errorLabel}>
-            <label>This field is required</label>
+            <label>{errorMessage}</label>
         </div> : null
     }, [isError])
 

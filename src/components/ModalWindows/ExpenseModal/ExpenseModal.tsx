@@ -120,7 +120,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
             } else {
                 notify('info', 'Replenishment not updated')
             }
-        } else if (isSubmit && amountValue < 1) {
+        } else if (isSubmit && amountValue === 0) {
             setIsSubmit(false);
             setIsInputError(true)
         } 
@@ -136,12 +136,17 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     useEffect(() => callbackOnSubmit(), [callbackOnSubmit])
     useEffect(() => handleSubmit(), [handleSubmit])
 
+
     return <>
     <UsePortal
-        setIsModalOpen={setIsExpenseModalOpen}
-        isModalOpen={isExpenseModalOpen}
-        headerIcon={headerIcon}
-        title={titleModal}
+            setIsModalOpen={setIsExpenseModalOpen}
+            isModalOpen={isExpenseModalOpen}
+            headerIcon={headerIcon}
+            title={titleModal}
+            callback={() => {
+                setIsSubmit(false);
+                setIsInputError(false)
+            }}
         >
             <form
             onSubmit={handleSubmit}>
@@ -156,7 +161,8 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                             setFormValue={{type: 'cash', callback: setAmountValue}}
                             isInputMustClear={false} 
                             Icon={currency} inputType="cash" id="salary" 
-                            name="salary" placeholder="00.00"/>
+                            name="salary" placeholder="00.00"
+                            errorMessage="Expense amount too low"/>
                         </div>
                     </li>
                     <li className={classes.DescriptionInput}>

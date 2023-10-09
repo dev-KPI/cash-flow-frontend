@@ -28,5 +28,6 @@ export interface IInputProps {
     id: string
     MinMaxValidate?: {min: number} | {max: number} | {min: number, max: number}
     inputType: 'cash' | 'text' | 'name' | 'area' |'else'
-    isInputMustClear: boolean
+    isInputMustClear: boolean,
+    errorMessage?: string
 }

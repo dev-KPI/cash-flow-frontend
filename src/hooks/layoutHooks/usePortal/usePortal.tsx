@@ -83,7 +83,7 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, callb
                             <div className={classes.Icon}>{headerIcon}</div>
                             <h3 className={classes.Header__title}>{title}</h3>
                             <div className={classes.closeBtn}>
-                                <CloseButton closeHandler={() => setIsModalOpen(false)} />
+                                <CloseButton closeHandler={closeModal} />
                             </div>
                         </div>
                         <div className={classes.line}></div>

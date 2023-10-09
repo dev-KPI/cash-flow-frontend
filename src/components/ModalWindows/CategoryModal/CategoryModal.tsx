@@ -147,6 +147,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
         headerIcon={headerIcon}
         title={titleModal}
         containerWidth={500}
+        callback={()=>closeModalHandler()}
         >
             <form
             onSubmit={handleSubmit}>

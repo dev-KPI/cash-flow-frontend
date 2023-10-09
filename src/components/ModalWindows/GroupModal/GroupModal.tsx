@@ -172,6 +172,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
             setIsModalOpen={setIsGroupModalOpen}
             headerIcon={headerIcon}
             title={titleModal}
+            callback={()=> closeModalHandler()}
         >
             <form
                 onSubmit={() => handleSubmit}>
