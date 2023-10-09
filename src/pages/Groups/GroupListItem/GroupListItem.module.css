@@ -15,6 +15,9 @@
     composes: cardTitle from '@styles/style.css';
     border-bottom: var(--text) 1px solid;
     padding: 24px 24px 8px 24px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .content{
