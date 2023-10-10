@@ -5,7 +5,6 @@ import classes from './GroupModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
 import { notify } from "src/App";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
@@ -19,14 +18,14 @@ interface IGroupModalProps{
     setGroupId: Dispatch<SetStateAction<number>>,
     isGroupModalOpen: boolean
     setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
+    setIsConfirmationModalOpen?: Dispatch<SetStateAction<boolean>>;
     mode: 'create' | 'edit' | 'disband' | 'leave',
 }
 
-const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
+const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group, setIsConfirmationModalOpen = () => {} }) => {
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [isInputError, setIsInputError] = useState<boolean>(false);
     //pickers
@@ -161,12 +160,6 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
     return <>
-        <ConfirmationModal 
-            groupId={groupId ?? 0}
-            title={group?.title}
-            setIsConfirmationModalOpen={setIsConfirmationModal} 
-            isConfirmationModalOpen={isConfirmationModal} 
-            mode={mode === 'leave' ? "leave" : 'disband'}/>
         <UsePortal
             isModalOpen={isGroupModalOpen}
             setIsModalOpen={setIsGroupModalOpen}
@@ -247,7 +240,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             type='danger'
                             background="outline"
                             disableScale={true}
-                            callback={() => {setIsConfirmationModal(true); setIsGroupModalOpen(false)}}
+                            callback={() => { setIsGroupModalOpen(!isGroupModalOpen); setIsConfirmationModalOpen(true); }}
                         />}
                         <CustomButton
                             isPending={isGroupCreating}
