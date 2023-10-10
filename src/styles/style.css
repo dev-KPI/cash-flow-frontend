@@ -189,7 +189,7 @@
     --active-filter-color: '';
     --backdrop: #54545490;
     --btn-text: #EAEAEA;
-    --confrim-btn: rgba(128, 214, 103, 1);
+    --confirm-btn: rgba(128, 214, 103, 1);
     --border-input: rgba(122, 122, 157, 0.5);
     --refetch-btn: #f1f1f1;
     --refetch-btn-hover: #dddddd;
@@ -209,7 +209,7 @@
     --accordion-bg: #333333;
     --filter-btn: #9a9a9a;
     --backdrop: #00000090;
-    --confrim-btn: rgba(128, 214, 103, 0.8);
+    --confirm-btn: rgba(128, 214, 103, 0.8);
     --btn-text: #EAEAEA;
     --border-input: rgba(155, 171, 197, 0.5);
     --refetch-btn: #222;
