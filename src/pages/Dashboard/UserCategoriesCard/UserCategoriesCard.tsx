@@ -17,7 +17,7 @@ import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCa
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
-import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import SpecialButton from '@components/Buttons/SpecialButton/SpecialButton';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import PreLoader from '@components/PreLoader/PreLoader';
 

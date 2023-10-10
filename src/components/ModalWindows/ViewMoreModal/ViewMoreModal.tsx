@@ -2,7 +2,7 @@ import React, { FC, Dispatch, SetStateAction, ReactNode, useCallback, useEffect 
 
 //UI
 import classes from './ViewMoreModal.module.css';
-import SpecialButton from "@components/Buttons/SpeciaButton/SpecialButton";
+import SpecialButton from "@components/Buttons/SpecialButton/SpecialButton";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 

@@ -12,7 +12,7 @@ import UserGroupsCardItem from '@pages/Dashboard/UserGroupsCardItem/UserGroupsCa
 import UserGroupsCardLoader from '@pages/Dashboard/UserGroupsCard/UserGroupsCardLoader';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
-import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import SpecialButton from '@components/Buttons/SpecialButton/SpecialButton';
 
 
 

@@ -13,7 +13,7 @@ import DateService from '@services/DateService/DateService';
 import classes from './GroupCategoriesCard.module.css';
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
-import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import SpecialButton from '@components/Buttons/SpecialButton/SpecialButton';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
