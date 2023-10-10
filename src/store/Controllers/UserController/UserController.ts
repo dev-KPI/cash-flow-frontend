@@ -136,7 +136,7 @@ export const UserApiSlice = api.injectEndpoints({
         getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[],IPeriods>({
             query: (body) => ({
                 url: `users/daily-expenses`,
-                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getLocalISOString(addDays((body.end_date),1)).slice(0, 10) },
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
