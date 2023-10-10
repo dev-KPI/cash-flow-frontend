@@ -1,18 +1,19 @@
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import './styles/style.css';
-
+import { ToastContainer, toast } from 'react-toastify';
 // UI
 import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
-  // Router
+import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './styles/style.css';
+// Router
 import Router from './router/router';
 // Store
 import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/UserController';
 import { useActionCreators } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
+
 
 export const notify = (type: 'success'|'error'|'info', msg: string | ReactNode) => {
     const toastStyles = {
