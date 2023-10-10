@@ -2,7 +2,7 @@ import React, { FC, useCallback } from 'react';
 
 //logic
 import DateService from '@services/DateService/DateService';
-import { shaffledColors, numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { shaffledColors, numberWithCommas, isValidHex } from '@services/UsefulMethods/UIMethods';
 //UI
 import classes from './GraphCard.module.css'
 import {  Chart } from "react-chartjs-2";
@@ -95,11 +95,11 @@ const StackedGraph: FC<IStackedGraphProps> = ({ dataUsers, dataUserCategories}) 
         data: IGroupMemberExpensesByCategoryDailyResponse[],
         Id: number
     ): string => {
-        let color: string = '#ff2500';
+        let color: string = '';
             data.forEach((item) => {
                 const details = item.categories.find((category) => Id === category.id);
                 if (details) {
-                    color = details.color_code;
+                    color = isValidHex(details.color_code);
                 } 
             });
         return color;

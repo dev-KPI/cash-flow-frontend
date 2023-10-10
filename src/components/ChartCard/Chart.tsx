@@ -5,9 +5,10 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import type { ChartData, ChartOptions } from 'chart.js/auto';
 import { Chart, getElementAtEvent } from 'react-chartjs-2';
 import { AnyObject } from 'chart.js/dist/types/basic';
-import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { isValidHex, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { ICategoryAmount } from '@models/ICategory';
 import { IExtendedUser } from '@models/IUser';
+//store
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
@@ -35,7 +36,7 @@ const UserExpenseChart: FC<IChartProps> = ({ categories, members, total, setId }
     let backgroundColor: string[] = [];
 
     const data = categories ? categories : members;
-    backgroundColor = data.map((item) => item.color_code);
+    backgroundColor = data.map((item) => isValidHex(item.color_code));
     dataAmount = data.map((item) => item.amount);
 
     //fix to avoid very small segments

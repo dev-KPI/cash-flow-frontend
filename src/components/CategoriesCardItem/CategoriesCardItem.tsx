@@ -1,7 +1,7 @@
 import { FC, MouseEvent} from 'react';
 
 //logic
-import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { isValidHex, isValidIcon, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { ICategoryAmount } from '@models/ICategory';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
@@ -19,13 +19,14 @@ interface IUserCategoriesCardProps{
 const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ category, setIdModalOpen, setIsModalOpen }) => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const amount: number = category.amount || 0;
-    const color = category.color_code || '#80D667';
-    const icon = category.icon_url || "bi bi-bag"
+    const color = isValidHex(category.color_code);
+    const icon = isValidIcon(category.icon_url);
     const openModal = (e: MouseEvent) => {
         e.preventDefault()
         setIdModalOpen(category.id)
         setIsModalOpen(true)
     }    
+    console.log(color);
     const categoryTitle = category.title.length > 8 ? `${category.title.slice(0, 7)}..` : category.title;
     return (
         <li 
@@ -34,7 +35,7 @@ const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ category, setIdMo
             onClick={openModal}
         >
             <h6 className={classes.expenseName}>{categoryTitle}</h6>
-            <div className={classes.icon} style={{ background: color, opacity: '0.7'}}>
+            <div className={classes.icon} style={{ background: color + 'B3'}}>
                 <i className={icon}></i>
             </div>
             <p className={classes.expenseAmount} style={{ color: color }}>{`${numberWithCommas(amount)}${currency}`}</p>

@@ -2,6 +2,8 @@
     min-width: 0;
 }
 .CategoriesCard{
+    box-sizing: border-box;
+    padding-right: 16px;
     display: flex;
     flex-direction: row;
     height: 60px;

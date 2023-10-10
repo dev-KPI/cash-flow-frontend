@@ -6,6 +6,7 @@ import userIcon from '@assets/user-icon.svg';
 import GroupInfoCardLoader from './GroupInfoCardLoader';
 import { IGetInfoFromGroupResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 import GroupModal from '@components/ModalWindows/GroupModal/GroupModal';
+import { isValidHex, isValidIcon } from '@services/UsefulMethods/UIMethods';
 
 interface IGroupInfoCard {
     isAdmin: boolean
@@ -17,10 +18,12 @@ const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) 
 
     const [isEditGroupModal, setIsEditGroupModal] = useState<boolean>(false);
 
-    const { id, title, description, color_code, icon_url } = groupInfo;
-    const { members, expenses  } = groupInfo;
-    const descriptionModded  = description.length > 150 ? description.slice(0, 180) + '...' : description;
+    const { id, title, description, members, expenses } = groupInfo;
 
+    const descriptionModded = description.length > 150 ? description.slice(0, 180) + '...' : description;
+    
+    const color = isValidHex(groupInfo.color_code);
+    const icon = isValidIcon(groupInfo.icon_url)
     return (
         <div className={classes.GroupInfoCard}>
             {
@@ -44,8 +47,8 @@ const GroupInfoCard: FC<IGroupInfoCard> = ({isAdmin, groupInfo, isInfoLoading}) 
                     }
                     <div className={classes.avatar}>
                         <div className={classes.icon}
-                            style={{ backgroundColor: color_code }}>
-                            <i className={groupInfo.icon_url}></i>
+                            style={{ backgroundColor: color }}>
+                            <i className={icon}></i>
                         </div>
                     </div>
                     <div className={classes.group__info}>

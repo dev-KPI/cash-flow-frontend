@@ -16,22 +16,7 @@ export const formatFloatNumber = (inputNumber: number, numbersAfterComma: number
         return inputNumber.toFixed(numbersAfterComma);
     }
 }
-export const parseColors = (hex: string) => {
-    switch (hex) {
-        case '#4C6FFF':
-            return 'var(--main-blue)';
-        case '#FF6E01':
-            return 'var(--main-orange)';      
-        case '#FF2D55':
-            return 'var(--main-red)';
-        case '#28CD41':
-            return 'var(--main-green)';
-        case '#D96FF8':
-            return 'var(--main-purple)';
-        default:
-            return hex
-    }
-}
+
 export const customColors: string[] = [
     '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00',
     '#CCFF00', '#99FF00', '#66FF00', '#33FF00', '#00FF00', '#00FF33',
@@ -40,6 +25,10 @@ export const customColors: string[] = [
     '#CC00FF', '#FF00FF', '#FF00CC', '#FF0099', '#FF0066', '#FF0033',
     '#FF0000', '#FF3300', '#FF6600', '#FF9900', '#FFCC00', '#FFFF00'
 ];
+
+export const isValidHex =(str: string) => {
+    return Boolean(/^#[0-9A-F]{6}[0-9a-f]{0,2}$/i.test(str)) ? str : '#4C6FFF';
+}
 
 // export const shaffledColors: string[] = [
 //     '#c90076', '#f6ffb2', '#1794bb', '#6312bf', '#FFFF00', '#FFCC00',
@@ -66,7 +55,9 @@ export const customIcons: string[] = [
     'bi bi-airplane', 'bi bi-globe', 'bi bi-emoji-smile', 'bi bi-display', 'bi bi-database', 'bi bi-credit-card-2-front',
 ];
 
-
+export const isValidIcon = (icon: string) => {
+    return customIcons.includes(icon) ? icon : 'bi bi-question-lg';
+}
 
 export function handleWrap(
     container: HTMLElement | null, 

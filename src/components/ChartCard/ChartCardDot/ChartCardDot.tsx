@@ -6,6 +6,8 @@ import Light from '@components/Light/Light';
 //store
 import { ICategoryAmount } from '@models/ICategory';
 import { IExtendedUser } from '@models/IUser';
+//logic
+import { isValidHex } from '@services/UsefulMethods/UIMethods';
 
 
 type IChartCardDotProps = { setId: (Dispatch<SetStateAction<number>>) } & (
@@ -14,16 +16,16 @@ type IChartCardDotProps = { setId: (Dispatch<SetStateAction<number>>) } & (
 )
 
 const ChartCardDot: FC<IChartCardDotProps> = ({ category, member, setId }) => {
-    let color = '#4C6FFF'
-    let title = ''
+    let color = '';
+    let title = '';
     const onClick = () => {
         setId(category ? category.id : member.id)
     }
     if (category) {
-        color = category.color_code;
+        color = isValidHex(category.color_code);
         title = category.title || '';
     } else if (member) {
-        color = member.color_code;
+        color = isValidHex(member.color_code);
         title = member.first_name + ' ' + member.last_name || '';
     }
 

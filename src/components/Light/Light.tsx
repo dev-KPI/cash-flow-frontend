@@ -3,8 +3,9 @@ import classes from './Light.module.css';
 
 //store
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { parseColors } from '@services/UsefulMethods/UIMethods';
 import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
+//logic
+import { isValidHex } from '@services/UsefulMethods/UIMethods';
 
 export interface ILight {
     type: 'solid' | 'hollow'
@@ -14,9 +15,9 @@ export interface ILight {
 }
 
 const Light: FC<ILight> = ({ type, color, style, className }: ILight) => {
-
+    color = isValidHex(color);
     const { theme: actualTheme } = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
-    const shadow = actualTheme === 'light' ? 'none' : `0px 0px 8px ${parseColors(color)}`
+    const shadow = actualTheme === 'light' ? 'none' : `0px 0px 8px ${color}`
     className = className ? className : '';
     if (type === 'solid') {
         return (
