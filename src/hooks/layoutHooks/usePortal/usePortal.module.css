@@ -73,6 +73,11 @@
         animation: outAnimMobile .2s;
     }
 }
+@media only screen and (max-width: 400px) {
+    .Header__title {
+        margin-left: 10px;
+    }
+}
 
 
 @keyframes inAnim {
