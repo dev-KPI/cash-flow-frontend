@@ -140,8 +140,7 @@ const Users: React.FC = () => {
             </thead>
             <tbody className={classes.tableText}>
                 {table.getRowModel().rows.map(row => (
-                    <tr key={row.id}
-                        className={[classes['in'], table.options.meta?.getClass(row)].join(' ')}>
+                    <tr key={row.id}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

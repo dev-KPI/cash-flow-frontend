@@ -236,7 +236,7 @@ const History: React.FC = () => {
             </thead>
             <tbody className={classes.tableText}>
                 {table.getRowModel().rows.map(row => (
-                    <tr key={row.id} className={classes['in']} onClick={(e) => showTooltip(e, row.getVisibleCells()[2].getContext())}>
+                    <tr key={row.id} onClick={(e) => showTooltip(e, row.getVisibleCells()[2].getContext())}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

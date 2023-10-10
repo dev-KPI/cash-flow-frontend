@@ -8,9 +8,6 @@
 
 
 /* table */
-.in {
-    animation: fadeIn 0.5s;
-}
 
 .tableTitle {
     font-weight: 600;
@@ -326,17 +323,5 @@
 
     .recentOperations__table tbody td:nth-child(3) {
         display: none;
-    }
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
     }
 }
