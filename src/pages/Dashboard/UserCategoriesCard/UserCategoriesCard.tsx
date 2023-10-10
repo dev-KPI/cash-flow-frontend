@@ -177,7 +177,7 @@ const UserCategoriesCard = () => {
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <h3 className={classes.title}>Categories <span className={classes.categoryName}>
-                                ({UserGroups?.user_groups[pageGroup] ? UserGroups.user_groups[pageGroup].group.title : 'You haven`t groups'})
+                                ({UserGroups?.user_groups[pageGroup] ? UserGroups.user_groups[pageGroup].group.title : "You haven't groups"})
                             </span>
                         </h3>
                         <div className={classes.nav}>

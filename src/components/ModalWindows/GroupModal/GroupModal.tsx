@@ -103,7 +103,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 }
             } catch (err) {
                 console.error('Failed to update group: ', err)
-                notify('error', <p>You haven't update the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
+                notify('error', <p>You haven't updated the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
             }
         }
     }
@@ -140,7 +140,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 if (!(nameValue === group?.title && descValue === group.description && icon === group.icon_url && pickedColor === group.color_code)) {
                     onUpdateGroup()
                 } else {
-                    notify('error', <p>You haven't update the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
+                    notify('info', <p>You haven't updated the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
                 closeModalHandler();
             } else if(mode === 'disband' || mode === 'leave'){
