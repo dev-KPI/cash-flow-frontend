@@ -18,8 +18,7 @@ import CustomButton from '@components/Buttons/CustomButton/CustomButton'
 
 export interface ITimeRangePickerProps {
     isDateRangePicker: boolean,
-    setIsDateRangePicker: React.Dispatch<React.SetStateAction<boolean>>,
-    offRangePicker: () => void
+    setIsDateRangePicker: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const defineds = {
@@ -37,7 +36,7 @@ const defineds = {
     endOfLastMonth: endOfMonth(addMonths(new Date(), -1)),
 };
 
-const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker, setIsDateRangePicker, offRangePicker}) => {
+const DateRangePickerCard: React.FC<ITimeRangePickerProps> = ({isDateRangePicker, setIsDateRangePicker}) => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice)
     const MonthPickerDispatch = useActionCreators(MonthPickerActions);

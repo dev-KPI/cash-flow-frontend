@@ -53,20 +53,20 @@ const MonthPicker: React.FC = () => {
 
     return (<div className={classes.monthPickerWrapper}>
         {<DateRangePickerCard
-        isDateRangePicker={isDateRangePicker}
-        setIsDateRangePicker={setIsDateRangePicker}
-        offRangePicker={()=>{}}/>}
+            isDateRangePicker={isDateRangePicker}
+            setIsDateRangePicker={setIsDateRangePicker}
+        />}
         <div className={classes.monthPicker}>
             <div className={classes.wrapper}>
                 <button 
                 onClick={() => setMonth('prev')}
-                className={classes.btn + ' ' + classes.previous}>
+                className={classes.btn}>
                     <i id='chevron' className="bi bi-chevron-left"></i>
                 </button>
                 {monthPickerBody}
                 <button 
                 onClick={() => setMonth('next')}
-                className={classes.btn + ' ' + classes.next}>
+                className={classes.btn}>
                     <i id='chevron' className="bi bi-chevron-right"></i>
                 </button>
             </div>
