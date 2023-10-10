@@ -58,7 +58,7 @@ const GroupGraphCard: FC= () => {
                             </h3>
                             </div>
                         <div className={classes.button}>
-                            <span className={classes.buttonText}>Members</span>
+                            <span className={classes.buttonText}>By member</span>
                             <ToggleButton isToggle={isToggled} onToggle={() => setIsToggled(!isToggled)} />
                         </div>
                     </div>
