@@ -99,7 +99,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     color_code: pickedColor,
                 }).unwrap()
                 if (isGroupUpdated) {
-                    notify('success', <p>You updated the<span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
+                    notify('success', <p>You updated the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
             } catch (err) {
                 console.error('Failed to update group: ', err)
