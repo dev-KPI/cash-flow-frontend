@@ -16,7 +16,7 @@ const GroupMemberUserCardLoader = () => {
                 speed={2}
                 viewBox="0 0 530 300"
                 width={'100%'}
-                height={'300px'}
+                height={'298px'}
                 backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
                 foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
                 className={classes.loader}
@@ -47,7 +47,7 @@ const GroupMemberUserCardLoader = () => {
                 <ContentLoader
                     speed={2}
                     width={'100%'}
-                    height={450}
+                    height={448}
                     viewBox="0 0 374 450"
                     backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
                     foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
