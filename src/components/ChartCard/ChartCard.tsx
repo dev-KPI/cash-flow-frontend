@@ -11,7 +11,7 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 
-type IChartCardProps = { title: string, messageType?: 'user' | 'group'} & (
+type IChartCardProps = { title: string, messageType?: 'user' | 'group' | 'member'} & (
     | { categories: ICategoryAmount[], members?: never }
     | { categories?: never, members: IExtendedUser[] }
 )
@@ -102,7 +102,8 @@ const ChartCard: FC<IChartCardProps> = ({ categories, members, title, messageTyp
 
     if (dataLength === 0) {
         const emptyMessage = messageType === 'user' ? 'You have no expenses' :
-            messageType === 'group' ? "Group doesn't have expenses" : null
+            messageType === 'group' ? "Group doesn't have expenses" : 
+            messageType === 'member' ? "Member doesn't have expenses" : null;
         return <div className={classes.inner}>
             <h3 className={classes.title}>{title}</h3>
             <div className={classes.noExpenses}>

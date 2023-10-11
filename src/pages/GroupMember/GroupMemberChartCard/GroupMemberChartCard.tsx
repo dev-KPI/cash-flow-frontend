@@ -24,7 +24,7 @@ const GroupMemberChartCard: FC = () => {
     return (
         <div className={classes.ChartCard}>
             {(!isMemberExpensesLoading && MemberExpenses) ?
-                <ChartCard categories={MemberExpenses} title={'Expenses'} messageType={'group'} />
+                <ChartCard categories={MemberExpenses} title={'Expenses'} messageType={'member'} />
                 :
                 <ChartCardLoader />
             }
