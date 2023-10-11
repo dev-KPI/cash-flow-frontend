@@ -44,12 +44,7 @@ const GroupMemberUserCard: React.FC<IGroupMemberCardProps> = ({ member, isMember
                 </div>
             </>    
         } else {
-            return <>
-                <div className={classes.noBestCategory}>
-                    <i className='bi bi-ui-checks-grid'></i>
-                    <p>Has no best category</p>
-                </div>
-            </>
+            return <div style={{visibility: 'hidden', height: 66}}></div>
         }
     }, [member, isMemberSuccess])
 

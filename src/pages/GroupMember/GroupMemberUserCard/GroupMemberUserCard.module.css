@@ -102,18 +102,6 @@
 
 .cardInner{
 
-} 
-.noBestCategory{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    color: var(--main-text);
-    fill: var(--main-text);
-}
-.noBestCategory > i{
-    font-size: 16px;
 }
         
 .top {
