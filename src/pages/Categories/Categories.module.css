@@ -83,11 +83,16 @@
     border-radius: 2px;
     animation: activeLinkAfterAnimation .3s ease-in-out;
 }
-
+.groupModal{
+    overflow-y: auto;
+}
+       
 .groupModalWrapper {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 200px;
+    margin-right: 4px;
 }
 
 .groupsModalNav .groupNavItem {

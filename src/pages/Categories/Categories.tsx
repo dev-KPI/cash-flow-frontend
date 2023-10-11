@@ -70,8 +70,10 @@ const Categories: FC = () => {
             setActive={setIsGroupMenuModal}
             className={classes.groupsModalNav}
             children={
-                <div className={classes.groupModalWrapper}>
-                    {groupsItems.slice(3)}
+                <div className={classes.groupModal}>
+                    <div className={classes.groupModalWrapper}>
+                        {groupsItems.slice(3)}
+                    </div>    
                 </div>
             }
             buttonRef={buttonRef}
