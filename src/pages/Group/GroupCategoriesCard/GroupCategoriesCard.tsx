@@ -35,6 +35,10 @@ const GroupCategoriesCard = () => {
         group_id: Number(groupId),  
         period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
     })
+    requestAnimationFrame(_ => {
+        const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+        setTotalItems(totalCategories || maxItems);
+    })
     useEffect(()=>{
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
         setTotalItems(totalCategories || maxItems);
