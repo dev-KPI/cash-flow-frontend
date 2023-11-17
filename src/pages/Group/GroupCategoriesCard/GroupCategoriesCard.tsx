@@ -44,14 +44,6 @@ const GroupCategoriesCard = () => {
         setTotalItems(totalCategories || maxItems);
     }, [CategoriesByGroup, width, height])
 
-    const autoHandleCloseModal = useCallback(() => {
-        if (!isExpenseModalOpen) setIdModalOpen(-1)
-    }, [isExpenseModalOpen])
-
-    
-    useEffect(() => {
-        autoHandleCloseModal()
-    }, [autoHandleCloseModal])
     
     const getCategories = (categories: ICategoryAmount[]) => {
         return categories.map((item, i) =>

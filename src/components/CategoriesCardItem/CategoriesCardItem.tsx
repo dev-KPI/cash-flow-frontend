@@ -26,7 +26,7 @@ const UserCategoriesCardDot: FC<IUserCategoriesCardProps> = ({ category, setIdMo
         setIdModalOpen(category.id)
         setIsModalOpen(true)
     }    
-    console.log(color);
+    
     const categoryTitle = category.title.length > 8 ? `${category.title.slice(0, 7)}..` : category.title;
     return (
         <li 

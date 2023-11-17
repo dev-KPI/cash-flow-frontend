@@ -86,7 +86,7 @@ const UserCategoriesCard = () => {
             setIsModalOpen={setIsMoreModalOpen}
             isAddModalOpen={isCategoryModalOpen}
             setIsAddModalOpen={setIsCategoryModalOpen}
-            data={getCategories(ExpensesByGroup ? ExpensesByGroup.categories : [])}
+            data={ExpensesByGroup ? getCategories(ExpensesByGroup.categories) : []}
             type={'categories'}
         />
     }
@@ -94,7 +94,6 @@ const UserCategoriesCard = () => {
     const getCategoryModal = () => {
         return <CategoryModal
             groupId={selectedGroup}
-            categoryId={selectedCategory}
             isCategoryModalOpen={isCategoryModalOpen}
             setIsCategoryModalOpen={setIsCategoryModalOpen}
             mode='create'
@@ -122,12 +121,12 @@ const UserCategoriesCard = () => {
     }
 
     const addButton = (<SpecialButton
-        handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+        handleClick={() => setIsCategoryModalOpen(true)}
         className={classes.specialItem}
         type='add'
     />);
     const moreButton = (<SpecialButton
-        handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+        handleClick={() => setIsMoreModalOpen(true)}
         className={classes.specialItem}
         type='view'
     />);
@@ -170,8 +169,8 @@ const UserCategoriesCard = () => {
     }
     return (
         <div className={classes.categories}>
-            {getExpenseModal()}
             {getViewMoreModal()}
+            {getExpenseModal()}
             {getCategoryModal()}
             {isGroupsLoading || isExpensesLoading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>

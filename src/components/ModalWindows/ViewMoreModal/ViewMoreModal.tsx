@@ -28,7 +28,7 @@ const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModa
     const handleClick = (e: React.MouseEvent<HTMLUListElement>) => {
         const element = e.target as HTMLElement;
         if (element.tagName !== 'UL') {
-            setIsModalOpen(!isModalOpen)
+            setIsModalOpen(false)
         }
     }
 
@@ -37,14 +37,15 @@ const ViewMoreModal: FC<IViewMoreModalProps> = ({ isModalOpen = false, setIsModa
         isModalOpen={isModalOpen}
         headerIcon={headerIcon}
         title={title}
+        className={classes.viewMore__wrapper}
     >
         <div className={classes.modal__wrapper}>
             <ul className={classes.list} onClick={handleClick}>
                 {data}
                 <SpecialButton
                     handleClick={() => {
-                        setIsModalOpen(!isModalOpen)
-                        setIsAddModalOpen(!isAddModalOpen)
+                        setIsModalOpen(false)
+                        setIsAddModalOpen(true)
                     }}
                     className={type === 'groups' ? classes.specialGroupsItem : classes.specialCategoriesItem }
                     type='add'

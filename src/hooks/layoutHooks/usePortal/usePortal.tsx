@@ -19,7 +19,6 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, callb
     const [isVisible, setIsVisible] = useState<boolean>(isModalOpen)
     const [isFadeOut, setIsFadeOut] = useState<boolean>(false)
     const el = useRef<HTMLDivElement | null>(null);
- 
     if (!el.current) el.current = document.createElement("div");
     useEffect(() => {
         const mount = document.getElementById("portal-root");
@@ -49,7 +48,7 @@ const Portal: FC<IPortalProps> = ({ isModalOpen, setIsModalOpen, children, callb
             };
         } else {
             setIsFadeOut(true);
-            if (body) {
+            if (body && body.style.position === 'fixed') {
                 body.style.position = '';
                 const scrollY = document.body.style.top;
                 body.style.top = '';
