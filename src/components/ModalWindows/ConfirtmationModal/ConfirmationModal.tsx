@@ -122,7 +122,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     const onRemoveExpense = async () => {
         if (groupId && expenseId && !isRemovingExpenseLoading && mode === 'remove_expense') {
             try {
-                const isRemovedExpense = await removeExpense({group_id: groupId, expense_id: expenseId}).unwrap()
+                const isRemovedExpense = await removeExpense({group_id: groupId, expense_id: expenseId})
                 if (isRemovedExpense) {
                     notify('success', `You have successfully removed expense`)
                 }
