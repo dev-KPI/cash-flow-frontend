@@ -10,7 +10,7 @@ import { notify } from "src/App";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
-import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
+import { customColors, groupsIcons } from "@services/UsefulMethods/UIMethods";
 
 interface IGroupModalProps{
     groupId?: number,
@@ -214,7 +214,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             <AccordionTab title="Select icon" choosedItem={iconDisplayed}>
                                 <div className={classes.pickBody}>
                                     {
-                                        customIcons.map((el, i) =>
+                                        groupsIcons.map((el, i) =>
                                         <div
                                             key={i}
                                             onClick={(e) => changeIcon(e, el)}

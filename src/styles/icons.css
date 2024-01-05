@@ -1,0 +1,171 @@
+@font-face {
+    font-family: icons;
+    font-display: swap;
+    src: url("../fonts/icons.woff2") format("woff2"), url("../fonts/icons.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+:global [class*="_icon-"]:before {
+    font-family: "icons";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: block;
+}
+
+:global ._icon-couple:before {
+    content: "\e900";
+}
+
+:global ._icon-family-big:before {
+    content: "\e901";
+}
+
+:global ._icon-family-small-boy:before {
+    content: "\e902";
+}
+
+:global ._icon-family-small-girl:before {
+    content: "\e903";
+}
+
+:global ._icon-family:before {
+    content: "\e904";
+}
+
+:global ._icon-childs-playing:before {
+    content: "\e905";
+}
+
+:global ._icon-friends:before {
+    content: "\e906";
+}
+
+:global ._icon-community:before {
+    content: "\e907";
+}
+
+:global ._icon-travel:before {
+    content: "\e908";
+}
+
+:global ._icon-business-people:before {
+    content: "\e909";
+}
+
+:global ._icon-basketball-team:before {
+    content: "\e90a";
+}
+
+:global ._icon-swimming:before {
+    content: "\e90b";
+}
+
+:global ._icon-football-team:before {
+    content: "\e90c";
+}
+
+:global ._icon-feed-dog:before {
+    content: "\e90d";
+}
+
+:global ._icon-graduation:before {
+    content: "\e90e";
+}
+
+:global ._icon-sport:before {
+    content: "\e90f";
+}
+
+:global ._icon-dog-cat:before {
+    content: "\e910";
+}
+
+:global ._icon-cat-mama-child:before {
+    content: "\e911";
+}
+
+:global ._icon-elephant:before {
+    content: "\e912";
+}
+
+:global ._icon-penguins:before {
+    content: "\e913";
+}
+
+:global ._icon-pet:before {
+    content: "\e914";
+}
+
+:global ._icon-bear:before {
+    content: "\e915";
+}
+
+:global ._icon-bull:before {
+    content: "\e916";
+}
+
+:global ._icon-horse:before {
+    content: "\e917";
+}
+
+:global ._icon-tiger:before {
+    content: "\e918";
+}
+
+:global ._icon-monkey-right:before {
+    content: "\e919";
+}
+
+:global ._icon-monkey-right-2:before {
+    content: "\e91a";
+}
+
+:global ._icon-orang-utan:before {
+    content: "\e91b";
+}
+
+:global ._icon-rabbit:before {
+    content: "\e91c";
+}
+
+:global ._icon-octopus:before {
+    content: "\e91d";
+}
+
+:global ._icon-dolphin:before {
+    content: "\e91e";
+}
+
+:global ._icon-bat:before {
+    content: "\e91f";
+}
+
+:global ._icon-snake:before {
+    content: "\e920";
+}
+
+:global ._icon-rat:before {
+    content: "\e921";
+}
+
+:global ._icon-snowman:before {
+    content: "\e922";
+}
+
+:global ._icon-minion:before {
+    content: "\e923";
+}
+
+:global ._icon-cereals:before {
+    content: "\e924";
+}
+
+:global ._icon-beer:before {
+    content: "\e925";
+}

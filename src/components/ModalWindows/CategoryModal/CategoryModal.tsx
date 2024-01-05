@@ -5,15 +5,13 @@ import classes from './CategoryModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
+import { categoryIcons, customColors } from "@services/UsefulMethods/UIMethods";
 import { notify } from "src/App";
 
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateCategoryByGroupMutation, useUpdateCategoryByGroupMutation } from "@store/Controllers/CategoriesController/CategoriesController";
 import { IGetCategoriesByGroupResponse } from "@store/Controllers/CategoriesController/CategoriesControllerInterfaces";
-import { useGetInfoByGroupQuery } from "@store/Controllers/GroupsController/GroupsController";
-import { useGetCurrentUserInfoQuery } from "@store/Controllers/UserController/UserController";
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import IUserState from "@store/User/UserInterfaces";
 
@@ -183,7 +181,7 @@ const CategoryModal: FC<ICategoryModalProps> = ({isCategoryModalOpen, setIsCateg
                             <AccordionTab title="Select icon" choosedItem={iconDisplayed}>
                                 <div className={classes.pickBody}>
                                     {
-                                        customIcons.map( (el,i) => 
+                                        categoryIcons.map( (el,i) => 
                                             <div 
                                                 key={i}
                                                 onClick={(e) => changeIcon(e, el)}

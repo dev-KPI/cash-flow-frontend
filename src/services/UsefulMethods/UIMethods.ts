@@ -37,6 +37,7 @@ export const isValidHex =(str: string) => {
 //     '#CC00FF', '#FF00CC', '#FF00FF', '#FF0099', '#FF0033', '#FF0066',
 //     '#0066FF', '#0000FF', '#0033FF', '#3300FF', '#9900FF', '#6600FF',
 // ];
+
 export const shaffledColors: string[] = [
     "#54bac3", "#ff2500", "#00a3ff", "#a3df00", "#ff4bff", "#00aa58",
     "#fc53ff", "#005a00", "#620088", "#96d07a", "#a10089", "#396700",
@@ -46,17 +47,22 @@ export const shaffledColors: string[] = [
     "#ffb9ed", "#0c0000", "#ff8cc0", "#421f00", "#925a93", "#4e5d54"
 ];
 
-export const customIcons: string[] = [
-    'bi bi-people', 'bi bi-activity', 'bi bi-alarm', 'bi bi-alipay', 'bi bi-apple', 'bi bi-android2',
-    'bi bi-archive', 'bi bi-arrow-through-heart', 'bi bi-badge-3d', 'bi bi-badge-wc', 'bi bi-badge-vr', 'bi bi-bag-check',
-    'bi bi-bag-heart', 'bi bi-bank', 'bi bi-bezier2', 'bi bi-basket2', 'bi bi-bandaid', 'bi bi-balloon',
-    'bi bi-box-seam', 'bi bi-bookshelf', 'bi bi-boombox', 'bi bi-book', 'bi bi-binoculars', 'bi bi-bicycle',
-    'bi bi-cup-hot', 'bi bi-cart', 'bi bi-camera', 'bi bi-calendar-date', 'bi bi-bus-front', 'bi bi-briefcase',
-    'bi bi-airplane', 'bi bi-globe', 'bi bi-emoji-smile', 'bi bi-display', 'bi bi-database', 'bi bi-credit-card-2-front',
+export const groupsIcons: string[] = [
+    '_icon-couple', '_icon-family-big', '_icon-family-small-boy', '_icon-family-small-girl', '_icon-family', '_icon-childs-playing', '_icon-friends',
+    '_icon-community', '_icon-travel', '_icon-business-people', '_icon-basketball-team', '_icon-swimming', '_icon-football-team', '_icon-feed-dog', '_icon-graduation', '_icon-sport', '_icon-dog-cat', '_icon-cat-mama-child', '_icon-elephant', '_icon-penguins', '_icon-pet', '_icon-bear', '_icon-bull', '_icon-horse', '_icon-tiger', '_icon-monkey-right', '_icon-monkey-right-2', '_icon-orang-utan', '_icon-rabbit', '_icon-octopus', '_icon-dolphin', '_icon-bat', '_icon-snake', '_icon-rat', '_icon-snowman', '_icon-minion'
+];
+
+export const categoryIcons: string[] = [
+    'bi bi-steam', 'bi bi-apple', 'bi bi-android2', 'bi bi-windows', 'bi bi-spotify', 'bi bi-fuel-pump',
+    'bi bi-airplane', 'bi bi-bus-front', 'bi bi-ev-front', 'bi bi-cart', '_icon-cereals', '_icon-beer', 'bi bi-piggy-bank',
+    'bi bi-currency-exchange', 'bi bi-currency-bitcoin', 'bi bi-bank', 'bi bi-pc-display', 'bi bi-controller', 'bi bi-phone',
+    'bi bi-mortarboard', 'bi bi-star', 'bi bi-globe', 'bi bi-telephone', 'bi bi-pen', 'bi bi-tools',
+    'bi bi-balloon', 'bi bi-lamp', 'bi bi-heart-pulse', 'bi bi-house', 'bi bi-people', 'bi bi-cup-hot',
+    'bi bi-book', 'bi bi-bandaid', 'bi bi-person-hearts', 'bi bi-dice-5', 'bi bi-badge-hd'
 ];
 
 export const isValidIcon = (icon: string) => {
-    return customIcons.includes(icon) ? icon : 'bi bi-question-lg';
+    return groupsIcons.includes(icon) || categoryIcons.includes(icon) ? icon : 'bi bi-question-lg';
 }
 
 export function handleWrap(
