@@ -21,6 +21,15 @@ export const CategoryApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
+            transformResponse: (response: IGetCategoriesByGroupResponse) => {
+                if (response.categories_group) {
+                    response.categories_group.forEach((category) => {
+                        const title = category.category.title ?? '';
+                        category.category.title = title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title;
+                    });
+                }
+                return response;
+            },
             providesTags: (result) => result ? [...result.categories_group.map(item => ({ type: 'CategoryController' as const, id: item.category.id })),
             { type: 'CategoryController', id: 'CATEGORIES' }]
                 :

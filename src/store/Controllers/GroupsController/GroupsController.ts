@@ -145,6 +145,15 @@ export const GroupsApiSlice = api.injectEndpoints({
                     size: size
                 },
             }),
+            transformResponse: (response: IGetGroupUsersHistoryResponse) => {
+                if (response.items) {
+                    response.items.forEach((item) => {
+                        const title = item.title_category ?? '';
+                        item.title_category = title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title
+                    });
+                }
+                return response;
+            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,

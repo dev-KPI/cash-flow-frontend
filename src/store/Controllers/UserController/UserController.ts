@@ -63,6 +63,7 @@ export const UserApiSlice = api.injectEndpoints({
                 const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
                 const historyItems: IHistoryItem[] = response.items.map(el => {
                     const UserTimezone = new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds);
+                    const title = el.title_category ?? '';
                     return {
                         id: el.id,
                         descriptions: el.descriptions,
@@ -71,7 +72,7 @@ export const UserApiSlice = api.injectEndpoints({
                         category_id: el.category_id,
                         group_id: el.group_id,
                         color_code_category: el.color_code_category,
-                        title_category: el.title_category,
+                        title_category: title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title,
                         title_group: el.title_group,
                         color_code_group: el.color_code_group
                     }
@@ -94,6 +95,15 @@ export const UserApiSlice = api.injectEndpoints({
                 credentials: 'include',
                 params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
+            transformResponse: (response: IGetUserExpensesByGroupResponse) => {
+                if (response.categories) {
+                    response.categories.forEach((category) => {
+                        const title = category.title ?? '';
+                        category.title = title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title
+                    });
+                }
+                return response;
+            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
