@@ -53,7 +53,10 @@ export const ExpensesApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
+            invalidatesTags: (result, error, body) => result ? [
+                { type: 'GroupsController', id: body.group_id },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] : [
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         updateExpenseByGroup: builder.mutation<IExpenseByGroupResponse, IUpdateExpenseByGroupBody>({
             query: (body) => ({
@@ -67,6 +70,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
             ) => response.status,
             invalidatesTags: (result, error, body) => result ? [
                 { type: 'ExpensesController', id: body.expense_id },
+                { type: 'GroupsController', id: body.group_id },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] : [
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
@@ -79,7 +83,10 @@ export const ExpensesApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
+            invalidatesTags: (result, error, body) => result ? [
+                { type: 'GroupsController', id: body.group_id },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] : [
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
     }),
     overrideExisting: false,
