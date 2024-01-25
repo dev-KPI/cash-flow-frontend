@@ -75,7 +75,7 @@
 .editRemove button{
     height: 100%;
     cursor: pointer;
-    transition: all ease-in-out .3s;
+    transition: all ease-in-out .2s;
 }
 .editButton:hover{
     color: var(--main-green);
