@@ -34,7 +34,7 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
                     color={ isExpense ? item.color_code_category : "#80D667" }
                     type={'hollow'} />
                 <div className={classes.center}>
-                    <h5 className={classes.title}>{isExpense ? item.title_category: 'Salary'}</h5>
+                    <h5 className={classes.title}>{isExpense ? item.title_category: 'Income'}</h5>
                     <p className={classes.time}>{timeAgo.format(new Date(item.time))}</p>
                 </div>
             </div>

@@ -11,7 +11,7 @@ import { isSameDay } from "date-fns"
 import DateService from '@services/DateService/DateService';
 //UI
 import classes from "./OperationCard.module.css"
-import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
+import IncomeModal from '@components/ModalWindows/OperationModal/IncomeModal';
 import OperationCardLoader from './OperationCardLoader';
 
 
@@ -76,9 +76,9 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     const cardTitle = title ? isValidElement(title) ? title : <h3 className={classes.title}>{title}</h3> : <h3 className={classes.title}>{operation}</h3>;
     return (<>
         {operation === 'Income' ?
-            <SalaryModal
-                setIsSalaryModalOpen={setIsOperationModalOpen}
-                isSalaryModalOpen={isOperationModalOpen}
+            <IncomeModal
+                setIsIncomeModalOpen={setIsOperationModalOpen}
+                isIncomeModalOpen={isOperationModalOpen}
             /> : null
         }
         <div className={`${classes.operationCard} ${className ? className : ''}`}
