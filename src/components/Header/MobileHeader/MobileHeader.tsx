@@ -44,7 +44,7 @@ const MobileHeader: FC<IHeaderProps> = ({User}) => {
                 isOpen={isOpen}
                 onClick={() => setIsOpen(true)}/>
                 <Link to="/dashboard">
-                    <h1 className={classes.title}>Cash<span>Flow</span></h1>
+                    <h1 className={classes.title}>Cash<span>Money</span></h1>
                 </Link>
                 <img style={{borderRadius: '50%'}} width={46} src={User.picture} alt="logo" />
             </div>
