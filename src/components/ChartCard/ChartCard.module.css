@@ -90,7 +90,8 @@
     overflow-y: scroll;
     overflow-x: hidden;
     height: 92px;
-    margin-bottom: 15px;
+    margin: -4px -8px 19px;
+    padding: 4px 8px 0px; 
 }
 
 /* no expenses */
@@ -166,7 +167,7 @@
         padding: 16px;
     }
     .popupList{
-        margin-bottom: 5px;
+        margin-bottom: 9px; 
     }
     .expensePercent {
         margin-bottom: 0;

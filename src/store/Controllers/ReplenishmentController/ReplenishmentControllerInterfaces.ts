@@ -1,10 +1,8 @@
-import { IPeriodRangeDates, IPeriodYearMonth } from "@models/IPeriod";
+import {IPeriods } from "@models/IPeriod";
 import IUser from "@models/IUser";
 
 
-export interface IGetReplenishmentsByUserBody {
-    period: IPeriodYearMonth | IPeriodRangeDates
-}
+export interface IGetReplenishmentsByUserBody extends IPeriods {}
 export interface IGetReplenishmentsByUserResponse {
     amount: number,
     descriptions: string,

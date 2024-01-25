@@ -189,7 +189,7 @@
     --active-filter-color: '';
     --backdrop: #54545490;
     --btn-text: #EAEAEA;
-    --confrim-btn: rgba(128, 214, 103, 1);
+    --confirm-btn: rgba(128, 214, 103, 1);
     --border-input: rgba(122, 122, 157, 0.5);
     --refetch-btn: #f1f1f1;
     --refetch-btn-hover: #dddddd;
@@ -209,7 +209,7 @@
     --accordion-bg: #333333;
     --filter-btn: #9a9a9a;
     --backdrop: #00000090;
-    --confrim-btn: rgba(128, 214, 103, 0.8);
+    --confirm-btn: rgba(128, 214, 103, 0.8);
     --btn-text: #EAEAEA;
     --border-input: rgba(155, 171, 197, 0.5);
     --refetch-btn: #222;
@@ -217,7 +217,7 @@
  }
 
  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-
+ @import url("./icons.css");
  ::-webkit-scrollbar {
     width: 16px;
     background: transparent;
@@ -226,7 +226,20 @@
  ::-webkit-scrollbar-track {
     border-radius: 8px;
  }
+ option {
+    color: inherit;
+    background-color: var(--cardbg);
+ }
 
+ /* Remove focus outline */
+ option:focus {
+    outline: none;
+ }
+
+ /* Remove IE arrow */
+ option::-ms-expand {
+    display: none;
+ }
  ::-webkit-scrollbar-thumb {
     height: 56px;
     border-radius: 8px;
@@ -325,7 +338,6 @@
     box-shadow: 0px 2px 8px var(--shadow-color);
  }
 
-
  @media only screen and (max-width: 1440px) {
     div[class*="__container"] {
         max-width: 1090px;
@@ -364,7 +376,14 @@
     }
  }
 
-
+ @media only screen and (max-width: 480px) {
+    .Toastify__toast-container {
+        width: 90vw !important;
+        margin: 0 auto !important;
+        top: 1rem !important;
+        right: 0 !important;
+    }
+ }
  @media only screen and (max-width: 400px) {
     footer {
         height: 12px;

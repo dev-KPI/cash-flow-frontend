@@ -12,7 +12,13 @@
 
 .text span{
     color: var(--main-text);
+    display: inline-flex;
     font-weight: 700;
+    line-height: 29px;
+    max-height: 29px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
 }
 
 .confirmBtnWrapper{

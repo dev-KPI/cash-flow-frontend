@@ -9,26 +9,23 @@
     display: none;
 }
 .logo{
-    user-select: none;
     cursor: pointer;
 }
-.burgernav__title{
+.burgernav__top{
     margin: 0px 12px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-weight: 700;
-    user-select: none;
     cursor: pointer;
     color: var(--main-text);
 }
 .burgernav__titleLink{
     display: flex;
-    flex-direction: row;
     align-items: center;
     gap: 12px;
-    user-select: none;
 }
-.burgernav__title .title{
+.burgernav__top .title{
     margin-left: auto;
     margin-right: auto;
     font-size: 24px;
@@ -36,26 +33,28 @@
     color: var(--main-text);
 }
 
-.burgernav__title .title__span {
+.burgernav__top .title__span {
     font-size: 24px;
     color: var(--main-green);
 }
 
 .burgernav__account{
-    margin-left: 45px;
+    padding-left: 24px;
     margin-top: 26px;
     margin-right: auto;
     display: flex;
     align-items: center;
 }
 .account__info{
-    /* display:  */
     margin-left: 15px;
+    min-width: 0;
 }
 .burgernav__account .title{
     font-weight: 700;
     font-size: 16px;
     color: var(--main-text);
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .balance {
     font-size: 17px;

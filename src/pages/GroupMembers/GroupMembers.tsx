@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 //UI
 import classes from './GroupMembers.module.css';
 import userIcon from '@assets/user-icon.svg'
 
 //logic
 import IMember from '@models/IMember';
-
 import DateService from '@services/DateService/DateService';
 import {
     createColumnHelper,
@@ -18,16 +17,17 @@ import {
     PaginationState, 
     Row,
     useReactTable,
+    SortingState
 } from '@tanstack/react-table'
 import { isUrl } from '@services/UsefulMethods/UIMethods';
-
 import { useGetCurrentUserInfoQuery,  } from '@store/Controllers/UserController/UserController';
 import { useGetInfoByGroupQuery, useGetUsersByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
-import { SortingState } from '@tanstack/react-table';
-import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import IUser from '@models/IUser';
+// UI
+import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
 import ButtonContent from './ButtonContent';
 import PreLoader from '@components/PreLoader/PreLoader';
+import Pagination from '@components/Pagination/Pagination';
 
 declare module '@tanstack/react-table' {
     interface TableMeta<TData extends unknown> {
@@ -87,20 +87,20 @@ const History: React.FC = () => {
                         return info.row.original.user.first_name
                     }
                 }
-                const email = info.row.original.user.login
                 return info.renderValue() ?
-                    <div className={classes.details}>
-                        <div className={classes.icon}>
-                            <img className={classes.photo}
-                                style={{borderRadius: '50%'}}
-                                alt={'user icon'}
-                                src={isUrl(picture) ? picture : userIcon} />
+                    <Link to={`/group/${groupId}/member/${info?.row?.original?.user.id}`} className={classes.memberWrapper}>
+                        <div className={classes.details}>
+                            <div className={classes.icon}>
+                                <img className={classes.photo}
+                                    style={{ borderRadius: '50%' }}
+                                    alt={'user icon'}
+                                    src={isUrl(picture) ? picture : userIcon} />
+                            </div>
+                            <div className={classes.memberInfo}>
+                                <h6 className={classes.name}>{full_name()}</h6>
+                            </div>
                         </div>
-                        <div className={classes.memberInfo}>
-                            <h6 className={classes.name}>{full_name()}</h6>
-                            {/* <p className={classes.email}>{email}</p> */}
-                        </div>
-                    </div> : '-'
+                    </Link> : '-'
             }
         }),
         columnHelper.accessor('role', {
@@ -138,7 +138,7 @@ const History: React.FC = () => {
     ]
 
     const table = useReactTable({
-        data: UsersByGroup?.items[0].users_group || [],
+        data: UsersByGroup?.items || [],
         columns,
         pageCount: UsersByGroup?.pages,
         onSortingChange: setSorting,
@@ -163,11 +163,10 @@ const History: React.FC = () => {
             ),
         }
     })
-    const pageCount = table.getPageCount()
-    const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? UsersByGroup?.items[0].users_group.length : (pageIndex + 1) * pageSize;
+    const totalCount = UsersByGroup?.total;
+    
     let membersContent;
-    if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items[0].users_group.length > 0)
+    if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items.length > 0)
         membersContent = <table className={classes.recentOperations__table}>
             <thead className={classes.tableTitle}>
                 {table.getHeaderGroups().map(headerGroup => (
@@ -201,7 +200,7 @@ const History: React.FC = () => {
             <tbody className={classes.tableText}>
                 {table.getRowModel().rows.map(row => (
                     <tr key={row.id}
-                        className={[classes['in'], table.options.meta?.getClass(row)].join(' ')}>
+                        className={table.options.meta?.getClass(row)}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -211,49 +210,23 @@ const History: React.FC = () => {
                 ))}
                 <tr>
                     <td colSpan={5}>
-                        <div className={classes.pagination}>
-                            <div className={classes.selector}>
-                                <span>Rows per page: </span>
-                                <select
-                                    value={pageSize}
-                                    className={classes.select}
-                                    onChange={e => {
-                                        table.setPageSize(Number(e.target.value))
-                                    }}
-                                >
-                                    {[4, 6, 8, 16, 24].map(pageSize => (
-                                        <option key={pageSize} value={pageSize}>
-                                            {pageSize}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <span className={classes.counter}>
-                                {`${startIndex} - ${endIndex}`} of{' '}
-                                {UsersByGroup?.items[0].users_group.length}
-                            </span>
-                            <div className={classes.nav}>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => table.previousPage()}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-left"></i>
-                                </button>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <Pagination
+                            totalCount={totalCount}
+                            pageIndex={pageIndex}
+                            getPageCount={table.getPageCount}
+                            pageSize={pageSize}
+                            setPageSize={table.setPageSize}
+                            previousPage={table.previousPage}
+                            nextPage={table.nextPage}
+                            getCanPreviousPage={table.getCanPreviousPage}
+                            getCanNextPage={table.getCanNextPage}
+                            
+                        />
                     </td>
                 </tr>
             </tbody>
         </table>
-    else if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items[0].users_group.length === 0)
+    else if (isUsersByGroupSuccess && isGroupInfoSuccess && isCurrentUserSuccess && UsersByGroup.items.length === 0)
         membersContent = (<div className={classes.noItems}>
             <i className="bi bi-person-exclamation"></i>
             <h5 className={classes.noItems__title}>Group doesn't have any members :(</h5>

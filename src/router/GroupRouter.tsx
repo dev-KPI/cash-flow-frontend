@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 //UI
 import Footer from "@components/Footer/Footer";
 import Header from "@components/Header/Header";
 import GroupHeader from "@pages/Group/GroupHeader/GroupHeader";
-import { Outlet, useParams } from "react-router-dom";
+
 //logic
 import { useGetInfoByGroupQuery } from "@store/Controllers/GroupsController/GroupsController";
 
@@ -11,6 +12,7 @@ import { useGetInfoByGroupQuery } from "@store/Controllers/GroupsController/Grou
 
 const GroupLayout = () => {
 
+    const navigate = useNavigate();
     const { groupId } = useParams<{ groupId: string }>();
     const { data: GroupInfo, isLoading: isGroupInfoLoading, isError: isGroupInfoError, isSuccess: isGroupInfoSuccess } = useGetInfoByGroupQuery({ group_id: Number(groupId) })
 
@@ -18,7 +20,13 @@ const GroupLayout = () => {
         if (isGroupInfoSuccess) {
             return <GroupHeader groupInfo={GroupInfo} />
         }
+
     }, [GroupInfo, isGroupInfoLoading, isGroupInfoError, isGroupInfoSuccess])
+
+    useEffect(() => {
+        if (isGroupInfoError || GroupInfo?.status === 'INACTIVE')
+            navigate('/404')
+    }, [GroupInfo, isGroupInfoError])
 
 
     return (<>

@@ -96,6 +96,9 @@
     display: flex;
     gap: 30px;
 }
+.operations>div>div>div:nth-child(1) {
+    white-space: nowrap;
+}
 
 .search {
     margin-left: 30px;
@@ -171,7 +174,9 @@
         width: 100%;
         max-width: unset;
     }
-
+    .operations>div>div>div:nth-child(1) {
+        white-space: unset;
+    }
     .operations > div > div > div:nth-child(2) {
         display: flex;
     }

@@ -8,7 +8,6 @@ import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { useCreateExpenseByGroupMutation, useUpdateExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
 import { useUpdateReplenishmentByIdMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
-import { toast } from "react-toastify";
 import { notify } from "src/App"; 
 import { useAppSelector } from "@hooks/storeHooks/useAppStore";
 import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
@@ -18,7 +17,6 @@ type IExpenseModalProps = {
     setIsExpenseModalOpen: Dispatch<SetStateAction<boolean>>;
     groupId: number,
     categoryId: number,
-    setActionCredentials?: () => void
 } & (
     | {type: 'create', amount?: never, description?: never, isReplenishment?: never, expenseId?: never}
     | {type: 'edit', amount: number, description: string, isReplenishment: boolean, expenseId: number}
@@ -27,8 +25,7 @@ type IExpenseModalProps = {
 const ExpenseModal: FC<IExpenseModalProps> = ({ 
     isExpenseModalOpen = false, 
     setIsExpenseModalOpen, groupId, categoryId,
-    amount, description, type, isReplenishment = false, 
-    setActionCredentials = () => {}, expenseId = 0 }) => {
+    amount, description, type, isReplenishment = false, expenseId = 0 }) => {
 
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const headerIcon: ReactNode = isReplenishment ? <i className="bi bi-graph-up-arrow"></i> : <i className="bi bi-graph-down-arrow"></i>
@@ -44,7 +41,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const [createExpense, { isLoading: isExpenseCreating, isError: isExpenseCreatingError, isSuccess: isExpenseCreated }] = useCreateExpenseByGroupMutation();
     const [updateExpense, { isLoading: isExpenseUpdating, isError: isExpenseUpdatingError, isSuccess: isExpenseUpdated }] = useUpdateExpenseByGroupMutation();
     const [updateReplenishment, { isLoading: isReplenishmentUpdating, isError: isReplenishmentUpdatingError, isSuccess: isReplenishmentUpdated }] = useUpdateReplenishmentByIdMutation();
-
     const onUpdateExpense = async () => {
         if (groupId && expenseId && categoryId && !isExpenseUpdating) {
             try {
@@ -56,10 +52,8 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     amount: amountValue,
                 }).unwrap()
                 if (isExpenseUpdated) {
-                    notify('success', 'Expense updated')
+                    notify('success', 'Expense updated successfully')
                 }
-                setAmountValue(0)
-                setDescriptionValue('')
             } catch (err) {
                 console.error('Failed to update expense: ', err)
                 notify('error', 'Expense not updated')
@@ -75,10 +69,8 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     amount: amountValue,
                 }).unwrap()
                 if (isUpdatedReplenishment) {
-                    notify('success', 'Replenishment updated')
+                    notify('success', 'Replenishment updated successfully')
                 }
-                setAmountValue(0)
-                setDescriptionValue('')
             } catch (err) {
                 console.error('Failed to update replenishment: ', err)
                 notify('error', 'Replenishment not updated')
@@ -95,13 +87,11 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                     group_id: groupId,
                 }).unwrap()
                 if (isExpenseCreated) {
-                    notify('success', 'Expense added')
+                    notify('success', 'Expense created successfully')
                 }
-                setAmountValue(0)
-                setDescriptionValue('')
             } catch (err) {
                 console.error('Failed to update replenishment: ', err)
-                notify('error', 'Expense not added')
+                notify('error', 'Expense not created')
             }
         }
     }
@@ -130,7 +120,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
             } else {
                 notify('info', 'Replenishment not updated')
             }
-        } else if (isSubmit && amountValue < 1) {
+        } else if (isSubmit && amountValue === 0) {
             setIsSubmit(false);
             setIsInputError(true)
         } 
@@ -146,13 +136,17 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     useEffect(() => callbackOnSubmit(), [callbackOnSubmit])
     useEffect(() => handleSubmit(), [handleSubmit])
 
+
     return <>
     <UsePortal
-        callback={() => {}}
-        setIsModalOpen={setIsExpenseModalOpen}
-        isModalOpen={isExpenseModalOpen}
-        headerIcon={headerIcon}
-        title={titleModal}
+            setIsModalOpen={setIsExpenseModalOpen}
+            isModalOpen={isExpenseModalOpen}
+            headerIcon={headerIcon}
+            title={titleModal}
+            callback={() => {
+                setIsSubmit(false);
+                setIsInputError(false)
+            }}
         >
             <form
             onSubmit={handleSubmit}>
@@ -165,9 +159,10 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                             cashValue={amount}
                             isError={isInputError}
                             setFormValue={{type: 'cash', callback: setAmountValue}}
-                            isInputMustClear={!isExpenseModalOpen} 
+                            isInputMustClear={false} 
                             Icon={currency} inputType="cash" id="salary" 
-                            name="salary" placeholder="00.00"/>
+                            name="salary" placeholder="00.00"
+                            errorMessage="Expense amount too low"/>
                         </div>
                     </li>
                     <li className={classes.DescriptionInput}>
@@ -176,7 +171,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                             <Input 
                             value={description}
                             setFormValue={{type: 'text', callback: setDescriptionValue}}
-                            isInputMustClear={!isExpenseModalOpen} 
+                            isInputMustClear={false} 
                             inputType="text" id="description" 
                             name="description"/>
                         </div>

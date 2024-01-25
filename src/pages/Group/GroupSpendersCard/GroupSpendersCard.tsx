@@ -1,18 +1,19 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import userIcon from '@assets/user-icon.svg';
 
 //logic
-import IUser from '@models/IUser';
-
-//UI
-import classes from './GroupSpendersCard.module.css';
-import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
-import PreLoader from '@components/PreLoader/PreLoader';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import { IGetCurrentGroupSpendersResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
+import DateService from '@services/DateService/DateService';
+import { isSameDay } from 'date-fns'
+import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods';
+//UI
+import classes from './GroupSpendersCard.module.css';
+import PreLoader from '@components/PreLoader/PreLoader';
+
 
 interface IGroupSpendersCardProps {
     data: IGetCurrentGroupSpendersResponse[] | undefined,
@@ -29,7 +30,18 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
     }>();
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
-
+    const RangeTitle = useMemo(() => {
+        if (DateService.isAllTime(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return 'all time'
+        } else if (DateService.isMonth(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return 'the month'
+        } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return 'the day'
+        }
+        else {
+            return 'the range'
+        }
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
     const getSpenders = () => {
         if(data && !isError && !isLoading){
             let spenders: IGetCurrentGroupSpendersResponse[] = data.slice(0,3);
@@ -79,7 +91,7 @@ const GroupSpendersCard: FC<IGroupSpendersCardProps> = ({data, isLoading, isErro
         <div className={classes.SpendersCard}>
             <div className={classes.inner}>
                 <div className={classes.top}>
-                    <h2 className={classes.title}>The spender of the {MonthPickerStore.rangeType === 'default' ? 'month' : MonthPickerStore.rangeType}</h2>
+                    <h2 className={classes.title}>The spender of {RangeTitle}</h2>
                 </div>
                 <ul className={classes.spenders}>
                     {getSpenders()}

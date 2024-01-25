@@ -1,5 +1,5 @@
 import IExpense from "@models/IExpense"
-import { IPeriodRangeDates, IPeriodYearMonth } from "@models/IPeriod";
+import { IPeriods } from "@models/IPeriod";
 import IUser from "@models/IUser"
 
 
@@ -8,9 +8,7 @@ export interface IExpenseByGroupResponse extends IExpense {
     user: Omit<Omit<Omit<IUser, 'first_name'>, 'last_name'>, 'picture'>
 }
 
-export interface IGetExpensesBody {
-    period: IPeriodYearMonth | IPeriodRangeDates
-}
+export interface IGetExpensesBody extends IPeriods{}
 
 export interface ICreateExpenseByGroupBody {
     descriptions: string;
@@ -28,6 +26,5 @@ export interface IUpdateExpenseByGroupBody {
 
 export interface IGetExpensesByGroupBody {
     group_id: number,
-    period: IPeriodYearMonth | IPeriodRangeDates
+    period: IPeriods
 }
-

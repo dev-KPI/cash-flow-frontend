@@ -33,51 +33,54 @@ const DesktopNotifications: FC<IDesktopNotifications> = ({ isActive, setIsActive
                 }).unwrap().then((responsedInvitation) => {
                     if (responsedInvitation) {
                         if (response === 'ACCEPTED') {
-                            notify('success', `You accepted the invitation to ${responsedInvitation.group.title} group`)
+                            notify('success', <p>You accepted the invitation to <span style={{ fontWeight: 700 }}>{responsedInvitation.group.title}</span> group</p>)
                         } else {
-                            notify('success', `You denied the invitation to ${responsedInvitation.group.title} group`)
+                            notify('success', <p>You denied the invitation to <span style={{ fontWeight: 700 }}>{responsedInvitation.group.title}</span> group</p>)
                         }
                     }
                 })
             } catch (err) {
                 console.error('Failed to response invitation group: ', err)
-                notify('error', `You haven't response the invitation`)
-            }
-            setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
+                notify('error', `You haven't responded the invitation`)
+            }   
         }
     }
     const handleSumbit = async (invitationId: number, response: 'ACCEPTED' | 'DENIED') => {
+        setIsActive(false);
+        setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject');
         await onResponseInvitation(invitationId, response)
-        setButtonClicked(response === 'ACCEPTED' ? 'accept' : 'reject')
-        setIsActive(false)
     }
 
     const getInvites = (invites: IInvitation[]): ReactNode[] => {
         return invites.map((el, i) => {
             const group = el.group;
             const admin = el.group.admin;
-            const userName = admin.first_name + ' ' + admin.last_name
+            const userName = admin.first_name + ' ' + admin.last_name;
             return <li className={classes.inviteLi}
                 key={admin.id + group.title + i}>
                 <form className={classes.inviteForm}>
-                    <img src={admin.picture} alt={admin.first_name + 'avatar'} />
-                    <p className={classes.Promo}>
-                        <span style={{ fontWeight: 600 }}>{userName}
-                        </span> has invited you to the group <span className={classes.InviteGroupRef}>
-                        {group.title}</span>
-                    </p>
+                    <div className={classes.inviteWrapper}>
+                        <img src={admin.picture} alt={admin.first_name + '_avatar'} />
+                        <div className={classes.promo}>
+                            <span className={classes.promoName}>{userName}</span>
+                            <span> has invited you to the group </span>
+                            <span className={classes.InviteGroupRef}>{group.title}</span>
+                        </div>
+                    </div>
                     <div className={classes.buttonGroup}>
                         <CustomButton
-                            btnWidth={60}
+                            btnWidth={70}
                             btnHeight={25}
+                            preloaderSize={10}
                             icon="none"
                             type="primary"
                             isPending={isResponseCreating && buttonClicked === 'accept' && el.id === clickedButtonId}
                             children="Accept"
                             callback={() => { setClickedButtonId(el.id); handleSumbit(el.id, 'ACCEPTED') } } />
                         <CustomButton
-                            btnWidth={60}
+                            btnWidth={70}
                             btnHeight={25}
+                            preloaderSize={10}
                             icon="none"
                             type="danger"
                             background="outline"

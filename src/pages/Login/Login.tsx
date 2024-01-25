@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 //UI
 import classes from'./Login.module.css';
 import { ThemeButton } from "@components/Buttons/ThemeButtons/ThemeButtons";
-import Logo from '@assets/Header/logo.svg'
+import darkLogo from '@assets/logo/dark-logo.svg';
+import lightLogo from '@assets/logo/light-logo.svg';
 import googleSvg from '@assets/google.svg';
 import devicesDark from '@assets/devicesDark.png';
 import devicesLight from '@assets/devicesLight.png';
@@ -22,7 +23,7 @@ const Login: FC = () => {
             <div className={classes.Header__container}>
                 <div className={classes.header__logo}>
                     <div className={classes.logo__wrapper}>
-                        <img src={Logo} alt="logo" />
+                        <img className={classes.devices} src={ThemeStore.theme === 'light' ? lightLogo : darkLogo} alt="devices dark" />
                     </div>
                     <h1 className={classes.title}>Cash<span>Flow</span></h1>
                 </div>

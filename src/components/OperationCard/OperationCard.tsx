@@ -5,8 +5,10 @@ import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces
 
 //logic
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { fomatFloatNumber, numberWithCommas } from '@services/UsefulMethods/UIMethods';
+import { formatFloatNumber, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { IGetTotalExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
+import { isSameDay } from "date-fns"
+import DateService from '@services/DateService/DateService';
 //UI
 import classes from "./OperationCard.module.css"
 import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
@@ -32,42 +34,46 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     const [percents, setPercents] = useState<number>(0);
     const [sign, setSign] = useState<string>('');
     const [isOperationModalOpen, setIsOperationModalOpen] = useState<boolean>(false);
-
     const styles = {
         operationColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
-        percentColor: operation === "Income" ? "var(--main-green)" : "var(--main-red)",
-        percentBackground: sign === "-" ? "rgba(255, 45, 85, 0.20)" : operation === 'Expenses' ? "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
+        percentColor:
+            (operation === "Income" && sign !== '+') ||
+            (operation === 'Expenses' && sign === '+') ?
+            "var(--main-red)" : "var(--main-green)",
+        percentBackground:
+            (operation === "Income" && sign !== '+') ||
+            (operation === 'Expenses' && sign === '+') ?
+            "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
         cursor: operation === "Income" ? "pointer" : "auto"
     }
 
-    const getMonthPickerTitle = useMemo(() => {
-        if (MonthPickerStore.rangeType === 'default' || MonthPickerStore.rangeType === 'month' ) {
-            return 'since last month'
-        } else if (MonthPickerStore.rangeType === 'week' || MonthPickerStore.rangeType === 'lastweek'){
-            return 'since last week'
-        } else if (MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday') {
-            return 'since last days'
-        } else if (MonthPickerStore.rangeType === 'alltime') {
-            return ``
+    const RangeTitle = useMemo(() => {
+        if (DateService.isAllTime(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return ''
+        } else if (DateService.isMonth(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `since previous month`
+        } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `since previous day`
         }
-        return(`since last period`)
-    }, [MonthPickerStore.rangeType])
+        else {
+            return `since previous same period`
+        }
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
     const initializeTotalVars = useCallback(() => {
         if(data){
             setAmount(numberWithCommas(Number(data.amount)));
-            setPercents(Number(data.percentage_increase * 100 > 1000 ? Math.floor(data.percentage_increase * 100) : fomatFloatNumber(data.percentage_increase * 100, 2)));
+            setPercents(Number(data.percentage_increase * 100 > 1000 ? Math.floor(data.percentage_increase * 100) : formatFloatNumber(data.percentage_increase * 100, 2)));
             setSign(data.percentage_increase === 0 ? '' : data.percentage_increase > 0 ? '+' : '-');
         } else {
             setAmount(0);
             setPercents(0);
-            setSign('+');
+            setSign('');
         }
     }, [data])
     
     useEffect(() => initializeTotalVars(), [initializeTotalVars])
     const cardTitle = title ? isValidElement(title) ? title : <h3 className={classes.title}>{title}</h3> : <h3 className={classes.title}>{operation}</h3>;
-
     return (<>
         {operation === 'Income' ?
             <SalaryModal
@@ -103,7 +109,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
                         >
                         <span style={{ color: styles.percentColor }}>{percents}%</span>
                         </div>
-                        <p className={classes.time}>{getMonthPickerTitle}</p>
+                        <p className={classes.time}>{RangeTitle}</p>
                     </div>
                 </div>
             }

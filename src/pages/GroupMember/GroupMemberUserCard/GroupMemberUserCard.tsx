@@ -1,11 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { isUrl, numberWithCommas } from '@services/UsefulMethods/UIMethods'
-
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
-import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
-import DateService from '@services/DateService/DateService';
-import { useGetMemberInfoByGroupQuery } from '@store/Controllers/GroupsController/GroupsController';
+import { IGetUserByGroupInfoResponse } from '@store/Controllers/GroupsController/GroupsControllerInterfaces';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 
 //UI
@@ -14,66 +11,42 @@ import userIcon from '@assets/user-icon.svg';
 import OperationCard from '@components/OperationCard/OperationCard';
 import GroupMemberUserCardLoader from './GroupMemberUserCardLoader';
 
-
-const GroupMemberUserCard: React.FC = () => {
+interface IGroupMemberCardProps {
+    member: IGetUserByGroupInfoResponse | undefined;
+    isMemberLoading: boolean,
+    isMemberSuccess: boolean
+}
+const GroupMemberUserCard: React.FC<IGroupMemberCardProps> = ({ member, isMemberLoading, isMemberSuccess }) => {
     const { groupId, memberId } = useParams<{
         groupId: string,
         memberId: string
     }>();
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
-    const MonthPickerRange = useMemo(() => {
-        if(MonthPickerStore.type === 'date-range'){
-            return {
-                period: {
-                    start_date: MonthPickerStore.startDate.split('T')[0],
-                    end_date: MonthPickerStore.endDate.split('T')[0]
-                }
-            }
-        } else {
-            return {
-                period: {
-                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`
-                } 
-            }
-        }
-    }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
 
-    const {data: Member, isLoading: isMemberLoading, isError: isMemberError, isSuccess: isMemberSuccess} = useGetMemberInfoByGroupQuery({
-        group_id: Number(groupId),
-        member_id: Number(memberId),
-        period: MonthPickerRange.period
-    }, { skip: Number(groupId) === 0 || Number(memberId) === 0 })
-
-    let picture = Member?.picture ? Member.picture : userIcon
-    let name = Member?.first_name ? Member.first_name : '';
-    let fullname = (Member?.first_name || Member?.last_name) ? Member.first_name + (Member.last_name ? (' ' + Member.last_name) : '') : ''
+    let picture = member?.picture ? member.picture : userIcon
+    let name = member?.first_name ? member.first_name : '';
+    let fullname = (member?.first_name || member?.last_name) ? member.first_name + (member.last_name ? (' ' + member.last_name) : '') : ''
 
     const memberExpenses = useMemo(() => {
-        if(Member?.best_category && isMemberSuccess) {
+        if (member?.best_category && isMemberSuccess) {
             return <>
                 <div className={classes.cardInner}>
                     <div className={classes.top}>
                         <div className={classes.info}>
                             <h3 className={classes.title}><span className={classes.titleName}>{name}</span>'s top category</h3>
-                            <p className={classes.numberTitle}>{numberWithCommas(Member.best_category.amount)}{currency}</p>
+                            <p className={classes.numberTitle}>{numberWithCommas(member.best_category.amount)}{currency}</p>
                         </div>
                         <div className={classes.icon}>
-                            <i className={Member.best_category.icon_url}></i>
+                            <i className={member.best_category.icon_url}></i>
                         </div>
                     </div>
-                    <h4 className={classes.subtitle}>{Member.best_category.title}</h4>
+                    <h4 className={classes.subtitle}>{member.best_category.title}</h4>
                 </div>
             </>    
         } else {
-            return <>
-                <div className={classes.noBestCategory}>
-                    <i className='bi bi-ui-checks-grid'></i>
-                    <p>Has no best category</p>
-                </div>
-            </>
+            return <div style={{visibility: 'hidden', height: 66}}></div>
         }
-    }, [Member, isMemberSuccess])
+    }, [member, isMemberSuccess])
 
     return (<>
         {isMemberLoading ? (
@@ -100,14 +73,14 @@ const GroupMemberUserCard: React.FC = () => {
                     title={<h3 className={classes.title}><span className={classes.titleName}>{name}</span>'s expenses</h3>}
                     offPreloader={true}
                     className={classes.expensesCard}
-                    data={Member?.total_expenses}
-                    isError={isMemberError}
+                    data={member?.total_expenses}
+                    isError={false}
                     isSuccess={isMemberSuccess}
                     isLoading={isMemberLoading}
                     />
                     <div className={classes.cardInner}>
                         <h3 className={classes.title}><span className={classes.titleName}>{name}</span>'s total count of expenses</h3>
-                        <p className={classes.numberTitle}>{Member?.count_expenses ? Member?.count_expenses : 0}</p>
+                                <p className={classes.numberTitle}>{member?.count_expenses ? member?.count_expenses : 0}</p>
                     </div>
                     {memberExpenses}
                 </div>

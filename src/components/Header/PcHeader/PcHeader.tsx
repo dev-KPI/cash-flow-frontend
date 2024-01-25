@@ -2,8 +2,8 @@ import React, {FC, useCallback, MouseEvent, useState, useRef, ReactNode, useMemo
 
 //UI
 import classes from './PcHeader.module.css'
-import Logo from "@assets/Header/logo.svg";
-import ProfileIcon from "@assets/user-icon.svg"
+import darkLogo from '@assets/logo/dark-logo.svg';
+import lightLogo from '@assets/logo/light-logo.svg';
 import {ThemeButton} from '@components/Buttons/ThemeButtons/ThemeButtons';
 import DesktopNotifications from '@components/Header/Notifications/DesktopNotifications/DesktopNotifications';
 
@@ -14,10 +14,12 @@ import ContextUser from '@components/ContextUser/ContextUser';
 import IHeaderProps from '../HeaderInterfaces';
 import { useGetInvitationsByCurrentUserQuery } from '@store/Controllers/InvitationController/InvitationController';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { IThemeState } from '@store/UI_store/ThemeSlice/ThemeInterfaces';
 
 
 const HeaderSite: FC<IHeaderProps> = ({User}) => {
-
+    const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     const [isNotificationsOpen, setIsNotificationsOpen] = useState<boolean>(false)
     const notificationsButtonRef = useRef(null);
 
@@ -41,12 +43,12 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
         <header className={classes.header}>
             <div className={classes.header__container}>
                 <div className={classes.header__top}>
-                    <div className={classes.header__logo}>
-                        <Link to='/' className={classes.logo__wrapper}>
-                            <img src={Logo} alt="logo" />
-                        </Link>
+                    <Link to='/dashboard' className={classes.header__logo}>
+                        <div className={classes.logo__wrapper}>
+                            <img className={classes.devices} src={ThemeStore.theme === 'light' ? lightLogo : darkLogo} alt="devices dark" />
+                        </div>
                         <h1 className={classes.title}>Cash<span>Flow</span></h1>
-                    </div>
+                    </Link>
                     <div className={classes.header__menu}>
                         <DesktopNotifications
                             isActive={isNotificationsOpen}

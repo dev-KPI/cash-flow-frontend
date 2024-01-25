@@ -1,7 +1,7 @@
 import ICategory, { ICategoryAmount } from "@models/ICategory"
 import IGroup from "@models/IGroup"
 import IUser, { IExtendedUser } from "@models/IUser"
-import { IPeriodYearMonth, IPeriodRangeDates } from "@models/IPeriod"
+import { IPeriods } from "@models/IPeriod"
 import IListResponse from "@models/IListResponse"
 import IMember from "@models/IMember"
 
@@ -41,14 +41,11 @@ export interface IGetInfoFromGroupResponse {
     expenses: number
 }
 
-export interface IGetUsersFromGroupResponse extends IListResponse<{
-    users_group: IMember[];
-}> {
-}
+export interface IGetUsersFromGroupResponse extends IListResponse<IMember> {}
 
 export interface IGetTotalExpensesBody {
     group_id: number,
-    period: IPeriodYearMonth | IPeriodRangeDates
+    period: IPeriods
 }
 export interface IGetTotalExpensesResponse {
     amount: number,
@@ -58,14 +55,14 @@ export interface IGetTotalExpensesResponse {
 export interface IGetCurrentGroupSpendersResponse extends IExtendedUser { }
 export interface IGetCurrentGroupSpendersBody {
     group_id: number,
-    period: IPeriodYearMonth | IPeriodRangeDates
+    period: IPeriods
 }
 
 export interface IGetGroupExpensesByCategoryResponse extends ICategoryAmount { }
 
 export interface IGetGroupExpensesByCategoryBody {
     group_id: number,
-    period: IPeriodYearMonth | IPeriodRangeDates
+    period: IPeriods
 }
 export interface IGetGroupMemberExpensesByCategoryBody extends IGetGroupExpensesByCategoryBody {
     member_id: number
@@ -82,7 +79,7 @@ export interface IGetGroupExpensesByMemberDailyResponse {
 
 export interface IGetGroupExpensesDailyBody {
     group_id: number,
-    period: IPeriodYearMonth | IPeriodRangeDates
+    period: IPeriods
 }
 
 export interface IRemoveUserResponse {
@@ -112,7 +109,7 @@ export interface IGetUserByGroupInfoResponse extends IUser {
 export interface IGetUserByGroupInfoBody {
     group_id: number,
     member_id: number,
-    period: IPeriodYearMonth | IPeriodRangeDates
+    period: IPeriods
 }
 
 export interface IGetGroupUsersHistoryResponse extends IListResponse<{

@@ -34,6 +34,10 @@
     gap: 30px;
 }
 
+.operations div > div:nth-child(2) p {
+    white-space: nowrap;
+}
+
 @media only screen and (max-width: 1440px) {
     .grid {
         max-width: 1090px;
@@ -54,6 +58,15 @@
 @media only screen and (max-width: 1028px) {
     .grid__operation {
         flex-wrap: wrap;
+    }
+    .operations svg {
+        height: 107px;
+    }
+    .operations svg > rect {
+        height: 103px;
+    }
+    .operations div>div[class*="bottom"] {
+        margin-top: 5px;
     }
 }
 
@@ -82,5 +95,15 @@
 
     .grid__topright {
         order: 3;
+    }
+    .operations div>div[class*="bottom"]{
+        margin-top: 8px;
+    }
+    .operations svg {
+        height: 110px;
+    }
+
+    .operations svg>rect {
+        height: 110px;
     }
 }

@@ -1,22 +1,30 @@
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import './styles/style.css';
-
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 // UI
 import PageGlobalLoader from '@components/PageGlobalPreloader/PageGlobalPreloader';
-  // Router
+import 'react-toastify/dist/ReactToastify.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import './styles/style.css';
+// Router
 import Router from './router/router';
 // Store
 import { useGetUserAuthStatusQuery } from '@store/Controllers/UserController/UserController';
 import { useActionCreators } from '@hooks/storeHooks/useAppStore';
 import { ThemeActions } from '@store/UI_store/ThemeSlice/ThemeSlice';
 import { UserSliceActions } from '@store/User/UserSlice';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-export const notify = (type: 'success'|'error'|'info', msg: string) => {
-    const toastStyles = {paddingLeft: '16px', borderRadius: '20px', backgroundColor: 'var(--cardbg)', color: 'var(--main-text)', 
-    fontFamily: 'Inter', fontSize: '16px', fontWeight: '500', }
+
+
+export const notify = (type: 'success'|'error'|'info', msg: string | ReactNode) => {
+    const toastStyles = {
+        paddingLeft: '16px',
+        borderRadius: '20px',
+        backgroundColor: 'var(--cardbg)',
+        color: 'var(--main-text)', 
+        fontFamily: 'Inter',
+        fontSize: '16px',
+        fontWeight: '500',
+    }
     if(type === 'success') {
         toast.success(msg, {
             style: toastStyles
@@ -45,9 +53,12 @@ const App: React.FC = () => {
     }, [AuthStatus, isAuthError, isAuthLoading]);
 
     useEffect(() => {
-        ThemeDispatch.initializeTheme();
         initializeAuth();
     }, [initializeAuth]);
+
+    useEffect(() => {
+        ThemeDispatch.initializeTheme();
+    }, [])
 
     const [showPreloader, setShowPreloader] = useState(true);
 

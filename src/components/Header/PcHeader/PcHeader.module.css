@@ -4,14 +4,14 @@
     z-index: 1000;
 }
 .header__container{
-    padding: 25px 0 35px;
+    padding: 25px 0 42px;
     position: relative;
 }
 .logo__wrapper{
-    width: 72px;
-    height: 72px;
+    width: 58px;
+    height: 58px;
 }
-.header__top{
+.header__top, .header__logo{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -19,10 +19,7 @@
 }
 
 .header__logo{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 300px;
+    gap: 30px;
 }
 .title{
     composes: pageTitle from "@styles/style.css";

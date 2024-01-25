@@ -29,9 +29,6 @@ export const InvitationApiSlice = api.injectEndpoints({
                 credentials: 'include',
                 body
             }),
-            transformErrorResponse: (
-                response: { status: string | number },
-            ) => response.status,
             invalidatesTags: [{ type: 'InvitationController', id: 'CREATE_INVITATION' }],
         }),
         responseInvitationById: builder.mutation<IResponseInvitationResponse, IResponseInvitationBody>({

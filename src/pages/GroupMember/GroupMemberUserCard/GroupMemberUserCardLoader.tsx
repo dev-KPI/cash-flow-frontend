@@ -10,12 +10,13 @@ const GroupMemberUserCardLoader = () => {
     const {width} = useWindowSize();
 
     const loader = useMemo(() => {
-        if (window.matchMedia("screen and (min-width: 768px)").matches) {
+        if (window.matchMedia("screen and (min-width: 400px)").matches) {
         return (
             <ContentLoader
                 speed={2}
+                viewBox="0 0 530 300"
                 width={'100%'}
-                height={'300px'}
+                height={'298px'}
                 backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
                 foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
                 className={classes.loader}
@@ -41,66 +42,32 @@ const GroupMemberUserCardLoader = () => {
                 <circle cx={493} cy="220" r="23" />
             </ContentLoader>
             )
-        } else if (window.matchMedia("screen and (min-width: 400px) and (max-width: 768px)").matches) {
-            return (
-                <ContentLoader
-                    speed={2}
-                    width={'100%'}
-                    height={'300px'}
-                    backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
-                    foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
-                    className={classes.loader}
-                    preserveAspectRatio="none"
-                >
-                    <circle cx={width < 1024 ? (width < 1024 ? 145 : 135) : 150} cy="115" r={width < 1024 ? 75 : 90} />
-                    <rect x="24" y="215" rx="4" ry="4" width={width < 1024 ? 246 : 230} height="26" />
-                    <rect x="24" y="255" rx="4" ry="4" width={width < 1024 ? 246 : 230} height="20" />
-    
-                    <rect x="calc(100% - 205px)" y="16" rx="4" ry="4" width={105} height="16" />
-                    <rect x="calc(100% - 205px)" y="38" rx="4" ry="4" width={105} height="26" />
-                    <rect x="calc(100% - 205px)" y="82" rx="6" ry="6" width='30px' height="24" />
-                    <rect x="calc(100% - 145px)" y="85" rx="4" ry="4" width={120} height="14" />
-                    <circle cx="calc(100% - 48px)" cy="40" r="23" />
-    
-                    <rect x="calc(100% - 205px)" y="116" rx="4" ry="4" width='178px' height="16" />
-                    <rect x="calc(100% - 205px)" y="138" rx="6" ry="6" width="30" height="24" />
-    
-                    <rect x="calc(100% - 205px)" y="181" rx="4" ry="4" width={105} height="16" />
-                    <rect x="calc(100% - 205px)" y="202" rx="4" ry="4" width={105} height="26" />
-                    <rect x="calc(100% - 205px)" y="238" rx="6" ry="6" width="30"  height="24" />
-                    <rect x="calc(100% - 145px)" y="242" rx="4" ry="4" width={120} height="14" />
-                    <circle cx="calc(100% - 48px)" cy="205" r="23" />
-                </ContentLoader>
-            )
         } else {
             return (
                 <ContentLoader
                     speed={2}
                     width={'100%'}
-                    height={474}
+                    height={448}
+                    viewBox="0 0 374 450"
                     backgroundColor={actualTheme === 'light' ? "#f3f3f3" : "#212121"}
                     foregroundColor={actualTheme === 'light' ? "#ecebeb" : "#2b2b2b"}
                     className={classes.loader}
                     preserveAspectRatio="none"
                 >
-                    <circle cx={(width - 150)/2 + 75} cy="100" r="75" />
-                    <rect x={width - (width - 24)} y="190" rx="4" ry="4" width={width-48} height="24" />
-                    <rect x={width - (width - 36)} y="220" rx="4" ry="4" width={width-72} height="18" />
-
-                    <rect x="24px" y="245" rx="4" ry="4" width={width-110} height="16"/>
-                    <rect x="24px" y="265" rx="4" ry="4" width={width-110} height="26" />
-                    <rect x="24px" y="295" rx="6" ry="6" width="30" height="24" />
-                    <rect x="78px" y="300" rx="4" ry="4" width={width-110} height="14"/>
-                    <circle cx="calc(100% - 46px)" cy="265" r="23" />
-
-                    <rect x="24px" y="335" rx="4" ry="4" width="178" height="14" />
-                    <rect x="24px" y="355" rx="4" ry="4" width="24" height="24" />
-
-                    <rect x="24px" y="390" rx="4" ry="4" width={width-110} height="14" />
-                    <rect x="24px" y="410" rx="4" ry="4" width={width-110} height="24" />
-                    <rect x="24px" y="440" rx="6" ry="6" width={width-210} height="16" />
-                    <circle cx="calc(100% - 46px)" cy="410" r="23" />
-
+                    <circle cx="187" cy="94" r="70" />
+                    <rect x="77" y="180" rx="4" ry="4" width="220" height="24" />
+                    <rect x="24" y="220" rx="4" ry="4" width="100" height="14" />
+                    <rect x="24" y="240" rx="4" ry="4" width="80" height="22" />
+                    <rect x="24" y="270" rx="4" ry="4" width="65" height="26" />
+                    <rect x="100" y="277" rx="4" ry="4" width="100" height="12" />
+                    <circle cx="337" cy="239" r="23" />
+                    <rect x="24" y="304" rx="4" ry="4" width="100" height="14" />
+                    <rect x="24" y="324" rx="4" ry="4" width="80" height="22" />
+                    <rect x="24" y="368" rx="4" ry="4" width="100" height="14" />
+                    <rect x="24" y="388" rx="4" ry="4" width="80" height="22" />
+                    <rect x="24" y="418" rx="4" ry="4" width="65" height="26" />
+                    <rect x="100" y="425" rx="4" ry="4" width="100" height="12" />
+                    <circle cx="337" cy="387" r="23" />
                 </ContentLoader>
             )
     }}, [width])

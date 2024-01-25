@@ -79,6 +79,7 @@ const Groups: FC = () => {
             setGroupId={setGroupId}
             setIsGroupModalOpen={setIsEditGroupModal}
             isGroupModalOpen={isEditGroupModal}
+            setIsConfirmationModalOpen={setIsConfirmationModal}
             mode='edit' />
         <GroupModal
             setGroupId={setGroupId}

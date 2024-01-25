@@ -1,4 +1,4 @@
-import {startOfDay, addDays} from 'date-fns'
+import {startOfDay, addDays, startOfMonth, endOfMonth, isSameDay} from 'date-fns'
 
 class DateServiceClass {
 
@@ -39,17 +39,17 @@ class DateServiceClass {
     getMonthNameByIdx(month: number): string {
         return this.months[month]
     }
-    getFormatedDate(date: number): string {
-        return date < 10 ? '0' + date : date + ''
+    getFormatedDay(day: number): string {
+        return day < 10 ? '0' + day : day + ''
     }
     getFormatedMonth(month: number): string {
         return month < 10 ? '0' + month : month + ''
     }
-    getFormatedDateForStore(date: Date): string {
+    getFormatedDate(date: Date): string {
         const day = date.getDate();
         const month = date.getMonth() + 1;
         const year = date.getFullYear();
-        return `${year}-${month < 10 ? '0' + month : month + ''}-${day < 10 ? '0' + day : day + ''}`
+        return `${year}-${this.getFormatedMonth(month)}-${this.getFormatedDay(day)}`
     }
     getTime(date: Date, short?: boolean): string {
         const day = date.getDate();
@@ -72,6 +72,30 @@ class DateServiceClass {
         }
     
         return dates;
+    }
+    getLocalISOString(date: Date): string {
+        let t: Date = new Date(date);
+        let z: number = t.getTimezoneOffset() * 60 * 1000;
+        let tLocal: Date = new Date(t.getTime() - z);
+        tLocal = new Date(tLocal);
+        return  tLocal.toISOString();
+    }
+    getFormattedRangeTitle(date: Date): string {
+        return `${date.getDate()} ${this.getMonthNameByIdx(date.getMonth()).slice(0, 3)} ${date.getFullYear()}`
+    }
+    getQueryDate(date: Date): string {
+        return this.getLocalISOString(date).slice(0, 10);
+    }
+    getQueryEndDate(date: Date): string {
+        return this.getQueryDate(addDays(date, 1));
+    }
+    isAllTime(startDate: Date, endDate: Date): boolean {
+        return isSameDay(startDate, new Date(2023, 5, 1))
+            && isSameDay(endDate, new Date())
+    }
+    isMonth(startDate: Date, endDate: Date): boolean {
+        return isSameDay(startOfMonth(startDate), startDate)
+            && isSameDay(endOfMonth(endDate), endDate)
     }
 }
 const DateService = new DateServiceClass();

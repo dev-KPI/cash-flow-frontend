@@ -3,12 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'
 //types
 import { IThemeState } from './ThemeInterfaces';
 
+const isSystemDarkMode = () =>
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
 const initialState: IThemeState = {
-    theme: new Date().getHours() > 19 ? 'dark' : 'light',
-    cardBackgroundColor:'0F0F0F',
-    backgroundColor: '#151515',
-    mainTextColor:'#333333',
-    textColor:'#7A7A9D',
+    theme: isSystemDarkMode() ? 'dark' : 'light',
+    cardBackgroundColor: isSystemDarkMode() ? '#FFFFFF' : '0F0F0F',
+    backgroundColor: isSystemDarkMode() ? '#151515' : '#F8F8FF',
+    mainTextColor: isSystemDarkMode() ? '#EAEAEA' : '#333333',
+    textColor: isSystemDarkMode() ? '#9BABC5' : '#7A7A9D'
 }
 
 export const ThemeSlice = createSlice({

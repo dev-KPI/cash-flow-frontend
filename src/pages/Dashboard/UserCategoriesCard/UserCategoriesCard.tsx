@@ -17,7 +17,7 @@ import UserCategoriesCardLoader from '@pages/Dashboard/UserCategoriesCard/UserCa
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
-import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import SpecialButton from '@components/Buttons/SpecialButton/SpecialButton';
 import CustomButton from '@components/Buttons/CustomButton/CustomButton';
 import PreLoader from '@components/PreLoader/PreLoader';
 
@@ -47,9 +47,7 @@ const UserCategoriesCard = () => {
 
     const { data: ExpensesByGroup, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess, isFetching: isExpensesFetching } = useGetUserExpensesByGroupQuery({
         group_id: selectedGroup,
-        period: MonthPickerStore.type === 'year-month' ?
-            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
-            { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
+        period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
     }, { skip: !isGroupsSuccess || selectedGroup === 0 })
 
     requestAnimationFrame(_ => {
@@ -88,7 +86,7 @@ const UserCategoriesCard = () => {
             setIsModalOpen={setIsMoreModalOpen}
             isAddModalOpen={isCategoryModalOpen}
             setIsAddModalOpen={setIsCategoryModalOpen}
-            data={getCategories(ExpensesByGroup ? ExpensesByGroup.categories : [])}
+            data={ExpensesByGroup ? getCategories(ExpensesByGroup.categories) : []}
             type={'categories'}
         />
     }
@@ -96,7 +94,6 @@ const UserCategoriesCard = () => {
     const getCategoryModal = () => {
         return <CategoryModal
             groupId={selectedGroup}
-            categoryId={selectedCategory}
             isCategoryModalOpen={isCategoryModalOpen}
             setIsCategoryModalOpen={setIsCategoryModalOpen}
             mode='create'
@@ -124,12 +121,12 @@ const UserCategoriesCard = () => {
     }
 
     const addButton = (<SpecialButton
-        handleClick={() => setIsCategoryModalOpen(!isCategoryModalOpen)}
+        handleClick={() => setIsCategoryModalOpen(true)}
         className={classes.specialItem}
         type='add'
     />);
     const moreButton = (<SpecialButton
-        handleClick={() => setIsMoreModalOpen(!isMoreModalOpen)}
+        handleClick={() => setIsMoreModalOpen(true)}
         className={classes.specialItem}
         type='view'
     />);
@@ -172,14 +169,14 @@ const UserCategoriesCard = () => {
     }
     return (
         <div className={classes.categories}>
-            {getExpenseModal()}
             {getViewMoreModal()}
+            {getExpenseModal()}
             {getCategoryModal()}
             {isGroupsLoading || isExpensesLoading ? <UserCategoriesCardLoader /> : <>            
                 <div className={classes.inner}>
                     <div className={classes.top}>
                         <h3 className={classes.title}>Categories <span className={classes.categoryName}>
-                                ({UserGroups?.user_groups[pageGroup] ? UserGroups.user_groups[pageGroup].group.title : 'You haven`t groups'})
+                                ({UserGroups?.user_groups[pageGroup] ? UserGroups.user_groups[pageGroup].group.title : "You haven't groups"})
                             </span>
                         </h3>
                         <div className={classes.nav}>

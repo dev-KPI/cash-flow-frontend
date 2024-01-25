@@ -11,15 +11,15 @@
 }
 
 .logo__wrapper {
-    width: 72px;
-    height: 72px;
+    width: 58px;
+    height: 58px;
 }
 
 .header__logo {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 300px;
+    gap: 30px;
 }
 
 .title {

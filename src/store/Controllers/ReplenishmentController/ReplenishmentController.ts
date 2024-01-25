@@ -10,15 +10,16 @@ import { ICreateReplenishmentBody,
     IUpdateReplenishmentBody,
     IUpdateReplenishmentResponse
 } from './ReplenishmentControllerInterfaces';
+import DateService from '@services/DateService/DateService';
 
 
 export const ReplenishmentsApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getReplenishmentsByUser: builder.query<IGetReplenishmentsByUserResponse[], IGetReplenishmentsByUserBody>({
-            query: ({period}) => ({
+            query: (body) => ({
                 url: `/replenishments/`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },

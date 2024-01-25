@@ -2,7 +2,8 @@ import React, { FC, Dispatch, SetStateAction } from "react";
 
 //UI
 import classes from './CategoriesCard.module.css'
-import { NavLink } from "react-router-dom";
+//logic
+import { isValidHex, isValidIcon } from "@services/UsefulMethods/UIMethods";
 
 interface ICategoriesCard {
     id: number,
@@ -18,7 +19,8 @@ interface ICategoriesCard {
 const CategoriesCard: FC<ICategoriesCard> = ({ id, title, 
 color, icon, setSelectedCategory,
 setIsEditCategoryModal, isEditCategoryModal }) => {
-    
+    color = isValidHex(color);
+    icon = isValidIcon(icon);
     return (
         <li className={classes.item}>
         <button 

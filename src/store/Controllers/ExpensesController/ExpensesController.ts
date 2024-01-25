@@ -10,15 +10,16 @@ import {
 } from './ExpensesControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
 import IExpense from '@models/IExpense';
+import DateService from '@services/DateService/DateService';
 
 
 
 export const ExpensesApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getExpenses: builder.query<IExpense[], IGetExpensesBody>({
-            query: ({ period }) => ({
+            query: (body) => ({
                 url: `groups/expenses`,
-                params: period,
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -32,7 +33,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
         getExpensesByGroup: builder.query<IExpense[], IGetExpensesByGroupBody>({
             query: ({ group_id, period }) => ({
                 url: `groups/${group_id}/expenses`,
-                params: period,
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -52,7 +53,10 @@ export const ExpensesApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
+            invalidatesTags: (result, error, body) => result ? [
+                { type: 'GroupsController', id: body.group_id },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] : [
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         updateExpenseByGroup: builder.mutation<IExpenseByGroupResponse, IUpdateExpenseByGroupBody>({
             query: (body) => ({
@@ -66,6 +70,7 @@ export const ExpensesApiSlice = api.injectEndpoints({
             ) => response.status,
             invalidatesTags: (result, error, body) => result ? [
                 { type: 'ExpensesController', id: body.expense_id },
+                { type: 'GroupsController', id: body.group_id },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] : [
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }),
@@ -78,7 +83,10 @@ export const ExpensesApiSlice = api.injectEndpoints({
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            invalidatesTags: [{ type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
+            invalidatesTags: (result, error, body) => result ? [
+                { type: 'GroupsController', id: body.group_id },
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }] : [
+                { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
     }),
     overrideExisting: false,

@@ -20,20 +20,24 @@
 }
 .backBtn{
     border-radius: 10px;
-    color: var(--main-text);
+    color: var(--btn-text);
     display: flex;
     justify-content: center;
     max-width: 375px;
     padding: 10px;
-    background-color: var(--main-green);
+    background-color: var(--confirm-btn);
+    transition: background-color 0.3s ease, color 0.1s ease;
 }
 .backBtn:hover{
-    opacity: .7;
+    background-color: rgba(128, 214, 103, 0.7)
 }
 @media (hover: hover) {
     .backBtn:hover { 
-        opacity: .7;
+        background-color: rgba(128, 214, 103, 0.7)
     }
+}
+.backBtn:active{
+    opacity: 0.8;
 }
 @media only screen and (max-width: 780px) {
     .NotFound{
@@ -41,5 +45,8 @@
     }
     .robot{
         width: 150px;
+    }
+    .backBtn{
+        font-size: 14px;
     }
 }

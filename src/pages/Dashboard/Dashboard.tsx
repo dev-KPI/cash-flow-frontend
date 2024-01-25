@@ -1,5 +1,3 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
-
 //Logic
 import { useGetTotalExpensesQuery, useGetTotalReplenishmentsQuery } from '@store/Controllers/UserController/UserController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
@@ -22,13 +20,11 @@ const Dashboard = () => {
     
     const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
 
-    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery(MonthPickerStore.type === 'year-month' ? 
-    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
-    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
+    const { data: Replenishments, isLoading: isReplenishmentsLoading, isError: isReplenishmentsError, isSuccess: isReplenishmentsSuccess } = useGetTotalReplenishmentsQuery( 
+        { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate })
         
-    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(MonthPickerStore.type === 'year-month' ? 
-    { period: {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)} } : 
-    { period: {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} })
+    const { data: Expenses, isLoading: isExpensesLoading, isError: isExpensesError, isSuccess: isExpensesSuccess } = useGetTotalExpensesQuery(
+        { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate})
 
     return (<>
         <main id='DashboardPage'>
@@ -42,12 +38,14 @@ const Dashboard = () => {
                         <div className={classes.grid__operation}>
                             <OperationCard 
                             operation={'Income'}
+                            className={classes.operations} 
                             data={Replenishments}
                             isSuccess={isReplenishmentsSuccess}
                             isLoading={isReplenishmentsLoading}
                             isError={isReplenishmentsError} />
                             <OperationCard 
                             operation={'Expenses'} 
+                            className={classes.operations} 
                             data={Expenses}
                             isSuccess={isExpensesSuccess}
                             isLoading={isExpensesLoading}

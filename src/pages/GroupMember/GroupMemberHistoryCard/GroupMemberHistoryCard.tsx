@@ -30,6 +30,7 @@ const GroupHistoryCard: FC = () => {
             if (memberId) {
                 let recentOperations = MemberHistory.items.map((el, i) =>
                     <RecentOperationGroupCard
+                        groupId={Number(groupId)}
                         item={{
                             ...el,
                             time: new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()
@@ -48,7 +49,7 @@ const GroupHistoryCard: FC = () => {
             {isMemberHistoryLoading ? <GroupMemberHistoryCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>Recent Activity</h3>
-                    <ul>
+                    <ul className={classes.activityList}>
                         {getRecentActivities}
                     </ul>
                     {

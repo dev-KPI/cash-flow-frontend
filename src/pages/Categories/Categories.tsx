@@ -12,6 +12,7 @@ import CategoriesCard from "./CategoriesCard/CategoriesCard";
 import CategoryModal from "@components/ModalWindows/CategoryModal/CategoryModal";
 import SmallModal from "@components/ModalWindows/SmallModal/SmallModal";
 import PreLoader from "@components/PreLoader/PreLoader";
+import ICategory from "@models/ICategory";
 
 
 const Categories: FC = () => {
@@ -70,8 +71,10 @@ const Categories: FC = () => {
             setActive={setIsGroupMenuModal}
             className={classes.groupsModalNav}
             children={
-                <div className={classes.groupModalWrapper}>
-                    {groupsItems.slice(3)}
+                <div className={classes.groupModal}>
+                    <div className={classes.groupModalWrapper}>
+                        {groupsItems.slice(3)}
+                    </div>    
                 </div>
             }
             buttonRef={buttonRef}
@@ -92,24 +95,33 @@ const Categories: FC = () => {
     }
 
     const getCategories = useMemo((): ReactNode => {
-        return CategoriesByGroup ? CategoriesByGroup.categories_group.length > 0 ?
-            CategoriesByGroup.categories_group.map((item, i) =>
-            <CategoriesCard
-                key={uuid()}
-                id={item.category.id}
-                color={item.color_code}
-                title={item.category.title}
-                icon={item.icon_url}
-                isCategoriesLoading={isCategoriesLoading}
-                setSelectedCategory={setSelectedCategory}
-                isEditCategoryModal={isEditCategoryModal}
-                setIsEditCategoryModal={setIsEditCategoryModal}
-            />
-        ) : (<div className={classes.noItems}>
-                <i className="bi bi-ui-checks-grid"></i>
-                <h5 className={classes.noItems__title}>Your categories list currently is empty!</h5>
-                <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
-            </div>) : null
+        if (CategoriesByGroup && CategoriesByGroup.categories_group.length > 0) {
+            const categoriesCopy = [...CategoriesByGroup.categories_group];
+
+            categoriesCopy.sort((a: ICategory, b: ICategory) => a.category.id - b.category.id);
+
+            return categoriesCopy.map((item, i) => (
+                <CategoriesCard
+                    key={uuid()}
+                    id={item.category.id}
+                    color={item.color_code}
+                    title={item.category.title}
+                    icon={item.icon_url}
+                    isCategoriesLoading={isCategoriesLoading}
+                    setSelectedCategory={setSelectedCategory}
+                    isEditCategoryModal={isEditCategoryModal}
+                    setIsEditCategoryModal={setIsEditCategoryModal}
+                />
+            ));
+        } else {
+            return (
+                <div className={classes.noItems}>
+                    <i className="bi bi-ui-checks-grid"></i>
+                    <h5 className={classes.noItems__title}>Your categories list is currently empty!</h5>
+                    <p className={classes.noItems__text}>Tap the button above to add more categories.</p>
+                </div>
+            );
+        }
     }, [selectedGroup, CategoriesByGroup])
 
     let categoriesContent;

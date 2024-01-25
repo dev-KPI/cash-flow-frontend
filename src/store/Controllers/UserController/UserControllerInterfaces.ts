@@ -1,5 +1,5 @@
 import { ICategoryAmount } from "@models/ICategory";
-import { IPeriodRangeDates, IPeriodYearMonth } from "@models/IPeriod";
+import { IPeriods } from "@models/IPeriod";
 import IUser from "@models/IUser";
 
 export interface IGetCurrentUserInfo extends IUser{}
@@ -11,9 +11,7 @@ export interface IGetCurrentUserDailyExpensesResponse {
     date: string,
     amount: number
 }
-export interface IGetCurrentUserDailyExpensesBody {
-    period: IPeriodYearMonth | IPeriodRangeDates
-}
+
 export interface IGetUserExpensesByGroupResponse {
     group_id: number,
     group_title: string,
@@ -22,22 +20,17 @@ export interface IGetUserExpensesByGroupResponse {
 
 export interface IGetUserExpensesByGroupBody {
     group_id: number,
-    period: IPeriodYearMonth | IPeriodRangeDates;
+    period: IPeriods
 }
-
 export interface IGetTotalExpensesResponse {
     amount: number,
     percentage_increase: number
 }
 export interface IGetTotalReplenishmentsResponse extends IGetTotalExpensesResponse{}
-export interface IGetTotalExpensesBody {
-    period: IPeriodYearMonth | IPeriodRangeDates
-}
+export interface IGetTotalExpensesBody extends IPeriods {}
 export interface IGetTotalReplenishmentsBody extends IGetTotalExpensesBody { }
 
 export interface IGetUserExpensesByCategoryResponse extends ICategoryAmount {}
 
-export interface IGetUserExpensesByCategoryBody {
-    period: IPeriodYearMonth | IPeriodRangeDates;
-}
+export interface IGetUserExpensesByCategoryBody extends IPeriods {}
 

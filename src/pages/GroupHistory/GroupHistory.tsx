@@ -26,6 +26,7 @@ import { useGetGroupUsersHistoryQuery } from '@store/Controllers/GroupsControlle
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
+import Pagination from '@components/Pagination/Pagination';
 
 
 interface IColumnsHistory extends IGroupHistoryItem { edit_remove?: string }
@@ -83,7 +84,6 @@ const History: React.FC = () => {
                         return info.row.original.user_first_name
                     }
                 }
-                const email = info.row.original.user_login
                 return info.renderValue() ?
                     <Link to={`/group/${groupId}/member/${info?.row?.original?.user_id}`} className={classes.memberWrapper}>
                         <div className={classes.details}>
@@ -95,7 +95,6 @@ const History: React.FC = () => {
                             </div>
                             <div className={classes.memberInfo}>
                                 <h6 className={classes.name}>{full_name()}</h6>
-                                {/* <p className={classes.email}>{email}</p> */}
                             </div>
                         </div>
                     </Link> : '-'
@@ -179,9 +178,7 @@ const History: React.FC = () => {
             }
         }
     })
-    const pageCount  = table.getPageCount()
-    const startIndex = pageIndex * pageSize + 1;
-    const endIndex = pageIndex === pageCount - 1 ? GroupRecentHistory?.total : (pageIndex + 1) * pageSize;
+    const totalCount = GroupRecentHistory?.total;
     
     const hideTip = () => {
         setTooltipActive(false);
@@ -239,7 +236,7 @@ const History: React.FC = () => {
             </thead>
             <tbody className={classes.tableText}>
                 {table.getRowModel().rows.map(row => (
-                    <tr key={row.id} className={classes['in']} onClick={(e) => showTooltip(e, row.getVisibleCells()[2].getContext())}>
+                    <tr key={row.id} onClick={(e) => showTooltip(e, row.getVisibleCells()[2].getContext())}>
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id}>
                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -249,44 +246,18 @@ const History: React.FC = () => {
                 ))}
                 <tr>
                     <td colSpan={5}>
-                        <div className={classes.pagination}>
-                            <div className={classes.selector}>
-                                <span>Rows per page: </span>
-                                <select
-                                    value={pageSize}
-                                    className={classes.select}
-                                    onChange={e => table.setPageSize(Number(e.target.value))}
-                                >
-                                    {[4, 6, 8, 16, 24].map(pageSize => (
-                                        <option key={pageSize} value={pageSize}>
-                                            {pageSize}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <span className={classes.counter}>
-                                {`${startIndex} - ${endIndex}`} of{' '}
-                                {GroupRecentHistory?.total}
-                            </span>
-                            <div className={classes.nav}>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => {
-                                        table.previousPage()
-                                    }}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-left"></i>
-                                </button>
-                                <button
-                                    className={classes.btn}
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <i id='chevron' className="bi bi-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <Pagination
+                            totalCount={totalCount}
+                            pageIndex={pageIndex}
+                            getPageCount={table.getPageCount}
+                            pageSize={pageSize}
+                            setPageSize={table.setPageSize}
+                            previousPage={table.previousPage}
+                            nextPage={table.nextPage}
+                            getCanPreviousPage={table.getCanPreviousPage}
+                            getCanNextPage={table.getCanNextPage}
+
+                        />
                     </td>
                 </tr>
             </tbody>
@@ -335,14 +306,6 @@ const History: React.FC = () => {
             groupId={Number(groupId)}
             expenseId={ExpenseCredentials.id}
             categoryId={ExpenseCredentials.category_id}
-            setActionCredentials={() => {
-                setExpenseCredentials({
-                    id: 0,
-                    descriptions: '',
-                    amount: 0,
-                    category_id: 0
-                })
-            }}
         />
         <main id='GroupHistoryPage' className="no-padding">
             <div className={classes.page__container}>

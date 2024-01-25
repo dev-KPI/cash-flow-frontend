@@ -29,6 +29,7 @@ const SalaryModal: FC<IOperationModalProps> = ({
 
     const [operationValue, setOperationValue] = useState<number>(0);
     const [descriptionValue, setDescriptionValue] = useState<string>('');
+    const [isInputError, setIsInputError] = useState<boolean>(false);
 
     const [createReplenishment, {isLoading: isReplenishmentLoading}] = useCreateReplenishmentMutation()
 
@@ -40,27 +41,34 @@ const SalaryModal: FC<IOperationModalProps> = ({
                     descriptions: descriptionValue
                 }).unwrap()
                 if (isReplenishmentCreated) {
-                    notify('success', `You created ${descriptionValue} replenishment`)
+                    notify('success', `Replenishment created successfully`)
                 }
             } catch (err) {
                 console.error('Failed to create replenishment: ', err)
-                notify('error', `You haven't created ${descriptionValue} replenishment`)
+                notify('error', `Replenishment not created`)
             }
         }
     }
 
     const handleSubmit = async () => {
-        onCreateReplenishment()
-        setIsSalaryModalOpen(false);
+        if (operationValue !== 0) {
+            onCreateReplenishment();
+            setIsInputError(false);
+            setIsSalaryModalOpen(false);
+        } else {
+            setIsInputError(true)
+        }
     }
 
     return <>
         <UsePortal
-            callback={() => {}}
             setIsModalOpen={setIsSalaryModalOpen}
             isModalOpen={isSalaryModalOpen}
             headerIcon={headerIcon}
             title={titleModal}
+            callback={() => {
+                setIsInputError(false)
+            }}
         >
             <form
                 onSubmit={handleSubmit}>
@@ -71,9 +79,11 @@ const SalaryModal: FC<IOperationModalProps> = ({
                         <div className={classes.inputWrapper}>
                             <Input
                                 setFormValue={{ type: 'cash', callback: setOperationValue }}
+                                isError={isInputError}
                                 isInputMustClear={!isSalaryModalOpen}
                                 Icon={currency} inputType="cash" id="salary"
-                                name="salary" placeholder="00.00" />
+                                name="salary" placeholder="00.00"
+                                errorMessage="Replenishment amount too low"/>
                         </div>
                     </li>
                     <li className={classes.DescriptionInput}>

@@ -8,6 +8,7 @@ import IListResponse from '@models/IListResponse';
 import IUser from '@models/IUser';
 import { IPeriods } from '@models/IPeriod';
 
+
 export const UserApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
         getUserAuthStatus: builder.query<boolean, null>({
@@ -62,6 +63,7 @@ export const UserApiSlice = api.injectEndpoints({
                 const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
                 const historyItems: IHistoryItem[] = response.items.map(el => {
                     const UserTimezone = new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds);
+                    const title = el.title_category ?? '';
                     return {
                         id: el.id,
                         descriptions: el.descriptions,
@@ -70,7 +72,7 @@ export const UserApiSlice = api.injectEndpoints({
                         category_id: el.category_id,
                         group_id: el.group_id,
                         color_code_category: el.color_code_category,
-                        title_category: el.title_category,
+                        title_category: title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title,
                         title_group: el.title_group,
                         color_code_group: el.color_code_group
                     }
@@ -91,8 +93,17 @@ export const UserApiSlice = api.injectEndpoints({
             query: ({ group_id, period }) => ({
                 url: `/users/${group_id}/expenses`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
+            transformResponse: (response: IGetUserExpensesByGroupResponse) => {
+                if (response.categories) {
+                    response.categories.forEach((category) => {
+                        const title = category.title ?? '';
+                        category.title = title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title
+                    });
+                }
+                return response;
+            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
@@ -106,10 +117,10 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }],
         }), 
         getUserExpensesByCategory: builder.query<IGetUserExpensesByCategoryResponse[], IGetUserExpensesByCategoryBody>({
-            query: (period) => ({
+            query: (body) => ({
                 url: `/users/category-expenses`,
                 credentials: 'include',
-                params: period.period
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -132,53 +143,33 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ReplenishmentsController' as const, id: 'REPLENISHMENTS' },
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
-        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[], IPeriods>({
-            query: ({ period }) => ({
+        getCurrentUserExpensesDaily: builder.query<IGetCurrentUserDailyExpensesResponse[],IPeriods>({
+            query: (body) => ({
                 url: `users/daily-expenses`,
-                params: period,
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetCurrentUserDailyExpensesResponse[], arg, body: IPeriods): IGetCurrentUserDailyExpensesResponse[] => {
-                if ('start_date' in body.period && 'end_date' in body.period) {
-                    const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
-                    response.forEach(expense => {
-                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
-                    });
+                const expenseMap: Record<string, IGetCurrentUserDailyExpensesResponse> = {};
+                response.forEach(expense => {
+                    expenseMap[expense.date] = expense;
+                });
 
-                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
-                    dateRange.shift();
-
-                    return dateRange.map(date => {
-                        const dateISOString = date.toISOString().split('T')[0];
-                        if (expenseMap[dateISOString]) {
-                            return expenseMap[dateISOString];
-                        } else {
-                            return {
-                                date: dateISOString,
-                                amount: 0,
-                            };
-                        }
-                    });
-                } else {
-                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
-                    const startDate = new Date(body.period.year_month + '-01');
-
-                    return Array.from({ length: daysInMonth }, (_, i) => {
-                        const currentDate = addDays(startDate, i);
-                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
-                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
-
-                        const existingExpense = response.find(expense => expense.date === dateKey);
-
-                        return existingExpense || {
-                            date: dateKey,
+                const dateRange = DateService.getDatesInRange(body.start_date, body.end_date);
+                return dateRange.map(date => {
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
+                    } else {
+                        return {
+                            date: formattedDate,
                             amount: 0,
                         };
-                    });
-                }
+                    }
+                });
             },
             providesTags: [
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' },
@@ -187,10 +178,10 @@ export const UserApiSlice = api.injectEndpoints({
             ]
         }),
         getTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
-            query: ({period}) => ({
+            query: (body) => ({
                 url: `users/total-expenses`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -200,10 +191,10 @@ export const UserApiSlice = api.injectEndpoints({
                 { type: 'ExpensesController', id: 'EXPENSES_BY_GROUP' }]
         }),
         getTotalReplenishments: builder.query<IGetTotalReplenishmentsResponse, IGetTotalReplenishmentsBody>({
-            query: ({period}) => ({
+            query: (body) => ({
                 url: `users/total-replenishments`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(body.start_date), end_date: DateService.getQueryEndDate(body.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },

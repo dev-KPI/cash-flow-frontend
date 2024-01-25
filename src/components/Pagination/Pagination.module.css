@@ -1,12 +1,14 @@
-.inner {
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    justify-content: flex-end;
+    padding: 30px;
+
     font-weight: 500;
     font-size: 24px;
     line-height: 30px;
     color: var(--text);
-
-    display: flex;
-    align-items: center;
-    gap: 50px;
 }
 
 .nav {
@@ -14,13 +16,13 @@
     gap: 25px;
 }
 
-.nav i {
-    color: var(--text);
-}
-
 .btn {
     cursor: pointer;
     display: flex;
+}
+
+.btn:hover:not(:disabled) i {
+    color: var(--main-green)
 }
 
 .btn i {
@@ -28,11 +30,6 @@
     -webkit-text-stroke: 1.5px;
     color: var(--text)
 }
-
-.btn:hover:not(:disabled) i {
-    color: var(--main-green)
-}
-
 
 .btn:disabled {
     opacity: 0.6;
@@ -51,11 +48,16 @@
     outline: none
 }
 
+@media only screen and (max-width: 1028px) {
+    .pagination {
+        padding: 35px;
+    }
+}
 @media only screen and (max-width: 768px) {
-    .inner {
+    .pagination {
         font-size: 18px;
         line-height: 22px;
-        /* gap: 25px; */
+        padding: 10px;
         gap: 0;
         width: 100%;
         justify-content: space-between;
@@ -75,6 +77,9 @@
 }
 
 @media only screen and (max-width: 400px) {
+    .pagination {
+        padding: 10px;
+    }
     .counter {
         display: none;
     }

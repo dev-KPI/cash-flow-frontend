@@ -3,7 +3,7 @@ import {  useMemo } from 'react';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { IMonthPickerState } from '@store/UI_store/MonthPickerSlice/MonthPickerInterfaces';
 import DateService from '@services/DateService/DateService';
-import {addDays, subDays, isSameDay} from 'date-fns'
+import { isSameDay, startOfMonth, endOfMonth } from 'date-fns';
 //UI
 import classes from './UserGraphCard.module.css'
 import GraphCardLoader from '@components/GraphCard/GraphCardLoader';
@@ -15,44 +15,26 @@ const UserGraphCard = () => {
 
     const MonthPickerStore = useAppSelector<IMonthPickerState>(state => state.MonthPickerSlice);
     const MonthPickerRange = useMemo(() => {
-        if(MonthPickerStore.type === 'date-range'){
-            return {
-                period: {
-                    start_date: new Date(MonthPickerStore.startDate).toISOString().slice(0,10),
-                    end_date: new Date(MonthPickerStore.endDate).toISOString().slice(0,10)
-                }
-            }
-        } else {
-            return {
-                period: {
-                    year_month: `${MonthPickerStore.currentYear}-${DateService.getFormatedMonth(DateService.getMonthIdxByName(MonthPickerStore.currentMonth))}`} 
-            }
+        return {
+            start_date: MonthPickerStore.startDate,
+            end_date: MonthPickerStore.endDate
         }
-    }, [MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate, MonthPickerStore.currentMonth, MonthPickerStore.currentYear])
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
     const {data: userDailyExpenses, isFetching: isUserDailyExpensesFetching, isLoading: isUserDailyExpensesLoading, isError: isUserDailyExpensesError, isSuccess: isUserDailyExpensesSuccess, refetch} = useGetCurrentUserExpensesDailyQuery(MonthPickerRange);
 
     const RangeTitle = useMemo(() => {
-        if (MonthPickerStore.rangeType === 'month') {
-            return `${MonthPickerStore.currentMonth} ${MonthPickerStore.currentYear}`
-        }
-        else if (MonthPickerStore.type === 'year-month') {
-            return `${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
-           
-        } 
-        else if(MonthPickerStore.rangeType === 'today' || MonthPickerStore.rangeType === 'yesterday' || 
-            isSameDay(new Date(MonthPickerStore.startDate), subDays(new Date(MonthPickerStore.endDate), 1))){
-            return `${new Date(MonthPickerStore.startDate).getDate()} 
-            ${DateService.getMonthNameByIdx(new Date(MonthPickerStore.startDate).getMonth())} 
-            ${new Date(MonthPickerStore.startDate).getFullYear()}`
-        } else if (MonthPickerStore.rangeType === 'alltime'){
+        if (DateService.isAllTime(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
             return 'All time'
-        }  else {
-            return `From ${
-                new Date(new Date(MonthPickerStore.startDate)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(new Date(MonthPickerStore.startDate)).getMonth()).slice(0, 3)
-            } - ${new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getDate() + ' ' + DateService.getMonthNameByIdx(new Date(subDays(new Date(MonthPickerStore.endDate), 1)).getMonth()).slice(0, 3)}`
+        } else if (DateService.isMonth(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} ${MonthPickerStore.startDate.getFullYear()}`
+        } else if (isSameDay(MonthPickerStore.startDate, MonthPickerStore.endDate)) {
+            return `${MonthPickerStore.startDate.getDate()} ${DateService.getMonthNameByIdx(MonthPickerStore.startDate.getMonth())} 
+            ${MonthPickerStore.startDate.getFullYear()}`
         }
-    }, [MonthPickerStore.currentMonth, MonthPickerStore.rangeType, MonthPickerStore.type, MonthPickerStore.startDate, MonthPickerStore.endDate])
+        else {
+            return (`${DateService.getFormattedRangeTitle(MonthPickerStore.startDate)} - ${DateService.getFormattedRangeTitle(MonthPickerStore.endDate)}`)
+        }
+    }, [MonthPickerStore.startDate, MonthPickerStore.endDate])
 
     return (
         <div className={classes.UserGraph}>

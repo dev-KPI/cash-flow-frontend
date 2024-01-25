@@ -13,7 +13,7 @@ import DateService from '@services/DateService/DateService';
 import classes from './GroupCategoriesCard.module.css';
 import CategoriesCardItem from '@components/CategoriesCardItem/CategoriesCardItem';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
-import SpecialButton from '@components/Buttons/SpeciaButton/SpecialButton';
+import SpecialButton from '@components/Buttons/SpecialButton/SpecialButton';
 import CategoryModal from '@components/ModalWindows/CategoryModal/CategoryModal';
 import ViewMoreModal from '@components/ModalWindows/ViewMoreModal/ViewMoreModal';
 
@@ -32,24 +32,18 @@ const GroupCategoriesCard = () => {
     const ref = useRef<HTMLUListElement>(null);
     
     const { data: CategoriesByGroup, isLoading: isCategoriesLoading, isError: isCategoriesError, isSuccess: isCategoriesSuccess } = useGetUserExpensesByGroupQuery({
-        group_id: Number(groupId), 
-        period: MonthPickerStore.type === 'year-month' ? 
-        {year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth)}  : 
-        {start_date: MonthPickerStore.startDate.slice(0,10), end_date: MonthPickerStore.endDate.slice(0,10)} 
+        group_id: Number(groupId),  
+        period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
+    })
+    requestAnimationFrame(_ => {
+        const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
+        setTotalItems(totalCategories || maxItems);
     })
     useEffect(()=>{
         const totalCategories = handleWrap(ref.current, classes.wrapped, classes.specialItem, 1);
         setTotalItems(totalCategories || maxItems);
     }, [CategoriesByGroup, width, height])
 
-    const autoHandleCloseModal = useCallback(() => {
-        if (!isExpenseModalOpen) setIdModalOpen(-1)
-    }, [isExpenseModalOpen])
-
-    
-    useEffect(() => {
-        autoHandleCloseModal()
-    }, [autoHandleCloseModal])
     
     const getCategories = (categories: ICategoryAmount[]) => {
         return categories.map((item, i) =>

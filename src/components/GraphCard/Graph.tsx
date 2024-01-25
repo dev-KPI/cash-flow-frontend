@@ -7,7 +7,7 @@ import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import classes from './GraphCard.module.css'
 import { Bar, Chart } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale,
-    BarElement, Title, Tooltip, Legend, ChartData,Tick } from "chart.js/auto";
+    BarElement, Title, Tooltip, Legend, ChartData, Tick, CoreScaleOptions, Scale } from "chart.js/auto";
 import { Context } from 'vm';
 
 //store
@@ -31,20 +31,9 @@ const Graph: FC<IGraphProps> = ({data}) => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const ThemeStore = useAppSelector<IThemeState>(state => state.persistedThemeSlice);
     
-    const getYParams = useCallback((): { high: number, step: number } => {
-        let highValue = Math.max(...data.map(el => el.amount));
-        const rank = highValue.toString().length - 1
-        let highValueForY = (Math.floor(highValue / 10**rank) + 1) * 10**rank
-        return { high: highValueForY, step: highValueForY /= 5 }
-    }, [data])
-
-    const getXParams = useCallback((): { high: number, step: number } => {
-        return { high: new Date(data[data.length - 1].date).getDate(), step: 1 }
-    }, [data])
-    
     const getChartData = useCallback((): { key: string; value: number }[] => {
         return [...data.map(el => {return {
-            key: new Date(el.date).getDate() + '',
+            key: el.date,
             value: el.amount,
             data: el
         }})]
@@ -65,16 +54,12 @@ const Graph: FC<IGraphProps> = ({data}) => {
     };
     
     const [priceTooltip, setPriceTooltip] = useState<number>(0);
-    const [monthTooltip, setMonthTooltip] = useState<string>('');
-    const [dateTooltip, setDateTooltip] = useState<number>(0);
-    const [yearTooltip, setYearTooltip] = useState<number>(0);
 
     const titleTooltip = (context: Context): string => {
-        setMonthTooltip(DateService.getMonthNameByIdx(new Date(context[0]?.raw.data.date).getMonth()).slice(0,3));
-        setDateTooltip(new Date(context[0]?.raw.data.date).getDate());
-        setYearTooltip(new Date(context[0]?.raw.data.date).getFullYear());
+        const [year, month, day] = context[0].label.split('-');
+        const monthTitle = DateService.getMonthNameByIdx(+month-1).slice(0,3);
         setPriceTooltip(context[0]?.parsed.y);
-        return `${monthTooltip} ${dateTooltip}, ${yearTooltip}`
+        return `${monthTitle} ${day}, ${year}`
     }
     const PriceTooltip = (context: Context): string => {
         return  numberWithCommas(priceTooltip) + currency
@@ -137,7 +122,6 @@ const Graph: FC<IGraphProps> = ({data}) => {
         scales: {
             x: {
                 suggestedmin: 0,
-                suggestedmax: getXParams().high,
                 border: {
                     display: false,
                 },
@@ -148,18 +132,18 @@ const Graph: FC<IGraphProps> = ({data}) => {
                 },
                 ticks: {
                     color: textColor,
-                    stepSize: getXParams().step,
                     font: {
                         family: 'Inter',
                         size: 12,
                         weight: "300",
                     },
+                    callback: function (this: Scale<CoreScaleOptions>, tickValue: string | number, index: number, ticks: Tick[]): number {
+                        return +this.getLabelForValue(index).split('-')[2];
+                    },
                 },
-                maxTicksLimit: getXParams().step
             },
             y: {
                 suggestedmin: 0,
-                suggestedmax: getYParams().high,
                 border: {
                     display: false,
                     borderColor: '',
@@ -177,7 +161,6 @@ const Graph: FC<IGraphProps> = ({data}) => {
                         size: 14,
                         weight: "300",
                     },
-                    // stepSize: getYParams().step,
                     callback: (value: string | number, index: number, ticks: Tick[]): string => {
                         const resValue = +(value);
                         if (window.innerWidth < 440 && resValue >= 1000) {

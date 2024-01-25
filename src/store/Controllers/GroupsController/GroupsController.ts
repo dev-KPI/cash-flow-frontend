@@ -43,7 +43,7 @@ export const GroupsApiSlice = api.injectEndpoints({
                 credentials: 'include',
             }),
             transformResponse: (response: IGetCurrentUserGroups): IGetCurrentUserGroups => {
-                return {user_groups: response.user_groups.filter(el => el.status !== 'INACTIVE')}
+                return { user_groups: response.user_groups ? response.user_groups.filter(el => el.status !== 'INACTIVE') : []}
             },
             transformErrorResponse: (
                 response: { status: string | number },
@@ -69,7 +69,7 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({member_id, group_id, period}) => ({
                 url: `groups/${group_id}/member/${member_id}/info`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
@@ -96,10 +96,10 @@ export const GroupsApiSlice = api.injectEndpoints({
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetUsersFromGroupResponse): IGetUsersFromGroupResponse => {
-                return { ...response, items: [{ users_group: response.items[0].users_group.filter(member => member.status !== 'INACTIVE') }] }
+                return { ...response, items: response.items ? response.items.filter(member => member.status !== 'INACTIVE') : [] }
             },
             providesTags: (result, err, body) => result?.items ?
-                [...result.items[0].users_group.map(item => ({ type: 'UserController' as const, id: item.user.id })),
+                [...result.items.map(item => ({ type: 'UserController' as const, id: item.user.id })),
                 { type: 'UserController' as const, id: 'Users' }]
                 :
                 [{ type: 'UserController' as const, id: 'Users' }],
@@ -107,7 +107,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         getGroupTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
             query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/total-expenses`,
-                params: period,
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -123,7 +123,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         getCurrentUserInGroupTotalExpenses: builder.query<IGetTotalExpensesResponse, IGetTotalExpensesBody>({
             query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/my-total-expenses`,
-                params: period,
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -145,6 +145,15 @@ export const GroupsApiSlice = api.injectEndpoints({
                     size: size
                 },
             }),
+            transformResponse: (response: IGetGroupUsersHistoryResponse) => {
+                if (response.items) {
+                    response.items.forEach((item) => {
+                        const title = item.title_category ?? '';
+                        item.title_category = title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title
+                    });
+                }
+                return response;
+            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
@@ -177,7 +186,7 @@ export const GroupsApiSlice = api.injectEndpoints({
         getCurrentGroupSpenders: builder.query<IGetCurrentGroupSpendersResponse[], IGetCurrentGroupSpendersBody>({
             query: ({ period, group_id }) => ({
                 url: `groups/${group_id}/users-spenders`,
-                params: period,
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
                 credentials: 'include',
             }),
             transformErrorResponse: (
@@ -194,13 +203,13 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({group_id, period}) => ({
                 url: `/groups/${group_id}/category-expenses`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetGroupExpensesByCategoryResponse[], arg, body: IGetGroupExpensesByCategoryBody): IGetGroupExpensesByCategoryResponse[] => { 
-                return response.filter((category)=> category.amount !== null)
+                return response ? response.filter((category) => category.amount !== null) : []
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
@@ -210,49 +219,30 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, period }) => ({
                 url: `/groups/${group_id}/group-daily-expenses`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: IGetGroupExpensesDailyResponse[], arg, body: IPeriods): IGetGroupExpensesDailyResponse[] => {
-                if ('start_date' in body.period && 'end_date' in body.period) {
-                    const expenseMap: Record<string, IGetGroupExpensesDailyResponse> = {};
-                    response.forEach(expense => {
-                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
-                    });
+            transformResponse: (response: IGetGroupExpensesDailyResponse[], arg, body: IGetGroupExpensesDailyBody): IGetGroupExpensesDailyResponse[] => {
+                const { start_date, end_date } = body.period;
+                const expenseMap: Record<string, IGetGroupExpensesDailyResponse> = {};
+                response.forEach(expense => {
+                    expenseMap[expense.date] = expense;
+                });
 
-                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
-                    dateRange.shift();
-
-                    return dateRange.map(date => {
-                        const dateISOString = date.toISOString().split('T')[0];
-                        if (expenseMap[dateISOString]) {
-                            return expenseMap[dateISOString];
-                        } else {
-                            return {
-                                date: dateISOString,
-                                amount: 0,
-                            };
-                        }
-                    });
-                } else {
-                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
-                    const startDate = new Date(body.period.year_month + '-01');
-
-                    return Array.from({ length: daysInMonth }, (_, i) => {
-                        const currentDate = addDays(startDate, i);
-                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
-                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
-
-                        const existingExpense = response.find(expense => expense.date === dateKey);
-
-                        return existingExpense || {
-                            date: dateKey,
+                const dateRange = DateService.getDatesInRange(start_date, end_date);
+                return dateRange.map(date => {
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
+                    } else {
+                        return {
+                            date: formattedDate,
                             amount: 0,
                         };
-                    });
-                }
+                    }
+                });
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
@@ -262,51 +252,31 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, period }) => ({
                 url: `/groups/${group_id}/group-daily-expenses-detail`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: IGetGroupExpensesByMemberDailyResponse[], arg, body: IPeriods): IGetGroupExpensesByMemberDailyResponse[] => {
-                if ('start_date' in body.period && 'end_date' in body.period) {
-                    const expenseMap: Record<string, IGetGroupExpensesByMemberDailyResponse> = {};
-                    response.forEach(expense => {
-                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
-                    });
+            transformResponse: (response: IGetGroupExpensesByMemberDailyResponse[], arg, body: IGetGroupExpensesDailyBody): IGetGroupExpensesByMemberDailyResponse[] => {
+                const { start_date, end_date } = body.period;
+                const expenseMap: Record<string, IGetGroupExpensesByMemberDailyResponse> = {};
+                response.forEach(expense => {
+                    expenseMap[expense.date] = expense;
+                });
 
-                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
-                    dateRange.shift();
-
-                    return dateRange.map(date => {
-                        const dateISOString = date.toISOString().split('T')[0];
-                        if (expenseMap[dateISOString]) {
-                            return expenseMap[dateISOString];
-                        } else {
-                            return {
-                                date: dateISOString,
-                                amount: 0,
-                                users: []
-                            };
-                        }
-                    });
-                } else {
-                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
-                    const startDate = new Date(body.period.year_month + '-01');
-
-                    return Array.from({ length: daysInMonth }, (_, i) => {
-                        const currentDate = addDays(startDate, i);
-                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
-                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
-
-                        const existingExpense = response.find(expense => expense.date === dateKey);
-
-                        return existingExpense || {
-                            date: dateKey,
+                const dateRange = DateService.getDatesInRange(start_date, end_date);
+                return dateRange.map(date => {
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
+                    } else {
+                        return {
+                            date: formattedDate,
                             amount: 0,
                             users: []
                         };
-                    });
-                }
+                    }
+                });
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
@@ -316,13 +286,13 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, member_id, period }) => ({
                 url: `/groups/${group_id}/member/${member_id}/category-expenses`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
             transformResponse: (response: IGetGroupExpensesByCategoryResponse[], arg, body: IGetGroupExpensesByCategoryBody): IGetGroupExpensesByCategoryResponse[] => {
-                return response.filter((category) => category.amount !== null)
+                return response ? response.filter((category) => category.amount !== null) : []
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
@@ -332,49 +302,30 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, member_id, period }) => ({
                 url: `/groups/${group_id}/member/${member_id}/daily-expenses/`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: IGroupMemberExpensesDailyResponse[], arg, body: IPeriods): IGroupMemberExpensesDailyResponse[] => {
-                if ('start_date' in body.period && 'end_date' in body.period) {
-                    const expenseMap: Record<string, IGroupMemberExpensesDailyResponse> = {};
-                    response.forEach(expense => {
-                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
-                    });
+            transformResponse: (response: IGroupMemberExpensesDailyResponse[], arg, body: IGroupMemberExpensesDailyBody): IGroupMemberExpensesDailyResponse[] => {
+                const { start_date, end_date } = body.period;
+                const expenseMap: Record<string, IGroupMemberExpensesDailyResponse> = {};
+                response.forEach(expense => {
+                    expenseMap[expense.date] = expense;
+                });
 
-                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
-                    dateRange.shift();
-
-                    return dateRange.map((date, i) => {
-                        const dateISOString = date.toISOString().split('T')[0];
-                        if (expenseMap[dateISOString]) {
-                            return expenseMap[dateISOString];
-                        } else {
-                            return {
-                                date: dateISOString,
-                                amount: 0,
-                            };
-                        }
-                    });
-                } else {
-                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
-                    const startDate = new Date(body.period.year_month + '-01');
-
-                    return Array.from({ length: daysInMonth }, (_, i) => {
-                        const currentDate = addDays(startDate, i);
-                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
-                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
-
-                        const existingExpense = response.find(expense => expense.date === dateKey);
-
-                        return existingExpense || {
-                            date: dateKey,
+                const dateRange = DateService.getDatesInRange(start_date, end_date);
+                return dateRange.map(date => {
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
+                    } else {
+                        return {
+                            date: formattedDate,
                             amount: 0,
                         };
-                    });
-                }
+                    }
+                });
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },
@@ -385,52 +336,26 @@ export const GroupsApiSlice = api.injectEndpoints({
             query: ({ group_id, member_id, period }) => ({
                 url: `/groups/${group_id}/member/${member_id}/daily-expenses-detail/`,
                 credentials: 'include',
-                params: period
+                params: { start_date: DateService.getQueryDate(period.start_date), end_date: DateService.getQueryEndDate(period.end_date) },
             }),
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,
-            transformResponse: (response: IGroupMemberExpensesByCategoryDailyResponse[], arg, body: IPeriods): IGroupMemberExpensesByCategoryDailyResponse[] => {
-                if ('start_date' in body.period && 'end_date' in body.period) {
-                    const expenseMap: Record<string, IGroupMemberExpensesByCategoryDailyResponse> = {};
-                    response.forEach(expense => {
-                        expenseMap[new Date(expense.date).toISOString().split('T')[0]] = expense;
-                    });
+            transformResponse: (response: IGroupMemberExpensesByCategoryDailyResponse[], arg, body: IGroupMemberExpensesByCategoryDailyBody): IGroupMemberExpensesByCategoryDailyResponse[] => {
+                const { start_date, end_date } = body.period;
+                const expenseMap: Record<string, IGroupMemberExpensesByCategoryDailyResponse> = {};
+                response.forEach(expense => {
+                    expenseMap[expense.date] = expense;
+                });
 
-                    const dateRange = DateService.getDatesInRange(new Date(body.period.start_date!), new Date(body.period.end_date!));
-                    dateRange.shift();
-
-                    return dateRange.map((date, i) => {
-                        const dateISOString = date.toISOString().split('T')[0];
-                        if (expenseMap[dateISOString]) {
-                            return expenseMap[dateISOString];
-                        } else {
-                            return {
-                                date: dateISOString,
-                                amount: 0,
-                                categories: [{
-                                    id: 0,
-                                    title: '',
-                                    color_code: '',
-                                    icon_url: '',
-                                    amount: 0
-                                }]
-                            };
-                        }
-                    });
-                } else {
-                    const daysInMonth = getDaysInMonth(new Date(body.period.year_month!));
-                    const startDate = new Date(body.period.year_month + '-01');
-
-                    return Array.from({ length: daysInMonth }, (_, i) => {
-                        const currentDate = addDays(startDate, i);
-                        const formattedDate = DateService.getFormatedDate(currentDate.getDate());
-                        const dateKey = `${body?.period?.year_month ? body.period.year_month : ''}-${formattedDate}`;
-
-                        const existingExpense = response.find(expense => expense.date === dateKey);
-
-                        return existingExpense || {
-                            date: dateKey,
+                const dateRange = DateService.getDatesInRange(start_date, end_date);
+                return dateRange.map(date => {
+                    const formattedDate = DateService.getFormatedDate(date);
+                    if (expenseMap[formattedDate]) {
+                        return expenseMap[formattedDate];
+                    } else {
+                        return {
+                            date: formattedDate,
                             amount: 0,
                             categories: [{
                                 id: 0,
@@ -440,8 +365,8 @@ export const GroupsApiSlice = api.injectEndpoints({
                                 amount: 0
                             }]
                         };
-                    });
-                }
+                    }
+                });
             },
             providesTags:
                 [{ type: 'GroupsController', id: 'GROUPS' },

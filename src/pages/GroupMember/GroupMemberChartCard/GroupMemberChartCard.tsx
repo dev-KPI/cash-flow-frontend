@@ -18,15 +18,13 @@ const GroupMemberChartCard: FC = () => {
     const { data: MemberExpenses, isLoading: isMemberExpensesLoading } = useGetGroupMemberExpensesByCategoryQuery({
         group_id: Number(groupId),
         member_id: Number(memberId),
-        period: MonthPickerStore.type === 'year-month' ?
-            { year_month: DateService.getYearMonth(MonthPickerStore.currentYear, MonthPickerStore.currentMonth) } :
-            { start_date: MonthPickerStore.startDate.slice(0, 10), end_date: MonthPickerStore.endDate.slice(0, 10) }
+        period: { start_date: MonthPickerStore.startDate, end_date: MonthPickerStore.endDate }
     })
     
     return (
         <div className={classes.ChartCard}>
             {(!isMemberExpensesLoading && MemberExpenses) ?
-                <ChartCard categories={MemberExpenses} title={'Expenses'} messageType={'group'} />
+                <ChartCard categories={MemberExpenses} title={'Expenses'} messageType={'member'} />
                 :
                 <ChartCardLoader />
             }

@@ -5,13 +5,12 @@ import classes from './GroupModal.module.css';
 import Input from "@components/Input/Input";
 import CustomButton from "@components/Buttons/CustomButton/CustomButton";
 import Accordion, { AccordionTab } from "@components/Accordion/Accordion";
-import ConfirmationModal from "../ConfirtmationModal/ConfirmationModal";
 import { notify } from "src/App";
 //logic
 import UsePortal from "@hooks/layoutHooks/usePortal/usePortal";
 import { IGetInfoFromGroupResponse } from "@store/Controllers/GroupsController/GroupsControllerInterfaces";
 import { useCreateGroupMutation, useLeaveGroupMutation, useUpdateGroupMutation } from "@store/Controllers/GroupsController/GroupsController";
-import { customColors, customIcons } from "@services/UsefulMethods/UIMethods";
+import { customColors, groupsIcons } from "@services/UsefulMethods/UIMethods";
 
 interface IGroupModalProps{
     groupId?: number,
@@ -19,14 +18,14 @@ interface IGroupModalProps{
     setGroupId: Dispatch<SetStateAction<number>>,
     isGroupModalOpen: boolean
     setIsGroupModalOpen: Dispatch<SetStateAction<boolean>>;
+    setIsConfirmationModalOpen?: Dispatch<SetStateAction<boolean>>;
     mode: 'create' | 'edit' | 'disband' | 'leave',
 }
 
-const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group }) => {
+const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpen, mode, groupId, setGroupId, group, setIsConfirmationModalOpen = () => {} }) => {
     
     const headerIcon: ReactNode = <i className="bi bi-boxes"></i>
     const titleModal = 'Group'
-    const [isConfirmationModal, setIsConfirmationModal] = useState<boolean>(false);
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const [isInputError, setIsInputError] = useState<boolean>(false);
     //pickers
@@ -80,11 +79,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     color_code: pickedColor,
                 }).unwrap()
                 if (isGroupCreated) {
-                    notify('success', `You created ${nameValue} group`)
+                    notify('success', <p>You created the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
             } catch (err) {
                 console.error('Failed to create group: ', err)
-                notify('error', `You haven't created ${nameValue} group`)
+                notify('error', <p>You haven't created the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
             }
         }
     }
@@ -99,11 +98,11 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                     color_code: pickedColor,
                 }).unwrap()
                 if (isGroupUpdated) {
-                    notify('success', `You updated ${nameValue} group`)
+                    notify('success', <p>You updated the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
             } catch (err) {
-                console.error('Failed to create group: ', err)
-                notify('error', `You haven't update the ${nameValue} group`)
+                console.error('Failed to update group: ', err)
+                notify('error', <p>You haven't updated the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
             }
         }
     }
@@ -113,18 +112,18 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 const isGroupLeft = await leaveGroup(groupId).unwrap()
                 if (isGroupLeft) {
                     if (mode === 'disband') {
-                        notify('success', `You disbanded the ${nameValue} group`)
+                        notify('success', <p>You disbanded the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                     } else if (mode === 'leave') {
-                        notify('success', `You left from ${nameValue} group`)
+                        notify('success', <p>You have left the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                     }
                 }
             } catch (err) {
                 if (mode === 'disband') {
                     console.error('Failed to disband the group: ', err)
-                    notify('error', `You haven't dibanded ${nameValue} group`)
+                    notify('error', <p>You haven't disbanded the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 } else if (mode === 'leave') {
                     console.error('Failed to left from the group: ', err)
-                    notify('error', `You haven't left from ${nameValue} group`)
+                    notify('error', <p>You haven't left the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
             }
         }
@@ -140,7 +139,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                 if (!(nameValue === group?.title && descValue === group.description && icon === group.icon_url && pickedColor === group.color_code)) {
                     onUpdateGroup()
                 } else {
-                    notify('info', 'Expense not updated')
+                    notify('info', <p>You haven't updated the <span style={{ fontWeight: 700 }}>{nameValue}</span> group</p>)
                 }
                 closeModalHandler();
             } else if(mode === 'disband' || mode === 'leave'){
@@ -161,18 +160,12 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
     useEffect(() => initializeSubmit(), [initializeSubmit])
 
     return <>
-        <ConfirmationModal 
-            groupId={groupId ?? 0}
-            title={group?.title}
-            setIsConfirmationModalOpen={setIsConfirmationModal} 
-            isConfirmationModalOpen={isConfirmationModal} 
-            mode={mode === 'leave' ? "leave" : 'disband'}/>
         <UsePortal
-            callback={() => {}}
             isModalOpen={isGroupModalOpen}
             setIsModalOpen={setIsGroupModalOpen}
             headerIcon={headerIcon}
             title={titleModal}
+            callback={()=> closeModalHandler()}
         >
             <form
                 onSubmit={() => handleSubmit}>
@@ -221,7 +214,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             <AccordionTab title="Select icon" choosedItem={iconDisplayed}>
                                 <div className={classes.pickBody}>
                                     {
-                                        customIcons.map((el, i) =>
+                                        groupsIcons.map((el, i) =>
                                         <div
                                             key={i}
                                             onClick={(e) => changeIcon(e, el)}
@@ -247,7 +240,7 @@ const GroupModal: FC<IGroupModalProps> = ({ isGroupModalOpen, setIsGroupModalOpe
                             type='danger'
                             background="outline"
                             disableScale={true}
-                            callback={() => {setIsConfirmationModal(true); setIsGroupModalOpen(false)}}
+                            callback={() => { setIsGroupModalOpen(!isGroupModalOpen); setIsConfirmationModalOpen(true); }}
                         />}
                         <CustomButton
                             isPending={isGroupCreating}
