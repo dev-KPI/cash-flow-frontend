@@ -20,7 +20,7 @@ const FAQ: FC = () => {
                             <i className="bi bi-github" style={{ fontSize: 36, color: 'var(--main-text)' }}></i>
                             <h5 className={classes.contact__title}>Experiencing issues with UI?</h5>
                             <p className={classes.contact__text}>If you have such issues as rendering or displaying a web page, troubles with user interactions, please left a report with  description of problem.</p>
-                            <a className={classes.contact__link} href="https://github.com/dev-KPI/cash-flow-frontend/issues/new" target="_blank">Left a client-side bug report<ArrowRight className={classes.ArrowRight} /></a>
+                            <a className={classes.contact__link} href="https://github.com/dev-KPI/cash-flow-frontend/issues/new" target="_blank" rel="noreferrer">Left a client-side bug report<ArrowRight className={classes.ArrowRight} /></a>
                         </div>
                     </li>
                     <li className={classes.contact__item}>
@@ -36,7 +36,7 @@ const FAQ: FC = () => {
                             <i className="bi bi-github" style={{ fontSize: 36, color: 'var(--main-text)' }}></i>
                             <h5 className={classes.contact__title}>Experiencing technical issues?</h5>
                             <p className={classes.contact__text}>Doubt about the privacy of data? Create a report with clear and concise suggestions to help us improve our product.</p>
-                            <a className={classes.contact__link} href="https://github.com/RezenkovD/cash-money/issues/new" target="_blank">Left a server-side bug report<ArrowRight className={classes.ArrowRight} /></a>
+                            <a className={classes.contact__link} href="https://github.com/RezenkovD/cash-money/issues/new" target="_blank" rel="noreferrer">Left a server-side bug report<ArrowRight className={classes.ArrowRight} /></a>
                         </div>
                     </li>
                 </ul>
