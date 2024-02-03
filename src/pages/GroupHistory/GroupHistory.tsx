@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState} from 'react';
+import React, { useCallback, useMemo, useRef, useState} from 'react';
 
 //UI
 import classes from './GroupHistory.module.css';
@@ -185,7 +185,7 @@ const History: React.FC = () => {
     };
 
     useOnClickOutside(tooltipRef, hideTip);
-    const showTooltip = (e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
+    const showTooltip = useCallback((e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
         if (width <= 768) {
             const el = e.target as HTMLElement;
             const rowEl = el.closest('tr') as HTMLElement;
@@ -194,13 +194,13 @@ const History: React.FC = () => {
             setTime(DateService.getTime(new Date(context.row.original.time), true))
             if (tooltipRef.current) {
                 tooltipRef.current.style.left = `${elRect.left + 150}px`;
-                tooltipRef.current.style.top = `${elRect.top + 10}px`;
+                tooltipRef.current.style.top = `${elRect.top + window.scrollY + 10}px`;
             }
             
             if (!el.closest('button'))
                 setTooltipActive(true);
         }   
-    }
+    }, [width, pageSize])
 
     let historyContent;
     if (isGroupRecentHistorySuccess && isCurrentUserSuccess && GroupRecentHistory.items.length !== 0) {
