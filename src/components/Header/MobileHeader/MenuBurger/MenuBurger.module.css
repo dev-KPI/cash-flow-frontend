@@ -31,6 +31,7 @@
     font-size: 24px;
     display: inline-block;
     color: var(--main-text);
+    white-space: nowrap;
 }
 
 .burgernav__top .title__span {
