@@ -59,7 +59,7 @@ const Users: React.FC = () => {
                                 <h6 className={classes.name}>{full_name()}</h6>
                                 {/* <p className={classes.email}>{email}</p> */}
                             </div>
-                        </div> : '-'
+                        </div> : ''
             }
         }),
         columnHelper.display({
