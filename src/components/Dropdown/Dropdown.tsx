@@ -1,5 +1,5 @@
 
-import { useState, useRef, FC } from "react";
+import { useRef, FC } from "react";
 
 //logic
 import { Dropdown as DropdownComponent, DropdownProps } from 'primereact/dropdown';
@@ -7,29 +7,24 @@ import { IconOptions } from "primereact/utils";
 import { useClickOutside } from "primereact/hooks";
 //UI
 import  './Dropdown.css'
+import { isValidHex, isValidIcon } from "@services/UsefulMethods/UIMethods";
 
-interface Group {
+interface Item {
     id: number,
     title: string,
     icon_url: string,
     color_code: string
 }
 
-const Dropdown = () => {
-    const [selectedCountry, setSelectedCountry] = useState<Group | null>(null);
+interface IDropdownProps {
+    placeholder: string,
+    items: Item[],
+    selectedOption: number,
+    setOption: (id: number) => void
+}
+const Dropdown:FC<IDropdownProps> = ({ placeholder, items, selectedOption, setOption }) => {
     const dropdownComponent = useRef<DropdownComponent>(null);
     const dropdownInput = useRef<HTMLSelectElement>(null);
-    const countries: Array<Group> = [
-        { id: 0, title: 'TItle1', icon_url: "_icon-basketball-team", color_code: "#FF2D55" },
-        { id: 1, title: 'TItle2', icon_url: "bi bi-apple", color_code: "#CCFF00" },
-        { id: 2, title: 'TItleqweqweqweqweqweqweqweSeqweqweqweqweqwe3', icon_url: "bi bi-people", color_code: "#FF2D55" },
-        { id: 3, title: 'TItle4', icon_url: "bi bi-people", color_code: "#FF2D55" },
-        { id: 4, title: 'TItle5', icon_url: "_icon-basketball-team", color_code: "#FF2D55", },
-        { id: 5, title: 'TItle6', icon_url: "_icon-basketball-team", color_code: "#FF2D55", },
-        { id: 6, title: 'TItle7', icon_url: "_icon-basketball-team", color_code: "#FF2D55", },
-
-    ];
-    
     const closeDropdown = (e: React.MouseEvent) => {
         if(dropdownComponent.current){
             if(dropdownComponent.current.getOverlay()){
@@ -43,14 +38,16 @@ const Dropdown = () => {
     useClickOutside(dropdownInput, closeDropdown);
     
 
-    const selectedGroupTemplate = (option: Group , props: DropdownProps) => {
+    const selectedItemTemplate = (option: Item , props: DropdownProps) => {
         if (option) {
+            const color = isValidHex(option.color_code);
+            const icon = isValidIcon(option.icon_url);
             return (
                 <div className="optionWrapper">
                 <div 
-                style={{backgroundColor: option.color_code}}
+                style={{backgroundColor: color}}
                 className="icon">
-                    <i className={option.icon_url}></i>
+                    <i className={icon}></i>
                 </div>
                 <p className="title">{option.title}</p>
             </div>
@@ -60,13 +57,15 @@ const Dropdown = () => {
         return <span>{props.placeholder}</span>;
     };
 
-    const groupOptionTemplate = (option: Group) => {
+    const itemOptionTemplate = (option: Item) => {
+        const color = isValidHex(option.color_code);
+        const icon = isValidIcon(option.icon_url);
         return (
             <div className="optionWrapper">
                 <div 
-                style={{backgroundColor: option.color_code}}
+                style={{backgroundColor: color}}
                 className="icon">
-                    <i className={option.icon_url}></i>
+                    <i className={icon}></i>
                 </div>
                 <p className="title">{option.title}</p>
             </div>
@@ -75,16 +74,25 @@ const Dropdown = () => {
 
     return (
         <div className="dropdown">
-            <DropdownComponent value={selectedCountry} onChange={(e)=> setSelectedCountry(e.value)} options={countries} optionLabel="title" optionValue="title" placeholder="Select a Country" 
+            <DropdownComponent value={selectedOption}
+            onChange={(e)=> {
+                setOption(e.value);
+            }} 
+            options={items} 
+            optionLabel="title" 
+            optionValue="id" 
+            placeholder={items.length === 0 ? 'No items found' : placeholder}
             ref={dropdownComponent}     
             inputRef={dropdownInput}   
-            filter 
-            valueTemplate={selectedGroupTemplate} 
-            itemTemplate={groupOptionTemplate} 
+            filter
+            disabled={items.length === 0}
+            valueTemplate={selectedItemTemplate} 
+            itemTemplate={itemOptionTemplate} 
             dropdownIcon={(opts: IconOptions<DropdownProps, any>) => {
                 const iconClass = opts.iconProps['data-pr-overlay-visible'] ? 'chevronTransition' : '';
                 return <i style={{color: 'var(--main-text)'}} className={'bi bi-chevron-down chevron ' + iconClass }></i>
             }}
+            appendTo={'self'}
             />
         </div>    
     )

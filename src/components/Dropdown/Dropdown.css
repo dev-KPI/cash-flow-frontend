@@ -331,3 +331,12 @@ input.p-dropdown-label  {
   .p-input-filled .p-dropdown:not(.p-disabled).p-focus .p-inputtext {
     background-color: transparent;
   }
+
+/* my */
+@media only screen and (max-width: 540px) {
+  .p-dropdown-panel{
+    left: 50% !important;
+    transform: translate(-50%,0);
+    width: 80%;
+  }
+}
