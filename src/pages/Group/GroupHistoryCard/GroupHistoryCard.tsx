@@ -22,16 +22,11 @@ const GroupHistoryCard: FC = () => {
     const activitiesLength = GroupRecentHistory?.total || 0;
     const getRecentActivities = () => {
         if(GroupRecentHistory && isGroupRecentHistorySuccess){
-            const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
-            const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
             let res: ReactNode[] = GroupRecentHistory.items.slice(0, 7).map((el, i) =>
             <RecentOperationGroupCard
                     key={i}
                     groupId={Number(groupId)}
-                    item={{
-                        ...el,
-                        time:  new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()
-                    }}
+                    item={el}
                 ></RecentOperationGroupCard>
             ) 
             return res

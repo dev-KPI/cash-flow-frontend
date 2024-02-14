@@ -24,17 +24,12 @@ const GroupHistoryCard: FC = () => {
     const {width} = useWindowSize();
 
     const getRecentActivities = useMemo(() => {
-        const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
-        const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
         if(MemberHistory) {
             if (memberId) {
                 let recentOperations = MemberHistory.items.map((el, i) =>
                     <RecentOperationGroupCard
                         groupId={Number(groupId)}
-                        item={{
-                            ...el,
-                            time: new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds).toISOString()
-                        }}></RecentOperationGroupCard>
+                        item={el}></RecentOperationGroupCard>
                 )
                 if (width > 1440)
                     return recentOperations.slice(0, 4)
