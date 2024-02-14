@@ -44,7 +44,8 @@ const Dashboard = () => {
                             isLoading={isReplenishmentsLoading}
                             isError={isReplenishmentsError} />
                             <OperationCard 
-                            operation={'Expenses'} 
+                            operation={'ExpensesExpanded'} 
+                            title={'Expenses'}
                             className={classes.operations} 
                             data={Expenses}
                             isSuccess={isExpensesSuccess}
