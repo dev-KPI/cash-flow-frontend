@@ -17,11 +17,13 @@ export interface ICreateExpenseByGroupBody {
     group_id: number,
 }
 export interface IUpdateExpenseByGroupBody {
+    current_group: number
     group_id: number,
     expense_id: number,
     category_id: number,
     descriptions: string,
     amount: number,
+    time: string
 }
 
 export interface IGetExpensesByGroupBody {

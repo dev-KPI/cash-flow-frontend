@@ -26,6 +26,7 @@ export interface IUpdateReplenishmentBody {
     id: number,
     amount: number,
     descriptions: string
+    time: string
 }
 export interface IUpdateReplenishmentResponse {
     id: number,
