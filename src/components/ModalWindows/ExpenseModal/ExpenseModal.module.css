@@ -1,11 +1,6 @@
 .OperationBody{
     margin: 0px 30px;
 }
-.AmountInput{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
 .inputWrapper{
     margin-top: 10px;
 }
@@ -15,7 +10,7 @@
     font-size: 24px;
     line-height: 29px;
 }
-.DescriptionInput{
+.ItemInput:not(:first-child){
     margin-top: 16px;
 }
 .confirmBtnWrapper{
@@ -24,4 +19,12 @@
     justify-content: center;
     align-items: center;
     margin-top: 24px;
+}
+
+.errorMessage{
+    font-size: 16px;
+    line-height: 22px;
+    color: var(--main-red);
+    margin: 10px 0 5px;
+    display: block;
 }
