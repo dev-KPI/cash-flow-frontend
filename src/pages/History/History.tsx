@@ -6,6 +6,7 @@ import Light from '@components/Light/Light';
 import PreLoader from '@components/PreLoader/PreLoader';
 import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 import ConfirmationModal from '@components/ModalWindows/ConfirtmationModal/ConfirmationModal';
+import IncomeModal from '@components/ModalWindows/OperationModal/IncomeModal';
 import Pagination from '@components/Pagination/Pagination';
 import IHistoryItem from '@models/IHistoryItem';
 
@@ -25,6 +26,8 @@ import { numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { useGetUserHistoryQuery } from '@store/Controllers/UserController/UserController';
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
+import { useGetGroupsCategoriesQuery } from '@store/Controllers/CategoriesController/CategoriesController';
+
 
 interface IColumnsHistory extends IHistoryItem {edit_remove?: string}
 
@@ -38,39 +41,35 @@ const History: React.FC = () => {
     const tooltipRef = useRef<HTMLDivElement>(null);
     const { width, height } = useWindowSize();
     const { data: History, isLoading: isHistoryLoading, isError: isHistoryError, isSuccess: isHistorySuccess } = useGetUserHistoryQuery({ page: pageIndex, size: pageSize });
-    const [isEditExpenseModal, setIsEditExpenseModal] = useState<boolean>(false);
+    const { data: GroupsCategories, isSuccess: isGroupsCategoriesSuccess } = useGetGroupsCategoriesQuery();
+
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
     const [isReplenishment, setIsReplenishment] = useState<boolean>(false);
-    const [isRemoveExpenseModal, setIsRemoveExpenseModal] = useState<boolean>(false);
-    const [isRemoveReplenishmentModal, setIsRemoveReplenishmentModal] = useState<boolean>(false);
-    const [ExpenseCredentials, setExpenseCredentials] = useState<{
+    const [isRemoveModalOpen, setIsRemoveModalOpen] = useState<boolean>(false);
+   
+    const [operationDetails, setOperationDetails] = useState<{
         id: number,
         descriptions: string,
         amount: number,
         category_id: number,
         group_id: number,
+        time: Date
     }>({
         id: 0,
         descriptions: '',
         amount: 0,
         category_id: 0,
         group_id: 0,
+        time: new Date()
     });
-    const [ReplenishmentCredentials, setReplenishmentCredentials] = useState<{
-        id: number,
-        amount: number,
-        description: string
-    }>({
-        id: 0,
-        amount: 0,
-        description: ''
-    });
+
     const [tooltipActive, setTooltipActive] = useState(false);
     const [time, setTime] = useState<string>('');
     const columnHelper = createColumnHelper<IColumnsHistory>()
     const columns = [
     columnHelper.accessor('descriptions', {
         header: () =>'Description',
-        cell: info => info.renderValue() ? info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue() : '-',
+        cell: info => info.renderValue() ? info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue() : '',
     }),
     columnHelper.accessor('title_category', {
         header: () => 'Category',
@@ -81,7 +80,7 @@ const History: React.FC = () => {
                 color={info.row.original.color_code_category || 'var(--main-green)'}
                 type='solid' />
             <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
-        </div> : '-',
+        </div> : '',
     }),
     columnHelper.accessor('title_group', {
         header: () => 'Group',
@@ -91,9 +90,9 @@ const History: React.FC = () => {
                 style={{ display: info.row.original.category_id !== null ? 'inline-block' : 'none' }}
                 color={info.row.original.color_code_group || 'var(--main-green)'}
                 type='solid' />
-            <p className={classes.itemTitle}>{info.getValue() ?? '-'}</p>
+            <p className={classes.itemTitle}>{info.getValue() ?? ''}</p>
         </div> :
-            '-'
+            ''
     }),
     columnHelper.accessor('time', {
         header: () => 'Time',
@@ -110,39 +109,49 @@ const History: React.FC = () => {
             <button className={classes.editButton} onClick={(e) => {
                 const isExpense = (!!info.row.original?.group_id && (info.row.original?.group_id > 0))
                 e.preventDefault();
-                isExpense ? (setExpenseCredentials({
+                isExpense ? (setOperationDetails({
                     id: info.row.original.id,
                     descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
                     category_id: info.row.original.category_id,
                     group_id: info.row.original.group_id,
-                })) : (setReplenishmentCredentials({
+                    time: info.row.original.time
+                })) :
+                setOperationDetails({
                     id: info.row.original.id,
+                    descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
-                    description: info.row.original.descriptions
-                }));
+                    category_id: 0,
+                    group_id: 0,
+                    time: info.row.original.time
+                });
                 setIsReplenishment(!isExpense);
-                setIsEditExpenseModal(!isEditExpenseModal);
+                setIsEditModalOpen(!isEditModalOpen);
             }}>
                 <i className="bi bi-pencil"></i>
             </button>
             <button className={classes.removeButton} onClick={(e) => { 
                 e.preventDefault(); 
                 const isExpense = (!!info.row.original?.group_id && (info.row.original?.group_id > 0))
-                isExpense ? (setExpenseCredentials({
+                isExpense ? (setOperationDetails({
                     id: info.row.original.id,
                     descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
                     category_id: info.row.original.category_id,
                     group_id: info.row.original.group_id,
-                })) : (setReplenishmentCredentials({
+                    time: info.row.original.time
+                })) 
+                :
+                setOperationDetails({
                     id: info.row.original.id,
+                    descriptions: info.row.original.descriptions,
                     amount: info.row.original.amount,
-                    description: info.row.original.descriptions
-                }));
+                    category_id: 0,
+                    group_id: 0,
+                    time: info.row.original.time
+                });
                 setIsReplenishment(!isExpense);
-                isExpense ? setIsRemoveExpenseModal(!isRemoveExpenseModal) : 
-                    setIsRemoveReplenishmentModal(!isRemoveReplenishmentModal)
+                setIsRemoveModalOpen(!isRemoveModalOpen)
             }}>
                 <i className="bi bi-trash"></i>
             </button>
@@ -195,7 +204,7 @@ const History: React.FC = () => {
             setTime(DateService.getTime(new Date(context.row.original.time), true))
             if (tooltipRef.current) {
                 tooltipRef.current.style.left = `${elRect.left + 100}px`;
-                tooltipRef.current.style.top = `${elRect.top + 10}px`;
+                tooltipRef.current.style.top = `${elRect.top + window.scrollY + 10}px`;
             }
             
             if (!el.closest('button'))
@@ -274,7 +283,7 @@ const History: React.FC = () => {
             <PreLoader preLoaderSize={50} type='auto' />
         </div>
     }
-
+    
     return (<>
         <div id="tooltip" className={classes.tooltipWrapper} ref={tooltipRef} onMouseLeave={hideTip} >
             {tooltipActive && <div className={classes.tooltip}>
@@ -284,31 +293,43 @@ const History: React.FC = () => {
         </div>
         <ConfirmationModal
         mode='remove_expense'
-        title={ExpenseCredentials.descriptions}
-        isConfirmationModalOpen={isRemoveExpenseModal}
-        setIsConfirmationModalOpen={setIsRemoveExpenseModal}
-        groupId={ExpenseCredentials.group_id}
-        expenseId={isReplenishment ? ReplenishmentCredentials.id : ExpenseCredentials.id}
+        title={operationDetails.descriptions}
+        isConfirmationModalOpen={!isReplenishment && isRemoveModalOpen}
+        setIsConfirmationModalOpen={setIsRemoveModalOpen}
+        groupId={operationDetails.group_id}
+        expenseId={operationDetails.id}
         callback={() => {}}
         />
         <ConfirmationModal
         mode='remove_replenishment'
-        replenishmentId={ReplenishmentCredentials.id}
-        title={ReplenishmentCredentials.description}
-        isConfirmationModalOpen={isRemoveReplenishmentModal}
-        setIsConfirmationModalOpen={setIsRemoveReplenishmentModal}
+        replenishmentId={operationDetails.id}
+        title={operationDetails.descriptions}
+        isConfirmationModalOpen={isReplenishment && isRemoveModalOpen}
+        setIsConfirmationModalOpen={setIsRemoveModalOpen}
         callback={() => { }}
         />
         <ExpenseModal
             type='edit'
-            isReplenishment={isReplenishment}
-            amount={isReplenishment ? ReplenishmentCredentials.amount : ExpenseCredentials.amount}
-            description={isReplenishment ? ReplenishmentCredentials.description : ExpenseCredentials.descriptions}
-            isExpenseModalOpen={isEditExpenseModal}
-            setIsExpenseModalOpen={setIsEditExpenseModal}
-            groupId={ExpenseCredentials.group_id}
-            expenseId={isReplenishment ? ReplenishmentCredentials.id : ExpenseCredentials.id}
-            categoryId={ExpenseCredentials.category_id}
+            amount={operationDetails.amount}
+            description={operationDetails.descriptions}
+            isExpenseModalOpen={!isReplenishment && isEditModalOpen}
+            setIsExpenseModalOpen={setIsEditModalOpen}
+            groupId={operationDetails.group_id}
+            expenseId={operationDetails.id}
+            categoryId={operationDetails.category_id}
+            groupsCategories={GroupsCategories || []}
+            operationTime={operationDetails.time}
+            key={operationDetails.id + String(isReplenishment)}
+        />
+        <IncomeModal
+            type='edit'
+            amount={operationDetails.amount}
+            description={operationDetails.descriptions}
+            isIncomeModalOpen={isReplenishment && isEditModalOpen}
+            setIsIncomeModalOpen={setIsEditModalOpen}
+            operationId={operationDetails.id}
+            operationTime={operationDetails.time}
+            key={operationDetails.id + String(isReplenishment)}
         />
         <main id='HistoryPage'>
             <div className={classes.page__container}>
