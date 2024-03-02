@@ -306,7 +306,6 @@ const GroupHistory: React.FC = () => {
         setIsConfirmationModalOpen={setIsRemoveModalOpen}
         groupId={Number(groupId)}
         expenseId={operationDetails.id}
-        callback={() => { }}
         />
         <ExpenseModal
             type='edit'

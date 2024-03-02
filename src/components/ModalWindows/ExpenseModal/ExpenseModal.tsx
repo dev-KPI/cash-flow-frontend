@@ -55,7 +55,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
     const [amountValue, setAmountValue] = useState<number>(amount ? amount : 0);
     const [descriptionValue, setDescriptionValue] = useState<string>(description ? description : '');
     const [isInputError, setIsInputError] = useState<boolean>(false);
-    const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [selectedGroup, setSelectedGroup] = useState<number>(groupId);
     const [selectedCategory, setSelectedCategory] = useState<number>(categoryId);
     const [selectedTime, setSelectedTime] = useState<Date>(operationTime);
@@ -117,16 +116,14 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
             notify('error', 'Expense not created')
         }
     }
-    const handleSubmit = useCallback(() => {
-        if(isSubmit && type === 'create' && amountValue > 0 && categoryId && groupId) {
+    const handleSubmit = async() => {
+        if(type === 'create' && amountValue > 0 && categoryId && groupId) {
             setIsInputError(false)
             setIsExpenseModalOpen(false)
-            setIsSubmit(false);
             onCreateExpense()
-        } else if(isSubmit && type === 'edit' && amountValue > 0) {
+        } else if(type === 'edit' && amountValue > 0) {
             setIsInputError(false)
-            setIsExpenseModalOpen(false)
-            setIsSubmit(false);
+            setIsExpenseModalOpen(false);
             if (!(amountValue === amount && descriptionValue === description 
                 && categoryId === selectedCategory && groupId === selectedGroup 
                 && operationTime.getTime() === selectedTime.getTime())) {
@@ -134,30 +131,18 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
             } else {
                 notify('info', 'Expense not updated')
             }
-        } else if(isSubmit && type === 'create-expanded' && amountValue > 0) {
+        } else if( type === 'create-expanded' && amountValue > 0) {
             setIsInputError(false)
             setIsExpenseModalOpen(false)
-            setIsSubmit(false);
             if (selectedCategory && selectedGroup) {
                 onCreateExpandedExpense()
             } else {
                 notify('info', 'Expense not created')
             }
-        } else if (isSubmit && amountValue === 0) {
-            setIsSubmit(false);
+        } else if (amountValue === 0) {
             setIsInputError(true)
         }
-    }, [isSubmit])
-
-    const callbackOnSubmit = useCallback(() => {
-        if(!isExpenseModalOpen && isSubmit ) {
-            setIsSubmit(false);
-            setIsInputError(false)
-        }
-    }, [isExpenseModalOpen, isSubmit])
-
-    useEffect(() => callbackOnSubmit(), [callbackOnSubmit])
-    useEffect(() => handleSubmit(), [handleSubmit])
+    }
 
     const groupsWithoutCategories: Omit<Group, "categories_group">[] = [];
     const categoriesWithGroupIndex: Map<number, Item[]> = new Map();
@@ -196,6 +181,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
         return categories || [];
     }, [groupId, selectedGroup])
     const isGroupAvailable = groupsWithoutCategories.some(group => group.id === groupId);
+
     return <>
     <UsePortal
             setIsModalOpen={setIsExpenseModalOpen}
@@ -203,7 +189,6 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
             headerIcon={headerIcon}
             title={titleModal}
             callback={() => {
-                setIsSubmit(false);
                 setIsInputError(false);
                 setCategory(categoryId);
                 setGroup(groupId);
@@ -280,7 +265,7 @@ const ExpenseModal: FC<IExpenseModalProps> = ({
                         btnHeight={36}
                         icon="submit"
                         type={'primary'}
-                        callback={()=> setIsSubmit(true)}
+                        callback={handleSubmit}
                         />
                 </div>
             </form>

@@ -19,17 +19,16 @@ type IContfirmationModalProps = {
     isConfirmationModalOpen: boolean;
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
 } & (
-    | {mode: 'kick', user: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
-    | {mode: 'leave' | 'disband', user?: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
-    | {mode: 'remove_expense', user?: never, groupId: number, expenseId: number, callback: () => void, replenishmentId?: never}
-    | {mode: 'remove_replenishment', user?: never, groupId?: never, expenseId?: never, callback: () => void, replenishmentId: number }
-    | {mode: 'invite', user: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never }
+    | {mode: 'kick', user: IUser, groupId: number, expenseId?: never, replenishmentId?: never}
+    | {mode: 'leave' | 'disband', user?: IUser, groupId: number, expenseId?: never, replenishmentId?: never}
+    | {mode: 'remove_expense', user?: never, groupId: number, expenseId: number, replenishmentId?: never}
+    | {mode: 'remove_replenishment', user?: never, groupId?: never, expenseId?: never, replenishmentId: number }
+    | {mode: 'invite', user: IUser, groupId: number, expenseId?: never, replenishmentId?: never }
 )
 
 const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     expenseId, title, isConfirmationModalOpen,
-    setIsConfirmationModalOpen, mode, user,
-    callback, replenishmentId}) => {
+    setIsConfirmationModalOpen, mode, user, replenishmentId}) => {
 
     const navigate = useNavigate();
     const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
@@ -164,10 +163,9 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
             onCreateInvitation();
         }
     }
-
-    return <div>
+    
+    return <>
         <UsePortal
-            callback={() => { }}
             setIsModalOpen={setIsConfirmationModalOpen}
             isModalOpen={isConfirmationModalOpen}
             headerIcon={headerIcon}
@@ -181,7 +179,8 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 </div>
                 <div className={classes.confirmBtnWrapper}>
                     <CustomButton
-                        isPending={isLeavingGroupLoading || isRemovingUser}
+                        isPending={isLeavingGroupLoading || isRemovingUser || isRemovingExpenseLoading
+                        || isInvitationCreating || isRemovingReplenishmentLoading}
                         children="Confirm"
                         btnWidth={170}
                         btnHeight={36}
@@ -201,7 +200,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 </div>
             </form>
         </UsePortal>
-    </div>
+    </>
 };
 
 export default React.memo(ConfirmationModal);
