@@ -36,7 +36,6 @@ const Dropdown:FC<IDropdownProps> = ({ placeholder, items, selectedOption, setOp
         }
     }
     useClickOutside(dropdownInput, closeDropdown);
-    
 
     const selectedItemTemplate = (option: Item , props: DropdownProps) => {
         if (option) {
@@ -93,6 +92,9 @@ const Dropdown:FC<IDropdownProps> = ({ placeholder, items, selectedOption, setOp
                 return <i style={{color: 'var(--main-text)'}} className={'bi bi-chevron-down chevron ' + iconClass }></i>
             }}
             appendTo={'self'}
+            virtualScrollerOptions={{ 
+                itemSize: 50
+            }}
             />
         </div>    
     )
