@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, Dispatch, SetStateAction, useCallback } from "react";
+import React, { FC, ReactNode, useState, Dispatch, SetStateAction, useCallback, useEffect } from "react";
 
 //UI
 import classes from './IncomeModal.module.css';
@@ -40,6 +40,10 @@ const IncomeModal: FC<IOperationModalProps> = ({
 
     const [createReplenishment, {isLoading: isReplenishmentLoading}] = useCreateReplenishmentMutation();
     const [updateReplenishment, { isLoading: isReplenishmentUpdating, isError: isReplenishmentUpdatingError, isSuccess: isReplenishmentUpdated }] = useUpdateReplenishmentByIdMutation();
+    
+    useEffect(()=> {
+        setSelectedTime(operationTime);
+    }, [operationTime])
 
     const onCreateReplenishment = async () => {
         if (!isReplenishmentLoading) {
