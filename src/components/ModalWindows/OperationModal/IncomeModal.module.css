@@ -1,22 +1,17 @@
 .OperationBody{
     margin: 0px 30px;
 }
-.AmountInput{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
 .inputWrapper{
     margin-top: 10px;
+}
+.ItemInput:not(:first-child){
+    margin-top: 16px;
 }
 .title{
     color: var(--text);
     font-weight: 400;
     font-size: 24px;
     line-height: 29px;
-}
-.DescriptionInput{
-    margin-top: 16px;
 }
 .confirmBtnWrapper{
     display: flex;

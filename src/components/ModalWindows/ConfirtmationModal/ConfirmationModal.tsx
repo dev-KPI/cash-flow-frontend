@@ -13,24 +13,26 @@ import { useCreateInvitationMutation } from "@store/Controllers/InvitationContro
 import { useDeleteExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
 import { useDeleteReplenishmentByIdMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
 import { notify } from "src/App";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
 
 type IContfirmationModalProps = {
     title?: string;
     isConfirmationModalOpen: boolean;
     setIsConfirmationModalOpen: Dispatch<SetStateAction<boolean>>;
 } & (
-    | {mode: 'kick', user: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
-    | {mode: 'leave' | 'disband', user?: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never}
-    | {mode: 'remove_expense', user?: never, groupId: number, expenseId: number, callback: () => void, replenishmentId?: never}
-    | {mode: 'remove_replenishment', user?: never, groupId?: never, expenseId?: never, callback: () => void, replenishmentId: number }
-    | {mode: 'invite', user: IUser, groupId: number, expenseId?: never, callback?: never, replenishmentId?: never }
+    | {mode: 'kick', user: IUser, groupId: number, expenseId?: never, replenishmentId?: never}
+    | {mode: 'leave' | 'disband', user?: IUser, groupId: number, expenseId?: never, replenishmentId?: never}
+    | {mode: 'remove_expense', user?: never, groupId: number, expenseId: number, replenishmentId?: never}
+    | {mode: 'remove_replenishment', user?: never, groupId?: never, expenseId?: never, replenishmentId: number }
+    | {mode: 'invite', user: IUser, groupId: number, expenseId?: never, replenishmentId?: never }
 )
 
 const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     expenseId, title, isConfirmationModalOpen,
-    setIsConfirmationModalOpen, mode, user,
-    callback, replenishmentId}) => {
+    setIsConfirmationModalOpen, mode, user, replenishmentId}) => {
 
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const navigate = useNavigate();
     const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
     const [removeUser, { isLoading: isRemovingUser, isSuccess: isRemoveUserSuccess, isError: isRemoveUserError}] = useRemoveUserMutation();
@@ -63,11 +65,11 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'remove_expense') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove expense'
-        modalText = <p>Are you sure you want to remove <span>{title}</span> expense?</p>
+        modalText = <p>Are you sure you want to remove expense with an amount<span style={{color: 'var(--main-red)', fontWeight: 500}}>{' ' + currency + title}</span>?</p>
     } else if (mode === 'remove_replenishment') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove replenishment'
-        modalText = <p>Are you sure you want to remove <span>{title}</span> replenishment?</p>
+        modalText =  <p>Are you sure you want to remove replenishment with an amount<span style={{color: 'var(--main-green)', fontWeight: 500}}>{' ' + currency + title}</span>?</p>
     }
     const onLeaveGroup = async () => {
         if (groupId && !isLeavingGroupLoading && (mode === 'disband' || 'leave')) {
@@ -164,10 +166,9 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
             onCreateInvitation();
         }
     }
-
-    return <div>
+    
+    return <>
         <UsePortal
-            callback={() => { }}
             setIsModalOpen={setIsConfirmationModalOpen}
             isModalOpen={isConfirmationModalOpen}
             headerIcon={headerIcon}
@@ -181,7 +182,8 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 </div>
                 <div className={classes.confirmBtnWrapper}>
                     <CustomButton
-                        isPending={isLeavingGroupLoading || isRemovingUser}
+                        isPending={isLeavingGroupLoading || isRemovingUser || isRemovingExpenseLoading
+                        || isInvitationCreating || isRemovingReplenishmentLoading}
                         children="Confirm"
                         btnWidth={170}
                         btnHeight={36}
@@ -201,7 +203,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
                 </div>
             </form>
         </UsePortal>
-    </div>
+    </>
 };
 
 export default React.memo(ConfirmationModal);

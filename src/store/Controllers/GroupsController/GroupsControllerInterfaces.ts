@@ -4,6 +4,7 @@ import IUser, { IExtendedUser } from "@models/IUser"
 import { IPeriods } from "@models/IPeriod"
 import IListResponse from "@models/IListResponse"
 import IMember from "@models/IMember"
+import { IGroupHistoryItem } from "@models/IHistoryItem"
 
 export interface IGetCurrentUserGroups {
     user_groups: IGroup[]
@@ -112,20 +113,7 @@ export interface IGetUserByGroupInfoBody {
     period: IPeriods
 }
 
-export interface IGetGroupUsersHistoryResponse extends IListResponse<{
-    id: number,
-    descriptions: string,
-    amount: number,
-    time: string,
-    category_id: number,
-    color_code_category: string,
-    title_category: string,
-    user_id: number,
-    user_login: string,
-    user_first_name: string,
-    user_last_name: string,
-    user_picture: string
-}> { };
+export interface IGetGroupUsersHistoryResponse extends IListResponse<IGroupHistoryItem> { };
 
 
 export interface IGroupMemberExpensesDailyResponse {
@@ -142,25 +130,4 @@ export interface IGroupMemberExpensesByCategoryDailyResponse {
 }
 export interface IGroupMemberExpensesByCategoryDailyBody extends IGetUserByGroupInfoBody { }
 
-export interface IGetGroupMemberHistoryResponse {
-    items: [
-        {
-            id: number,
-            descriptions: string,
-            amount: number,
-            time: string,
-            category_id: number,
-            color_code_category: string,
-            title_category: string,
-            user_id: number,
-            user_login: string,
-            user_first_name: string,
-            user_last_name: string,
-            user_picture: string
-        }
-    ],
-    total: number,
-    page: number,
-    size: number,
-    pages: number
-}
+export interface IGetGroupMemberHistoryResponse extends IListResponse<IGroupHistoryItem> { };

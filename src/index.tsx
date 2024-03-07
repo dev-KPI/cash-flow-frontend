@@ -1,6 +1,4 @@
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import React from 'react';
-import './styles/style.css';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';

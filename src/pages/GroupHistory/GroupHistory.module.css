@@ -50,7 +50,7 @@
 .recentOperations__table tbody td:last-child {
     width: 50px;
 }
-.recentOperations__table tbody td:nth-child(4){
+.recentOperations__table tbody td:nth-child(5){
     width: 140px;
 }
 
@@ -82,6 +82,8 @@
 .memberWrapper{
     display: flex;
     transition: all .3s ease;
+
+    justify-content: center;
 }
 
 .memberInfo{
@@ -96,7 +98,7 @@
     align-items: center;
     gap: 10px;
 
-    flex: 1;
+    /* flex: 1; */
     min-width: 0;
 }
 
@@ -147,7 +149,7 @@
 .editRemove button {
     height: 100%;
     cursor: pointer;
-    transition: all ease-in-out .3s;
+    transition: all ease-in-out .2s;
 }
 
 .editButton:hover {
@@ -213,6 +215,14 @@
     color: white;
 }
 
+.recentOperations__table tbody tr:not(:last-child) td:nth-child(2) {
+    height: 3rem;
+    line-height: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+}
+
 /* media */
 
 @media only screen and (max-width: 1028px) {
@@ -235,13 +245,16 @@
     .page__container {
         margin-top: 14px;
     }
+    .recentOperations__table tbody tr:not(:last-child) td:nth-child(2){
+        max-width: 150px;
+    }
     .recentOperations__table tbody td {
         padding: 0 3px;
     }
-    .recentOperations__table tbody td:nth-child(2) {
+    .recentOperations__table tbody td:nth-child(3) {
         width: 100px;
     }
-    .recentOperations__table tbody td:nth-child(4) {
+    .recentOperations__table tbody td:nth-child(5) {
         width: 70px;
     }
 
@@ -268,7 +281,7 @@
     .counter {
         width: 120px;
     }
-    .recentOperations__table tbody tr:not(:last-child) td:first-child {
+    .recentOperations__table tbody tr:not(:last-child) td:nth-child(2) {
         max-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -282,11 +295,15 @@
         padding-left: 0px;
     }
 
-    .recentOperations__table thead :nth-child(3) {
+    .recentOperations__table thead th:first-child {
+        padding-right: 5px;
+    }
+
+    .recentOperations__table thead :nth-child(4) {
         display: none;
     }
 
-    .recentOperations__table tbody td:nth-child(3) {
+    .recentOperations__table tbody td:nth-child(4) {
         display: none;
     } 
     
@@ -296,13 +313,19 @@
 
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 420px) {
     .recentOperations__table thead :nth-child(3) {
         display: none;
     }
 
     .recentOperations__table tbody td:nth-child(3) {
         display: none;
+    } 
+}
+
+@media only screen and (max-width: 400px) {
+    .recentOperations__table tbody tr:not(:last-child) td:nth-child(2){
+        max-width: 100px;
     }
 
     .memberWrapper {

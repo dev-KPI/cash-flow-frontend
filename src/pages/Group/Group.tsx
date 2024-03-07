@@ -81,7 +81,9 @@ const Group = () => {
                         isLoading={isGroupTotalExpensesLoading}
                         isError={isGroupTotalExpensesError} />
                         <OperationCard 
-                        operation={'Expenses'}
+                        operation={'ExpensesExpanded'} 
+                        title={'Expenses'}
+                        groupId={Number(groupId)}
                         className={classes.operations} 
                         data={GroupCurrentUserTotalExpenses}
                         isSuccess={isGroupCurrentUserTotalExpensesSuccess}

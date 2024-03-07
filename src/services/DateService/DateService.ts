@@ -73,6 +73,13 @@ class DateServiceClass {
     
         return dates;
     }
+    // subtract timezone offset of current date (for given date)
+    subtractCurrentTimezoneOffset(date: Date): Date {
+        const currentOffset = new Date().getTimezoneOffset();
+        const newDate = new Date(date.getTime() + currentOffset * 60 * 1000);
+        return newDate;
+    }
+    // shift date by timezone offset(of giver date)
     getLocalISOString(date: Date): string {
         let t: Date = new Date(date);
         let z: number = t.getTimezoneOffset() * 60 * 1000;
@@ -80,6 +87,11 @@ class DateServiceClass {
         tLocal = new Date(tLocal);
         return  tLocal.toISOString();
     }
+    // take date, add its tz offset then sub current tz offset
+    getShiftedISOString(date: Date): string {
+        let newDate = this.getLocalISOString(date);
+        return this.subtractCurrentTimezoneOffset(new Date(newDate)).toISOString();
+    };
     getFormattedRangeTitle(date: Date): string {
         return `${date.getDate()} ${this.getMonthNameByIdx(date.getMonth()).slice(0, 3)} ${date.getFullYear()}`
     }

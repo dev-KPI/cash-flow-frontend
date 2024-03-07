@@ -15,7 +15,7 @@ export interface IGroupHistoryItem {
     id: number,
     descriptions: string,
     amount: number,
-    time: string,
+    time: Date,
     category_id: number,
     color_code_category: string,
     title_category: string,

@@ -34,10 +34,11 @@ const PageGlobalLoader = () => {
             <div className={classes.loading__letter}>a</div>
             <div className={classes.loading__letter}>s</div>
             <div className={classes.loading__letter}>h</div>
-            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>F</div>
-            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>l</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>M</div>
             <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>o</div>
-            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>w</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>n</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>e</div>
+            <div style={{color: "var(--main-green)"}} className={classes.loading__letter}>y</div>
           </div>
     </div> 
 }

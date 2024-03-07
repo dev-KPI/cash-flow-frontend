@@ -60,10 +60,10 @@ export const ExpensesApiSlice = api.injectEndpoints({
         }),
         updateExpenseByGroup: builder.mutation<IExpenseByGroupResponse, IUpdateExpenseByGroupBody>({
             query: (body) => ({
-                url: `groups/${body.group_id}/expenses/${body.expense_id}`,
+                url: `groups/${body.current_group}/expenses/${body.expense_id}`,
                 method: 'PUT',
                 credentials: 'include',
-                body: Omiter(['id', 'group_id', 'expense_id'], body)
+                body: Omiter(['current_group', 'expense_id'], body)
             }),
             transformErrorResponse: (
                 response: { status: string | number },

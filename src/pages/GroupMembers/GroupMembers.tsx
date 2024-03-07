@@ -100,7 +100,7 @@ const History: React.FC = () => {
                                 <h6 className={classes.name}>{full_name()}</h6>
                             </div>
                         </div>
-                    </Link> : '-'
+                    </Link> : ''
             }
         }),
         columnHelper.accessor('role', {

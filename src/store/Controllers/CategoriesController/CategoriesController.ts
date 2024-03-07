@@ -5,6 +5,7 @@ import {
     ICreateCategoryBody,
     ICreateCategoryResponse,
     IGetCategoriesByGroupResponse,
+    IGetGroupsCategoriesResponse,
     IUpdateCategoryBody,
     IUpdateCategoryResponse,
 } from './CategoriesControllerInterfaces';
@@ -34,6 +35,17 @@ export const CategoryApiSlice = api.injectEndpoints({
             { type: 'CategoryController', id: 'CATEGORIES' }]
                 :
             [{ type: 'CategoryController', id: 'CATEGORIES' }],
+        }),
+        getGroupsCategories: builder.query<IGetGroupsCategoriesResponse[], void>({
+            query: () => ({
+                url: `/groups/categories/`,
+                credentials: 'include',
+            }),
+            transformErrorResponse: (
+                response: { status: string | number },
+            ) => response.status,
+            providesTags: (result) => result ? [...result.map(group => ({ type: 'GroupsController' as const, id: group.id }))]:
+            [{ type: 'GroupsController', id: 'GROUPS' }],
         }),
         createCategoryByGroup: builder.mutation<ICreateCategoryResponse, ICreateCategoryBody>({
             query: (body) => ({
@@ -66,6 +78,7 @@ export const CategoryApiSlice = api.injectEndpoints({
 
 export const {
     useGetCategoriesByGroupQuery,
+    useGetGroupsCategoriesQuery,
     useCreateCategoryByGroupMutation,
     useUpdateCategoryByGroupMutation
 } = CategoryApiSlice

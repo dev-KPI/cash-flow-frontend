@@ -71,7 +71,7 @@ const MenuBurger: FC<IPropsMenuBurger> = ({ setMenuActive, isMenuActive, User })
             <div className={classes.burgernav__top}>
                 <Link to="/dashboard" onClick={closeMenu} className={classes.burgernav__titleLink}>
                     <img className={classes.devices} width='42px' height='42px' src={ThemeStore.theme === 'light' ? lightLogo : darkLogo} alt="devices dark" />
-                    <h1 className={classes.title}>Cash <span className={classes.title__span}>Flow</span></h1>   
+                    <h1 className={classes.title}>Cash<span className={classes.title__span}>Money</span></h1>   
                 </Link>
                 <CloseButton size={32} closeHandler={() => { setMenuActive(false) }} /> 
             </div>

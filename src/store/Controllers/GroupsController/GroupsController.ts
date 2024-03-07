@@ -30,9 +30,8 @@ import {
     IGetGroupMemberExpensesByCategoryBody
 } from './GroupsControllerInterfaces';
 import { Omiter } from '@services/UsefulMethods/ObjectMethods';
-import { IPeriods } from '@models/IPeriod';
 import DateService from '@services/DateService/DateService';
-import { getDaysInMonth, addDays } from 'date-fns';
+import { IGroupHistoryItem } from '@models/IHistoryItem';
 
 
 export const GroupsApiSlice = api.injectEndpoints({
@@ -145,14 +144,34 @@ export const GroupsApiSlice = api.injectEndpoints({
                     size: size
                 },
             }),
-            transformResponse: (response: IGetGroupUsersHistoryResponse) => {
-                if (response.items) {
-                    response.items.forEach((item) => {
-                        const title = item.title_category ?? '';
-                        item.title_category = title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title
-                    });
-                }
-                return response;
+            transformResponse: (response: IGetGroupUsersHistoryResponse, arg, body: { page: number, size: number }): IGetGroupUsersHistoryResponse => {
+                const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
+                const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
+                const historyItems: IGroupHistoryItem[] = response.items.map(el => {
+                    const UserTimezone = new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds);
+                    const title = el.title_category ?? '';
+                    return {
+                        id: el.id,
+                        descriptions: el.descriptions,
+                        amount: el.amount,
+                        time: UserTimezone,
+                        category_id: el.category_id,
+                        color_code_category: el.color_code_category,
+                        title_category: title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title,
+                        user_id: el.user_id,
+                        user_login: el.user_login,
+                        user_first_name: el.user_first_name,
+                        user_last_name: el.user_last_name,
+                        user_picture: el.user_picture
+                    }
+                })
+                return {
+                    total: response.total,
+                    page: response.page,
+                    size: response.size,
+                    pages: response.pages,
+                    items: historyItems
+                } as IGetGroupUsersHistoryResponse
             },
             transformErrorResponse: (
                 response: { status: string | number },
@@ -173,6 +192,35 @@ export const GroupsApiSlice = api.injectEndpoints({
                     size: size
                 },
             }),
+            transformResponse: (response: IGetGroupMemberHistoryResponse, arg, body: { page: number, size: number }): IGetGroupMemberHistoryResponse => {
+                const userTimezoneOffsetMinutes = new Date().getTimezoneOffset();
+                const userTimezoneOffsetMilliseconds = userTimezoneOffsetMinutes * 60 * 1000;
+                const historyItems: IGroupHistoryItem[] = response.items.map(el => {
+                    const UserTimezone = new Date(new Date(el.time).getTime() - userTimezoneOffsetMilliseconds);
+                    const title = el.title_category ?? '';
+                    return {
+                        id: el.id,
+                        descriptions: el.descriptions,
+                        amount: el.amount,
+                        time: UserTimezone,
+                        category_id: el.category_id,
+                        color_code_category: el.color_code_category,
+                        title_category: title.length > 0 ? title.charAt(0).toUpperCase() + title.slice(1) : title,
+                        user_id: el.user_id,
+                        user_login: el.user_login,
+                        user_first_name: el.user_first_name,
+                        user_last_name: el.user_last_name,
+                        user_picture: el.user_picture
+                    }
+                })
+                return {
+                    total: response.total,
+                    page: response.page,
+                    size: response.size,
+                    pages: response.pages,
+                    items: historyItems
+                } as IGetGroupMemberHistoryResponse
+            },
             transformErrorResponse: (
                 response: { status: string | number },
             ) => response.status,

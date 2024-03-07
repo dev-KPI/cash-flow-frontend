@@ -23,3 +23,11 @@ export interface IUpdateCategoryResponse extends Omit<Omit<ICategory, 'icon_url'
 export interface IGetCategoriesByGroupResponse {
     categories_group: ICategory[]
 }
+
+export interface IGetGroupsCategoriesResponse {
+    id: number
+    icon_url: string,
+    color_code: string,
+    title: string,
+    categories_group: ICategory[]
+}

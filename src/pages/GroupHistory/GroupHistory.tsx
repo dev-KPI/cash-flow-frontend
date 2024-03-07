@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState} from 'react';
+import React, { useCallback, useMemo, useRef, useState} from 'react';
 
 //UI
 import classes from './GroupHistory.module.css';
@@ -27,11 +27,12 @@ import { useAppSelector } from '@hooks/storeHooks/useAppStore';
 import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces';
 import { useGetCurrentUserInfoQuery } from '@store/Controllers/UserController/UserController';
 import Pagination from '@components/Pagination/Pagination';
+import { useGetGroupsCategoriesQuery } from '@store/Controllers/CategoriesController/CategoriesController';
 
 
 interface IColumnsHistory extends IGroupHistoryItem { edit_remove?: string }
 
-const History: React.FC = () => {
+const GroupHistory: React.FC = () => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const { groupId } = useParams();
     const tooltipRef = useRef<HTMLDivElement>(null);
@@ -56,18 +57,24 @@ const History: React.FC = () => {
         page: pageIndex + 1,
         size: pageSize
     });
-    const [isEditExpenseModal, setIsEditExpenseModal] = useState<boolean>(false);
-    const [isRemoveExpenseModal, setIsRemoveExpenseModal] = useState<boolean>(false);
-    const [ExpenseCredentials, setExpenseCredentials] = useState<{
+
+    const { data: GroupsCategories, isSuccess: isGroupsCategoriesSuccess } = useGetGroupsCategoriesQuery();
+    const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+    const [isRemoveModalOpen, setIsRemoveModalOpen] = useState<boolean>(false);
+    const [operationDetails, setOperationDetails] = useState<{
         id: number,
         descriptions: string,
         amount: number,
         category_id: number,
+        group_id: number,
+        time: Date
     }>({
         id: 0,
         descriptions: '',
         amount: 0,
-        category_id: 0
+        category_id: 0,
+        group_id:  Number(groupId),
+        time: new Date()
     });
     const [tooltipActive, setTooltipActive] = useState(false);
     const [time, setTime] = useState<string>('');
@@ -93,12 +100,16 @@ const History: React.FC = () => {
                                     alt={'user icon'}
                                     src={isUrl(picture) ? picture : userIcon} />
                             </div>
-                            <div className={classes.memberInfo}>
+                            {/* <div className={classes.memberInfo}>
                                 <h6 className={classes.name}>{full_name()}</h6>
-                            </div>
+                            </div> */}
                         </div>
-                    </Link> : '-'
+                    </Link> : ''
             }
+        }),
+        columnHelper.accessor('descriptions', {
+            header: () =>'Description',
+            cell: info => info.renderValue() ? info.getValue().length > 33 ? info.getValue().slice(0, 30) + '...' : info.getValue() : '',
         }),
         columnHelper.accessor('title_category', {
             header: () => 'Category',
@@ -109,11 +120,11 @@ const History: React.FC = () => {
                     color={info.row.original.color_code_category || 'var(--main-green)'}
                     type='solid' />
                 <p className={classes.itemTitle}>{info.getValue().length > 12 ? info.getValue().slice(0, 9) + '...' : info.getValue()}</p>
-            </div> : '-',
+            </div> : '',
         }),
         columnHelper.accessor('time', {
             header: () => 'Time',
-            cell: info => DateService.getTime(new Date(info.getValue())),
+            cell: info => DateService.getTime(new Date(info.getValue()), true),
         }),
         columnHelper.accessor('amount', {
             header: () => 'Amount',
@@ -131,25 +142,29 @@ const History: React.FC = () => {
                 return (<div className={classes.editRemove}>
                     <button className={classes.editButton} onClick={(e) => {
                         e.preventDefault();
-                        setExpenseCredentials({
+                        setOperationDetails(prev => ({
+                            ...prev,
                             id: info.row.original.id,
                             descriptions: info.row.original.descriptions,
                             amount: info.row.original.amount,
-                            category_id: info.row.original.category_id
-                        })
-                        setIsEditExpenseModal(!isEditExpenseModal);
+                            category_id: info.row.original.category_id,
+                            time: info.row.original.time
+                        }))
+                        setIsEditModalOpen(!isEditModalOpen);
                     }}>
                         <i className="bi bi-pencil"></i>
                     </button>
                     <button className={classes.removeButton} onClick={(e) => {
                         e.preventDefault();
-                        setExpenseCredentials({
+                        setOperationDetails(prev => ({
+                            ...prev,
                             id: info.row.original.id,
                             descriptions: info.row.original.descriptions,
                             amount: info.row.original.amount,
-                            category_id: info.row.original.category_id
-                        })
-                        setIsRemoveExpenseModal(!isRemoveExpenseModal)
+                            category_id: info.row.original.category_id,
+                            time: info.row.original.time
+                        }))
+                        setIsRemoveModalOpen(!isRemoveModalOpen);
                     }}>
                         <i className="bi bi-trash"></i>
                     </button>
@@ -185,7 +200,7 @@ const History: React.FC = () => {
     };
 
     useOnClickOutside(tooltipRef, hideTip);
-    const showTooltip = (e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
+    const showTooltip = useCallback((e: React.MouseEvent<HTMLTableRowElement>, context: any) => {
         if (width <= 768) {
             const el = e.target as HTMLElement;
             const rowEl = el.closest('tr') as HTMLElement;
@@ -194,16 +209,20 @@ const History: React.FC = () => {
             setTime(DateService.getTime(new Date(context.row.original.time), true))
             if (tooltipRef.current) {
                 tooltipRef.current.style.left = `${elRect.left + 150}px`;
-                tooltipRef.current.style.top = `${elRect.top + 10}px`;
+                tooltipRef.current.style.top = `${elRect.top + window.scrollY + 10}px`;
             }
             
             if (!el.closest('button'))
                 setTooltipActive(true);
         }   
-    }
+    }, [width, pageSize])
 
     let historyContent;
-    if (isGroupRecentHistorySuccess && isCurrentUserSuccess && GroupRecentHistory.items.length !== 0) {
+    if(isGroupRecentHistoryFetching) {
+        historyContent = <div className={classes.loaderWrapper}>
+            <PreLoader preLoaderSize={50} type='auto' />
+        </div>
+    } else if (isGroupRecentHistorySuccess && isCurrentUserSuccess && GroupRecentHistory.items.length !== 0) {
         historyContent = (<table className={classes.recentOperations__table}>
             <thead className={classes.tableTitle}>
                 {table.getHeaderGroups().map(headerGroup => (
@@ -282,30 +301,24 @@ const History: React.FC = () => {
         </div>
         <ConfirmationModal
         mode='remove_expense'
-        title={ExpenseCredentials.descriptions}
-        isConfirmationModalOpen={isRemoveExpenseModal}
-        setIsConfirmationModalOpen={setIsRemoveExpenseModal}
+        title={operationDetails.amount.toString()}
+        isConfirmationModalOpen={isRemoveModalOpen}
+        setIsConfirmationModalOpen={setIsRemoveModalOpen}
         groupId={Number(groupId)}
-        expenseId={ExpenseCredentials.id}
-        callback={() => {
-            setExpenseCredentials({
-                id: 0,
-                descriptions: '',
-                amount: 0,
-                category_id: 0
-            })
-        }}
+        expenseId={operationDetails.id}
         />
         <ExpenseModal
             type='edit'
-            isReplenishment={false}
-            amount={ExpenseCredentials.amount}
-            description={ExpenseCredentials.descriptions}
-            isExpenseModalOpen={isEditExpenseModal}
-            setIsExpenseModalOpen={setIsEditExpenseModal}
+            amount={operationDetails.amount}
+            description={operationDetails.descriptions}
+            isExpenseModalOpen={isEditModalOpen}
+            setIsExpenseModalOpen={setIsEditModalOpen}
             groupId={Number(groupId)}
-            expenseId={ExpenseCredentials.id}
-            categoryId={ExpenseCredentials.category_id}
+            expenseId={operationDetails.id}
+            categoryId={operationDetails.category_id}
+            groupsCategories={GroupsCategories || []}
+            operationTime={operationDetails.time}
+            key={operationDetails.id}
         />
         <main id='GroupHistoryPage' className="no-padding">
             <div className={classes.page__container}>
@@ -317,4 +330,4 @@ const History: React.FC = () => {
     )
 }
 
-export default History
+export default GroupHistory;

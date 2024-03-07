@@ -47,7 +47,7 @@ const HeaderSite: FC<IHeaderProps> = ({User}) => {
                         <div className={classes.logo__wrapper}>
                             <img className={classes.devices} src={ThemeStore.theme === 'light' ? lightLogo : darkLogo} alt="devices dark" />
                         </div>
-                        <h1 className={classes.title}>Cash<span>Flow</span></h1>
+                        <h1 className={classes.title}>Cash<span>Money</span></h1>
                     </Link>
                     <div className={classes.header__menu}>
                         <DesktopNotifications

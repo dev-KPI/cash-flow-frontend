@@ -34,8 +34,8 @@ export const RecentOperationDashboardCard: FC<IRecentOperationDashboardCard> = (
                     color={ isExpense ? item.color_code_category : "#80D667" }
                     type={'hollow'} />
                 <div className={classes.center}>
-                    <h5 className={classes.title}>{isExpense ? item.title_category: 'Salary'}</h5>
-                    <p className={classes.time}>{timeAgo.format(new Date(item.time))}</p>
+                    <h5 className={classes.title}>{isExpense ? item.title_category: 'Income'}</h5>
+                    <p className={classes.time}>{timeAgo.format((item.time).getTime() - 10 * 1000)}</p>
                 </div>
             </div>
             <p style={{ color: isExpense ? "#FF2D55" : "#80D667" }}
@@ -65,7 +65,7 @@ export const RecentOperationGroupCard: FC<IRecentOperationGroupCard> = ({ groupI
                 <div className={classes.icon}>{getAdminIcon()}</div>
                 <div className={classes.memberInfo}>
                     <h6 className={classes.name}>{name}</h6>
-                    <p className={classes.time}>{timeAgo.format(new Date(item.time))}</p>
+                    <p className={classes.time}>{timeAgo.format((item.time).getTime() - 10 * 1000)}</p>
                 </div>
             </Link>
             <div className={classes.category}>

@@ -5,18 +5,20 @@ import { ICurrencyState } from '@store/UI_store/CurrencySlice/CurrencyInterfaces
 
 //logic
 import { useAppSelector } from '@hooks/storeHooks/useAppStore';
+import { useGetGroupsCategoriesQuery } from '@store/Controllers/CategoriesController/CategoriesController';
 import { formatFloatNumber, numberWithCommas } from '@services/UsefulMethods/UIMethods';
 import { IGetTotalExpensesResponse } from '@store/Controllers/UserController/UserControllerInterfaces';
 import { isSameDay } from "date-fns"
 import DateService from '@services/DateService/DateService';
 //UI
 import classes from "./OperationCard.module.css"
-import SalaryModal from '@components/ModalWindows/OperationModal/SalaryModal';
+import IncomeModal from '@components/ModalWindows/OperationModal/IncomeModal';
 import OperationCardLoader from './OperationCardLoader';
+import ExpenseModal from '@components/ModalWindows/ExpenseModal/ExpenseModal';
 
 
 interface OperactionCardProps {
-    operation: "Income" | 'Expenses';
+    operation: 'Income' | 'Expenses' | 'ExpensesExpanded';
     title?: ReactNode | string;
     icon?: string;
     data: IGetTotalExpensesResponse | undefined;
@@ -25,11 +27,13 @@ interface OperactionCardProps {
     isSuccess: boolean;
     isError: boolean
     className?: string;
+    groupId?: number
 }
 
-const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError, offPreloader = false }) => {
+const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, icon, data, isLoading, isSuccess, isError, offPreloader = false, groupId = 0}) => {
     const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
-    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice)
+    const MonthPickerStore = useAppSelector<IMonthPickerState>(store => store.MonthPickerSlice);
+    const { data: GroupsCategories, isSuccess: isGroupsCategoriesSuccess } = useGetGroupsCategoriesQuery(undefined, { skip: operation !== 'ExpensesExpanded'});
     const [amount, setAmount] = useState<number | string>(0);
     const [percents, setPercents] = useState<number>(0);
     const [sign, setSign] = useState<string>('');
@@ -44,7 +48,7 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
             (operation === "Income" && sign !== '+') ||
             (operation === 'Expenses' && sign === '+') ?
             "rgba(255, 45, 85, 0.20)" : "rgba(128, 214, 103, 0.20)",
-        cursor: operation === "Income" ? "pointer" : "auto"
+        cursor: operation === "Income" || operation === 'ExpensesExpanded' ? "pointer" : "auto"
     }
 
     const RangeTitle = useMemo(() => {
@@ -76,13 +80,25 @@ const OperationCard: FC<OperactionCardProps> = ({ operation, title, className, i
     const cardTitle = title ? isValidElement(title) ? title : <h3 className={classes.title}>{title}</h3> : <h3 className={classes.title}>{operation}</h3>;
     return (<>
         {operation === 'Income' ?
-            <SalaryModal
-                setIsSalaryModalOpen={setIsOperationModalOpen}
-                isSalaryModalOpen={isOperationModalOpen}
+            <IncomeModal
+                setIsIncomeModalOpen={setIsOperationModalOpen}
+                isIncomeModalOpen={isOperationModalOpen}
+                type={'create'}
+            /> : null
+        }
+        {operation === 'ExpensesExpanded' ?
+            <ExpenseModal
+                type='create-expanded'
+                isExpenseModalOpen={isOperationModalOpen}
+                setIsExpenseModalOpen={setIsOperationModalOpen}
+                groupsCategories={GroupsCategories || []}
+                categoryId={0}
+                groupId={groupId}
+                key={operation}
             /> : null
         }
         <div className={`${classes.operationCard} ${className ? className : ''}`}
-            onClick={() => operation === "Income" ? setIsOperationModalOpen(!isOperationModalOpen) : null}
+            onClick={() => operation === "Income" || operation === 'ExpensesExpanded' ? setIsOperationModalOpen(!isOperationModalOpen) : null}
             style={{ cursor: styles.cursor }}>
             {isLoading ?
                 (!offPreloader ? <OperationCardLoader /> : null)
