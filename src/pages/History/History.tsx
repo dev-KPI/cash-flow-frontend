@@ -295,7 +295,7 @@ const History: React.FC = () => {
         </div>
         <ConfirmationModal
         mode='remove_expense'
-        title={operationDetails.descriptions}
+        title={operationDetails.amount.toString()}
         isConfirmationModalOpen={isRemoveExpenseModalOpen}
         setIsConfirmationModalOpen={setIsRemoveExpenseModalOpen}
         groupId={operationDetails.group_id}
@@ -304,7 +304,7 @@ const History: React.FC = () => {
         <ConfirmationModal
         mode='remove_replenishment'
         replenishmentId={operationDetails.id}
-        title={operationDetails.descriptions}
+        title={operationDetails.amount.toString()}
         isConfirmationModalOpen={isRemoveIncomeModalOpen}
         setIsConfirmationModalOpen={setIsRemoveIncomeModalOpen}
         />

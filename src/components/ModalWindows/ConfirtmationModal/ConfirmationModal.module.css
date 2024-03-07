@@ -19,6 +19,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     word-break: break-word;
+    white-space: pre;
 }
 
 .confirmBtnWrapper{

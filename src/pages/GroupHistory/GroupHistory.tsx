@@ -301,7 +301,7 @@ const GroupHistory: React.FC = () => {
         </div>
         <ConfirmationModal
         mode='remove_expense'
-        title={operationDetails.descriptions}
+        title={operationDetails.amount.toString()}
         isConfirmationModalOpen={isRemoveModalOpen}
         setIsConfirmationModalOpen={setIsRemoveModalOpen}
         groupId={Number(groupId)}

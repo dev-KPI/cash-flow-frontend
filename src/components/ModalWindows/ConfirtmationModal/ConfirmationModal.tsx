@@ -13,6 +13,8 @@ import { useCreateInvitationMutation } from "@store/Controllers/InvitationContro
 import { useDeleteExpenseByGroupMutation } from "@store/Controllers/ExpensesController/ExpensesController";
 import { useDeleteReplenishmentByIdMutation } from "@store/Controllers/ReplenishmentController/ReplenishmentController";
 import { notify } from "src/App";
+import { useAppSelector } from "@hooks/storeHooks/useAppStore";
+import { ICurrencyState } from "@store/UI_store/CurrencySlice/CurrencyInterfaces";
 
 type IContfirmationModalProps = {
     title?: string;
@@ -30,6 +32,7 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     expenseId, title, isConfirmationModalOpen,
     setIsConfirmationModalOpen, mode, user, replenishmentId}) => {
 
+    const { currency } = useAppSelector<ICurrencyState>(state => state.persistedCurrencySlice);
     const navigate = useNavigate();
     const [leaveGroup, { isLoading: isLeavingGroupLoading, isError: isLeavingGroupError, isSuccess: isLeavingGroupSuccess}] = useLeaveGroupMutation();
     const [removeUser, { isLoading: isRemovingUser, isSuccess: isRemoveUserSuccess, isError: isRemoveUserError}] = useRemoveUserMutation();
@@ -62,11 +65,11 @@ const ConfirmationModal: FC<IContfirmationModalProps> = ({groupId,
     } else if (mode === 'remove_expense') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove expense'
-        modalText = <p>Are you sure you want to remove <span>{title}</span> expense?</p>
+        modalText = <p>Are you sure you want to remove expense with an amount<span style={{color: 'var(--main-red)', fontWeight: 500}}>{' ' + currency + title}</span>?</p>
     } else if (mode === 'remove_replenishment') {
         headerIcon = <i className="bi bi-trash"></i>
         titleModal = 'Remove replenishment'
-        modalText = <p>Are you sure you want to remove <span>{title}</span> replenishment?</p>
+        modalText =  <p>Are you sure you want to remove replenishment with an amount<span style={{color: 'var(--main-green)', fontWeight: 500}}>{' ' + currency + title}</span>?</p>
     }
     const onLeaveGroup = async () => {
         if (groupId && !isLeavingGroupLoading && (mode === 'disband' || 'leave')) {
