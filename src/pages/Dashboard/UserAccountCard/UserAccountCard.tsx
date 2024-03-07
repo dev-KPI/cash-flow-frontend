@@ -21,7 +21,7 @@ const UserAccountCard: FC = () => {
 
     return <>
         <div className={classes.AccountCard}>
-            {isUserFetching && isUserBalanceFetching && isUserBalanceError && isUserError ? <UserAccountCardLoader /> :
+            {isUserFetching || isUserBalanceFetching || isUserBalanceError || isUserError ? <UserAccountCardLoader /> :
                 <div className={classes.inner}>
                     <h3 className={classes.title}>My account</h3>
                     <div className={classes.user}>
